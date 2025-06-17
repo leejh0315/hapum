@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hapum.hapum.mapper.OrganizationMapper">
+
+
+	<select id="selectAllOrganization" resultType="hapum.hapum.domain.Organization">
+		SELECT * FROM hapumdb.organization
+
+	</select>
+	
+	<insert id="insertOrganization" parameterType="hapum.hapum.domain.Organization">
+		INSERT INTO hapumdb.organization(name, introduce, profileSrc)
+		VALUES(#{name}, #{introduce}, #{profileSrc});
+		
+	</insert>
+	
+	<insert id="insertOrganizationWrite" parameterType="hapum.hapum.domain.OrganizationPost">
+		INSERT INTO hapumdb.organization_post(org_id, title, content,thumbnailSrc)
+		VALUES(#{orgId}, #{title}, #{content},#{thumbnailSrc});
+		
+	</insert>
+	
+	
+	<select id="selectByOrgId" resultType="hapum.hapum.domain.OrganizationPost">
+		SELECT * FROM hapumdb.organization_post WHERE org_id=#{orgId}
+		ORDER BY created_at DESC
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+
+   <select id="countOrgPost" resultType="int">
+        SELECT COUNT(*) FROM hapumdb.organization_post WHERE org_id=#{orgId}
+    </select>
+    
+    <select id="selectOrgPostById" resultType="hapum.hapum.domain.OrganizationPost">
+		SELECT * FROM hapumdb.organization_post WHERE id=#{id}
+		
+	</select>
+
+
+</mapper>

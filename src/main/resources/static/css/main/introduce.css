@@ -1,0 +1,63 @@
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #FFFFFF; /* 전체 페이지 배경: 흰색 */
+    }
+
+    .container {
+      display: flex;
+     flex: 1;
+    height: 100vh;
+      padding-left: 7%;
+      padding-right: 7%;
+      gap: 20px; /* 사이드바와 메인 콘텐츠 사이 간격 */
+    }
+
+    .sidebar {
+      width: 180px;
+      background-color: #D6CCC2; /* 사이드바 배경 */
+      border-right: 1px solid #D5BDAF;
+      border-left: 1px solid #D5BDAF;
+      display: flex;
+      flex-direction: column; /* 내부 요소들을 세로로 배치 */
+    }
+
+    .menu-button {
+      width: 100%;
+      padding: 12px;
+      text-align: center;
+      background-color: #F5EBE0;  /* 기본 버튼 배경 */
+      border: none;
+      border-bottom: 1px solid #D5BDAF;
+      font-size: 16px;
+      cursor: pointer;
+      color: #333; /* 기본 텍스트 색 */
+      transition: all 0.3s;
+    }
+
+    .menu-button:hover {
+      background-color: #E3D5CA;  /* 버튼 hover 상태 */
+    }
+
+    .menu-button.active {
+      background-color: #D5BDAF; /* 활성화 버튼 배경 */
+      color: white;
+      font-weight: bold;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+    }
+
+    .text-area {
+      flex: 1;
+      padding: 20px; /* 내부 여백 */
+      background-color: white; /* 콘텐츠 내용 영역은 흰색 유지 */
+    }
+
+    .content-placeholder {
+      font-size: 18px;
+      color: #888;
+      margin-top: 30px;
+    }

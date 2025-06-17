@@ -1,0 +1,95 @@
+    /* 프로그램 리스트 영역 스타일 */
+    #program-list {
+    	margin: 20px 10px;
+    	height: 50vh;
+    	overflow-y: auto;
+    	width: 100%;
+    }
+
+    #program-list table {
+    	width: 40%;
+    	border-collapse: collapse;
+    }
+
+    #program-list th,
+    #program-list td {
+    	border-bottom: 1px solid #ccc;
+    	padding: 8px 5px;
+    	text-align: left;
+    }
+
+    #program-list th {
+    	background: #f0f0f0;
+    }
+
+    #program-list a {
+    	text-decoration: none;
+    	color: inherit;
+    }
+
+    /* 상단 영역: 슬라이드와 캘린더 컨테이너 배치 */
+    #top-section {
+
+    	display: flex;
+    	flex-wrap: wrap;
+    	justify-content: space-between;
+    	margin-left: 10%;
+    	margin-right: 10%;
+    	margin-top: 20px;
+    }
+
+
+    /* 하단 영역 */
+   
+    /* 슬라이드 wrapper: 400×400 정사각형 */
+    #slideshow-wrapper {
+    	width: 400px;
+    	height: 400px;
+    	margin: 10px;
+    	padding: 5px;
+    	box-sizing: border-box;
+    	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    	display: flex;
+    	flex-direction: column;
+    }
+
+    /* 슬라이드 이미지 영역 */
+    #slideshow-container {
+    	position: relative;
+    	flex: 1;
+    	overflow: hidden;
+    	background: #f8f8f8;
+    }
+
+    #slideshow {
+    	position: relative;
+    	width: 100%;
+    	height: 100%;
+    }
+
+    #slideshow img {
+    	width: 100%;
+    	height: 100%;
+    	position: absolute;
+    	top: 0;
+    	object-fit: contain;
+    	object-position: center;
+    	display: none;
+    }
+
+    /* 슬라이드 컨트롤 버튼 */
+    #slideshow-controls {
+    	text-align: center;
+    	margin-top: 5px;
+    }
+
+    #slideshow-controls button {
+    	font-size: 1.2em;
+    	margin: 0 10px;
+    	padding: 5px 10px;
+    	cursor: pointer;
+    }
+
+ 
+
+  

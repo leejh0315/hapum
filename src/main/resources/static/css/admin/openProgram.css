@@ -1,0 +1,149 @@
+body {
+  font-family: 'Pretendard', 'Arial', sans-serif;
+  background-color: #f4f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+.program-header {
+  margin-bottom: 40px;
+}
+
+.program-form-container {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 60px auto;
+  text-align: left;
+}
+
+.program-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.program-form-group {
+  margin-bottom: 20px;
+}
+
+.program-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #444;
+}
+
+/* 공통 input, textarea 스타일 */
+.program-form-group input[type="text"],
+.program-form-group input[type="number"],
+.program-form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: 'Pretendard', 'Arial', sans-serif;
+  box-sizing: border-box;
+  color: #333;
+}
+
+/* textarea는 높이 조절 가능 및 기본 최소 높이 지정 */
+.program-form-group textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.program-button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.program-button:hover {
+  background-color: #357abd;
+  transform: translateY(-2px);
+}
+
+.program-form-group.image-upload {
+  position: relative;
+  margin-bottom: 30px;
+}
+
+.program-form-group.image-upload label {
+  font-weight: bold;
+  color: #444;
+  display: block;
+  margin-bottom: 8px;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* 숨겨진 실제 파일 input */
+.program-form-group.image-upload input[type="file"] {
+  display: none;
+}
+
+/* 커스텀 파일 선택 버튼 */
+.program-form-group.image-upload .custom-file-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #4a90e2;
+  color: white;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  font-size: 15px;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(74, 144, 226, 0.5);
+}
+
+.program-form-group.image-upload .custom-file-btn:hover {
+  background-color: #357abd;
+  transform: translateY(-2px);
+}
+
+/* 이미지 미리보기 박스 */
+#image-preview-container {
+  margin-top: 15px;
+  max-width: 320px;
+  max-height: 220px;
+  border-radius: 12px;
+  border: 2px dashed #4a90e2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: #f0f6fc;
+  color: #999;
+  font-size: 14px;
+  font-style: italic;
+  user-select: none;
+  position: relative;
+}
+
+/* 미리보기 이미지 */
+#image-preview-container img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 12px;
+  object-fit: contain;
+  box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
+}
+
+/* 이미지 없을 때 안내문 */
+#image-preview-container.empty::before {
+  content: "사진이 첨부되지 않았습니다.";
+}
+

@@ -1,0 +1,41 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* 상단 네비게이션 바 스타일 */
+.navbar {
+  background-color: #F5EBE0;;  /* 연한 베이지 톤 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 네비게이션 항목 스타일 */
+.nav-item {
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  margin: 0 15px;
+  transition: color 0.3s, transform 0.2s;
+}
+
+.nav-item:hover {
+  color: #4a90e2;
+  transform: translateY(-1px);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 600px) {
+  .navbar {
+    flex-wrap: wrap;
+    padding: 10px;
+  }
+  .nav-item {
+    margin: 8px;
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>단체소식</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/main/organizationDetail.css}" />
+	<link rel="stylesheet" th:href="@{/css/footer.css}" />
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+	<div class="container">
+		<!-- SIDEBAR -->
+		<div class="sidebar">
+			<div class="sidebar-title">단체소식</div>
+			<button th:each="org : ${organizationList}" class="menu-button"
+				th:classappend="${org.id == id} ? ' active' : ''" th:text="${org.name}"
+				th:onclick="'location.href=\'/main/organization/'+${org.id}+'\''">
+			</button>
+		</div>
+
+		<!-- CONTENT -->
+		<div class="content">
+			<div th:if="${#lists.isEmpty(organizationPost)}">
+				게시글이 없습니다.
+			</div>
+			<div th:if="${!#lists.isEmpty(organizationPost)}" class="post-list">
+				<div th:each="post : ${organizationPost}" class="post-card">
+					<a th:href="@{/main/organization/{orgId}/post/{pid}(pid=${post.id},orgId=${id})}">
+						<img th:src="@{${post.thumbnailSrc}}" alt="썸네일" class="post-thumb" />
+						<div class="post-title" th:text="${post.title}">제목</div>
+						<div class="post-createOn" th:text="${post.createdAt}">날짜</div>
+					</a>
+				</div>
+			</div>
+			<div class="pagination-wrapper" th:if="${totalPages > 1}" th:with="blockSize=5,
+              cp=${currentPage},
+              tp=${totalPages},
+              sp=${((cp - 1) / blockSize) * blockSize + 1},
+              ep=${(sp + blockSize - 1) <= tp ? (sp + blockSize - 1) : tp}">
+				<ul class="pagination">
+					<!-- << : 앞 블록으로 -->
+					<li class="page-item" th:classappend="${sp == 1} ? 'disabled'">
+						<a class="page-link"
+							th:href="@{/main/organization/{id}(id=${id},page=${sp == 1 ? 1 : sp - blockSize})}">
+							&laquo;&laquo;
+						</a>
+					</li>
+					<!-- < : 이전 페이지 -->
+					<li class="page-item" th:classappend="${cp == 1} ? 'disabled'">
+						<a class="page-link"
+							th:href="@{/main/organization/{id}(id=${id},page=${cp == 1 ? 1 : cp - 1})}">
+							&laquo;
+						</a>
+					</li>
+					<!-- 페이지 번호들 -->
+					<li class="page-item" th:each="pageNum : ${#numbers.sequence(sp, ep)}"
+						th:classappend="${pageNum == cp} ? 'active'">
+						<a class="page-link" th:href="@{/main/organization/{id}(id=${id},page=${pageNum})}"
+							th:text="${pageNum}">1</a>
+					</li>
+					<!-- > : 다음 페이지 -->
+					<li class="page-item" th:classappend="${cp == tp} ? 'disabled'">
+						<a class="page-link"
+							th:href="@{/main/organization/{id}(id=${id},page=${cp == tp ? tp : cp + 1})}">
+							&raquo;
+						</a>
+					</li>
+					<!-- >> : 다음 블록으로 -->
+					<li class="page-item" th:classappend="${ep == tp} ? 'disabled'">
+						<a class="page-link"
+							th:href="@{/main/organization/{id}(id=${id},page=${ep == tp ? tp : ep + blockSize})}">
+							&raquo;&raquo;
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div th:replace="~{main/footer :: footer}"></div>
+	<script th:src="@{/js/header.js}"></script>
+</body>
+
+</html>

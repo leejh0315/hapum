@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>회원가입</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/main/auth/signin.css}">
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+	<div class="container">
+
+		<form th:action="@{/auth/doSignin}" th:object="${signinForm}" method="post" class="signin-form">
+			<h1>회원가입</h1>
+			<p>하품센터에 방문해주셔서 감사합니다</p>
+			<br>
+			<div class="input-with-btn">
+				<label>이메일 <input type="text" th:field="*{email}" placeholder="example@example.com" /></label>
+				<div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+				<input type="hidden" th:field="*{emailVerificationPassed}" />
+				<input type="hidden" th:field="*{emailChecked}" />
+				<input type="hidden" id="emailVerified" value="false" />
+
+				<button type="button" id="checkDuplicateBtn" th:if="${!signinForm.emailChecked}">중복확인</button>
+			</div>
+			<button type="button" id="sendVerificationBtn" style="display: none;">이메일 인증 요청</button>
+
+			<div id="verificationSection" style="display: none;">
+				<input type="text" id="verificationCodeInput" placeholder="인증번호 입력" />
+				<button type="button" id="verifyCodeBtn">인증 번호 확인</button>
+				<br>
+				<p id="timerP" class="timer-text">
+					인증번호는 3분간 유효합니다.
+					<span id="timer"></span>
+				</p>
+				<button type="button" id="resendBtn" style="display: none;">인증 메일 재발송</button>
+			</div>
+			<label>
+				비밀번호
+				<input type="password" th:field="*{password}"
+					th:classappend="${#fields.hasErrors('password')} ? 'input-error' : ''" />
+			</label>
+			<div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="field-error"></div>
+
+			<!-- 비밀번호 확인 -->
+			<label>
+				비밀번호 확인
+				<input type="password" th:field="*{passwordCheck}"
+					th:classappend="${#fields.hasErrors('passwordCheck')} ? 'input-error' : ''" />
+			</label>
+			<div th:if="${#fields.hasErrors('passwordCheck')}" th:errors="*{passwordCheck}" class="field-error"></div>
+
+			<!-- 이름 -->
+			<label>
+				이름
+				<input th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? 'input-error' : ''" />
+			</label>
+			<div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="field-error"></div>
+
+			<!-- 생년월일 -->
+			<label>
+				생년월일
+				<input th:field="*{birth}" placeholder="ex) 20001225"
+					th:classappend="${#fields.hasErrors('birth')} ? 'input-error' : ''" />
+			</label>
+			<div th:if="${#fields.hasErrors('birth')}" th:errors="*{birth}" class="field-error"></div>
+
+			<!-- 연락처 -->
+			<label>
+				연락처
+				<input th:field="*{phone}" placeholder="'-'없이 숫자만 입력해주세요"
+					th:classappend="${#fields.hasErrors('phone')} ? 'input-error' : ''" />
+			</label>
+			<div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="field-error"></div>
+
+			<!-- 본당 -->
+			<label>
+				본당
+				<input th:field="*{cathedral}"
+					th:classappend="${#fields.hasErrors('cathedral')} ? 'input-error' : ''" />
+			</label>
+			<div th:if="${#fields.hasErrors('cathedral')}" th:errors="*{cathedral}" class="field-error"></div>
+
+			<!-- 세례명 -->
+			<label>
+				세례명
+				<input th:field="*{baptismName}"
+					th:classappend="${#fields.hasErrors('baptismName')} ? 'input-error' : ''" />
+			</label>
+			<div th:if="${#fields.hasErrors('baptismName')}" th:errors="*{baptismName}" class="field-error"></div>
+
+			<button type="button" id="submit-btn" style="display: none;">회원가입</button>
+
+
+
+		</form>
+	</div>
+	<div id="signupModalOverlay"
+		style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 999;">
+		<div class="modal-content">
+			<h3>개인정보 수집·이용·제공 및 활용 동의서</h3>
+			<div class="consent-text"
+				style="max-height: 200px; overflow-y: auto; text-align: left; font-size: 14px; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">
+				<p>천주교 대전교구 천안지역 청소년 사목센터 하품은 아래의 목적과 관련하여 개인정보를 수집·이용하거나 제3자에게 제공하고자 하는 경우에 「개인정보보호법」에 따라 본인의 동의를 얻어야
+					합니다. 이에 아래의 내용과 같이 귀하의 개인정보를 수집·이용 또는 제3자에게 제공 및 활용하는 것에 관하여 동의여부를 확인하고자 합니다.</p>
+				<p><strong>□ 개인정보의 수집, 이용 목적</strong><br>
+					○ 회원 식별 및 회원제 서비스 제공<br>
+					○ 대관 및 프로그램 신청의 허위 또는 대리 신청 방지<br>
+					○ 프로그램 진행 시 필요한 인적 사항</p>
+				<p><strong>□ 수집, 이용할 개인정보의 내용</strong><br>
+					○ 필수개인정보 : 성명, 생년월일, 휴대폰번호, 이메일<br>
+					○ 선택개인정보 : 본당, 세례명</p>
+				<p><strong>□ 개인정보의 보유, 이용 기간</strong><br>
+					○ 보유기간 : 회원 등록 기간<br>
+					○ 이용기간 : 대관 및 프로그램 신청, 진행 기간</p>
+				<p><strong>□ 개인 정보의 제3자 제공안내</strong><br>
+					○ 개인정보를 제공받는 자 : 본 기관의 종사자 및 관계자, 프로그램 관계자(강사)<br>
+					○ 이용 목적 : 맞춤형 프로그램 제공을 위해 인적 사항 제공<br>
+					○ 제공하는 개인정보 항목 : 성명, 생년월일, 본당(선택), 세례명(선택)</p>
+				<p><strong>□ 동의를 거부할 권리 및 처리</strong><br>
+					○ 귀하는 개인정보 제공 이용을 거부할 수 있습니다. 다만, 이에 대한 동의를 하지 않을 경우에는 대관 신청, 프로그램 신청 및 증빙자료 발급 등에 불이익을 받을 수 있습니다.
+				</p>
+			</div>
+
+			<label style="display: block; margin-bottom: 15px;">
+				<input type="checkbox" id="privacyConsentCheckbox" />
+				위의 개인정보 수집·이용·제공에 동의합니다.
+			</label>
+
+			<button id="confirmSubmit">확인</button>
+			<button id="cancelSubmit">취소</button>
+		</div>
+	</div>
+
+	<div th:replace="~{main/footer :: footer}"></div>
+
+	<script th:src="@{/js/header.js}"></script>
+	<script th:src="@{/js/signin.js}"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>프로그램 개설</title>
+	<link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet" />
+
+	<!-- flatpickr CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
+	<link rel="stylesheet" th:href="@{/css/admin/openProgram.css}" />
+	<link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+
+	<style>
+		/* x 버튼 스타일 (이미지 우측 상단 작게) */
+		#image-preview-container {
+			position: relative;
+			display: inline-block;
+			max-width: 200px;
+			max-height: 150px;
+		}
+
+		#image-preview-container img {
+			max-width: 100%;
+			max-height: 150px;
+			display: block;
+			border-radius: 4px;
+		}
+
+		.remove-image-btn {
+			position: absolute;
+			top: 2px;
+			right: 2px;
+			background-color: rgba(0, 0, 0, 0.6);
+			border: none;
+			color: white;
+			font-weight: bold;
+			border-radius: 50%;
+			width: 20px;
+			height: 20px;
+			cursor: pointer;
+			line-height: 18px;
+			padding: 0;
+			text-align: center;
+		}
+
+		.remove-image-btn:hover {
+			background-color: rgba(255, 0, 0, 0.8);
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- Header 항상 위 -->
+	<div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
+
+	<!-- 콘텐츠 -->
+	<div class="program-form-container">
+		<h2 class="program-title">프로그램 개설</h2>
+		<form id="programForm" action="/admin/openProgram" method="post" enctype="multipart/form-data"
+			onsubmit="return validateForm()">
+			<div class="program-form-group">
+				<label for="title">제목</label>
+				<input type="text" id="title" name="title" placeholder="예) 여름 성경학교" />
+			</div>
+			<div class="program-form-group">
+				<label for="subject">주제</label>
+				<input type="text" id="subject" name="subject" placeholder="예) 여름 성경학교 주제" />
+			</div>
+			<div class="program-form-group">
+				<label for="content">내용</label>
+				<textarea id="content" name="content" rows="5" placeholder="프로그램 내용을 입력해주세요"></textarea>
+			</div>
+
+			<div class="program-form-group">
+				<label for="startDate">시작일시</label>
+				<input type="text" id="startDate" name="startDate" placeholder="날짜/시간 선택" />
+			</div>
+
+			<div class="program-form-group">
+				<label for="endDate">종료일시</label>
+				<input type="text" id="endDate" name="endDate" placeholder="날짜/시간 선택" />
+			</div>
+
+			<div class="program-form-group">
+				<label for="location">장소</label>
+				<input type="text" id="location" name="location" placeholder="예) 하품센터 2층 강당" />
+			</div>
+
+			<div class="program-form-group">
+				<label for="target">대상</label>
+				<input type="text" id="target" name="target" placeholder="예) 중2-3학년" />
+			</div>
+
+			<div class="program-form-group">
+				<label for="expense">비용</label>
+				<input type="text" id="expense" name="expense" placeholder="예) 30000" />
+				<div style="margin-top: 5px;">
+					<label>
+						<input type="checkbox" id="freeCheck" /> 무료
+					</label>
+				</div>
+			</div>
+			<div class="program-form-group">
+				<label for="capacity">정원</label>
+				<input type="number" id="capacity" name="capacity" placeholder="예) 30명" min="1" />
+			</div>
+
+			<div class="program-form-group image-upload">
+				<label for="image">사진 첨부 (1장)</label>
+				<input type="file" id="image" name="image" accept="image/*" />
+				<label class="custom-file-btn" for="image">사진 선택</label>
+				<div id="image-preview-container" class="empty"></div>
+			</div>
+
+			<button type="submit" class="program-button">개설하기</button>
+		</form>
+	</div>
+
+	<!-- flatpickr JS -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+	<script th:src="@{/js/admin/openProgram.js}"></script>
+</body>
+
+</html>

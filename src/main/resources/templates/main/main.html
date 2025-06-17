@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+  <!-- 공통 CSS -->
+  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
+  <link rel="stylesheet" th:href="@{/css/main/main.css}" />
+
+  <!-- FontAwesome (필요 시 유지) -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+  <style>
+    /* 프로그램 리스트 영역 스타일 (필요 시 여기에 작성) */
+  </style>
+</head>
+<body>
+  <!-- 공통 헤더 -->
+  <div th:replace="~{main/header :: headFrag(${user})}"></div>
+  
+  <!-- 본문 콘텐츠 -->
+  <main>
+    <!-- 상단 영역: 슬라이드(전체 너비 사용) -->
+    <section id="top-section">
+      <!-- 슬라이드 영역 -->
+      <div id="slideshow-wrapper">
+        <div id="slideshow-container">
+          <div id="slideshow">
+            <!-- Thymeleaf 반복문: programs 리스트의 각 thumbnailSrc -->
+            <div th:each="program : ${programs}">
+              <img th:src="${program.thumbnailSrc}" alt="슬라이드 이미지" />
+            </div>
+          </div>
+        </div>
+        <!-- 슬라이드 좌우 전환 버튼 -->
+        <div id="slideshow-controls">
+          <button id="prev-btn">&lt;</button>
+          <button id="next-btn">&gt;</button>
+        </div>
+      </div>
+      
+      
+           <div id="program-list">
+        <div th:if="${#lists.isEmpty(programs)}">등록된 프로그램이 없습니다.</div>
+        <div th:if="${!#lists.isEmpty(programs)}">
+          <table>
+            <thead>
+              <tr>
+                <th>프로그램 이름</th>
+                <th>시작 날짜</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="program,iterStat : ${programs}" th:if="${iterStat.index < 5}">
+                <td>
+                  <a th:href="@{/main/program/detail/{id}(id=${program.id})}"
+                     th:text="${program.title}"></a>
+                </td>
+                <td th:text="${#temporals.format(program.startDate, 'yyyy-MM-dd HH:mm')}"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 하단 영역: 프로그램 리스트 -->
+    
+  </main>
+  
+  <!-- 공통 푸터 -->
+  <div th:replace="~{main/footer :: footer}"></div>
+
+  <!-- 헤더 스크립트 -->
+  <script th:src="@{/js/header.js}"></script>
+  <!-- 이미지 슬라이드 스크립트 -->
+  <script th:src="@{/js/main/imageSlide.js}"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Hapum News</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/main/news.css}">
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<!-- 필요한 추가 CSS -->
+	<style>
+		/* 예시: 뉴스 그리드와 페이지네이션 간의 간격 조절 */
+		.pagination-wrapper {
+			margin-top: 20px;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+
+	<!-- 전체 레이아웃: 사이드바와 메인 콘텐츠 -->
+	<div class="container">
+		<!-- 왼쪽 사이드바 -->
+		<aside class="sidebar">
+			<div class="sidebar-title">하품 소식</div>
+		</aside>
+
+		<!-- 오른쪽 메인 뉴스 콘텐츠 -->
+		<main class="main-content">
+			<div class="news-grid">
+				<div class="news-card" th:each="news : ${newsList}">
+					<a th:href="@{'/main/news/detail/' + ${news.id}}" class="news-link">
+						<!-- 썸네일 이미지 -->
+						<img th:if="${news.thumbnailSrc != null}" th:src="@{${news.thumbnailSrc}}" alt="썸네일 이미지" />
+						<!-- 이미지 아래에 제목과 요약이 배치되는 영역 -->
+						<div class="news-text">
+							<div class="news-title" th:text="${news.title}">제목</div>
+							
+						</div>
+					</a>
+				</div>
+			</div>
+
+
+			<!-- 페이지네이션을 메인 콘텐츠 내부, 뉴스 그리드 아래에 위치 -->
+			<div class="pagination-wrapper" th:if="${totalPages > 1}" th:with="blockSize=5,
+                    cp=${currentPage},
+                    tp=${totalPages},
+                    sp=${((cp - 1) / blockSize) * blockSize + 1},
+                    ep=${ (sp + blockSize - 1) <= tp ? (sp + blockSize - 1) : tp },
+                    baseUrl='/main/news'">
+				<ul class="pagination">
+					<!-- << 버튼: 현재 그룹의 시작 페이지(sp)가 1이면 비활성, 아니면 (sp - blockSize) -->
+					<li class="page-item" th:classappend="${sp == 1} ? 'disabled'">
+						<a class="page-link"
+							th:href="@{${baseUrl}(page=${sp == 1 ? 1 : sp - blockSize})}">&laquo;&laquo;</a>
+					</li>
+					<!-- < 버튼: 이전 페이지 -->
+					<li class="page-item" th:classappend="${cp == 1} ? 'disabled'">
+						<a class="page-link" th:href="@{${baseUrl}(page=${cp == 1 ? 1 : cp - 1})}">&laquo;</a>
+					</li>
+					<!-- 페이지 번호들 (sp ~ ep) -->
+					<li class="page-item" th:each="pageNum : ${#numbers.sequence(sp, ep)}"
+						th:classappend="${pageNum == cp} ? 'active'">
+						<a class="page-link" th:href="@{${baseUrl}(page=${pageNum})}" th:text="${pageNum}">1</a>
+					</li>
+					<!-- > 버튼: 다음 페이지 -->
+					<li class="page-item" th:classappend="${cp == tp} ? 'disabled'">
+						<a class="page-link" th:href="@{${baseUrl}(page=${cp == tp ? tp : cp + 1})}">&raquo;</a>
+					</li>
+					<!-- >> 버튼: 현재 그룹의 마지막 페이지(ep)가 전체 총페이지(tp)와 같으면 비활성, 아니면 (ep + blockSize) -->
+					<li class="page-item" th:classappend="${ep == tp} ? 'disabled'">
+						<a class="page-link"
+							th:href="@{${baseUrl}(page=${ep == tp ? tp : ep + blockSize})}">&raquo;&raquo;</a>
+					</li>
+				</ul>
+			</div>
+		</main>
+	</div>
+
+	<div th:replace="~{main/footer :: footer}"></div>
+	<script th:src="@{/js/header.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,213 @@
+/* 페이지 기본 설정 */
+body {
+	margin: 0;
+	font-family: Arial, sans-serif;
+	background-color: #FFFFFF;
+}
+
+/* 컨테이너 */
+.container {
+	display: flex;
+	flex: 1;
+	height: 100vh;
+	/* introduce 페이지와 동일 높이 */
+	padding-left: 7%;
+	padding-right: 7%;
+	gap: 20px;
+	/* 사이드바와 콘텐츠 사이 간격 */
+}
+
+.sidebar-title {
+	/* 기존 설정 제거 → margin: 0 -10px 10px; width: calc(100% + 20px); */
+	margin: 0 0 10px;
+	/* 좌우 마진 0 */
+	width: 100%;
+	/* 부모(.sidebar) 너비 100% */
+	box-sizing: border-box;
+
+	padding: 12px 10px;
+	text-align: center;
+	background-color: #F5EBE0;
+	border-bottom: 1px solid #D5BDAF;
+	font-size: 18px;
+	font-weight: bold;
+	color: #333;
+}
+
+.organization-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+}
+
+.organization-card {
+	width: 100%;
+	max-width: 300px;
+	padding: 1rem;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	text-align: center;
+}
+
+.organization-img {
+	width: 100%;
+	height: auto;
+	border-radius: 4px;
+	margin-bottom: 0.5rem;
+}
+
+/* 사이드바 */
+.sidebar {
+	width: 180px;
+	background-color: #D6CCC2;
+	border-right: 1px solid #D5BDAF;
+	border-left: 1px solid #D5BDAF;
+	display: flex;
+	flex-direction: column;
+}
+
+/* 각 층(section) 내부를 세로 정렬 */
+.floor-section {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+/* 층 레이블 */
+.floor-label {
+	padding: 12px;
+	text-align: center;
+	background-color: #F5EBE0;
+	border-bottom: 1px solid #D5BDAF;
+	font-size: 16px;
+	color: #333;
+	transition: background-color 0.3s;
+}
+
+.floor-label.active {
+	background-color: #D5BDAF;
+	color: white;
+	font-weight: bold;
+}
+
+/* 메뉴 버튼 */
+.menu-button {
+	display: block;
+	width: 100%;
+	padding: 12px;
+	text-align: center;
+	background-color: #F5EBE0;
+	border: none;
+	border-bottom: 1px solid #D5BDAF;
+	font-size: 16px;
+	cursor: pointer;
+	color: #333;
+	transition: background-color 0.3s;
+}
+
+.menu-button:hover {
+	background-color: #E3D5CA;
+}
+
+/* 기존 active 클래스 (필요시 사용) */
+.menu-button.active {
+	background-color: #D5BDAF;
+	color: white;
+	font-weight: bold;
+}
+
+/* 현재 선택된 메뉴 버튼: 기존 active보다 조금 더 연한 색상으로 */
+.menu-button.current {
+	background-color: #F1E6E1;
+	color: #333;
+	font-weight: bold;
+}
+
+/* 메인 콘텐츠 영역 */
+.content {
+	flex: 1;
+	padding: 20px;
+	background-color: #FFFFFF;
+}
+
+/* 콘텐츠 내부 제목 */
+#floor-title {
+	font-size: 18px;
+	font-weight: bold;
+	margin-bottom: 10px;
+}
+
+#room-title {
+	font-size: 22px;
+	margin-bottom: 15px;
+}
+
+/* 방 이미지 */
+.room-image {
+	max-width: 500px;
+	width: 100%;
+	height: auto;
+	border-radius: 6px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 20px;
+}
+
+.post-card {
+	width: 160px;
+	text-align: center;
+}
+
+.post-thumb {
+	width: 100%;
+	height: auto;
+	border-radius: 8px;
+}
+
+.post-title {
+	margin-top: 8px;
+	font-weight: 500;
+	color: #333;
+}
+
+/* 페이지네이션 스타일 */
+.pagination {
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.pagination li {
+  margin: 0 5px;
+}
+
+.pagination li a {
+  display: block;
+  padding: 8px 12px;
+  background: #F5EBE0; /* 기본 버튼 색상으로 통일 */
+  color: #333;
+  text-decoration: none;
+  border: 1px solid #D5BDAF;
+}
+
+.pagination li.active a {
+  background: #D5BDAF; /* 활성화된 페이지 */
+  color: #fff;
+  border-color: #D5BDAF;
+}
+
+.pagination li.disabled a {
+  color: #ccc;
+  pointer-events: none;
+}
+.organization-img{
+	height: 250px;
+	width: 250px;
+}

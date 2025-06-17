@@ -1,0 +1,95 @@
+/* 공통 레이아웃(기존과 동일) */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #fff;
+}
+.container {
+  display: flex;
+  flex: 1;
+  height: 100vh;
+  padding: 0 7%;
+  gap: 20px;
+}
+.sidebar {
+  width: 180px;
+  background: #D6CCC2;
+  border-right: 1px solid #D5BDAF;
+  border-left: 1px solid #D5BDAF;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px 10px;
+}
+.sidebar-title {
+  padding: 12px 10px;
+  background: #F5EBE0;
+  border-bottom: 1px solid #D5BDAF;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  
+   width: calc(100% + 20px);   /* 부모의 좌우 padding(10px * 2)을 보상 */
+  margin: 0 -10px 10px;       /* 양쪽으로 -10px */
+  box-sizing: border-box;  
+}
+.menu-button {
+  display: block;
+  width: calc(100% + 20px);
+  margin: 0 -10px 0px;
+  padding: 12px;
+  text-align: center;
+  background: #F5EBE0;
+  border: none;
+  border-bottom: 1px solid #D5BDAF;
+  font-size: 16px;
+  color: #333;
+  cursor: pointer;
+  transition: background-color .3s;
+}
+.menu-button.active {
+  background: #D5BDAF;
+  color: #fff;
+  font-weight: bold;
+}
+.menu-button:hover {
+  background: #E3D5CA;
+}
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  background: #fff;
+}
+
+/* post-view 스타일 */
+.post-view {
+  max-width: 800px;
+  margin: 0 auto;
+}
+.post-view-title {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+  color: #333;
+}
+.post-view-date {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+.post-view-body {
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 30px;
+}
+.post-back {
+  text-align: right;
+}
+.post-back a {
+  color: #007bff;
+  text-decoration: none;
+}
+.post-back a:hover {
+  text-decoration: underline;
+}

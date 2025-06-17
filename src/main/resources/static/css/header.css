@@ -1,0 +1,118 @@
+/* 기본 공통 스타일 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    white-space: nowrap;  /* 텍스트가 줄바꿈되지 않도록 */
+}
+
+/* 헤더 최상단 영역 */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;  /* 기본적으로 모든 자식은 수직 중앙 정렬 */
+    width: 100%;
+    padding: 0 7%;
+    margin-top: 20px;
+    height: 10vh;  /* 헤더 높이를 설정해 두면 자식 요소 위치 기준이 명확해집니다 */
+}
+
+/* 좌측 헤더 (교구 및 센터명) */
+.header-left {
+    text-align: left;
+}
+.header-left h3 {
+    margin: 0;
+    padding: 0;
+}
+
+/* 내비게이션 메뉴 */
+/* 내비게이션 메뉴 */
+#nav-desktop {
+    align-self: flex-end;
+}
+
+#nav-desktop ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;  /* li 요소들을 중앙 정렬 */
+    align-items: center;        /* 수직 중앙 정렬 */
+    gap: clamp(10px, 2vw, 100px); /* 최소 10px, 뷰포트에 따라 2vw, 최대 30px */
+    padding: 0;
+    margin: 0;
+}
+
+#nav-desktop ul li a {
+    text-decoration: none;
+    color: black;
+    font-size: 20px;
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+/* 헤더 우측 그룹 */
+.header-right-group {
+    display: flex;
+    align-items: center;
+    gap: 20px;  /* 내부 요소들 사이에 고정 간격을 부여 */
+}
+
+/* 로그인 상태일 때, header-right 내부의 요소 처리를 위해 인라인 플렉스 사용 */
+.header-right > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 비로그인(게스트) 상태일 때 */
+.guest-menu {
+    display: inline-flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* 인증 링크 기본 스타일 및 인접 인증 링크 사이에 구분자 적용 */
+.header-right .auth-link,
+.guest-menu .auth-link,
+.guest-menu .separator {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+.header-right .auth-link + .auth-link::before,
+.guest-menu .auth-link + .auth-link::before {
+    margin: 0 5px;
+}
+.auth-link{
+	cursor:pointer;
+	text-decoration: none;
+}
+.auth-link:hover{
+	color: #D6CCC2;
+  transform: translateY(-2px);
+}
+
+a,
+a:visited {
+  color: inherit;           /* 부모 요소의 색상 상속 (혹은 원하는 색으로 지정 ex: black, #000 등) */
+  text-decoration: none;    /* 밑줄 제거 */
+}
+a {
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.3s ease;
+  display: inline-block; /* transform 적용을 위해 필요 */
+}
+
+#nav-desktop ul li a:hover {
+  color: #D6CCC2;
+  transform: translateY(-2px);
+}
+
+a:hover {
+  color: #D6CCC2;
+  transform: translateY(-2px);
+}
+/* 구분선 스타일 */
+hr {
+    border: none;
+    border-top: 1px solid #FFCC97;
+}

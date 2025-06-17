@@ -1,0 +1,114 @@
+table {
+	width: 90%;
+	margin: 20px auto;
+	border-collapse: collapse;
+	table-layout: fixed;
+	word-break: break-word;
+}
+
+th,
+td {
+	border: 1px solid #ccc;
+	padding: 8px 12px;
+	text-align: center;
+	font-size: 14px;
+}
+
+.btn-div{
+	text-align: center;
+}
+
+th {
+	background-color: #f0f0f0;
+}
+
+/* 열 너비 조정 */
+th:nth-child(1),
+td:nth-child(1) {
+	width: 40px;
+}
+
+/* ID */
+th:nth-child(2),
+td:nth-child(2) {
+	width: 70px;
+}
+
+
+/* 유형 */
+th:nth-child(3),
+td:nth-child(3) {
+	width: 100px;
+}
+
+/* 주중 요일 */
+th:nth-child(4),
+td:nth-child(4) {
+	width: 90px;
+}
+
+/* 월 중 몇째 주 */
+th:nth-child(5),
+td:nth-child(5) {
+	width: 90px;
+}
+
+/* 요일 */
+th:nth-child(6),
+td:nth-child(6) {
+	width: 80px;
+}
+
+/* 시작 시간 */
+th:nth-child(7),
+td:nth-child(7) {
+	width: 80px;
+}
+
+/* 종료 시간 */
+th:nth-child(8),
+td:nth-child(8) {
+	width: auto;
+}
+
+/* 설명 - 남은 너비 모두 */
+
+h2 {
+	text-align: center;
+	margin-top: 40px;
+}
+
+/* 반응형 처리 */
+@media (max-width: 768px) {
+	table {
+		width: 100%;
+		font-size: 13px;
+	}
+
+	th,
+	td {
+		padding: 6px 8px;
+	}
+
+	/* 테이블을 스크롤로 감싸기 */
+	table {
+		display: block;
+		overflow-x: auto;
+		white-space: nowrap;
+	}
+}
+
+@media (max-width: 768px) {
+
+	select,
+	input[type="text"],
+	button {
+		font-size: 14px;
+		width: 100%;
+		box-sizing: border-box;
+	}
+
+	table {
+		font-size: 14px;
+	}
+}

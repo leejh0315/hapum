@@ -1,0 +1,47 @@
+@media screen and (max-width: 768px) {
+	.header-top {
+		flex-wrap: nowrap;
+	}
+
+	.header-left {
+		flex: 1;
+		text-align: left;
+	}
+
+	.header-right-group {
+		flex: 0 0 auto;
+		text-align: right;
+	}
+
+	/* 모바일에서는 내비게이션 메뉴 보이도록 */
+	#nav-desktop {
+		display: block;
+		width: 100%;
+		margin-top: 10px;
+		text-align: center;
+	}
+
+	#nav-desktop ul {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
+		list-style: none;
+		padding-left: 2%;
+		padding-right: 2%;
+		margin: 0;
+		overflow-x: auto;
+	}
+
+
+
+
+	#nav-desktop ul li {
+		padding: 5px;
+		text-align: center;
+	}
+
+	#nav-desktop ul li a {
+		font-size: 12px;
+		display: block;
+	}
+}

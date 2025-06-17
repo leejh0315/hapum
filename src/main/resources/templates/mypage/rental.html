@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>내가 신청한 대관예약</title>
+
+  <!-- 공통 헤더 / 푸터 스타일 -->
+  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
+  <!-- mypage 레이아웃 공통 스타일 -->
+  <link rel="stylesheet" th:href="@{/css/mypage/rental.css}" />
+
+  <!-- FontAwesome (취소 아이콘) -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+</head>
+<body>
+  <!-- 헤더 -->
+  <div th:replace="~{main/header :: headFrag(${user})}"></div>
+
+  <div class="container">
+    <!-- 사이드바 -->
+    <div class="sidebar">
+      <div class="sidebar-title">
+        <a th:href="@{/main/mypage/{id}(id=${user.id})}">
+          마이페이지
+        </a>
+      </div>
+
+      <a th:href="@{/main/mypage/update/{id}(id=${user.id})}"
+         class="menu-button"
+         th:classappend="${activeTab=='update'} ? ' active' : ''">
+        내 정보 수정
+      </a>
+      <a th:href="@{/main/mypage/rental/{id}(id=${user.id})}"
+         class="menu-button"
+         th:classappend="${activeTab=='rental'} ? ' active' : ''">
+        신청한 대관 예약
+      </a>
+      <a th:href="@{/main/mypage/program/{id}(id=${user.id})}"
+         class="menu-button"
+         th:classappend="${activeTab=='program'} ? ' active' : ''">
+        신청한 프로그램
+      </a>
+    </div>
+
+    <!-- 콘텐츠 -->
+    <div class="content">
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead class="table-light">
+            <tr>
+              <th>대관장소</th>
+              <th>대관날짜</th>
+              <th>대관시작시간</th>
+              <th>대관끝나는시간</th>
+              <th>대관료</th>
+              <th>신청일</th>
+              <th>승인여부</th>
+              <th>예약 취소</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:if="${#lists.isEmpty(rentals)}">
+              <td colspan="8" class="text-center">데이터가 없습니다.</td>
+            </tr>
+            <tr th:each="r : ${rentals}" th:if="${!#lists.isEmpty(rentals)}">
+              <td th:text="${r.location}">강당</td>
+              <td th:text="${#temporals.format(r.reservationDate,'yyyy-MM-dd')}">2025-06-10</td>
+              <td th:text="${#temporals.format(r.startTime,'HH:mm')}">09:00</td>
+              <td th:text="${#temporals.format(r.endTime,'HH:mm')}">22:00</td>
+              <td th:text="${r.price}">100,000</td>
+              <td th:text="${r.createOn != null ? #temporals.format(r.createOn,'yyyy-MM-dd HH:mm:ss') : '-'}">-</td>
+              <td th:text="${r.isApp == '1' ? '승인' : '미승인'}">미승인</td>
+              <td>
+                <form th:if="${r.isApp != '1'}"
+                      th:action="@{'/main/mypage/rentalDelete/' + ${r.id}}"
+                      method="post"
+                      style="display:inline;"
+                      onsubmit="return confirm('예약을 취소하시겠습니까?');">
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fa fa-times-circle"></i> 예약 취소
+                  </button>
+                </form>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 푸터 -->
+  <div th:replace="~{main/footer :: footer}"></div>
+  <script th:src="@{/js/header.js}"></script>
+</body>
+</html>

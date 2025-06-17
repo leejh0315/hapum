@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hapum.hapum.mapper.UserMapper">
+
+	<select id="loginIdCheck" parameterType="string" resultType="int">
+		SELECT COUNT(*) FROM hapumdb.user WHERE email = #{param1}
+	</select>
+
+	<insert id="userSignin" parameterType="hapum.hapum.domain.SigninForm">
+		INSERT INTO hapumdb.user (
+		email,
+		password,
+		name,
+		birth,
+		phone,
+		cathedral,
+		baptism_name,
+		statusCode
+		)
+		VALUES (
+		#{email},
+		#{password},
+		#{name},
+		#{birth},
+		#{phone},
+		#{cathedral},
+		#{baptismName},
+		'Y'
+		)
+	</insert>
+
+	<select id="selectByEmail" parameterType="String"
+		resultType="hapum.hapum.domain.User">
+		SELECT *
+		FROM hapumdb.user
+		WHERE email = #{param1}
+	</select>
+
+	<select id="selectAllUser" resultType="hapum.hapum.domain.User">
+		SELECT *
+		FROM hapumdb.user
+	</select>
+
+	<select id="selectById" resultType="hapum.hapum.domain.User">
+		SELECT *
+		FROM hapumdb.user WHERE id=#{id}
+	</select>
+
+	<update id="updateUserById" parameterType="hapum.hapum.domain.UpdateForm">
+		UPDATE hapumdb.user
+		SET
+		name = #{name},
+		birth = #{birth},
+		phone = #{phone},
+		cathedral = #{cathedral},
+		baptism_name = #{baptismName}
+		WHERE id = #{id}
+	</update>
+
+	<update id="updatePasswordByEmail">
+		UPDATE hapumdb.user
+		SET
+		password = #{password}
+		WHERE email = #{email};
+	</update>
+
+	<update id="updatePasswordByUserId">
+		UPDATE hapumdb.user
+		SET password = #{password}
+		WHERE id = #{userId}
+	</update>
+	
+	<update id="changeStatusToInactive">
+		UPDATE hapumdb.user
+		SET statusCode = #{code}
+		WHERE id = #{userId}
+	</update>
+	
+	<delete id="deleteUserById">
+		DELETE FROM hapumdb.user 
+		WHERE id=#{userId}
+	</delete>
+	
+
+
+</mapper>

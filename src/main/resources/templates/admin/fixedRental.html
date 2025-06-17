@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>고정 대관 현황</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/admin/fixedRental.css}" />
+</head>
+
+<body>
+
+  <!-- Header 항상 위 -->
+  <div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
+
+  <h1 style="text-align:center; margin-top: 30px;">고정 대관 현황</h1>
+
+  <!-- Fixed Reservations 테이블 -->
+  
+  
+  <h2>고정 예약 목록</h2>
+  <div class="btn-div">
+	  <button onclick="toggleInputRow()">+ 고정예약 추가</button>
+  </div>
+  
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>유형</th>
+        <th>주중 요일 (weekday)</th>
+        <th>월 중 몇째 주 (weekOfMonth)</th>
+        <th>요일 (dayOfWeek)</th>
+        <th>시작 시간</th>
+        <th>종료 시간</th>
+        <th>설명</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="fr, iterStat : ${fixedReservation}" th:object="${fr}" th:id="'row-' + ${fr.id}">
+        <form th:action="@{/admin/fixedRental/update}" method="post" th:id="'form-' + ${fr.id}">
+          <input type="hidden" name="id" th:value="${fr.id}" />
+          <td th:text="${fr.id}"></td>
+          <td>
+            <span th:text="*{type}" th:id="'type-text-' + ${fr.id}"></span>
+            <select name="type" id="typeSelect-[[${fr.id}]]" class="edit-field" style="display:none; width: 100%;">
+              <option value="WEEKLY" th:selected="*{type == 'WEEKLY'}">WEEKLY</option>
+              <option value="MONTHLY" th:selected="*{type == 'MONTHLY'}">MONTHLY</option>
+            </select>
+          </td>
+          <td>
+            <span th:id="'weekday-text-' + ${fr.id}">
+              <span th:switch="*{weekday}">
+                <span th:case="0">일요일</span>
+                <span th:case="1">월요일</span>
+                <span th:case="2">화요일</span>
+                <span th:case="3">수요일</span>
+                <span th:case="4">목요일</span>
+                <span th:case="5">금요일</span>
+                <span th:case="6">토요일</span>
+                <span th:case="*">-</span>
+              </span>
+            </span>
+            <select name="weekday" id="weekdaySelect-[[${fr.id}]]" class="edit-field" style="display:none; width: 100%;">
+              <option value="">-</option>
+              <option value="0" th:selected="*{weekday == 0}">일요일</option>
+              <option value="1" th:selected="*{weekday == 1}">월요일</option>
+              <option value="2" th:selected="*{weekday == 2}">화요일</option>
+              <option value="3" th:selected="*{weekday == 3}">수요일</option>
+              <option value="4" th:selected="*{weekday == 4}">목요일</option>
+              <option value="5" th:selected="*{weekday == 5}">금요일</option>
+              <option value="6" th:selected="*{weekday == 6}">토요일</option>
+            </select>
+          </td>
+          <td>
+            <span th:text="*{weekOfMonth != null ? weekOfMonth : '-'}" th:id="'week-text-' + ${fr.id}"></span>
+            <select name="weekOfMonth" id="weekSelect-[[${fr.id}]]" class="edit-field" style="display:none; width: 100%;">
+              <option value="">-</option>
+              <option value="1" th:selected="*{weekOfMonth == 1}">1주차</option>
+              <option value="2" th:selected="*{weekOfMonth == 2}">2주차</option>
+              <option value="3" th:selected="*{weekOfMonth == 3}">3주차</option>
+              <option value="4" th:selected="*{weekOfMonth == 4}">4주차</option>
+              <option value="5" th:selected="*{weekOfMonth == 5}">5주차</option>
+            </select>
+          </td>
+          <td>
+            <span th:id="'day-text-' + ${fr.id}">
+              <span th:switch="*{dayOfWeek}">
+                <span th:case="0">일요일</span>
+                <span th:case="1">월요일</span>
+                <span th:case="2">화요일</span>
+                <span th:case="3">수요일</span>
+                <span th:case="4">목요일</span>
+                <span th:case="5">금요일</span>
+                <span th:case="6">토요일</span>
+                <span th:case="*">-</span>
+              </span>
+            </span>
+            <select name="dayOfWeek" id="daySelect-[[${fr.id}]]" class="edit-field" style="display:none; width: 100%;">
+              <option value="">-</option>
+              <option value="0" th:selected="*{dayOfWeek == 0}">일요일</option>
+              <option value="1" th:selected="*{dayOfWeek == 1}">월요일</option>
+              <option value="2" th:selected="*{dayOfWeek == 2}">화요일</option>
+              <option value="3" th:selected="*{dayOfWeek == 3}">수요일</option>
+              <option value="4" th:selected="*{dayOfWeek == 4}">목요일</option>
+              <option value="5" th:selected="*{dayOfWeek == 5}">금요일</option>
+              <option value="6" th:selected="*{dayOfWeek == 6}">토요일</option>
+            </select>
+          </td>
+          <td>
+            <span th:text="*{startTime}" th:id="'start-text-' + ${fr.id}"></span>
+            <input type="time" step="3600" name="startTime" class="edit-field" th:value="*{startTime}" 
+                   style="display:none; width: 100%;" />
+          </td>
+          <td>
+            <span th:text="*{endTime}" th:id="'end-text-' + ${fr.id}"></span>
+            <input type="time" step="3600" name="endTime" class="edit-field" th:value="*{endTime}" 
+                   style="display:none; width: 100%;" />
+          </td>
+          <td>
+            <span th:text="*{description}" th:id="'desc-text-' + ${fr.id}"></span>
+            <input type="text" name="description" class="edit-field" th:value="*{description}" 
+                   style="display:none; width: 65%;" />
+            <!-- 수정 버튼 -->
+            <button type="button" class="edit-btn" th:attr="data-id=${fr.id}">
+              <i class="fas fa-pen"></i>
+            </button>
+            <!-- 체크 버튼 -->
+            <button type="submit" class="save-btn" style="display: none;">
+              <i class="fas fa-check"></i>
+            </button>
+            <!-- 삭제 버튼 -->
+            <button type="button" class="delete-btn" th:attr="data-id=${fr.id}" data-original="true">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </form>
+      </tr>
+
+      <!-- 신규 입력 행 (고정예약 추가) -->
+      <tr id="inputRow" style="display: none;">
+        <form th:action="@{/admin/fixedRental/insert}" method="post" onsubmit="return validateTimeRange()">
+          <td>신규</td>
+          <td>
+            <select name="type" required style="width: 100%;" onchange="handleTypeChange(this.value)">
+              <option value="WEEKLY">WEEKLY</option>
+              <option value="MONTHLY">MONTHLY</option>
+            </select>
+          </td>
+          <td>
+            <select name="weekday" id="weekdaySelect" style="width: 100%;">
+              <option value="">-</option>
+              <option value="0">일요일</option>
+              <option value="1">월요일</option>
+              <option value="2">화요일</option>
+              <option value="3">수요일</option>
+              <option value="4">목요일</option>
+              <option value="5">금요일</option>
+              <option value="6">토요일</option>
+            </select>
+          </td>
+          <td>
+            <select name="weekOfMonth" id="weekOfMonthSelect" style="width: 100%;">
+              <option value="">-</option>
+              <option value="1">1주차</option>
+              <option value="2">2주차</option>
+              <option value="3">3주차</option>
+              <option value="4">4주차</option>
+              <option value="5">5주차</option>
+            </select>
+          </td>
+          <td>
+            <select name="dayOfWeek" id="dayOfWeekSelect" style="width: 100%;">
+              <option value="">-</option>
+              <option value="0">일요일</option>
+              <option value="1">월요일</option>
+              <option value="2">화요일</option>
+              <option value="3">수요일</option>
+              <option value="4">목요일</option>
+              <option value="5">금요일</option>
+              <option value="6">토요일</option>
+            </select>
+          </td>
+          <td>
+            <select id="startTimeSelect" name="startTime" required style="width: 100%;"></select>
+          </td>
+          <td>
+            <select id="endTimeSelect" name="endTime" required style="width: 100%;"></select>
+          </td>
+          <td>
+            <input type="text" name="description" placeholder="설명" required style="width: 70%;" />
+            <button type="submit" style="width: 25%;">저장</button>
+          </td>
+        </form>
+      </tr>
+    </tbody>
+  </table>
+  
+  <!-- Blocked Days 테이블 -->
+  <div class="btn-div">
+  <h2>대관 불가 목록</h2>
+  <button onclick="toggleBlockedInputRow()">+ 대관불가 추가</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>월 중 몇째 주 (weekOfMonth)</th>
+        <th>요일 (dayOfWeek)</th>
+        <th>사유</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- 기존 대관불가 행에 수정/삭제 기능 추가 -->
+      <tr th:each="bd : ${blockedDay}" th:object="${bd}" th:id="'blocked-row-' + ${bd.id}">
+        <form th:action="@{/admin/fixedRental/blocked/update}" method="post" th:id="'blocked-form-' + ${bd.id}">
+          <input type="hidden" name="id" th:value="${bd.id}" />
+          <td th:text="${bd.id}"></td>
+          <td>
+            <span th:text="*{weekOfMonth}" th:id="'blocked-week-text-' + ${bd.id}"></span>
+            <select name="weekOfMonth" id="blocked-week-select-[[${bd.id}]]" class="edit-field" style="display:none; width: 100%;">
+              <option value="">-</option>
+              <option value="1" th:selected="*{weekOfMonth == 1}">1주차</option>
+              <option value="2" th:selected="*{weekOfMonth == 2}">2주차</option>
+              <option value="3" th:selected="*{weekOfMonth == 3}">3주차</option>
+              <option value="4" th:selected="*{weekOfMonth == 4}">4주차</option>
+              <option value="5" th:selected="*{weekOfMonth == 5}">5주차</option>
+            </select>
+          </td>
+          <td>
+            <span th:id="'blocked-day-text-' + ${bd.id}">
+              <span th:switch="*{dayOfWeek}">
+                <span th:case="0">일요일</span>
+                <span th:case="1">월요일</span>
+                <span th:case="2">화요일</span>
+                <span th:case="3">수요일</span>
+                <span th:case="4">목요일</span>
+                <span th:case="5">금요일</span>
+                <span th:case="6">토요일</span>
+                <span th:case="*">-</span>
+              </span>
+            </span>
+            <select name="dayOfWeek" id="blocked-day-select-[[${bd.id}]]" class="edit-field" style="display:none; width:100%;">
+              <option value="">-</option>
+              <option value="0" th:selected="*{dayOfWeek == 0}">일요일</option>
+              <option value="1" th:selected="*{dayOfWeek == 1}">월요일</option>
+              <option value="2" th:selected="*{dayOfWeek == 2}">화요일</option>
+              <option value="3" th:selected="*{dayOfWeek == 3}">수요일</option>
+              <option value="4" th:selected="*{dayOfWeek == 4}">목요일</option>
+              <option value="5" th:selected="*{dayOfWeek == 5}">금요일</option>
+              <option value="6" th:selected="*{dayOfWeek == 6}">토요일</option>
+            </select>
+          </td>
+          <td>
+            <span th:text="*{reason}" th:id="'blocked-reason-text-' + ${bd.id}"></span>
+            <input type="text" name="reason" class="edit-field" th:value="*{reason}" 
+                   style="display:none; width:65%;" />
+            <button type="button" class="blocked-edit-btn" th:attr="data-id=${bd.id}">
+              <i class="fas fa-pen"></i>
+            </button>
+            <button type="submit" class="blocked-save-btn" style="display:none;">
+              <i class="fas fa-check"></i>
+            </button>
+            <button type="button" class="blocked-delete-btn" th:attr="data-id=${bd.id}" data-original="true">
+              <i class="fas fa-trash"></i>
+            </button>
+          </td>
+        </form>
+      </tr>
+
+      <!-- 신규 입력 행 (대관불가 추가) -->
+      <tr id="blockedInputRow" style="display: none;">
+        <form th:action="@{/admin/fixedRental/blocked/insert}" method="post">
+          <td>신규</td>
+          <td>
+            <select name="weekOfMonth" required style="width: 100%;">
+              <option value="">-</option>
+              <option value="1">1주차</option>
+              <option value="2">2주차</option>
+              <option value="3">3주차</option>
+              <option value="4">4주차</option>
+              <option value="5">5주차</option>
+            </select>
+          </td>
+          <td>
+            <select name="dayOfWeek" required style="width: 100%;">
+              <option value="">-</option>
+              <option value="0">일요일</option>
+              <option value="1">월요일</option>
+              <option value="2">화요일</option>
+              <option value="3">수요일</option>
+              <option value="4">목요일</option>
+              <option value="5">금요일</option>
+              <option value="6">토요일</option>
+            </select>
+          </td>
+          <td>
+            <input type="text" name="reason" placeholder="사유 입력" required style="width: 70%;" />
+            <button type="submit" style="width: 25%;">저장</button>
+          </td>
+        </form>
+      </tr>
+    </tbody>
+  </table>
+
+  <script>
+    function toggleInputRow() {
+      const row = document.getElementById("inputRow");
+      row.style.display = (row.style.display === "none") ? "table-row" : "none";
+    }
+
+    function handleTypeChange(type) {
+      const weekday = document.getElementById("weekdaySelect");
+      const weekOfMonth = document.getElementById("weekOfMonthSelect");
+      const dayOfWeek = document.getElementById("dayOfWeekSelect");
+
+      if (type === "WEEKLY") {
+        weekday.disabled = false;
+        weekOfMonth.disabled = true;
+        dayOfWeek.disabled = true;
+        weekOfMonth.value = "";
+        dayOfWeek.value = "";
+      } else if (type === "MONTHLY") {
+        weekday.disabled = true;
+        weekOfMonth.disabled = false;
+        dayOfWeek.disabled = false;
+        weekday.value = "";
+      } else {
+        weekday.disabled = false;
+        weekOfMonth.disabled = false;
+        dayOfWeek.disabled = false;
+      }
+    }
+
+    function populateTimeOptions(selectId, startHour, endHour) {
+      const select = document.getElementById(selectId);
+      select.innerHTML = "";
+      for (let hour = startHour; hour <= endHour; hour++) {
+        const formattedHour = hour.toString().padStart(2, '0');
+        const option = document.createElement("option");
+        option.value = `${formattedHour}:00`;
+        option.text = `${formattedHour}시`;
+        select.appendChild(option);
+      }
+    }
+
+    function validateTimeRange() {
+      const start = document.getElementById("startTimeSelect").value;
+      const end = document.getElementById("endTimeSelect").value;
+      if (start >= end) {
+        alert("종료 시간은 시작 시간보다 늦어야 합니다.");
+        return false;
+      }
+      return true;
+    }
+
+    function toggleBlockedInputRow() {
+      const row = document.getElementById("blockedInputRow");
+      row.style.display = (row.style.display === "none") ? "table-row" : "none";
+    }
+
+    // 수정 버튼 이벤트 처리 (고정예약 목록)
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const row = document.getElementById(`row-${id}`);
+        row.querySelectorAll('.edit-field').forEach(f => f.style.display = 'inline-block');
+        row.querySelectorAll('span[id$="-text-' + id + '"]').forEach(s => s.style.display = 'none');
+        row.querySelector('.save-btn').style.display = 'inline-block';
+        btn.style.display = 'none';
+
+        // 삭제 버튼을 X 버튼으로 변경
+        const deleteBtn = row.querySelector('.delete-btn');
+        deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+        deleteBtn.setAttribute('data-original', 'false');
+      });
+    });
+
+    // 삭제 버튼 이벤트 처리 (고정예약 목록)
+    document.querySelectorAll('.delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const isOriginal = btn.getAttribute('data-original') === 'true';
+        if (isOriginal) {
+          if (confirm("정말 삭제하시겠습니까?")) {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = `/admin/fixedRental/delete`;
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'id';
+            input.value = id;
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+          }
+        } else {
+          const row = document.getElementById(`row-${id}`);
+          row.querySelectorAll('.edit-field').forEach(f => f.style.display = 'none');
+          row.querySelectorAll('span[id$="-text-' + id + '"]').forEach(s => s.style.display = 'inline');
+          row.querySelector('.save-btn').style.display = 'none';
+          row.querySelector('.edit-btn').style.display = 'inline-block';
+          btn.innerHTML = '<i class="fas fa-trash"></i>';
+          btn.setAttribute('data-original', 'true');
+        }
+      });
+    });
+
+    // 수정 버튼 이벤트 처리 (대관불가 목록)
+    document.querySelectorAll('.blocked-edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const row = document.getElementById(`blocked-row-${id}`);
+        row.querySelectorAll('.edit-field').forEach(f => f.style.display = 'inline-block');
+        row.querySelectorAll("span[id$='-text-" + id + "']").forEach(s => s.style.display = 'none');
+        row.querySelector('.blocked-save-btn').style.display = 'inline-block';
+        btn.style.display = 'none';
+        const deleteBtn = row.querySelector('.blocked-delete-btn');
+        deleteBtn.innerHTML = '<i class="fas fa-times"></i>';
+        deleteBtn.setAttribute('data-original', 'false');
+      });
+    });
+
+    // 삭제 버튼 이벤트 처리 (대관불가 목록)
+    document.querySelectorAll('.blocked-delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const id = btn.getAttribute('data-id');
+        const isOriginal = btn.getAttribute('data-original') === 'true';
+        if (isOriginal) {
+          if (confirm("정말 삭제하시겠습니까?")) {
+            const form = document.createElement('form');
+            form.method = 'post';
+            form.action = `/admin/fixedRental/blocked/delete`;
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'id';
+            input.value = id;
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+          }
+        } else {
+          const row = document.getElementById(`blocked-row-${id}`);
+          row.querySelectorAll('.edit-field').forEach(f => f.style.display = 'none');
+          row.querySelectorAll("span[id$='-text-" + id + "']").forEach(s => s.style.display = 'inline');
+          row.querySelector('.blocked-save-btn').style.display = 'none';
+          row.querySelector('.blocked-edit-btn').style.display = 'inline-block';
+          btn.innerHTML = '<i class="fas fa-trash"></i>';
+          btn.setAttribute('data-original', 'true');
+        }
+      });
+    });
+
+    window.onload = function () {
+      populateTimeOptions("startTimeSelect", 9, 21);
+      populateTimeOptions("endTimeSelect", 9, 21);
+      const typeSelect = document.querySelector("select[name='type']");
+      if (typeSelect) {
+        handleTypeChange(typeSelect.value);
+      }
+    };
+  </script>
+</body>
+</html>

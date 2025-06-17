@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Footer at Bottom Example</title>
+    <link rel="stylesheet" href="/css/footer.css" />
+  </head>
+  <body>
+    <!-- 전체 페이지 레이아웃을 감싸는 컨테이너 -->
+    <div class="wrapper">
+      <!-- 헤더 영역 (있다면 추가) -->
+      <header>
+        <h1>헤더 영역</h1>
+      </header>
+
+      <!-- 본문 영역 -->
+      <main class="main-content">
+        <!-- 본문 내용이 부족하면 footer가 항상 body 태그 전체 높이(즉, viewport 하단)의 맨 아래에 위치하고, 내용이 많으면 본문 바로 아래에 배치됩니다. -->
+        <p>
+          여기에 본문 내용이 들어갑니다. 이 내용이 짧으면 footer는 body 태그 전체 높이의 맨 아래(즉, 화면 하단)에 고정되고, 내용이 길면 본문 바로 아래에 배치됩니다.
+        </p>
+      </main>
+
+      <!-- Footer 영역 -->
+      <footer>
+        <div class="footer-container">
+          <!-- 왼쪽: 링크 목록 -->
+          <div class="footer-left">
+            <ul>
+              <li><a href="http://agnus.or.kr/home/" target="_blank">청소년국</a></li>
+              <li><a href="http://www.agnusbible.or.kr/" target="_blank">청년성서</a></li>
+              <li><a href="https://www.djcatholic.or.kr/home/" target="_blank">대전교구</a></li>
+            </ul>
+          </div>
+          <!-- 중앙: 연락처 정보 -->
+          <div class="footer-center">
+            <p>(31174) 충남 천안시 서북구 월봉5길 23</p>
+            <p>Tel. 041-572-7179 | Fax. 041-572-7180</p>
+            <p>E-mail. hapum7179@gmail.com</p>
+          </div>
+          <!-- 오른쪽: 소셜 아이콘 -->
+          <div class="footer-right">
+            <a href="https://www.facebook.com" target="_blank">
+              <img src="/img/facebook_logo.png" alt="Facebook" />
+            </a>
+            <a href="https://www.instagram.com" target="_blank">
+              <img src="/img/insta_logo.png" alt="Instagram" />
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

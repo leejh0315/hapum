@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>단체소식</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/main/organization.css}">
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+</head>
+
+<body>
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+
+	<div class="container">
+		<!-- 사이드바: organizationList 반복 -->
+		<div class="sidebar">
+			<div class="sidebar-title">단체소식</div>
+
+			<button th:each="org : ${organizationList}" class="menu-button" th:text="${org.name}"
+				th:onclick="'location.href=\'/main/organization/'+ ${org.id} +'\''">
+				<!-- 이 텍스트는 th:text로 대체됩니다. -->
+			</button>
+		</div>
+
+		<!-- 메인 콘텐츠 영역 -->
+		<div class="content">
+			<div th:if="${#lists.isEmpty(organizationList)}">
+				등록된 단체가 없습니다.
+			</div>
+			<div th:if="${!#lists.isEmpty(organizationList)}" class="organization-grid">
+				<div style="cursor: pointer;" th:each="org : ${organizationList}" class="organization-card" th:onclick="'location.href=\'/main/organization/'+ ${org.id} +'\''">
+					<h2 th:text="${org.name}">단체 이름</h2>
+					<img th:src="@{${org.profileSrc}}" alt="프로필 이미지" class="organization-img" />
+					<p th:text="${org.introduce}">단체 소개</p>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="~{main/footer :: footer}"></div>
+	<script th:src="@{/js/header.js}"></script>
+</body>
+
+</html>

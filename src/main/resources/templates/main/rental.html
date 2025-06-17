@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>대관신청</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/main/rental.css}" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <style>
+      /* 지난 시간 회색 음영 처리 */
+    </style>
+  </head>
+  <body>
+    <div th:replace="~{main/header :: headFrag(${user})}"></div>
+    <div class="container">
+          <div class="sidebar">
+        <div class="sidebar-title">시설 선택</div>
+        <button class="menu-button room-btn active" data-room="강의실1">강의실1</button>
+        <button class="menu-button room-btn" data-room="강의실2">강의실2</button>
+        <button class="menu-button room-btn" data-room="강당">강당</button>
+        <button class="menu-button room-btn" data-room="연습실">연습실</button>
+      </div>
+      <!-- 시설 정보 및 타임테이블 -->
+      <div id="room-info" style="display: none;">
+        <h3 id="room-title"></h3>
+        <h4 id="floor-title" style="color: #666;"></h4>
+        <div class="room-flex-container">
+          <!-- 사진 + 설명 -->
+          <div id="room-content" ></div>
+          <!-- 타임테이블 -->
+          <div class="timetable-wrapper">
+            <div id="timetable-container" class="timetable" style="display: none;">
+              <div class="slot-row-container">
+                <div class="slot-row" id="time-slots-row">
+                  <div class="label-cell">예약</div>
+                </div>
+              </div>
+              <div style="margin: 20px 0;">
+                <span>예약 가능 날짜 : <span id="date-range-text"></span></span><br />
+                <input type="date" id="datePicker" />
+              </div>
+              <div class="selected-time-display" id="selected-time-display"></div>
+              <button id="submit-btn" disabled onclick="submitRental()">대관 신청하기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div th:replace="~{main/footer :: footer}"></div>
+    <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/roomData.js}"></script>
+    <!--  <script th:src="@{/js/rental.js}"></script> -->
+    <script th:inline="javascript">
+      const blockedDays = [[${blockedDays}]];
+      const fixedReservations = [[${fixedReservations}]];
+      const rentals = [[${rentals}]];
+      const user = /*[[${user}]]*/ null;
+    </script>
+    <script th:src="@{/js/main/rental.js}"></script>
+    
+  </body>
+</html>

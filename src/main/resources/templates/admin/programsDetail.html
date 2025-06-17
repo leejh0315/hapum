@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Program Detail</title>
+	<link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<style>
+		/* 기존 스타일 생략 없이 유지 */
+
+		.program-detail-container {
+			max-width: 1000px;
+			margin: 50px auto;
+			display: flex;
+			flex-wrap: wrap;
+			gap: 30px;
+			padding: 20px;
+			border: 1px solid #ddd;
+			border-radius: 12px;
+			background-color: #fffefa;
+		}
+
+		.program-image {
+			flex: 1 1 300px;
+		}
+
+		.program-image img {
+			width: 100%;
+			border-radius: 12px;
+			border: 1px solid #ccc;
+		}
+
+		.program-info {
+			flex: 1 1 400px;
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+		}
+
+		.program-info h2 {
+			margin-bottom: 16px;
+			color: #333;
+		}
+
+		.program-info ul {
+			list-style: none;
+			padding: 0;
+			margin-bottom: 20px;
+		}
+
+		.program-info li {
+			margin-bottom: 10px;
+			font-size: 15px;
+			line-height: 1.4;
+		}
+
+		.program-info li::before {
+			content: '– ';
+			color: #555;
+		}
+
+		.program-bottom {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			border-top: 1px solid #ddd;
+			padding-top: 15px;
+			margin-top: auto;
+		}
+
+		.capacity {
+			font-size: 14px;
+			color: #888;
+		}
+
+
+
+
+
+
+
+		@media (max-width: 768px) {
+			.program-detail-container {
+				flex-direction: column;
+			}
+		}
+	</style>
+</head>
+
+<body>
+  <div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
+
+
+	<div class="program-detail-container">
+		<div class="program-image">
+			<img th:src="@{${program.thumbnailSrc}}" alt="프로그램 썸네일" />
+		</div>
+
+		<div class="program-info">
+			<h2 th:text="${program.title}">프로그램 제목</h2>
+			<ul>
+				<li>
+					<strong>일시:</strong>
+					<span
+						th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">2025년
+						4월 8일 10:00~13:00</span>
+				</li>
+				<li><strong>장소:</strong> <span th:text="${program.location}"></span></li>
+				<li><strong>대상:</strong> <span th:text="${program.target}"></span></li>
+				<li><strong>참가비:</strong> <span th:text="${program.expense} + '원'"></span></li>
+				<li><strong>주제:</strong> <span th:text="${program.subject}"></span></li>
+				<li><strong>정원:</strong> <span th:text="${program.capacity} + '명'"></span></li>
+			</ul>
+
+			<div th:utext="${program.content}">
+
+			</div>
+
+		</div>
+
+	</div>
+	<div style="margin-top: 40px;">
+		<h3 style="text-align: center;">신청자 목록</h3>
+
+		<div style="display: flex; gap: 40px; margin-top: 20px; justify-content: center;">
+			<!-- 승인된 회원 -->
+			<div>
+				<h4 style="text-align: center;">✅ 승인된 회원</h4>
+				<ul style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; min-width: 320px;">
+					<li th:each="sub : ${psY}" style="margin-bottom: 12px;">
+						<div style="display: flex; justify-content: space-between; align-items: center;">
+							<span>
+								<span th:text="${sub.user.name}"></span>
+								(<span th:text="${sub.user.email}"></span>,
+								<span th:text="${sub.user.phone}"></span>)
+							</span>
+							<form th:action="@{/admin/program/cancel}" method="post" style="margin-left: 10px;">
+								  <input type="hidden" th:name="programSubId" th:value="${sub.id}" />
+								  <input type="hidden" name="programId" th:value="${program.id}" />	
+								<button type="submit">승인취소</button>
+							</form>
+						</div>
+					</li>
+					<li th:if="${#lists.isEmpty(psY)}" style="text-align: center; color: #aaa;">없음</li>
+				</ul>
+			</div>
+
+			<!-- 승인 대기 회원 -->
+			<div>
+				<h4 style="text-align: center;">⏳ 승인 대기 회원</h4>
+				<ul style="border: 1px solid #ccc; border-radius: 10px; padding: 15px; min-width: 320px;">
+					<li th:each="sub : ${psN}" style="margin-bottom: 12px;">
+						<div style="display: flex; justify-content: space-between; align-items: center;">
+							<span>
+								<span th:text="${sub.user.name}"></span>
+								(<span th:text="${sub.user.email}"></span>,
+								<span th:text="${sub.user.phone}"></span>)
+							</span>
+							<form th:action="@{/admin/program/approve}" method="post" style="margin-left: 10px;">
+								  <input type="hidden" th:name="programSubId" th:value="${sub.id}" />
+								  <input type="hidden" name="programId" th:value="${program.id}" />	
+								<button type="submit">승인</button>
+							</form>
+						</div>
+					</li>
+					<li th:if="${#lists.isEmpty(psN)}" style="text-align: center; color: #aaa;">없음</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+
+</body>
+
+</html>

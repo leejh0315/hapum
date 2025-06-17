@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>제단체 글쓰기</title>
+	<link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet" />
+	<link rel="stylesheet" th:href="@{/css/admin/writeNews.css}" />
+	<link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+	<!-- Summernote CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+
+	<!-- jQuery (Summernote 의존) -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<!-- Summernote JS -->
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
+
+	<style>
+		.thumbnail-selected {
+			border: 3px solid #007BFF !important;
+		}
+
+		/* 미리보기 컨테이너 */
+		#photoContainer {
+			margin-top: 10px;
+		}
+
+		#photoPreview {
+			max-width: 200px;
+			display: none;
+		}
+
+		#removePhotoBtn {
+			margin-left: 10px;
+			display: none;
+			background-color: #ff5c5c;
+			border: none;
+			color: white;
+			padding: 5px 10px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		.form-group select {
+			width: 100%;
+			padding: 10px;
+			font-size: 16px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+			margin-top: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
+
+	<div class="news-form-container">
+		<h2 class="news-title">제단체 소식 작성</h2>
+		<form id="organizationPost" th:action="@{/admin/organization/write}" method="post" enctype="multipart/form-data"
+			onsubmit="return validateNewsForm()">
+
+			<!-- 1) 소속 재단체 -->
+			<div class="form-group">
+				<label for="orgId">소속 재단체</label>
+				<select id="orgId" name="orgId" required>
+					<option value="" disabled selected>선택하세요</option>
+					<option th:each="org : ${organizationList}" th:value="${org.id}" th:text="${org.name}">
+					</option>
+				</select>
+			</div>
+
+			<!-- 2) 제목 -->
+			<div class="news-form-group">
+				<label for="title">제목</label>
+				<input type="text" id="title" name="title" placeholder="제목을 입력하세요" required />
+			</div>
+
+			<!-- 3) 썸네일 이미지 -->
+			<div class="news-form-group">
+				<label for="photoInput">썸네일 사진</label>
+				<!-- name을 thumbnailSrc로 바꿔 bean 프로퍼티와 매핑 -->
+				<input type="file" id="photoInput" name="photo" accept="image/*" />
+				<div id="photoContainer">
+					<img id="photoPreview" src="" alt="사진 미리보기" />
+					<button type="button" id="removePhotoBtn">X</button>
+				</div>
+			</div>
+
+			<!-- 4) 내용 -->
+			<div class="news-form-group">
+				<label for="summernote">내용</label>
+				<textarea id="summernote" name="content" placeholder="소식 내용을 입력하세요" required>
+    </textarea>
+			</div>
+
+			<button type="submit" class="news-button">등록하기</button>
+		</form>
+
+	</div>
+
+	<!-- Summernote 초기화 및 사진 미리보기 스크립트 -->
+	<script>
+		$(document).ready(function () {
+			$('#summernote').summernote({
+				height: 300,
+				placeholder: '내용을 입력하세요...',
+				callbacks: {
+					// 이미지 업로드 처리: Summernote 콜백
+					onImageUpload: function (files) {
+						for (let i = 0; i < files.length; i++) {
+							uploadSummernoteImageFile(files[i], this);
+						}
+					},
+					// 이미지 삭제 처리: Summernote 콜백
+					onMediaDelete: function ($target) {
+						deleteSummernoteImageFile($target);
+					}
+				}
+			});
+
+			// 파일 입력 변경 시 미리보기 처리
+			$("#photoInput").change(function () {
+				if (this.files && this.files[0]) {
+					var reader = new FileReader();
+					reader.onload = function (e) {
+						$("#photoPreview").attr("src", e.target.result).show();
+						$("#removePhotoBtn").show();
+					}
+					reader.readAsDataURL(this.files[0]);
+				}
+			});
+
+			// "X" 버튼 클릭 시 이미지 미리보기 삭제하고 파일 입력 초기화
+			$("#removePhotoBtn").click(function () {
+				$("#photoInput").val(''); // 파일 입력 초기화
+				$("#photoPreview").attr("src", "").hide();
+				$(this).hide();
+			});
+		});
+
+		// 이미지 업로드 함수
+		function uploadSummernoteImageFile(file, editor) {
+			var data = new FormData();
+			data.append("file", file);
+			$.ajax({
+				url: "/writePost/uploadSummernoteImageFile",
+				data: data,
+				cache: false,
+				contentType: false,
+				processData: false,
+				type: "POST",
+				dataType: "json", // 응답을 JSON 객체로 자동 변환
+				success: function (response) {
+					if (response.responseCode === "success") {
+						var imageUrl = response.src;
+						$(editor).summernote('insertImage', imageUrl);
+					} else {
+						alert("이미지 업로드에 실패했습니다.");
+					}
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					alert("이미지 업로드 중 오류가 발생했습니다.");
+					console.log(textStatus + " " + errorThrown);
+				}
+			});
+		}
+
+		// 이미지 삭제 함수
+		function deleteSummernoteImageFile($target) {
+			var imageUrl = $target.attr('src');
+			$.ajax({
+				url: "/deleteSummernoteImageFile",
+				type: "POST",
+				data: {"file": imageUrl},
+				dataType: "json",
+				success: function (response) {
+					if (response.responseCode !== "success") {
+						alert("이미지 삭제에 실패했습니다.");
+					}
+				},
+				error: function (jqXHR, textStatus, errorThrown) {
+					alert("이미지 삭제 중 오류가 발생했습니다.");
+					console.log(textStatus + " " + errorThrown);
+				}
+			});
+			$target.remove();
+		}
+	</script>
+
+	<script th:src="@{/js/admin/writeNews.js}"></script>
+</body>
+
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hapum.hapum.mapper.NewsMapper">
+
+  <!-- 1) insertNews -->
+  <insert id="insertNews" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO hapumdb.news (title, content, thumbnailSrc)
+    VALUES (#{title}, #{content}, #{thumbnailSrc})
+  </insert>
+
+	<select id="selectAllNews" resultType="hapum.hapum.domain.News">
+		SELECT * FROM hapumdb.news
+		ORDER BY create_on DESC
+		LIMIT #{limit} OFFSET #{offset}
+		
+	</select>
+
+
+   <select id="countNews" resultType="int">
+        SELECT COUNT(*) FROM hapumdb.news
+    </select>
+    
+    <select id="selectById" resultType="hapum.hapum.domain.News">
+		SELECT * FROM hapumdb.news WHERE id=#{id}
+	</select>
+
+
+
+</mapper>

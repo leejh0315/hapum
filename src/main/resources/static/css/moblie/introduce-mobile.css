@@ -1,0 +1,36 @@
+@media screen and (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+    height: 100vh;
+    padding-left: 5%;
+    padding-right: 5%;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    border-left: none;
+    border-right: none;
+    border-bottom: 1px solid #999;
+    padding: 10px 0;
+  }
+
+  .menu-button {
+    flex: 1;
+    font-size: 18px;
+    padding: 14px;
+  }
+
+  .main-content {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  
+
+  .content-placeholder {
+    font-size: 22px;
+    text-align: center;
+  }
+}

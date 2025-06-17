@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Login</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	<link rel="stylesheet" th:href="@{/css/main/auth/login.css}">
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+	<!-- 공통 헤더 -->
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+	<div class="container">
+
+		<div class="content">
+			<h1>로그인</h1>
+
+			<form id="loginForm" th:action="@{/auth/doLogin}" th:object="${loginForm}" method="post">
+				<label>아이디<input type="text" th:field="*{loginId}" /></label>
+				<br />
+				<label>비밀번호<input type="password" th:field="*{password}" /></label>
+				<br />
+
+				<!-- 입력 누락 에러 메시지 -->
+				<div id="errorMsg" style="color: red; display: none;">
+					ID 혹은 비밀번호를 입력해주세요.
+				</div>
+
+				<!-- 로그인 실패 메시지 -->
+				<div th:if="${fail}" style="color: red;">
+					ID 혹은 비밀번호가 올바르지 않습니다.
+				</div>
+
+				<!-- 비활성 계정 메시지 -->
+				<div th:if="${inactiveMsg}" style="color: red;">
+					<span th:text="${inactiveMsg}"></span>
+				</div>
+
+				<button class="login-button" type="submit">로그인</button>
+
+
+				<div class="move">
+					<div id="findPw">비밀번호 찾기</div>
+					<div id="goSignin">회원가입</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div th:replace="~{main/footer :: footer}"></div>
+	<script th:src="@{/js/header.js}"></script>
+	<script>
+		document.getElementById('loginForm').addEventListener('submit', function (event) {
+			const loginId = document.querySelector('[name="loginId"]').value.trim();
+			const password = document.querySelector('[name="password"]').value.trim();
+
+			if (!loginId || !password) {
+				event.preventDefault();
+				document.getElementById('errorMsg').style.display = 'block';
+			} else {
+				document.getElementById('errorMsg').style.display = 'none';
+			}
+		});
+
+		let findPw = document.getElementById("findPw");
+		findPw.addEventListener("click", (e) => {
+			location.href = "/auth/findPw";
+		});
+
+		let goSignin = document.getElementById("goSignin");
+		goSignin.addEventListener("click", (e) => {
+			location.href = "/auth/signin";
+		})
+	</script>
+</body>
+
+</html>

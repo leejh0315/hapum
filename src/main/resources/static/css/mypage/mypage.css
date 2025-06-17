@@ -1,0 +1,121 @@
+.sidebar {
+	width: 180px;
+	background-color: #D6CCC2;
+	border-right: 1px solid #D5BDAF;
+	border-left: 1px solid #D5BDAF;
+	display: flex;
+	flex-direction: column;
+	/* 좌우와 하단 패딩은 유지하고, 상단 패딩은 0으로 설정 */
+	padding: 0 10px 10px;
+}
+
+.container {
+  display: flex;
+    flex: 1;
+    height: 100vh;
+  	padding-left: 7%;
+  	padding-right: 7%;
+  gap: 20px;
+}
+.menu-button:hover{
+	color:#333;
+	transform: none;
+}
+
+/* 기존 sidebar-title 스타일 그대로 사용 */
+.sidebar-title {
+	margin: 0 -10px 10px;
+	width: calc(100% + 20px);
+	box-sizing: border-box;
+
+	padding: 12px 10px;
+	text-align: center;
+	background-color: #D5BDAF;
+	border-bottom: 1px solid #D5BDAF;
+	font-size: 18px;
+	font-weight: bold;
+	color: white;
+}
+
+
+/* 메뉴 버튼 (세로 정렬) */
+/* 기존 .menu-button 안에 덮어쓰기 */
+.menu-button {
+  display: block;
+  /* 사이드바 패딩(10px)만큼 빼고 더해줘서 전체 폭 차지 */
+  width: calc(100% + 20px);
+  margin: 0 -10px 0px; 
+  padding: 12px;
+  text-align: center;
+  background-color: #F5EBE0;
+  border: none;
+  border-bottom: 1px solid #D5BDAF;
+  font-size: 16px;
+  cursor: pointer;
+  color: #333;
+  transition: background-color 0.3s;
+}
+
+
+.menu-button:hover {
+	background-color: #E3D5CA;
+}
+
+/* active 상태인 메뉴 버튼 (필요에 따라 수정) */
+.menu-button.active {
+	background-color: #D5BDAF;
+	color: white;
+	font-weight: bold;
+}
+
+.mypage-grid {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
+	justify-content: center;
+}
+
+
+.content{
+	margin: 3%;
+}
+
+.mypage-item {
+	width: 100%;
+	max-width: 300px;
+}
+
+.mypage-card {
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	overflow: hidden;
+	transition: transform 0.2s ease-in-out, box-shadow 0.2s;
+	background-color: #fff;
+}
+
+.mypage-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.mypage-body {
+	padding: 1.5rem;
+	text-align: center;
+}
+
+.mypage-title {
+	margin: 0;
+	font-size: 1.2rem;
+	color: #333;
+	font-weight: 500;
+}
+
+.page-title {
+	margin-bottom: 1.5rem;
+	font-size: 1.5rem;
+	color: #333;
+}
+
+.center {
+	text-align: center;
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>MyPage</title>
+
+	<!-- 공통 헤더/사이드바/컨텐츠 레이아웃 -->
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}" />
+	<link rel="stylesheet" th:href="@{/css/footer.css}" />
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+	<!-- 헤더 -->
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+
+	<div class="container">
+		<!-- 좌측 사이드바 -->
+		<div class="sidebar">
+			<div class="sidebar-title">마이페이지</div>
+
+			<a th:href="@{/main/mypage/update/{id}(id=${user.id})}" class="menu-button"
+				th:classappend="${activeTab=='update'} ? ' active' : ''">
+				내 정보 수정
+			</a>
+			<a th:href="@{/main/mypage/rental/{id}(id=${user.id})}" class="menu-button"
+				th:classappend="${activeTab=='rental'} ? ' active' : ''">
+				신청한 대관 예약
+			</a>
+			<a th:href="@{/main/mypage/program/{id}(id=${user.id})}" class="menu-button"
+				th:classappend="${activeTab=='program'} ? ' active' : ''">
+				신청한 프로그램
+			</a>
+		</div>
+		<!-- 오른쪽 컨텐츠 -->
+
+		<div class="content">
+
+		<h1 class="page-title center" th:text="${user.name} + '님의 마이페이지'">
+		</h1>
+
+		</div>
+	</div>
+
+	<!-- 푸터 -->
+	<div th:replace="~{main/footer :: footer}"></div>
+
+	<script th:src="@{/js/header.js}"></script>
+</body>
+
+</html>

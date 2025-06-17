@@ -1,0 +1,141 @@
+body {
+  font-family: 'Pretendard', 'Arial', sans-serif;
+  background-color: #f4f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+.news-form-container {
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 60px auto;
+  text-align: left;
+}
+
+.news-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.news-form-group {
+  margin-bottom: 20px;
+}
+
+.news-form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #444;
+}
+
+.news-form-group input[type="text"],
+.news-form-group input[type="file"],
+.news-form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: 'Pretendard', 'Arial', sans-serif;
+  box-sizing: border-box;
+  color: #333;
+}
+
+.news-form-group textarea {
+  resize: vertical;
+  min-height: 140px;
+}
+
+.hint {
+  font-size: 13px;
+  color: #888;
+  margin-top: 6px;
+}
+
+.news-button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.news-button:hover {
+  background-color: #357abd;
+  transform: translateY(-2px);
+}
+
+/* ✅ 이미지 미리보기 */
+.image-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.preview-item {
+  position: relative;
+}
+
+.preview-image {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+
+.delete-button {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1;
+}
+
+/* ✅ 파일 미리보기 */
+.file-preview {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #f0f2f5;
+  border-radius: 6px;
+  margin-bottom: 8px;
+}
+
+.file-name {
+  font-size: 14px;
+  color: #333;
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+/* ✅ 숨겨진 input (hidden file inputs) */
+#hidden-file-inputs input[type="file"],
+#hidden-image-inputs input[type="file"] {
+  display: none;
+}

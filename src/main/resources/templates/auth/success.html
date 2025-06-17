@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회원가입 성공</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}" />
+    <style>
+      /* ──────────────────────────────────────────────────────────
+         컬러 팔레트
+         ────────────────────────────────────────────────────────── */
+      :root {
+        --c-bg:   #EDEDE9;
+        --c-border:#D6CCC2;
+        --c-card: #F5EBE0;
+        --c-btn:  #D6CCC2;
+        --c-btn-h:#E3D5CA;
+        --c-text: #333;
+      }
+
+      /* ──────────────────────────────────────────────────────────
+         전역 스타일
+         ────────────────────────────────────────────────────────── */
+      body {
+        margin: 0;
+        padding: 50px;
+        font-family: Arial, sans-serif;
+        background-color: var(--c-bg);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* 캔버스는 항상 화면을 덮고, 클릭 이벤트를 막습니다 */
+      #confetti-canvas {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        z-index: 999;
+      }
+
+      /* ──────────────────────────────────────────────────────────
+         성공 박스 스타일
+         ────────────────────────────────────────────────────────── */
+      .success-box {
+        display: inline-block;
+        padding: 30px 40px;
+        border: 2px solid var(--c-border);
+        background-color: var(--c-card);
+        color: var(--c-text);
+        border-radius: 8px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      }
+      .success-box h2 {
+        margin: 0 0 15px;
+        font-size: 1.6rem;
+      }
+      .success-box p {
+        margin: 0 0 20px;
+        font-size: 1rem;
+      }
+
+      /* ──────────────────────────────────────────────────────────
+         로그인 버튼 스타일
+         ────────────────────────────────────────────────────────── */
+      .btn-login {
+        display: inline-block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: var(--c-btn);
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color .3s;
+      }
+      .btn-login:hover {
+        background-color: var(--c-btn-h);
+      }
+    </style>
+</head>
+<body>
+
+  <!-- 캔버스 (폭죽/꽃가루) -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="success-box">
+    <h2>회원가입이 완료되었습니다!</h2>
+    <p>이제 로그인하여 서비스를 이용하실 수 있습니다.</p>
+    <a class="btn-login" th:href="@{/auth/login}">로그인 하러 가기</a>
+  </div>
+
+  <!-- canvas-confetti 라이브러리 -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  <script>
+    // 캔버스 인스턴스 생성 (리사이즈 자동)
+    const myConfetti = confetti.create(
+      document.getElementById('confetti-canvas'),
+      { resize: true, useWorker: true }
+    );
+
+    // 랜덤 폭발 효과 함수
+    function fireBurst(particleRatio, opts) {
+      myConfetti(Object.assign({
+        origin: { x: Math.random(), y: Math.random() * 0.5 },
+        ticks: 200,
+        gravity: 0.6,
+        decay: 0.9,
+        scalar: 1.2,
+        drift: 0.3,
+        shapes: ['circle','square'],
+        colors: ['#D6CCC2', '#F5EBE0', '#E3D5CA', '#D5BDAF']
+      }, opts, {
+        particleCount: Math.floor(200 * particleRatio)
+      }));
+    }
+
+    // 페이지 로드 시 여러 번 버스트 호출
+    window.addEventListener('load', () => {
+      [0.25, 0.2, 0.35, 0.15].forEach((ratio, i) => {
+        setTimeout(() => fireBurst(ratio, { spread: 60 + i*10 }), i * 400);
+      });
+    });
+  </script>
+</body>
+</html>

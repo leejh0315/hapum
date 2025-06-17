@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hapum.hapum.mapper.FixedReservationMapper">
+
+	<select id="selectAllFixedReservations"
+		resultType="hapum.hapum.domain.FixedReservation">
+		SELECT * FROM hapumdb.fixed_reservation
+	</select>
+
+	<select id="selectBlockedDays" resultType="hapum.hapum.domain.BlockedDay">
+		SELECT * FROM hapumdb.blocked_day
+	</select>
+
+	<select id="selectRentals" resultType="hapum.hapum.domain.Rental">
+		SELECT * FROM hapumdb.rental_reservation
+	</select>
+
+	<insert id="insertFixedReservation"
+		parameterType="hapum.hapum.domain.FixedReservation">
+		INSERT INTO hapumdb.fixed_reservation
+		(type, weekday, week_of_month, day_of_week, start_time, end_time,
+		description)
+		VALUES
+		(#{type}, #{weekday}, #{weekOfMonth}, #{dayOfWeek}, #{startTime},
+		#{endTime}, #{description})
+	</insert>
+
+	<update id="updateFixedReservation"
+		parameterType="hapum.hapum.domain.FixedReservation">
+		UPDATE hapumdb.fixed_reservation
+		SET type = #{type},
+		weekday = #{weekday},
+		week_of_month = #{weekOfMonth},
+		day_of_week = #{dayOfWeek},
+		start_time = #{startTime},
+		end_time = #{endTime},
+		description = #{description}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="deleteFixedReservation">
+		DELETE FROM hapumdb.fixed_reservation
+		WHERE id=#{id}
+	</delete>
+
+
+	<insert id="insertBlockedDay" parameterType="hapum.hapum.domain.BlockedDay">
+		INSERT INTO hapumdb.blocked_day
+		(week_of_month, day_of_week, reason)
+		VALUES
+		(#{weekOfMonth}, #{dayOfWeek}, #{reason})
+	</insert>
+	<update id="updateBlockedDay" parameterType="hapum.hapum.domain.BlockedDay">
+		UPDATE hapumdb.blocked_day
+		SET week_of_month = #{weekOfMonth},
+		day_of_week = #{dayOfWeek},
+		reason = #{reason}
+		WHERE id = #{id}
+	</update>
+	<delete id="deleteBlockedDay">
+		DELETE FROM hapumdb.blocked_day
+		WHERE id=#{id}
+	</delete>
+
+	<select id="selectByUserId" resultType="hapum.hapum.domain.Rental">
+		SELECT * FROM hapumdb.rental_reservation WHERE user_id = #{userId} ORDER BY created_on;
+	</select>
+
+
+	<insert id="insertRental" parameterType="hapum.hapum.domain.Rental"
+		useGeneratedKeys="true" keyProperty="id"> INSERT INTO
+		hapumdb.rental_reservation ( location, reservation_date, start_time,
+		end_time, price, user_id, is_app ) VALUES ( #{location},
+		#{reservationDate}, #{startTime}, #{endTime}, #{price}, #{userId}, <choose>
+			<when test="isApp != null">
+				#{isApp}
+			</when>
+			<otherwise>
+				0
+			</otherwise>
+		</choose> ) </insert>
+		
+		
+		<delete id="deleteRental">
+		DELETE FROM hapumdb.rental_reservation
+		WHERE id=#{id}
+	</delete>
+
+
+</mapper>

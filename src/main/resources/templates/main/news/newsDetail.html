@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>News Detail</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/main/postDetail.css}">
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<style>
+		.post-content{
+			overflow: scroll;
+		}
+		.content{
+			width: 80%;
+			max-width: 100vw;
+		}
+		
+	</style>
+</head>
+
+<body>
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+	<div class="container">
+
+		<!-- 사이드바: 제목과 목록으로 돌아가기 버튼만 포함 -->
+		<div class="sidebar">
+			<div class="sidebar-title">하품소식 상세보기</div>
+			<button class="menu-button" onclick="history.back();">목록으로 돌아가기</button>
+		</div>
+
+		<!-- 게시글 상세 내용 영역 -->
+		<div class="content">
+			<!-- 게시글 제목 -->
+			<div class="post-title" th:text="${news.title}">게시글 제목</div>
+
+			
+			<br>
+			<hr>
+
+
+
+			<!-- 게시글 내용 -->
+			<div class="post-content" th:utext="${news.content}">
+				<!-- 실제 게시글의 HTML 형식 내용이 출력됩니다. -->
+			</div>
+		</div>
+	</div>
+	<div th:replace="~{main/footer :: footer}"></div>
+
+	<script th:src="@{/js/header.js}"></script>
+</body>
+
+</html>

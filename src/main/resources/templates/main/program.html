@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프로그램</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}">
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    <link rel="stylesheet" th:href="@{/css/main/program.css}">
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  </head>
+  <body>
+    <div th:replace="~{main/header :: headFrag(${user})}"></div>
+  
+    <div class="container">
+      <!-- 좌측 사이드바 -->
+      <div class="sidebar">
+        <div class="sidebar-title">프로그램</div>
+     
+      </div>
+  
+      <!-- 오른쪽 콘텐츠 영역 -->
+      <div class="content">
+        <div class="program-list">
+          <a th:each="program : ${programs}"
+             th:href="@{/main/program/detail/{id}(id=${program.id})}"
+             class="program-card">
+            <img th:src="@{${program.thumbnailSrc}}" alt="썸네일 이미지" />
+            <div class="program-title" th:text="${program.title}"></div>
+          </a>
+        </div>
+      </div>
+    </div>
+  
+    <div th:replace="~{main/footer :: footer}"></div>
+    <script th:src="@{/js/header.js}"></script>
+  </body>
+</html>

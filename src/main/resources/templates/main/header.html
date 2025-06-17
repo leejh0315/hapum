@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+	<th:block th:fragment="headFrag(user)">
+		<header>
+			<!-- 상단 헤더 영역 (첫 번째 행) -->
+			<div class="header-top">
+				<!-- 왼쪽: 교구/센터명 -->
+				<div class="header-left" onclick="location.href='/main/main'" style="cursor:pointer">
+					<h3>천주교 대전교구</h3>
+					<h3>천안지역 청소년사목 하품센터</h3>
+				</div>
+				<!-- 오른쪽: 로그인/회원가입 또는 사용자 정보 -->
+				<!-- 내비게이션 메뉴 (두 번째 행) -->
+				<nav id="nav-desktop">
+					<ul>
+						<li><a href="/main/introduce">센터&#8203;소개</a></li>
+						<li><a href="/main/information">시설&#8203;안내</a></li>
+						<li><a href="/main/program">프로&#8203;그램</a></li>
+						<li><a href="/main/rental">대관&#8203;신청</a></li>
+						<li><a href="/main/news">하품&#8203;소식</a></li>
+						<li><a href="/main/organization">단체&#8203;소식</a></li>
+						
+					</ul>
+				</nav>
+				<div class="header-right-group">
+					<div class="header-right">
+						<span th:if="${user}">
+							<span th:text="${user.name} + '님, 안녕하세요'" class="auth-link">
+								사용자 이름 님, 안녕하세요
+							</span>
+							<a th:href="@{/main/mypage/{id}(id=${user.id})}" class="auth-link"
+								style="margin-left: 10px;">마이페이지</a>
+							<div id="logoutBtn" onclick="doLogout()" th:if="${user}" class="auth-link">로그아웃</div>
+						</span>
+						<div class="guest-menu" th:unless="${user}">
+							<div onclick="goLogin()" class="auth-link">로그인</div>
+							<span class="separator"></span>
+							<div onclick="goSignin()" class="auth-link">회원가입</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<hr>
+		</header>
+	</th:block>
+</body>
+
+</html>

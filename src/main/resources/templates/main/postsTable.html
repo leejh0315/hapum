@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <body>
+    <!--
+      이 fragment는 게시글 목록과 페이지네이션을 출력합니다.
+      admin 파라미터가 true이면 "관리" 열(예: 삭제 버튼)이 출력됩니다.
+      전달받는 파라미터:
+         posts, currentPage, totalPages, admin, pageType, userId
+      - admin이 true이면 base URL은 '/admin/posts'
+      - admin이 false이면서 pageType이 'mypage'이면 base URL은 '/mypage/posts/{userId}'
+      - 기본은 '/main/posts'
+    -->
+    <div th:fragment="postsTable(posts, currentPage, totalPages, admin, pageType, userId)">
+      <table class="table">
+        <thead>
+          <tr>
+            <!-- 연속 번호: (현재페이지-1) * 10 + 각 행 순번 (페이지 크기 10으로 가정) -->
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성일</th>
+            <th th:if="${admin}">관리</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="post, stat : ${posts}">
+            <td th:text="${((currentPage - 1) * 10) + stat.count}">1</td>
+            <td>
+              <a th:href="@{/main/posts/view/{id}(id=${post.id})}" th:text="${post.title}">제목</a>
+            </td>
+            <td th:text="${post.createOn != null ? T(java.time.format.DateTimeFormatter)
+                              .ofPattern('yyyy-MM-dd HH:mm:ss').format(post.createOn) : ''}">
+              작성일</td>
+            <td th:if="${admin}">
+              <button type="button"
+                      class="delete-btn"
+                      th:attr="data-id=${post.id}"
+                      data-original="true">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+  
+      <!-- 페이지네이션 (총 페이지 수가 1보다 클 때) -->
+      <div class="pagination-wrapper" th:if="${totalPages > 1}"
+           th:with="blockSize=5,
+                    cp=${currentPage},
+                    tp=${totalPages},
+                    sp=${((cp - 1) / blockSize) * blockSize + 1},
+                    ep=${ (sp + blockSize - 1) <= tp ? (sp + blockSize - 1) : tp },
+                    baseUrl=${ admin ? '/admin/posts' : (pageType=='mypage' ? '/main/mypage/posts/'+userId : '/main/posts') }">
+        <ul class="pagination">
+          <!-- << 버튼: 현재 그룹의 시작 페이지(sp)가 1이면 비활성, 아니면 (sp - blockSize) -->
+          <li class="page-item" th:classappend="${sp == 1} ? 'disabled'">
+            <a class="page-link" 
+               th:href="@{${baseUrl}(page=${sp == 1 ? 1 : sp - blockSize})}">&laquo;&laquo;</a>
+          </li>
+          <!-- < 버튼: 이전 페이지 -->
+          <li class="page-item" th:classappend="${cp == 1} ? 'disabled'">
+            <a class="page-link" 
+               th:href="@{${baseUrl}(page=${cp == 1 ? 1 : cp - 1})}">&laquo;</a>
+          </li>
+          <!-- 페이지 번호들 (sp ~ ep) -->
+          <li class="page-item" th:each="pageNum : ${#numbers.sequence(sp, ep)}"
+              th:classappend="${pageNum == cp} ? 'active'">
+            <a class="page-link" 
+               th:href="@{${baseUrl}(page=${pageNum})}" 
+               th:text="${pageNum}">1</a>
+          </li>
+          <!-- > 버튼: 다음 페이지 -->
+          <li class="page-item" th:classappend="${cp == tp} ? 'disabled'">
+            <a class="page-link" 
+               th:href="@{${baseUrl}(page=${cp == tp ? tp : cp + 1})}">&raquo;</a>
+          </li>
+          <!-- >> 버튼: 현재 그룹의 마지막 페이지(ep)가 전체 총페이지(tp)와 같으면 비활성, 아니면 (ep + blockSize) -->
+          <li class="page-item" th:classappend="${ep == tp} ? 'disabled'">
+            <a class="page-link" 
+               th:href="@{${baseUrl}(page=${ep == tp ? tp : ep + blockSize})}">&raquo;&raquo;</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

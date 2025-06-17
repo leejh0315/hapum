@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<style>
+		.program-list {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: 20px;
+		}
+
+		.program-card {
+			width: 160px;
+			text-align: center;
+		}
+
+		.program-card img {
+			width: 100%;
+			height: auto;
+			border-radius: 8px;
+		}
+
+		.program-title {
+			margin-top: 8px;
+			font-weight: 500;
+		}
+		
+		.container{
+			text-align: center		}
+
+		@media (max-width: 576px) {
+			.program-card {
+				width: 45%;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
+
+	
+
+		<div class="container mt-5">
+			<h3 class="text-center mb-4">프로그램 목록</h3>
+			<div class="program-list">
+				<a th:each="program : ${programs}" th:href="@{/admin/program/detail/{id}(id=${program.id})}"
+					class="program-card">
+					<img th:src="@{${program.thumbnailSrc}}" alt="썸네일 이미지" />
+					<div class="program-title" th:text="${program.title}"></div>
+				</a>
+			</div>
+		</div>
+</body>
+<script th:src="@{/js/header.js}"></script>
+
+</html>

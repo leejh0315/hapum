@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Program Detail</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/main/programDetail.css}" />
+	    <link rel="stylesheet" th:href="@{/css/footer.css}">
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+</head>
+
+<body>
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+
+	<!-- ✅ Spinner 오버레이 추가 -->
+	<div id="spinnerOverlay" class="spinner-overlay">
+		<div class="spinner"></div>
+	</div>
+
+	<div class="program-detail-container">
+		<div class="program-image">
+			<img th:src="@{${program.thumbnailSrc}}" alt="프로그램 썸네일" />
+		</div>
+
+		<div class="program-info">
+			<h2 th:text="${program.title}">프로그램 제목</h2>
+			<ul>
+				<li>
+					<strong>일시:</strong>
+					<span
+						th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">2025년
+						4월 8일 10:00~13:00</span>
+				</li>
+				<li><strong>장소:</strong> <span th:text="${program.location}">하품센터 2층 강당</span></li>
+				<li><strong>대상:</strong> <span th:text="${program.target}">초등학생 부모님(선착순 15명)</span></li>
+				<li><strong>참가비:</strong> <span th:text="${program.expense} + '원'">2만원</span></li>
+				<li><strong>주제:</strong> <span th:text="${program.subject}">“있는 그대로의 ‘나’”</span></li>
+				<li><strong>정원:</strong> <span th:text="${program.capacity} + '명'">15명</span></li>
+			</ul>
+
+			<div th:utext="${program.content}">
+				1) 부모-자녀 관계 이해<br />2) 자녀의 성격(학습유형) 이해(성격검사 활용)
+			</div>
+
+			<div class="program-bottom">
+				<div class="capacity">
+					신청인원: <span th:text="${applyCount}">8</span>/<span th:text="${program.capacity}">15</span>명
+				</div>
+
+				<th:block th:if="${user == null}">
+					<button class="apply-btn" disabled title="로그인 후 신청 가능합니다">로그인 필요</button>
+				</th:block>
+
+				<th:block th:if="${user != null}">
+					<th:block th:if="${flag == 'Y'}">
+						
+						<button class="apply-btn" disabled>신청완료</button>
+					</th:block>
+					<th:block th:if="${flag != 'Y' and applyCount >= program.capacity}">
+						<button class="apply-btn" disabled>신청마감</button>
+					</th:block>
+					<th:block th:if="${flag != 'Y' and applyCount < program.capacity}">
+						<button class="apply-btn" id="openPrivacyModalBtn">신청하기</button>
+					</th:block>
+				</th:block>
+			</div>
+		</div>
+	</div>
+
+	<div id="programApplyModalOverlay" class="modal-overlay">
+		<div class="modal-content">
+			<h3>프로그램 신청</h3>
+			<div class="scroll-box">
+				<p>개인정보 수집·이용·제공 및 활용 동의서 내용...</p>
+			</div>
+			<label>
+				<input type="checkbox" id="privacyConsentCheckbox" /> 개인정보 수집·이용·제공에 동의합니다.
+			</label>
+			<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+				<button id="confirmApplyBtn">확인</button>
+				<button id="cancelApplyBtn">취소</button>
+			</div>
+		</div>
+	</div>
+<div th:replace="~{main/footer :: footer}"></div>
+	<script th:src="@{/js/header.js}"></script>
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var program = /*[[${program}]]*/ {};
+		/*]]>*/
+
+		$(function () {
+			$('#openPrivacyModalBtn').on('click', function () {
+				$('#programApplyModalOverlay').addClass('show');
+			});
+
+			$('#confirmApplyBtn').on('click', function () {
+				if (!$('#privacyConsentCheckbox').is(':checked')) {
+					alert('개인정보 수집·이용·제공에 동의하셔야 신청이 가능합니다.');
+					return;
+				}
+				$('#programApplyModalOverlay').removeClass('show');
+				$('#spinnerOverlay').show(); // ✅ 스피너 표시
+
+				$.ajax({
+					url: '/main/program/subs/' + program.programId,
+					type: 'POST',
+					contentType: 'application/json',
+					data: JSON.stringify(program),
+					success: function () {
+						alert("신청에 성공하였습니다! 이메일을 확인해주세요.");
+						window.location.href = '/main/program'; // ✅ 성공 시 이동
+					},
+					error: function (xhr, status, error) {
+						alert('신청 실패: ' + error);
+						$('#spinnerOverlay').hide(); // 실패 시 스피너 숨김
+					}
+				});
+			});
+
+			$('#cancelApplyBtn').on('click', function () {
+				$('#programApplyModalOverlay').removeClass('show');
+			});
+
+			$('#programApplyModalOverlay').on('click', function (e) {
+				if (e.target.id === 'programApplyModalOverlay') {
+					$(this).removeClass('show');
+				}
+			});
+		});
+	</script>
+</body>
+
+</html>

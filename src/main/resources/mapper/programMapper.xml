@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hapum.hapum.mapper.ProgramMapper">
+
+
+	<insert id="insertProgram" parameterType="hapum.hapum.domain.Program"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO hapumdb.program (
+		title,
+		content,
+		start_date,
+		end_date,
+		location,
+		target,
+		capacity,
+		thumbnail_src,
+		create_on,
+		update_on,
+		expense,
+		subject
+		) VALUES (
+		#{title},
+		#{content},
+		#{startDate},
+		#{endDate},
+		#{location},
+		#{target},
+		#{capacity},
+		#{thumbnailSrc},
+		NOW(),
+		NOW(),
+		#{expense},
+		#{subject}
+		)
+	</insert>
+
+
+	<select id="selectAllPrograms" resultType="hapum.hapum.domain.Program">
+		SELECT * FROM hapumdb.program
+		ORDER BY id DESC
+	</select>
+
+	<select id="selectProgramById" resultType="hapum.hapum.domain.Program">
+		SELECT * FROM hapumdb.program WHERE id = #{id}
+	</select>
+	<!-- 신청자 수-->
+	<select id="getApplyCount" resultType="int">
+		SELECT COUNT(*) FROM hapumdb.program_subs WHERE program_id =
+		#{programId}
+	</select>
+
+	<insert id="programSub" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on, is_app)
+		VALUES (#{userId}, #{programId}, NOW(), 'N')
+	</insert>
+
+	<select id="selectPrograSubmById" resultType="hapum.hapum.domain.ProgramSub">
+		SELECT * FROM hapumdb.program_subs WHERE program_id = #{programId}
+	</select>
+
+
+	<resultMap id="ProgramSubWithUserMap" type="hapum.hapum.domain.ProgramSub">
+		<id property="id" column="program_sub_id" />
+		<result property="programId" column="program_id" />
+		<result property="userId" column="user_id" />
+		<result property="isApp" column="is_app" />
+
+		<association property="user" javaType="hapum.hapum.domain.User">
+			<id property="id" column="user_id" />
+			<result property="name" column="name" />
+			<result property="email" column="email" />
+			<result property="phone" column="phone" />
+			<!-- 필요한 필드 추가 -->
+		</association>
+	</resultMap>
+
+	<select id="selectByProgramIdWithUser" resultMap="ProgramSubWithUserMap">
+		SELECT
+		ps.id AS program_sub_id,
+		ps.program_id,
+		ps.user_id,
+		ps.is_app,
+		u.id AS user_id,
+		u.name,
+		u.phone,
+		u.email
+		FROM hapumdb.program_subs ps
+		JOIN hapumdb.user u ON ps.user_id = u.id
+		WHERE ps.program_id = #{programId}
+	</select>
+
+	<update id="approve">
+		UPDATE hapumdb.program_subs
+		SET is_app = 'Y'
+		WHERE id=#{psId}
+	</update>
+
+	<update id="cancel">
+		UPDATE hapumdb.program_subs
+		SET is_app = 'N'
+		WHERE id=#{psId}
+	</update>
+
+<resultMap id="ProgramWithSubResultMap" type="hapum.hapum.domain.ProgramWithSub">
+  <id property="id" column="id" />
+  <result property="title" column="title"/>
+  <result property="content" column="content"/>
+  <result property="subject" column="subject"/>
+  <result property="startDate" column="startDate"/>
+  <result property="endDate" column="endDate"/>
+  <result property="location" column="location"/>
+  <result property="target" column="target"/>
+  <result property="capacity" column="capacity"/>
+  <result property="expense" column="expense"/>
+  <result property="thumbnailSrc" column="thumbnailSrc"/>
+  <result property="createOn" column="createOn"/>
+  <result property="updateOn" column="updateOn"/>
+  <result property="subsId" column="subsId"/>
+  <result property="isApp" column="isApp"/>
+  <result property="subsOn" column="subsOn"/>
+</resultMap>
+
+<select id="selectProgramsWithSubByUserId" parameterType="java.lang.Long" resultMap="ProgramWithSubResultMap">
+  SELECT 
+    p.id,
+    p.title,
+    p.content,
+    p.subject,
+    p.start_date AS startDate,
+    p.end_date AS endDate,
+    p.location,
+    p.target,
+    p.capacity,
+    p.expense,
+    p.thumbnail_src AS thumbnailSrc,
+    p.create_on AS createOn,
+    p.update_on AS updateOn,
+    ps.id AS subsId,
+    ps.subs_on AS subsOn,
+    ps.is_app AS isApp
+  FROM hapumdb.program p
+  INNER JOIN hapumdb.program_subs ps ON p.id = ps.program_id
+  WHERE ps.user_id = #{userId}
+</select>
+
+<delete id="deleteByProgramSubsId">
+	DELETE FROM hapumdb.program_subs WHERE id=#{id}
+</delete>
+
+
+</mapper>
