@@ -26,4 +26,6 @@ public interface ProgramMapper {
 	 
 	 List<ProgramWithSub> selectProgramsWithSubByUserId(@Param("userId")Long userId);
 	 void deleteByProgramSubsId(@Param("id") Long subsId);
+	 
+	 void updateCode(@Param("code") String code, @Param("programId") Long programId);
 }

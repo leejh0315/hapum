@@ -44,6 +44,18 @@ public class OrganizationService {
 		return organizationMapper.selectOrgPostById(id);
 	}
 	
+	public void deleteOrganization(Long orgId, String code) {
+		organizationMapper.deleteOrganization(orgId, code);
+	}
+	
+	public void deleteOrganizationPost(Long orgPostId) {
+		organizationMapper.deleteOrganizationPost(orgPostId);
+	}
+	
+	public List<Organization> selectAllOrganizationAdmin(){
+		return organizationMapper.selectAllOrganizationAdmin();
+	}
+	
 	public void insertOrganization(Organization organization, MultipartFile photo) {
         // 썸네일 사진이 있으면 업로드 처리
         if (photo != null && !photo.isEmpty()) {

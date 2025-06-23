@@ -23,6 +23,12 @@ public class WebConfig implements WebMvcConfigurer {
 	@Value("${file.upload-dir}")
 	private String uploadDir;
 
+	// application.properties 에 정의된 경로 불러오기
+	@Value("${summernote.upload.temp-dir}")
+	private String tempVideoDir;
+
+	@Value("${summernote.upload.video-dir}")
+	private String uploadVideoDir;
 //    @Autowired
 //    private AdminInterceptor adminInterceptor;
 
@@ -52,6 +58,16 @@ public class WebConfig implements WebMvcConfigurer {
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+
+		registry.addResourceHandler("/temp/videos/**").addResourceLocations("file:" + tempVideoDir + "/")
+				.setCachePeriod(0);
+
+// /uploads/videos/** → 파일 시스템의 uploadVideoDir
+		registry.addResourceHandler("/uploads/videos/**").addResourceLocations("file:" + uploadVideoDir + "/")
+				.setCachePeriod(3600);
+
+		registry.addResourceHandler("/uploads/notification/**").addResourceLocations("file:///C:/upload/notification/");
+
 		registry.addResourceHandler("/uploads/temp/**").addResourceLocations("file:///" + uploadDir + "/temp/");
 
 		// /uploads/news/** 요청은 C:/upload/news/ 에 있는 파일로 매핑
@@ -59,9 +75,11 @@ public class WebConfig implements WebMvcConfigurer {
 
 		// /uploads/program/** 요청은 C:/upload/program/ 에 있는 파일로 매핑
 		registry.addResourceHandler("/uploads/program/**").addResourceLocations("file:///" + uploadDir + "/program/");
-		
-		registry.addResourceHandler("/uploads/organization/**").addResourceLocations("file:///" + uploadDir + "/organization/");
-		registry.addResourceHandler("/uploads/organizationPost/**").addResourceLocations("file:///" + uploadDir + "/organizationPost/");
+
+		registry.addResourceHandler("/uploads/organization/**")
+				.addResourceLocations("file:///" + uploadDir + "/organization/");
+		registry.addResourceHandler("/uploads/organizationPost/**")
+				.addResourceLocations("file:///" + uploadDir + "/organizationPost/");
 
 		// /uploads/post/** 요청은 C:/upload/post/ 에 있는 파일로 매핑
 		registry.addResourceHandler("/uploads/post/**").addResourceLocations("file:///" + uploadDir + "/post/");

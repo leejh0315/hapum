@@ -1,9 +1,13 @@
 package hapum.hapum.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -22,6 +26,31 @@ public class NewsService{
     private NewsMapper newsMapper;
 
 
+    
+    public String moveTempImagesToPosts(String content, String type) {
+    	
+        // 정규표현식을 사용해 이미지 경로 추출 (예: src="/uploads/temp/파일명")
+        Pattern pattern = Pattern.compile("src\\s*=\\s*\"(/uploads/temp/([^\"/]+))\"");
+        Matcher matcher = pattern.matcher(content);
+        while (matcher.find()) {
+            String tempImgPath = matcher.group(1);        // 예: /uploads/temp/uuid.jpg
+            String fileName = matcher.group(2);             // 예: uuid.jpg
+            File sourceFile = new File(uploadDir + "/temp/", fileName);
+            // 매개변수 type에 맞춰 대상 폴더 경로 생성 (예: "/uploads/posts/" 또는 "/uploads/news/")
+            File destFile = new File(uploadDir + "/" + type + "/", fileName);
+            if (sourceFile.exists()) {
+                try {
+                    FileUtils.moveFile(sourceFile, destFile);
+                    // content 내 이미지 경로도 temp 폴더 대신 해당 type 폴더로 변경
+                    content = content.replace("/uploads/temp/", "/uploads/" + type + "/");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // 이동 실패 시 추가 처리 (예: 로깅 또는 예외 발생)
+                }
+            }
+        }
+        return content;
+    }
     
     public void insertNews(News news, MultipartFile photo) {
         // 썸네일 사진이 있으면 업로드 처리
@@ -64,5 +93,9 @@ public class NewsService{
 	public News selectById(Long id) {
 		return newsMapper.selectById(id);
 	}
+	public void updateNews(Long newsId, String code) {
+		newsMapper.updateNews(newsId, code);
+	}
+
 }
 

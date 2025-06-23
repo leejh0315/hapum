@@ -28,4 +28,6 @@ public class Program {
     
     private LocalDateTime createOn;
     private LocalDateTime updateOn;
+    
+    private String openStatus;
 }

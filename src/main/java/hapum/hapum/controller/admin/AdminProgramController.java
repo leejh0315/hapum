@@ -75,5 +75,16 @@ public class AdminProgramController {
 		programService.cancel(programSubId); // isApp = "Y" 로 변경
 		return "redirect:/admin/program/detail/" + programId; // 필요시 파라미터 유지
 	}
+	
+	@PostMapping("/program/updateCode/{programId}")
+	public String updateCode(@PathVariable("programId") Long programId, @RequestParam("code") String code) {
+		
+		if(code.equals("Y")){code="N";} 
+		else{code="Y";}
+		
+		programService.updateCode(programId, code);
+		return "redirect:/admin/programs";
+	}
+	
 
 }

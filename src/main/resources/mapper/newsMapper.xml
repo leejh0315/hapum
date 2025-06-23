@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="hapum.hapum.mapper.NewsMapper">
 
-  <!-- 1) insertNews -->
-  <insert id="insertNews" useGeneratedKeys="true" keyProperty="id">
-    INSERT INTO hapumdb.news (title, content, thumbnailSrc)
-    VALUES (#{title}, #{content}, #{thumbnailSrc})
-  </insert>
+	<!-- 1) insertNews -->
+	<insert id="insertNews" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO hapumdb.news (title, content, thumbnailSrc, open_status) 
+		VALUES (#{title}, #{content}, #{thumbnailSrc}, 'Y')
+	</insert>
 
 	<select id="selectAllNews" resultType="hapum.hapum.domain.News">
 		SELECT * FROM hapumdb.news
+		WHERE open_status = 'Y'
 		ORDER BY create_on DESC
 		LIMIT #{limit} OFFSET #{offset}
-		
+
 	</select>
 
 
-   <select id="countNews" resultType="int">
-        SELECT COUNT(*) FROM hapumdb.news
-    </select>
-    
-    <select id="selectById" resultType="hapum.hapum.domain.News">
+	<select id="countNews" resultType="int">
+		SELECT COUNT(*) FROM hapumdb.news WHERE open_status='Y'
+	</select>
+
+	<select id="selectById" resultType="hapum.hapum.domain.News">
 		SELECT * FROM hapumdb.news WHERE id=#{id}
 	</select>
 
+
+	<update id="updateNews">
+		UPDATE hapumdb.news SET open_status=#{code} WHERE id=#{newsId}
+	</update>
 
 
 </mapper>

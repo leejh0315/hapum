@@ -1,93 +1,214 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>재단체 관리</title>
-  <link rel="stylesheet" th:href="@{/css/admin/header.css}">
-  <!-- 추가 CSS: 재단체 목록 및 '재단체 추가' 버튼 관련 스타일 -->
-  <style>
-    /* 조직 그리드 컨테이너: 중앙 정렬 및 그리드 설정 */
-    .org-container {
-      margin: 20px auto;
-      max-width: 1200px;
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 0 20px;
-    }
-    /* 조직 카드 스타일 */
-    .org-card {
-      border: 1px solid #ccc;
-      border-radius: 5px;
-      padding: 15px;
-      text-align: center;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-      background-color: #fff;
-    }
-    /* 프로필 이미지를 원형으로 표시 */
-    .org-card img {
-      width: 150px;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 50%;
-      margin: 0 auto 10px;
-      display: block;
-    }
-    /* 조직 이름 및 소개 문구 스타일 */
-    .org-card h2 {
-      font-size: 20px;
-      margin: 10px 0;
-      color: #333;
-    }
-    .org-card p {
-      font-size: 14px;
-      color: #666;
-      line-height: 1.4;
-    }
-    /* '재단체 추가' 버튼 스타일 */
-    .add-org-button {
-      display: inline-block;
-      background-color: #007bff;
-      color: #fff;
-      padding: 10px 20px;
-      border-radius: 4px;
-      text-decoration: none;
-      font-size: 16px;
-      margin-bottom: 20px;
-    }
-    .add-org-button:hover {
-      background-color: #0069d9;
-    }
-  </style>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<meta charset="UTF-8">
+	<title>제단체 관리</title>
+	<link rel="stylesheet" th:href="@{/css/admin/header.css}">
+	<style>
+		/* 페이지 전체 스크롤 숨기기 */
+		body {
+			margin: 0;
+			padding: 0;
+			
+overflow-x: hidden;   /* 가로 스크롤 차단 */
+overflow-y: auto;     /* 세로 스크롤 허용 */
+			font-family: Arial, sans-serif;
+		}
+
+		/* 최상위 컨테이너: 헤더+두 개의 섹션 */
+		.wrapper {
+			display: flex;
+			flex-direction: column;
+			height: calc(100vh - 60px);
+			/* 헤더 높이를 정확히 반영 */
+			overflow-y: auto;
+		}
+
+		.wrapper h1 {
+			text-align: center;
+			margin: 15px 0;
+		}
+
+		/* 섹션(활성 / 비활성) */
+		.section {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.section .title {
+			text-align: center;
+			margin: 5px 0;
+			font-size: 1.1rem;
+			font-weight: bold;
+		}
+
+		/* 카드 행: flex + 가로 스크롤 */
+		.org-row {
+			flex: 1;
+			display: flex;
+			gap: 20px;
+			padding: 0 20px;
+			overflow-x: auto;
+			overflow-y: hidden;
+			/* 스크롤바 스타일(필요시) */
+			scrollbar-width: thin;
+			scrollbar-color: #aaa transparent;
+		}
+
+		.org-row::-webkit-scrollbar {
+			height: 6px;
+		}
+
+		.org-row::-webkit-scrollbar-thumb {
+			background: #aaa;
+			border-radius: 3px;
+		}
+
+		/* 각 카드 */
+		.org-card {
+			position: relative;
+			flex: 0 0 250px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			padding: 15px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			background-color: #fff;
+			text-align: center;
+		}
+
+		.org-card img {
+			width: 150px;
+			height: 150px;
+			object-fit: cover;
+			border-radius: 50%;
+			margin-bottom: 10px;
+		}
+
+		.org-card h2 {
+			font-size: 18px;
+			margin: 10px 0 5px;
+			color: #333;
+		}
+
+		.org-card p {
+			font-size: 14px;
+			color: #666;
+			line-height: 1.4;
+		}
+
+		/* 삭제 버튼 (우측 상단) */
+		.delete-button {
+			position: absolute;
+			top: 8px;
+			right: 8px;
+			background: transparent;
+			border: none;
+			font-size: 18px;
+			color: #e74c3c;
+			cursor: pointer;
+		}
+
+		.delete-button:hover {
+			color: #c0392b;
+		}
+
+		/* 상태 변경 버튼 (우측 하단) */
+		.status-button {
+			position: absolute;
+			bottom: 8px;
+			right: 8px;
+			background: transparent;
+			border: none;
+			font-size: 18px;
+			color: #3498db;
+			cursor: pointer;
+		}
+
+		.status-button:hover {
+			color: #21618c;
+		}
+
+		/* 상단 “추가” 버튼 */
+		.top-actions {
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		.add-org-button {
+			display: inline-block;
+			background-color: #007bff;
+			color: #fff;
+			padding: 8px 16px;
+			border-radius: 4px;
+			text-decoration: none;
+			font-size: 14px;
+			margin: 0 5px;
+		}
+
+		.add-org-button:hover {
+			background-color: #0069d9;
+		}
+	</style>
 </head>
+
 <body>
-  <!-- 헤더 영역 -->
-  <div th:replace="~{admin/admin-header :: admin-header}"></div>
-  
-  <h1 style="text-align: center; margin-top: 20px;">제단체 관리</h1>
-  
-  <!-- 재단체 추가 버튼 (중앙 정렬) -->
-  <div style="text-align: center; margin-bottom: 20px;">
-      <a href="/admin/organization/add" class="add-org-button">제단체 추가</a>
-  </div>
-    <div style="text-align: center; margin-bottom: 20px;">
-      <a href="/admin/organization/write" class="add-org-button">글쓰기</a>
-  </div>
-  
-  <!-- 조직 카드 그리드 -->
-  <div class="org-container">
-    <div class="org-card" th:each="org : ${organizations}">
-      <img th:if="${org.profileSrc != null}" th:src="@{${org.profileSrc}}" alt="프로필 이미지" />
-      <h2 th:text="${org.name}">조직 이름</h2>
-      <p th:text="${org.introduce}">조직 소개</p>
-     
-    </div>
-  </div>
-  
-  <!-- 푸터 영역 -->
-  
-  <script th:src="@{/js/header.js}"></script>
+
+	<!-- 헤더 -->
+	<div th:replace="~{admin/admin-header :: admin-header}"></div>
+	<div class="wrapper">
+		<h1>제단체 관리</h1>
+		<div class="top-actions">
+			<a href="/admin/organization/add" class="add-org-button">제단체 추가</a>
+			<a href="/admin/organization/write" class="add-org-button">글쓰기</a>
+		</div>
+
+		<!-- 활성 단체 -->
+		<div class="section">
+			<div class="title">활성 단체</div>
+			<div class="org-row">
+				<div class="org-card" th:each="org : ${organizations}" th:if="${org.openStatus == 'Y'}">
+
+					<form th:action="@{/admin/organization/updateCode/{orgId}(orgId=${org.id})}" method="post">
+						<!-- 현재 상태를 보내면, 컨트롤러에서 반전 처리 -->
+						<input type="hidden" name="statusCode" th:value="${org.openStatus}" />
+						<button type="submit" class="status-button"
+							th:title="${org.openStatus == 'Y' ? '비활성화' : '활성화'}">
+							🔄
+						</button>
+					</form>
+
+					<img th:if="${org.profileSrc != null}" th:src="@{${org.profileSrc}}" alt="프로필 이미지" />
+					<h2 th:text="${org.name}">조직 이름</h2>
+					<p th:text="${org.introduce}">조직 소개</p>
+				</div>
+			</div>
+		</div>
+
+		<!-- 비활성 단체 -->
+		<div class="section">
+			<div class="title">비활성 단체</div>
+			<div class="org-row">
+				<div class="org-card" th:each="org : ${organizations}" th:if="${org.openStatus == 'N'}">
+
+					<form th:action="@{/admin/organization/updateCode/{orgId}(orgId=${org.id})}" method="post">
+						<input type="hidden" name="statusCode" th:value="${org.openStatus}" />
+						<button type="submit" class="status-button"
+							th:title="${org.openStatus == 'Y' ? '비활성화' : '활성화'}">
+							🔄
+						</button>
+					</form>
+
+					<img th:if="${org.profileSrc != null}" th:src="@{${org.profileSrc}}" alt="프로필 이미지" />
+					<h2 th:text="${org.name}">조직 이름</h2>
+					<p th:text="${org.introduce}">조직 소개</p>
+				</div>
+			</div>
+		</div>
+
+		<script th:src="@{/js/header.js}"></script>
+	</div>
 </body>
+
 </html>

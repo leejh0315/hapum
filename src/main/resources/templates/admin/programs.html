@@ -1,63 +1,154 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>프로그램 관리</title>
 	<link rel="stylesheet" th:href="@{/css/admin/header.css}" />
-	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
-		.program-list {
+		/* 페이징 전체 설정 */
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+			height: 100vh;
+			overflow-x: hidden;
+			/* 가로 스크롤 차단 */
+			overflow-y: auto;
+			/* 세로 스크롤 허용 */
+			/* 전체에서 가로/세로 스크롤 제거 */
 			display: flex;
-			flex-wrap: wrap;
-			justify-content: center;
-			gap: 20px;
+			flex-direction: column;
+			font-family: Arial, sans-serif;
 		}
 
-		.program-card {
-			width: 160px;
+		/* 헤더(네비 등) */
+		.program-header {
+			flex: 0 0 auto;
+		}
+
+		/* 제목영역 */
+		.title-bar {
 			text-align: center;
+			padding: 10px 0;
+			flex: 0 0 auto;
+		}
+
+		/* 두 개의 가로 스크롤 영역을 감싸는 컨테이너 */
+		.list-wrapper {
+			flex: 1 1 auto;
+			display: flex;
+			flex-direction: column;
+			gap: 10px;
+			padding: 0 10px 10px;
+			box-sizing: border-box;
+		}
+
+		/* 한 행(row) */
+		.row {
+			flex: 1;
+			display: flex;
+			gap: 20px;
+			overflow-x: auto;
+			overflow-y: hidden;
+			align-items: flex-start;
+			padding-bottom: 10px;
+		}
+
+		.row::-webkit-scrollbar {
+			height: 6px;
+		}
+
+		.row::-webkit-scrollbar-thumb {
+			background: rgba(0, 0, 0, 0.2);
+			border-radius: 3px;
+		}
+
+		/* 카드 공통 */
+		.program-card {
+			flex: 0 0 160px;
+			box-sizing: border-box;
+			background: #fff;
+			border: 1px solid #ddd;
+			border-radius: 6px;
+			text-align: center;
+			padding: 8px;
 		}
 
 		.program-card img {
 			width: 100%;
 			height: auto;
-			border-radius: 8px;
+			border-radius: 4px;
 		}
 
 		.program-title {
-			margin-top: 8px;
+			margin: 8px 0;
 			font-weight: 500;
 		}
-		
-		.container{
-			text-align: center		}
 
-		@media (max-width: 576px) {
+		.status-button {
+			background: transparent;
+			border: none;
+			cursor: pointer;
+			font-size: 18px;
+			margin-top: 4px;
+		}
+
+		/* 모바일 대응 */
+		@media (max-width:576px) {
 			.program-card {
-				width: 45%;
+				flex: 0 0 45%;
 			}
 		}
 	</style>
 </head>
 
 <body>
+	<!-- 헤더 -->
 	<div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
 
-	
+	<!-- 페이지 제목 -->
+	<div class="title-bar">
+		<h3>프로그램 목록</h3>
+	</div>
 
-		<div class="container mt-5">
-			<h3 class="text-center mb-4">프로그램 목록</h3>
-			<div class="program-list">
-				<a th:each="program : ${programs}" th:href="@{/admin/program/detail/{id}(id=${program.id})}"
-					class="program-card">
-					<img th:src="@{${program.thumbnailSrc}}" alt="썸네일 이미지" />
-					<div class="program-title" th:text="${program.title}"></div>
+	<!-- 두 개의 스크롤 가능한 행 -->
+	<div class="list-wrapper">
+
+		<!-- 진행중인 프로그램(Y) -->
+		<h3>진행중인 프로그램</h3>
+		<div class="row">
+			<div class="program-card" th:each="program : ${programs}" th:if="${program.openStatus == 'Y'}">
+				<a th:href="@{/admin/program/detail/{id}(id=${program.id})}">
+					<img th:src="@{${program.thumbnailSrc}}" alt="썸네일" />
+					<div class="program-title" th:text="${program.title}">제목</div>
 				</a>
+				<form th:action="@{/admin/program/updateCode/{programId}(programId=${program.id})}" method="post">
+					<input type="hidden" name="code" th:value="${program.openStatus}" />
+					<button type="submit" class="status-button">🔄</button>
+				</form>
 			</div>
 		</div>
+
+		<!-- 종료된 프로그램(N) -->
+		<h3>종료된 프로그램</h3>
+		<div class="row">
+			<div class="program-card" th:each="program : ${programs}" th:if="${program.openStatus == 'N'}">
+				<a th:href="@{/admin/program/detail/{id}(id=${program.id})}">
+					<img th:src="@{${program.thumbnailSrc}}" alt="썸네일" />
+					<div class="program-title" th:text="${program.title}">제목</div>
+				</a>
+				<form th:action="@{/admin/program/updateCode/{programId}(programId=${program.id})}" method="post">
+					<input type="hidden" name="code" th:value="${program.openStatus}" />
+					<button type="submit" class="status-button">🔄</button>
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+	<script th:src="@{/js/header.js}"></script>
 </body>
-<script th:src="@{/js/header.js}"></script>
 
 </html>

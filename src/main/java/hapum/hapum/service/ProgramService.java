@@ -95,4 +95,8 @@ public class ProgramService {
 	public void deleteByProgramSubsId(Long subsId) {
 		programMapper.deleteByProgramSubsId(subsId);
 	}
+	
+	public void updateCode(Long programId, String code) {
+		programMapper.updateCode(code ,programId);
+	}
 }

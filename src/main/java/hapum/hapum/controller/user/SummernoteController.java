@@ -3,13 +3,19 @@ package hapum.hapum.controller.user;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,15 +24,27 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.JsonObject;
 
+import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
-
 @Controller
 public class SummernoteController {
 
     // application.properties에 설정된 파일 업로드 디렉토리
-    @Value("${file.upload-dir}")
-    private String uploadDir;
-
+    @Value("${file.upload-dir}") private String uploadDir;
+    @Value("${summernote.upload.temp-dir}") private String tempVideoDirStr;
+    @Value("${summernote.upload.video-dir}") private String uploadVideoDirStr;
+    private Path tempDir, videoDir;
+    
+    @PostConstruct
+    public void init() throws IOException {
+        tempDir = Paths.get(tempVideoDirStr);
+        videoDir = Paths.get(uploadVideoDirStr);
+        Files.createDirectories(Paths.get(uploadDir, "temp"));
+        Files.createDirectories(Paths.get(uploadDir, "posts"));
+        Files.createDirectories(tempDir);
+        Files.createDirectories(videoDir);
+    }
+    
  // Summernote 이미지 업로드 (임시 저장)
     @RequestMapping(value = "/writePost/uploadSummernoteImageFile",
                     method = RequestMethod.POST,
@@ -77,29 +95,32 @@ public class SummernoteController {
         return jsonObject.toString();
     }
     
-    public String moveTempImagesToPosts(String content, String type) {
-    	
-        // 정규표현식을 사용해 이미지 경로 추출 (예: src="/uploads/temp/파일명")
-        Pattern pattern = Pattern.compile("src\\s*=\\s*\"(/uploads/temp/([^\"/]+))\"");
-        Matcher matcher = pattern.matcher(content);
-        while (matcher.find()) {
-            String tempImgPath = matcher.group(1);        // 예: /uploads/temp/uuid.jpg
-            String fileName = matcher.group(2);             // 예: uuid.jpg
-            File sourceFile = new File(uploadDir + "/temp/", fileName);
-            // 매개변수 type에 맞춰 대상 폴더 경로 생성 (예: "/uploads/posts/" 또는 "/uploads/news/")
-            File destFile = new File(uploadDir + "/" + type + "/", fileName);
-            if (sourceFile.exists()) {
-                try {
-                    FileUtils.moveFile(sourceFile, destFile);
-                    // content 내 이미지 경로도 temp 폴더 대신 해당 type 폴더로 변경
-                    content = content.replace("/uploads/temp/", "/uploads/" + type + "/");
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    // 이동 실패 시 추가 처리 (예: 로깅 또는 예외 발생)
-                }
-            }
-        }
-        return content;
+
+    // ────────── 1) 에디터 임시 비디오 업로드 ──────────
+    @PostMapping("/upload/video-temp")
+    public ResponseEntity<Map<String, String>> uploadTemp(
+            @RequestParam("file") MultipartFile file) throws IOException {
+
+        String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path target = tempDir.resolve(filename);
+        Files.copy(file.getInputStream(), target, StandardCopyOption.REPLACE_EXISTING);
+
+        // 에디터에서 src="/temp/videos/..." 로 접근하게 됨
+        return ResponseEntity.ok(
+                Collections.singletonMap("src", "/temp/videos/" + filename)
+        );
     }
+
+    // ────────── 2) 에디터에서 임시 비디오 삭제 요청 ──────────
+    @PostMapping("/delete/temp/video")
+    public ResponseEntity<Void> deleteTemp(@RequestParam("file") String fileUrl)
+            throws IOException {
+
+        String filename = Paths.get(fileUrl).getFileName().toString();
+        Files.deleteIfExists(tempDir.resolve(filename));
+        return ResponseEntity.ok().build();
+    }
+
+
 
 }

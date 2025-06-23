@@ -18,7 +18,8 @@
 		create_on,
 		update_on,
 		expense,
-		subject
+		subject,
+		open_status
 		) VALUES (
 		#{title},
 		#{content},
@@ -31,7 +32,8 @@
 		NOW(),
 		NOW(),
 		#{expense},
-		#{subject}
+		#{subject},
+		'Y'
 		)
 	</insert>
 
@@ -148,5 +150,9 @@
 	DELETE FROM hapumdb.program_subs WHERE id=#{id}
 </delete>
 
+
+<update id="updateCode">
+	UPDATE hapumdb.program SET open_status=#{code} where id=#{programId}
+</update>
 
 </mapper>

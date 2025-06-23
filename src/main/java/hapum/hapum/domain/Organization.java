@@ -9,4 +9,5 @@ public class Organization {
 	private String name;
 	private String introduce;
 	private String profileSrc;
+	private String openStatus;
 }

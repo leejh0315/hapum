@@ -201,7 +201,7 @@ public class MainController {
 	@GetMapping("/organization")
 	public String getOrganizationList(Model model, HttpServletRequest req) {
 		addUserToModel(req, model);
-		List<Organization> organizationList =organizationService.selectAllOrganization();
+		List<Organization> organizationList = organizationService.selectAllOrganization();
 		model.addAttribute("organizationList",organizationList);
 		return "main/organizationList";
 	}

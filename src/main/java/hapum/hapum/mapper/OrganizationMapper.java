@@ -18,4 +18,7 @@ public interface OrganizationMapper {
 	List<OrganizationPost> selectByOrgId(@Param("orgId") Long id, @Param("offset") int offset, @Param("limit") int limit);
 	int countOrgPost(@Param("orgId") Long id);
 	OrganizationPost selectOrgPostById(@Param("id") Long id);
+	void deleteOrganization(@Param("orgId") Long orgId, @Param("code") String code);
+	void deleteOrganizationPost(@Param("orgPostId") Long orgPostId );
+	List<Organization> selectAllOrganizationAdmin();
 }

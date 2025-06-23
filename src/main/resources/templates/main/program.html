@@ -23,6 +23,7 @@
       <div class="content">
         <div class="program-list">
           <a th:each="program : ${programs}"
+          th:if="${program.openStatus == 'Y'}"
              th:href="@{/main/program/detail/{id}(id=${program.id})}"
              class="program-card">
             <img th:src="@{${program.thumbnailSrc}}" alt="썸네일 이미지" />
@@ -36,3 +37,4 @@
     <script th:src="@{/js/header.js}"></script>
   </body>
 </html>
+

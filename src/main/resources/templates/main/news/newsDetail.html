@@ -10,14 +10,14 @@
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
-		.post-content{
-			overflow: scroll;
+		.post-content {
+			overflow: auto;
 		}
-		.content{
+
+		.content {
 			width: 80%;
 			max-width: 100vw;
 		}
-		
 	</style>
 </head>
 
@@ -35,13 +35,18 @@
 		<div class="content">
 			<!-- 게시글 제목 -->
 			<div class="post-title" th:text="${news.title}">게시글 제목</div>
-
-			
+			<div th:if="${user != null and user.email == 'admin'}" style="margin-top: 10px; text-align: right;">
+				<form th:action="@{/admin/news/update/{id}(id=${news.id})}" method="post"
+					onsubmit="return confirm('이 게시글을 삭제하시겠습니까??');">
+					<input type="hidden" name="code" th:value=${news.openStatus} />
+					<button type="submit"
+						style="background-color: orange; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+						게시글 삭제
+					</button>
+				</form>
+			</div>
 			<br>
 			<hr>
-
-
-
 			<!-- 게시글 내용 -->
 			<div class="post-content" th:utext="${news.content}">
 				<!-- 실제 게시글의 HTML 형식 내용이 출력됩니다. -->

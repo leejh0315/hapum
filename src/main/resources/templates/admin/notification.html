@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>공지사항 작성</title>
+
+  <!-- 에디터 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css"
+        rel="stylesheet">
+
+  <!-- 공통 CSS -->
+  <link rel="stylesheet" th:href="@{/css/admin/writeNews.css}" />
+  <link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+
+  <!-- jQuery & Summernote JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js">
+  </script>
+</head>
+<body>
+  <!-- 공통 헤더 -->
+  <div th:replace="~{admin/admin-header :: admin-header}"></div>
+
+  <div class="news-form-container">
+    <h2 class="news-title">공지사항 작성</h2>
+    <form id="newsForm"
+          action="/admin/writeNotification"
+          method="post"
+          onsubmit="return validateNewsForm()">
+      <div class="news-form-group">
+        <label for="title">제목</label>
+        <input type="text" id="title" name="title" placeholder="제목을 입력하세요" />
+      </div>
+      <div class="news-form-group">
+        <label for="content">내용</label>
+        <textarea id="summernote"
+                  name="content"
+                  placeholder="내용을 입력하세요"></textarea>
+      </div>
+      <button type="submit" class="news-button">등록하기</button>
+    </form>
+  </div>
+
+  <script>
+    $(function(){
+      $('#summernote').summernote({
+        height: 300,
+        placeholder: '소식 내용을 입력하세요...',
+        toolbar: [
+          ['insert', ['picture', 'videoUpload']]
+        ],
+        buttons: {
+          // 비디오 업로드 버튼 커스텀
+          videoUpload: function (context) {
+            var ui = $.summernote.ui;
+            return ui.button({
+              contents: '<i class="note-icon-video"/>',
+              tooltip: '비디오 업로드',
+              click: function () {
+                var inp = $('<input type="file" accept="video/*">');
+                inp.on('change', function () {
+                  var file = this.files[0],
+                      fd = new FormData();
+                  fd.append('file', file);
+                  $.ajax({
+                    url: '/upload/video-temp',
+                    method: 'POST',
+                    data: fd,
+                    processData: false,
+                    contentType: false
+                  }).done(function(res){
+                    // controls 속성으로 에디터에서도 재생/일시정지 가능
+                    context.invoke('editor.pasteHTML',
+                      '<video controls style="max-width:100%;" src="' + res.src + '"></video><br/>'
+                    );
+                  }).fail(function(){
+                    alert('비디오 업로드에 실패했습니다.');
+                  });
+                });
+                inp.click();
+              }
+            }).render();
+          }
+        },
+        callbacks: {
+          // 이미지 업로드 로직(기존 활용)
+          onImageUpload: function(files) {
+            for (let f of files) uploadSummernoteImageFile(f, this);
+          },
+          // 미디어(이미지/비디오) 삭제 시 temp 서버에서도 파일 삭제
+          onMediaDelete: function($target) {
+            var src = $target.attr('src');
+            if (src && src.startsWith('/temp/videos/')) {
+              $.post('/delete/temp/video', { file: src });
+            }
+          }
+        }
+      });
+    });
+
+    // (기존) 이미지 업로드 헬퍼
+    function uploadSummernoteImageFile(file, editor) {
+      var data = new FormData();
+      data.append("file", file);
+      $.ajax({
+        url: "/writePost/uploadSummernoteImageFile",
+        data: data, cache: false,
+        contentType: false, processData: false,
+        type: "POST", dataType:"json"
+      }).done(function(resp){
+        if (resp.responseCode === "success") {
+          $(editor).summernote('insertImage', resp.src);
+        } else alert("이미지 업로드 실패");
+      }).fail(function(){
+        alert("이미지 업로드 중 오류");
+      });
+    }
+
+    // 폼 검증 (제목/내용 비어있는지 등)
+    function validateNewsForm(){
+      if (!$('#title').val().trim()) {
+        alert('제목을 입력하세요');
+        return false;
+      }
+      if (!$('#summernote').summernote('isEmpty')) {
+        return true;
+      }
+      alert('내용을 입력하세요');
+      return false;
+    }
+  </script>
+
+  <script th:src="@{/js/admin/writeNews.js}"></script>
+</body>
+</html>
