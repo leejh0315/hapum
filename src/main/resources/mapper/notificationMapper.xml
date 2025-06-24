@@ -9,5 +9,12 @@
 		VALUES (#{title}, #{content})
 	</insert>
 
+	<select id="selectAll" resultType="hapum.hapum.domain.Notification">
+		SELECT * FROM hapumdb.notification
+	</select>
 	
+	<select id="selectById" resultType="hapum.hapum.domain.Notification">
+		SELECT * FROM hapumdb.notification
+		WHERE id=#{id}
+	</select>
 </mapper>

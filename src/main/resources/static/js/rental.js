@@ -262,6 +262,13 @@ function submitRental() {
 		alert('시설, 날짜 및 2시간 연속 시간을 정확히 선택해주세요.');
 		return;
 	}
+	const date = document.querySelector('#datePicker').value;
+      const times = document.querySelector('#selected-time-display').innerText;
+      const room = document.querySelector('.room-btn.active').dataset.room;
+      document.getElementById('modalDate').innerText = date;
+      document.getElementById('modalTime').innerText = times;
+      document.getElementById('modalRoom').innerText = room;
+	 document.getElementById('rentalModalOverlay').classList.add('show');
 
-	alert(`대관 신청 완료!\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n시간: ${selectedSlots[0]} ~ ${selectedSlots[3]}`);
+	//alert(`대관 신청 완료!\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n시간: ${selectedSlots[0]} ~ ${selectedSlots[3]}`);
 }

@@ -4,11 +4,40 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>기관 소개</title>
+	<title>센터 소개</title>
 	<link rel="stylesheet" th:href="@{/css/header.css}">
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
-	    <link rel="stylesheet" th:href="@{/css/main/introduce.css}">
+	<link rel="stylesheet" th:href="@{/css/main/introduce.css}">
+	<link rel="stylesheet" th:href="@{/css/main/timeline.css}">
+
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+	<style>
+		html,
+		body {
+			margin: 0;
+			padding: 0;
+			height: 100%;
+		}
+
+		body {
+			display: flex;
+			flex-direction: column;
+			min-height: 100vh;
+			/* 뷰포트 전체 높이 이상 확보 */
+		}
+
+		.container {
+			flex: 1;
+			/* 본문 영역(사이드+메인)이 빈 공간을 전부 차지 */
+			display: flex;
+			height: 2000px;
+		}
+
+		.main-content {
+			flex: 1;
+		}
+	</style>
 </head>
 
 <body>
@@ -37,6 +66,7 @@
 		const contents = {
 			'인사말': `
     <h2>인사말</h2>
+    <br>
     <p>
       <strong>하느님께서 보시니 손수 만드신 모든 것이 참 좋았다. (창세 1,31)</strong>
       <br><br>
@@ -57,7 +87,8 @@
   `,
 			'설립목적': `
     <h2>설립목적</h2>
-    <p style="text-align: center;">
+    <br>
+    <p style="text-align: center; float: left">
       <span style="color: #5c9ccf;"><strong>하품</strong></span>은<br>
       자기다움 · 성장 · 행복을 바탕으로<br>
       청소년 · 청년 · 학부모가<br>
@@ -67,10 +98,237 @@
       <span style="color: #5c9ccf;"><strong>하느님 품</strong></span>입니다.
     </p>
   `,
-			'주요연혁': '<h2>주요연혁</h2><ul><li>2001년 - 설립</li><li>2010년 - 리뉴얼</li></ul>',
-			'오시는길': '<h2>오시는길</h2><p>서울시 어디어디 몇 번지, ○○역 2번 출구에서 도보 5분 거리입니다.</p>'
-		};
+			'주요연혁': `
+    <h2 class="text-center">하품 주요 연혁</h2>
+    <ul class="timeline timeline-centered">
 
+      <!-- 2025 -->
+      <li class="timeline-item period">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h2 class="timeline-title">2025년</h2></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-info"><span>01.23 (금)</span></div>
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h3 class="timeline-title">오중석 프란치스코 신부 부임</h3></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title" onclick="toggleProgram('program-2025')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
+          <ul id="program-2025" style="display: none; margin-top: 10px;">
+            <li>주님께 찬양을</li>
+            <li>청년 떼제기도</li>
+            <li>성주간 특강</li>
+            <li>청년 성시간</li>
+            <li>청년 성경 공부</li>
+            <li>수지에니어그램</li>
+            <li>대가대협 천안지구 대학 사목</li>
+            <li>천안·아산지구 소년소녀합창단 지도신부</li>
+            <li>가톨릭찬양팀 비아또르 지도신부</li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- 2024 -->
+      <li class="timeline-item period">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h2 class="timeline-title">2024년</h2></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title" onclick="toggleProgram('program-2024')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
+          <ul id="program-2024" style="display: none; margin-top: 10px;">
+            <li>주님께 찬양을</li>
+            <li>청년 떼제기도</li>
+            <li>청년 성시간</li>
+            <li>청년 성경 공부</li>
+            <li>수지에니어그램</li>
+            <li>대가대협 천안지구 대학 사목</li>
+            <li>천안·아산지구 소년소녀합창단 지도신부</li>
+            <li>가톨릭찬양팀 비아또르 지도신부</li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- 2023 -->
+      <li class="timeline-item period">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h2 class="timeline-title">2023년</h2></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title" onclick="toggleProgram('program-2023')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
+          <ul id="program-2023" style="display: none; margin-top: 10px;">
+            <li>주님께 찬양을</li>
+            <li>청년 떼제기도</li>
+            <li>하품 특강-뭉클 클래스</li>
+            <li>청년 성시간</li>
+            <li>청년 피정</li>
+            <li>청년 성경 공부</li>
+            <li>수지에니어그램</li>
+            <li>대가대협 천안지구 대학 사목</li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- 2022 -->
+      <li class="timeline-item period">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h2 class="timeline-title">2022년</h2></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title" onclick="toggleProgram('program-2022')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
+          <ul id="program-2022" style="display: none; margin-top: 10px;">
+            <li>주님께 찬양을</li>
+            <li>청년 떼제기도</li>
+            <li>하품 특강-주신부의 묵주공방</li>
+            <li>하품 특강-샴푸바 만들기</li>
+            <li>하품 특강-트리만들기</li>
+            <li>하품 특강-리스만들기</li>
+            <li>청년 성시간</li>
+            <li>하품 묵주 공방 (몽골 항올성당 아이들을 위한 묵주 만들기)</li>
+            <li>수지에니어그램</li>
+            <li>대가대협 천안지구 대학 사목</li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- 2021 -->
+      <li class="timeline-item period">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h2 class="timeline-title">2021년</h2></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-info"><p>06.23 (수)</p></div>
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h3 class="timeline-title">한정현 스테파노 주교 사목 방문 (조수환 바오로 신부 동행)</h3></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title" onclick="toggleProgram('program-2021')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
+          <ul id="program-2021" style="display: none; margin-top: 10px;">
+            <li>주님께 찬양을</li>
+            <li>청년 떼제기도</li>
+            <li>청년 교리</li>
+            <li>청년 성시간</li>
+            <li>주일 복음 나눔</li>
+            <li>수지에니어그램</li>
+            <li>대가대협 천안지구 대학 사목</li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- 2020 -->
+      <li class="timeline-item period">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h2 class="timeline-title">2020년</h2></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-info"><span>01.17 (금)</span></div>
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h3 class="timeline-title">남광근 프란치스코 드 살 신부 부임</h3></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title" onclick="toggleProgram('program-2020')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
+          <ul id="program-2020" style="display: none; margin-top: 10px;">
+            <li>주님께 찬양을</li>
+            <li>청년 떼제기도</li>
+            <li>청년들을 위한 교리</li>
+            <li>청년 성시간</li>
+            <li>주일 복음 나눔</li>
+            <li>수지에니어그램</li>
+            <li>성경학교</li>
+            <li>퍼스널 컬러</li>
+            <li>청년성서 특강</li>
+            <li>대가대협 천안지구 대학 사목</li>
+          </ul>
+        </div>
+      </li>
+
+      <!-- 2019 -->
+      <li class="timeline-item period">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h2 class="timeline-title">2019년</h2></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-info"><span>02.24 (일)</span></div>
+        <div class="timeline-marker"></div>
+        <div class="timeline-content"><h3 class="timeline-title">개관 축복 미사 (유흥식 라자로 추기경 집전)</h3></div>
+      </li>
+      <li class="timeline-item">
+        <div class="timeline-marker"></div>
+        <div class="timeline-content">
+          <h3 class="timeline-title" onclick="toggleProgram('program-2019')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
+          <ul id="program-2019" style="display: none; margin-top: 10px;">
+            <li>몸신학·성교육</li>
+            <li>청년 기도모임</li>
+            <li>주님께 찬양을</li>
+            <li>청년 주일 복음 나눔</li>
+            <li>수지에니어그램</li>
+            <li>청소년 상담</li>
+            <li>청년 성경 공부</li>
+            <li>선교사학교</li>
+            <li>자모회 교육</li>
+            <li>내 얼굴에 찰떡(퍼스널 컬러)</li>
+            <li>대가대협 천안지구 대학 사목</li>
+          </ul>
+        </div>
+      </li>
+
+    </ul>
+  `,
+			'오시는길': `
+    <h2>오시는길</h2>
+    <br>
+    <ol>
+      <li>
+        <strong>기차·전철 이용시</strong><br>
+        천안역(1호선) → 쌍용역 2번 출구에서 왼쪽 방향(180m) → 천안은혜교회에서 오른쪽 방향(125m) →<br>
+        나사렛대학교 평생교육원 앞 횡단보도 건너기 → 방아다리공원 방향 직진(240m) →<br>
+        보그헤어에서 오른쪽 방향(100m) → 하품센터 도착
+      </li>
+      <br>
+      <li>
+        <strong>버스 이용시</strong>
+        <ol type="a" style="margin-top: .5em; margin-left:2%">
+          <li>
+            <strong>시내버스 1번 (약 40분)</strong><br>
+            종합터미널 맞은편 정류장에서 1번 노선 탑승(신부경남아파트 방면) →<br>
+            쌍용고입구 하차(15개 정류장) → 하차 후 왼쪽 방향(권구성순대국밥 방향 50m) →<br>
+            횡단보도 건넌 뒤 오른쪽(20m) → 쌍용수산시장 앞에서 왼쪽(30m) → 하품센터 도착
+          </li>
+          <li>
+            <strong>시내버스 12번 (약 40분)</strong><br>
+            고속터미널 앞 정류장에서 12번 노선 탑승(성정1동행정복지센터 방면) →<br>
+            방아다리공원 정류장 하차(14개 정류장) → 하차 후 왼쪽(140m) →<br>
+            보그헤어 앞에서 오른쪽(100m) → 하품센터 도착
+          </li>
+          <li>
+            <strong>간선버스 900번 (약 40분)</strong><br>
+            종합터미널 앞 정류장에서 900번 노선 탑승(방죽안오거리 방면) →<br>
+            삼일원앙아파트 정류장 하차(15개 정류장) → 하차 후 오른쪽(계룡숯불닭갈비앤보쌈 방향 50m) →<br>
+            계룡숯불닭갈비앤보쌈 앞에서 왼쪽(320m) → 현대자동차 블루핸즈 앞에서 오른쪽(30m) →<br>
+            쌍용수산시장 앞에서 왼쪽(30m) → 하품센터 도착
+          </li>
+        </ol>
+      </li>
+    </ol>
+  `
+		};
+		function toggleProgram(id) {
+			const el = document.getElementById(id);
+			if (el) {
+				el.style.display = (el.style.display === "none") ? "block" : "none";
+			}
+		}
 
 		function changeContent(menu) {
 			// 버튼 스타일 초기화 및 활성화

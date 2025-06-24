@@ -1,90 +1,129 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>비밀번호 수정</title>
-  <!-- 공통 헤더 스타일 및 기타 CSS -->
-  <link rel="stylesheet" th:href="@{/css/header.css}">
-  <link rel="stylesheet" th:href="@{/css/admin/news.css}">
-      <link rel="stylesheet" th:href="@{/css/footer.css}">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/footer.css}" />
   <style>
     body {
-      background-color: #f9f9f9;
-      font-family: Arial, sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
     }
-    h1 {
+    .container {
+      height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .content {
       text-align: center;
-      margin-top: 20px;
-      margin-bottom: 40px;
+      width: 100%;
+      max-width: 400px;
     }
-    /* 폼 컨테이너: 최대 폭 지정, 중앙 정렬 및 그림자 효과 */
-    .password-form {
-      max-width: 500px;
-      margin: 0 auto;
-      background-color: #ffffff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    .content h1 {
+      margin-bottom: 30px;
+      color: #5C4033;
     }
-    .password-form .form-control {
-      margin-bottom: 20px;
-    }
-    /* 에러 메시지 스타일 */
+  form label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;  /* 레이블 텍스트는 왼쪽 정렬 */
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: #5C4033;
+}
+
+/* 2) input이 부모 너비를 100%로 차지하도록 */
+form input[type="password"],
+form input[type="text"] {
+  width: 100%;
+  box-sizing: border-box;   /* 패딩/테두리까지 포함해서 100% */
+  padding: 10px 14px;
+  border: 1px solid #D6CCC2;
+  border-radius: 6px;
+  background-color: #EDEDE9;
+  margin-top: 6px;
+  transition: border-color 0.3s;
+}
+
+/* 포커스시 테두리 강조 */
+form input:focus {
+  outline: none;
+  border-color: #D5BDAF;
+}
     .error-msg {
       color: #dc3545;
       font-size: 0.875em;
+      text-align: left;
+      margin-top: -10px;
+      margin-bottom: 10px;
     }
-    /* 모바일 대응 */
-    @media (max-width: 576px) {
-      .password-form {
-        padding: 20px;
-      }
+    .login-button {
+      width: 40%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #D5BDAF;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .login-button:hover {
+      background-color: #E3D5CA;
+      transform: translateY(-2px);
     }
   </style>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-  <!-- 헤더 영역: main/header 프래그먼트를 Thymeleaf로 포함 -->
+  <!-- 공통 헤더 -->
   <div th:replace="~{main/header :: headFrag(${user})}"></div>
-  
-  <h1>비밀번호 수정</h1>
-  
-  <div class="container mb-5">
-    <div class="password-form">
-      <!-- 폼 바인딩: model에 전달된 updatePwForm 객체 사용 -->
-      <form th:action="@{/main/mypage/updatePw}" th:object="${updatePwForm}" method="post">
-        <div class="mb-3">
-          <label for="password" class="form-label">새 비밀번호</label>
-          <input type="password" class="form-control" 
-                 id="password" th:field="*{password}" 
-                 placeholder="새로운 비밀번호를 입력하세요" required>
-          <div class="error-msg" th:if="${#fields.hasErrors('password')}" 
-               th:errors="*{password}"></div>
-        </div>
-        <div class="mb-3">
-          <label for="passwordCheck" class="form-label">비밀번호 확인</label>
-          <input type="password" class="form-control" 
-                 id="passwordCheck" th:field="*{passwordCheck}" 
-                 placeholder="비밀번호를 다시 입력하세요" required>
-          <div class="error-msg" th:if="${#fields.hasErrors('passwordCheck')}" 
-               th:errors="*{passwordCheck}"></div>
-        </div>
-        <button type="submit" class="btn btn-primary w-100">비밀번호 변경</button>
+
+  <div class="container">
+    <div class="content">
+      <h1>비밀번호 수정</h1>
+      <form id="updatePwForm"
+            th:action="@{/main/mypage/updatePw}"
+            th:object="${updatePwForm}"
+            method="post">
+
+        <label for="password">새 비밀번호
+          <input type="password" id="password"
+                 th:field="*{password}"
+                 placeholder="새로운 비밀번호를 입력하세요" required />
+        </label>
+        <div class="error-msg"
+             th:if="${#fields.hasErrors('password')}"
+             th:errors="*{password}"></div>
+
+        <label for="passwordCheck">비밀번호 확인
+          <input type="password" id="passwordCheck"
+                 th:field="*{passwordCheck}"
+                 placeholder="비밀번호를 다시 입력하세요" required />
+        </label>
+        <div class="error-msg"
+             th:if="${#fields.hasErrors('passwordCheck')}"
+             th:errors="*{passwordCheck}"></div>
+
+        <button class="login-button" type="submit">비밀번호 변경</button>
       </form>
     </div>
   </div>
+
   <div th:replace="~{main/footer :: footer}"></div>
+
   <script th:src="@{/js/header.js}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // 폼 제출 시 confirm 대화상자 출력
-    $(document).ready(function(){
-      $("form").on("submit", function(e){
-        var answer = confirm("비밀번호를 변경하시겠습니까?\n변경 후에 로그아웃 되며, 메인 화면으로 이동합니다.");
-        if(!answer) {
+    // 제출 전 확인
+    $(function(){
+      $('#updatePwForm').on('submit', function(e){
+        if(!confirm('비밀번호를 변경하시겠습니까?\n변경 후 로그아웃되며 메인으로 이동합니다.')){
           e.preventDefault();
         }
       });

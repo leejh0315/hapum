@@ -1,64 +1,235 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>대관신청</title>
-    <link rel="stylesheet" th:href="@{/css/header.css}" />
-    <link rel="stylesheet" th:href="@{/css/main/rental.css}" />
-    <link rel="stylesheet" th:href="@{/css/footer.css}" />
-    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    <style>
-      /* 지난 시간 회색 음영 처리 */
-    </style>
-  </head>
-  <body>
-    <div th:replace="~{main/header :: headFrag(${user})}"></div>
-    <div class="container">
-          <div class="sidebar">
-        <div class="sidebar-title">시설 선택</div>
-        <button class="menu-button room-btn active" data-room="강의실1">강의실1</button>
-        <button class="menu-button room-btn" data-room="강의실2">강의실2</button>
-        <button class="menu-button room-btn" data-room="강당">강당</button>
-        <button class="menu-button room-btn" data-room="연습실">연습실</button>
-      </div>
-      <!-- 시설 정보 및 타임테이블 -->
-      <div id="room-info" style="display: none;">
-        <h3 id="room-title"></h3>
-        <h4 id="floor-title" style="color: #666;"></h4>
-        <div class="room-flex-container">
-          <!-- 사진 + 설명 -->
-          <div id="room-content" ></div>
-          <!-- 타임테이블 -->
-          <div class="timetable-wrapper">
-            <div id="timetable-container" class="timetable" style="display: none;">
-              <div class="slot-row-container">
-                <div class="slot-row" id="time-slots-row">
-                  <div class="label-cell">예약</div>
-                </div>
-              </div>
-              <div style="margin: 20px 0;">
-                <span>예약 가능 날짜 : <span id="date-range-text"></span></span><br />
-                <input type="date" id="datePicker" />
-              </div>
-              <div class="selected-time-display" id="selected-time-display"></div>
-              <button id="submit-btn" disabled onclick="submitRental()">대관 신청하기</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div th:replace="~{main/footer :: footer}"></div>
-    <script th:src="@{/js/header.js}"></script>
-    <script th:src="@{/js/roomData.js}"></script>
-    <!--  <script th:src="@{/js/rental.js}"></script> -->
-    <script th:inline="javascript">
-      const blockedDays = [[${blockedDays}]];
-      const fixedReservations = [[${fixedReservations}]];
-      const rentals = [[${rentals}]];
-      const user = /*[[${user}]]*/ null;
-    </script>
-    <script th:src="@{/js/main/rental.js}"></script>
-    
-  </body>
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>대관신청</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/main/rental.css}" />
+	<link rel="stylesheet" th:href="@{/css/footer.css}" />
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<style>
+		.modal-overlay {
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.5);
+			display: none;
+			align-items: center;
+			justify-content: center;
+			z-index: 2000;
+		}
+
+		.modal-overlay.show {
+			display: flex;
+		}
+
+		.modal-content {
+			background: #fff;
+			border-radius: 6px;
+			width: 600px;
+			max-width: 90%;
+			max-height: 80%;
+			padding: 20px;
+			box-sizing: border-box;
+			overflow: hidden;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.modal-content h3 {
+			margin-top: 0;
+		}
+
+		.modal-scroll {
+			flex: 1;
+			overflow-y: auto;
+			margin-bottom: 20px;
+			padding-right: 10px;
+		}
+
+		.modal-scroll ul {
+			padding-left: 1.2em;
+		}
+
+		.modal-buttons {
+			text-align: right;
+		}
+
+		.modal-buttons button {
+			margin-left: 10px;
+			padding: 8px 16px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			background: #F5EBE0;
+			color: #333;
+			transition: background 0.2s;
+		}
+
+		.modal-buttons button.cancel {
+			background: #EDEDE9;
+			color: #555;
+		}
+
+		.modal-buttons button:hover {
+			background: #E3D5CA;
+		}
+
+		.scroll-box {
+			height: calc(100% - 150px);
+			overflow-y: auto;
+			border: 1px solid #ccc;
+			padding: 10px;
+			margin: 10px 0;
+			font-size: 14px;
+			white-space: pre-wrap;
+		}
+
+
+		#confirmApplyBtn {
+			display: block;
+			width: 10%;
+			padding: 12px;
+			text-align: center;
+			background-color: #F5EBE0;
+			border: none;
+
+			font-size: 16px;
+			cursor: pointer;
+			color: #333;
+			border-radius: 10%;
+			margin-bottom: 5px;
+		}
+
+		#cancelApplyBtn {
+			display: block;
+			width: 10%;
+			padding: 12px;
+			text-align: center;
+			background-color: #F5EBE0;
+			border: none;
+			border-radius: 10%;
+			font-size: 16px;
+			cursor: pointer;
+			color: #333;
+
+			margin-bottom: 5px;
+		}
+	</style>
+</head>
+
+<body>
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+	<div class="container">
+		<div class="sidebar">
+			<div class="sidebar-title">시설 선택</div>
+			<button class="menu-button room-btn active" data-room="강의실1">강의실1</button>
+			<button class="menu-button room-btn" data-room="강의실2">강의실2</button>
+			<button class="menu-button room-btn" data-room="강당">강당</button>
+			<button class="menu-button room-btn" data-room="연습실">연습실</button>
+		</div>
+		<!-- 시설 정보 및 타임테이블 -->
+		<div id="room-info" style="display: none;">
+			<h3 id="room-title"></h3>
+			<h4 id="floor-title" style="color: #666;"></h4>
+			<div class="room-flex-container">
+				<!-- 사진 + 설명 -->
+				<div id="room-content"></div>
+				<!-- 타임테이블 -->
+				<div class="timetable-wrapper">
+					<div id="timetable-container" class="timetable" style="display: none;">
+						<div class="slot-row-container">
+							<div class="slot-row" id="time-slots-row">
+								<div class="label-cell">예약</div>
+							</div>
+						</div>
+						<div style="margin: 20px 0;">
+							<span>예약 가능 날짜 : <span id="date-range-text"></span></span><br />
+							<input type="date" id="datePicker" />
+						</div>
+						<div class="selected-time-display" id="selected-time-display"></div>
+						<button id="submit-btn" disabled onclick="submitRental()">대관 신청하기</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="rentalModalOverlay" class="modal-overlay">
+		<div class="modal-content">
+			<h3>대관 신청 확인</h3>
+			<div class="modal-scroll">
+				<p>아래 내용을 확인하신 후 ‘확인’ 버튼을 눌러주세요.</p>
+				<ul>
+					<li>선택하신 날짜: <span id="modalDate"></span></li>
+					<li>선택하신 시간: <span id="modalTime"></span></li>
+					<li>신청하시는 시설: <span id="modalRoom"></span></li>
+					<li>대관 목적: <input id="purpose"> </li>
+					<li>단체명: <input id="groupName"> </li>
+				</ul>
+				<div class="scroll-box">
+					<h3>[개인정보 수집·이용·제공 및 활용 동의서]</h3>
+					<p><strong>□ 개인정보의 수집, 이용 목적</strong></p>
+					<ul>
+						<li>대관 신청자(단체) 및 대관 인원 확인</li>
+						<li>대관 허위 신청 방지</li>
+					</ul>
+
+					<p><strong>□ 수집, 이용할 개인정보의 내용</strong></p>
+					<ul>
+						<li>필수개인정보: 성명, 휴대폰번호</li>
+						<li> 조건부 필수개인정보 : 소속단체 (단체 대관 신청시)</li>
+						<li>선택개인정보: 본당, 세례명</li>
+					</ul>
+
+					<p><strong>□ 개인정보의 보유, 이용 기간</strong></p>
+					<ul>
+						<li>보유기간 : 대관 신청시부터 대관 종료까지</li>
+						<li>이용기간 : 대관 신청, 진행 기간</li>
+					</ul>
+
+					<p><strong>□ 개인 정보의 제3자 제공 안내</strong></p>
+					<ul>
+						<li>개인정보를 제공 받는 자 : 본 기관의 종사자 및 관계자</li>
+						<li>이용 목적 : 본 기관 종사자 및 관계자의 대관 정보 파악</li>
+						<li>제공하는 개인정보 항목 : 성명, 휴대폰번호, 소속단체(조건부), 본당(선택), 세례명(선택)</li>
+					</ul>
+
+					<p><strong>□ 동의를 거부할 권리 및 처리</strong></p>
+					<ul>
+						<li>귀하는 개인정보 제공 이용을 거부할 수 있습니다. 다만, 이에 대한 동의를 하지 않을 경우에는 대관 신청, 프로그램 신청 및 증빙자료 발급 등에 불이익을 받을 수
+							있습니다.</li>
+					</ul>
+				</div>
+			</div>
+			<label>
+				<input type="checkbox" id="privacyConsentCheckbox" />
+				개인정보 수집·이용·제공에 동의합니다.
+			</label>
+
+			<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+				<button id="confirmApplyBtn">확인</button>
+				<button id="cancelApplyBtn">취소</button>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="~{main/footer :: footer}"></div>
+	<script th:src="@{/js/header.js}"></script>
+	<script th:src="@{/js/roomData.js}"></script>
+	<!--  <script th:src="@{/js/rental.js}"></script> -->
+	<script th:inline="javascript">
+		const blockedDays = [[${blockedDays}]];
+		const fixedReservations = [[${fixedReservations}]];
+		const rentals = [[${rentals}]];
+		const user = /*[[${user}]]*/ null;
+	</script>
+	<script th:src="@{/js/main/rental.js}"></script>
+
+</body>
+
 </html>

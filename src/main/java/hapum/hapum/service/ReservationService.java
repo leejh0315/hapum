@@ -78,6 +78,18 @@ public class ReservationService {
     	reservationMapper.deleteRental(rentalId);
     }
     
+    public List<Rental> selectAllRentals(){
+    	return reservationMapper.selectAllRentals();
+    }
     
+    public void approve(Long id) {
+    	reservationMapper.approve(id);
+    }
+    public void delete(Long id) {
+    	reservationMapper.delete(id);
+    }
+    public void disapprove(Long id) {
+    	reservationMapper.disapprove(id);
+    }
     
 }

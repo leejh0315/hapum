@@ -11,6 +11,7 @@ public class OrganizationPost {
     private String title;
     private String content;
     private String thumbnailSrc;
+    private String openStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

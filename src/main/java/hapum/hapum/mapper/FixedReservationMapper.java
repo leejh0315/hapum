@@ -26,4 +26,10 @@ public interface FixedReservationMapper {
     List<Rental> selectByUserId (@Param("userId")Long userId);
     
     void deleteRental(@Param("id")Long rentalId);
+    
+    List<Rental> selectAllRentals();
+    
+    void approve(@Param("id")Long id);
+    void delete(@Param("id")Long id);
+    void disapprove(@Param("id")Long id);
 } 

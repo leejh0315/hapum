@@ -15,6 +15,8 @@ public class Rental {
     private LocalTime endTime;           // TIME NOT NULL, 대관끝나는시간
     private String price;            // DECIMAL(10,2) NOT NULL, 대관료
     private Long userId;                 // BIGINT NOT NULL, 대관신청한 user의 id (외래키)
-    private LocalDateTime createOn;     // DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 대관신청한 날짜
+    private LocalDateTime createdOn;     // DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP, 대관신청한 날짜
     private String isApp;            // TINYINT(1) NOT NULL DEFAULT 0, 승인여부 (0: 미승인, 1: 승인)
+    private String purpose;
+    private String groupName;
 }

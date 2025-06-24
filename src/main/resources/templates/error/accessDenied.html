@@ -1,22 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="ko">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<link rel="stylesheet" th:href="@{/css/header.css}">
-	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<style>
-		h1{color:red}
-	</style>
+    <meta charset="UTF-8">
+    <title>접근이 제한되었습니다</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #fff5f5;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            border: 2px solid #ffcccc;
+            border-radius: 12px;
+            background-color: #ffecec;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .icon {
+            font-size: 4rem;
+            color: #e60000;
+        }
+
+        .title {
+            font-size: 2rem;
+            margin-top: 1rem;
+            font-weight: bold;
+        }
+
+        .message {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: #555;
+        }
+
+        .countdown {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #888;
+        }
+    </style>
 </head>
-
 <body>
-	<h1>THIS</h1>
-	<h1>ACCESS</h1>
-	<h1>DENIED</h1>
+    <div class="container">
+        <div class="icon">🚫</div>
+        <div class="title">ACCESS DENIED</div>
+        <div class="message">
+            이 페이지는 관리자 전용입니다.<br>
+            일반 사용자는 접근하실 수 없습니다.
+        </div>
+        <div class="countdown">
+            5초 후 이전 페이지로 이동합니다...
+        </div>
+    </div>
 
-	
-	<script th:src="@{/js/header.js}"></script>
+    <script>
+        setTimeout(function() {
+            history.back();
+        }, 5000);
+    </script>
 </body>
 </html>

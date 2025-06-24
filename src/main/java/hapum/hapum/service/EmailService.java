@@ -50,7 +50,7 @@ public class EmailService {
         msgg+= ePw+"</strong><div><br/> ";
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("DIY@gmail.com","<HAPUM>"));//보내는 사람
+        message.setFrom(new InternetAddress("hapum7179@gmail.com","<HAPUM>"));//보내는 사람
         redisUtils.setDataExpire(to, ePw, 180);
         System.out.println(ePw);
         return message;
@@ -77,7 +77,7 @@ public class EmailService {
         msgg+= ePw+"</strong><div><br/> ";
         msgg+= "</div>";
         message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("DIY@gmail.com","<HAPUM>"));//보내는 사람
+        message.setFrom(new InternetAddress("hapum7179@gmail.com","<HAPUM>"));//보내는 사람
         
         return message;
     }
@@ -108,7 +108,7 @@ public class EmailService {
     	msgg += "  </div>";
     	msgg += "</div>";
     	message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("DIY@gmail.com","<HAPUM>"));//보내는 사람
+        message.setFrom(new InternetAddress("hapum7179@gmail.com","<HAPUM>"));//보내는 사람
         return message;
     } 
     
@@ -132,7 +132,7 @@ public class EmailService {
 
         // HTML 형식으로 본문 설정, 인코딩은 utf-8 사용
         message.setText(msgg, "utf-8", "html");
-        message.setFrom(new InternetAddress("DIY@gmail.com", "<HAPUM>")); // 발신자 설정
+        message.setFrom(new InternetAddress("hapum7179@gmail.com", "<HAPUM>")); // 발신자 설정
 
         return message;
     }

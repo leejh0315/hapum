@@ -72,7 +72,7 @@
               <td th:text="${#temporals.format(r.startTime,'HH:mm')}">09:00</td>
               <td th:text="${#temporals.format(r.endTime,'HH:mm')}">22:00</td>
               <td th:text="${r.price}">100,000</td>
-              <td th:text="${r.createOn != null ? #temporals.format(r.createOn,'yyyy-MM-dd HH:mm:ss') : '-'}">-</td>
+              <td th:text="${r.createdOn != null ? #temporals.format(r.createdOn,'yyyy-MM-dd HH:mm:ss') : '-'}">-</td>
               <td th:text="${r.isApp == '1' ? '승인' : '미승인'}">미승인</td>
               <td>
                 <form th:if="${r.isApp != '1'}"

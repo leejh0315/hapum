@@ -21,6 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import hapum.hapum.domain.BlockedDay;
 import hapum.hapum.domain.FixedReservation;
 import hapum.hapum.domain.News;
+import hapum.hapum.domain.Notification;
 import hapum.hapum.domain.Organization;
 import hapum.hapum.domain.OrganizationPost;
 import hapum.hapum.domain.Program;
@@ -29,6 +30,7 @@ import hapum.hapum.domain.Rental;
 import hapum.hapum.domain.User;
 import hapum.hapum.service.EmailService;
 import hapum.hapum.service.NewsService;
+import hapum.hapum.service.NotificationService;
 import hapum.hapum.service.OrganizationService;
 import hapum.hapum.service.ProgramService;
 import hapum.hapum.service.ReservationService;
@@ -46,6 +48,7 @@ public class MainController {
 	private final EmailService emailService;
 	private final ReservationService reservationService;
 	private final OrganizationService organizationService;
+	private final NotificationService notificationService;
 	
 
 	@GetMapping("/main")
@@ -75,10 +78,11 @@ public class MainController {
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
+		List<Notification> notifications =
+		notificationService.selectAll();
 		
-		
-				
 		model.addAttribute("programs", programs);
+		model.addAttribute("notifications",notifications);
 		return "main/main";
 	}
 
@@ -168,6 +172,11 @@ public class MainController {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
 
+		System.out.println("**************controller**************");
+		System.out.println(rental.getPurpose());
+		System.out.println(rental.getGroupName());
+		System.out.println("**************controller**************");
+		
 		rental.setUserId(user.getId());
 		reservationService.insertRental(rental);
 		emailService.sendRentalMessage(user.getEmail(), rental);
@@ -235,6 +244,14 @@ public class MainController {
 		model.addAttribute("organizationPost", organizationPost);
 		model.addAttribute("id", orgId);
 		return "main/organizationView";
+	}
+	
+	@GetMapping("/notification/detail/{id}")
+	public String getNotificationDetail(@PathVariable("id")Long id, Model model, HttpServletRequest req) {
+		addUserToModel(req, model);
+		Notification notification = notificationService.selectById(id);
+		model.addAttribute("notification",notification);
+		return "main/notification-detail";
 	}
 	
 	

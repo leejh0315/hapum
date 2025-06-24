@@ -1,48 +1,55 @@
     /* 프로그램 리스트 영역 스타일 */
-    #program-list {
-    	margin: 20px 10px;
-    	height: 50vh;
+    #notification-list {
+    	flex: 1;
+    	/* 남은 공간 전부 차지 */
+    	margin-left: 5%;
+    	margin-top: 10px;
+    	max-width: calc(100% - 420px);
+    	/* 좌우 마진, 슬라이드 포함 여유분 배제 */
+    	height: 400px;
+    	/* 슬라이드와 동일 높이(선택) */
     	overflow-y: auto;
-    	width: 100%;
     }
 
-    #program-list table {
-    	width: 40%;
+    #notification-list table {
+    	width: 100%;
     	border-collapse: collapse;
     }
 
-    #program-list th,
-    #program-list td {
-    	border-bottom: 1px solid #ccc;
+    #notification-list th,
+    #notification-list td {
+    	border-bottom: 1px solid #D6CCC2;
     	padding: 8px 5px;
     	text-align: left;
     }
 
-    #program-list th {
-    	background: #f0f0f0;
+    #notification-list th {
+    	background: #EDEDE9;
     }
 
-    #program-list a {
+    #notification-list a {
     	text-decoration: none;
     	color: inherit;
     }
 
     /* 상단 영역: 슬라이드와 캘린더 컨테이너 배치 */
     #top-section {
-
     	display: flex;
-    	flex-wrap: wrap;
+    	flex-wrap: nowrap;
+    	/* 절대 한 줄에 고정 */
+    	align-items: flex-start;
+    	/* 위쪽 정렬 */
     	justify-content: space-between;
-    	margin-left: 10%;
-    	margin-right: 10%;
-    	margin-top: 20px;
+    	margin: 20px 10%;
     }
 
 
     /* 하단 영역 */
-   
+
     /* 슬라이드 wrapper: 400×400 정사각형 */
     #slideshow-wrapper {
+    	flex: 0 0 400px;
+    	/* grow:0, shrink:0, basis:400px */
     	width: 400px;
     	height: 400px;
     	margin: 10px;
@@ -51,6 +58,7 @@
     	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
     	display: flex;
     	flex-direction: column;
+    	background-color: #E3D5CA;
     }
 
     /* 슬라이드 이미지 영역 */
@@ -89,7 +97,3 @@
     	padding: 5px 10px;
     	cursor: pointer;
     }
-
- 
-
-  

@@ -70,21 +70,54 @@
 		</div>
 	</div>
 
-	<div id="programApplyModalOverlay" class="modal-overlay">
-		<div class="modal-content">
-			<h3>프로그램 신청</h3>
-			<div class="scroll-box">
-				<p>개인정보 수집·이용·제공 및 활용 동의서 내용...</p>
-			</div>
-			<label>
-				<input type="checkbox" id="privacyConsentCheckbox" /> 개인정보 수집·이용·제공에 동의합니다.
-			</label>
-			<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-				<button id="confirmApplyBtn">확인</button>
-				<button id="cancelApplyBtn">취소</button>
-			</div>
-		</div>
-	</div>
+ <div id="programApplyModalOverlay" class="modal-overlay">
+    <div class="modal-content">
+      <h3>[개인정보 수집·이용·제공 및 활용 동의서]</h3>
+      <div class="scroll-box">
+        <p><strong>□ 개인정보의 수집, 이용 목적</strong></p>
+        <ul>
+          <li>프로그램 신청자/참가자 명단 확인 및 관리</li>
+          <li>프로그램 진행 시 필요한 인적 사항</li>
+          <li>프로그램 허위 신청 방지</li>
+        </ul>
+
+        <p><strong>□ 수집, 이용할 개인정보의 내용</strong></p>
+        <ul>
+          <li>필수개인정보: 성명, 휴대폰번호</li>
+          <li>조건부 필수개인정보: 나이, 성별 (맞춤형 프로그램 신청 시)</li>
+          <li>선택개인정보: 본당, 세례명</li>
+        </ul>
+
+        <p><strong>□ 개인정보의 보유, 이용 기간</strong></p>
+        <ul>
+          <li>보유기간: 프로그램 신청 시부터 프로그램 종료까지</li>
+          <li>이용기간: 프로그램 신청·진행 기간</li>
+        </ul>
+
+        <p><strong>□ 개인 정보의 제3자 제공 안내</strong></p>
+        <ul>
+          <li>제공받는 자: 본 기관의 종사자 및 관계자, 프로그램 관계자(강사)</li>
+          <li>이용 목적: 맞춤형 프로그램 제공을 위해 인적 사항 제공</li>
+          <li>제공하는 개인정보 항목: 성명, 휴대폰번호, 나이(조건부), 성별(조건부), 본당(선택), 세례명(선택)</li>
+        </ul>
+
+        <p><strong>□ 동의를 거부할 권리 및 처리</strong></p>
+        <ul>
+          <li>귀하는 개인정보 제공·이용을 거부할 수 있습니다. 다만, 동의를 하지 않을 경우 프로그램 신청 및 증빙자료 발급 등에 불이익이 발생할 수 있습니다.</li>
+        </ul>
+      </div>
+
+      <label>
+        <input type="checkbox" id="privacyConsentCheckbox" />
+        개인정보 수집·이용·제공에 동의합니다.
+      </label>
+
+      <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+        <button id="confirmApplyBtn">확인</button>
+        <button id="cancelApplyBtn">취소</button>
+      </div>
+    </div>
+  </div>
 <div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
 	<script th:inline="javascript">

@@ -27,10 +27,12 @@ import hapum.hapum.domain.News;
 import hapum.hapum.domain.Notification;
 import hapum.hapum.domain.Organization;
 import hapum.hapum.domain.OrganizationPost;
+import hapum.hapum.domain.Rental;
 import hapum.hapum.domain.User;
 import hapum.hapum.service.NewsService;
 import hapum.hapum.service.NotificationService;
 import hapum.hapum.service.OrganizationService;
+import hapum.hapum.service.ReservationService;
 import hapum.hapum.service.UserAuthService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -57,7 +59,7 @@ public class AdminController {
 
 	private final UserAuthService userAuthService;
 	private final OrganizationService organizationService;
-
+	private final ReservationService reservationService;
 	@PostConstruct
 	public void init() throws IOException {
 		tempDir = Paths.get(tempVideoDirStr);
@@ -196,9 +198,39 @@ public class AdminController {
 	}
 
 	@GetMapping("/currentRental")
-	public String getCurrentRental() {
+	public String getCurrentRental(Model model) {
+		
+		List<Rental> rentals = reservationService.selectAllRentals();
+		System.out.println(rentals);
+		model.addAttribute("rentals", rentals);
 		return "admin/currentRental";
 	}
+	
+	@PostMapping("/rental/approve/{id}")
+	public String postApprove(@PathVariable("id") Long id) {
+		reservationService.approve(id);
+		return "redirect:/admin/currentRental";
+	}
+	
+	@PostMapping("/rental/delete/{id}")
+	public String postDelete(@PathVariable("id") Long id) {
+		reservationService.delete(id);
+		return "redirect:/admin/currentRental";
+	}
+	
+	@PostMapping("/rental/disapprove/{id}")
+	public String postDisapprove(@PathVariable("id") Long id) {
+		reservationService.disapprove(id);
+		return "redirect:/admin/currentRental";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 
 	@GetMapping("/allUser")
 	public String getAllUser(Model model) {

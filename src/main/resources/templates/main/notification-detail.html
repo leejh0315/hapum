@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title th:text="${organizationPost.title} + ' | 단체 소식'">소식 상세</title>
+  <title>공지사항</title>
 
   <link rel="stylesheet" th:href="@{/css/header.css}"/>
   <link rel="stylesheet" th:href="@{/css/main/organizationView.css}"/>
@@ -28,15 +28,10 @@
   <div class="container">
     <!-- 사이드바 -->
     <div class="sidebar">
-      <div class="sidebar-title" >단체소식</div>
-      <button th:each="org : ${organizationList}"
-              class="menu-button"
-              th:classappend="${org.id == id} ? ' active' : ''"
-              th:text="${org.name}"
-              th:onclick="'location.href=\'/main/organization/'+${org.id}+'\''">
-      </button>
+      <div class="sidebar-title" >공지사항</div>
+      
         <button class="menu-button" onclick="history.back();">
-         목록으로 돌아가기
+         이전으로 돌아가기
         </button>
     </div>
 
@@ -45,23 +40,20 @@
       <div class="post-view">
         <!-- 제목 -->
         <h2 class="post-view-title"
-            th:text="${organizationPost.title}">제목</h2>
+            th:text="${notification.title}">제목</h2>
 
         <!-- 작성일 -->
         <p class="post-view-date"
-           th:text="${#temporals.format(organizationPost.createdAt, 'yyyy-MM-dd HH:mm')}">
+           th:text="${#temporals.format(notification.createOn, 'yyyy-MM-dd HH:mm')}">
           2025-06-15 14:30
         </p>
 
         <!-- 썸네일 -->
-        <img class="post-view-thumb"
-             th:if="${organizationPost.thumbnailSrc != null}"
-             th:src="@{${organizationPost.thumbnailSrc}}"
-             alt="썸네일"/>
+     
 
         <!-- 본문 (HTML 렌더링) -->
         <div class="post-view-body"
-             th:utext="${organizationPost.content}">
+             th:utext="${notification.content}">
           소식 본문 내용...
         </div>
 

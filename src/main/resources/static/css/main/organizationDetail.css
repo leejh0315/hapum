@@ -17,6 +17,7 @@ body {
 	/* 사이드바와 콘텐츠 사이 간격 */
 }
 
+
 .sidebar-title {
 	/* 기존 설정 제거 → margin: 0 -10px 10px; width: calc(100% + 20px); */
 	margin: 0 0 10px;
@@ -152,12 +153,14 @@ body {
 }
 
 .post-list {
-  display: grid;
-  /* 각 카드 160px 너비 x 5열, row는 자동 생성 */
-  grid-template-columns: repeat(5, 160px);
-  grid-auto-rows: auto;
-  justify-content: center;  /* 전체 중앙 정렬 */
-  gap: 20px;
+	display: grid;
+	/* 각 카드 160px 너비 x 5열, row는 자동 생성 */
+	grid-auto-rows: auto;
+	justify-content: center;
+	/* 전체 중앙 정렬 */
+	gap: 20px;
+    grid-template-columns: repeat(5, 1fr);
+    margin-top: 3%;
 }
 
 .post-card {
@@ -166,9 +169,10 @@ body {
 }
 
 .post-thumb {
-	width: 100%;
-	height: auto;
-	border-radius: 8px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+/*    display: block;*/
 }
 
 .post-title {
@@ -179,33 +183,35 @@ body {
 
 /* 페이지네이션 스타일 */
 .pagination {
-  list-style: none;
-  display: flex;
-  justify-content: center;
-  padding: 0;
-  margin-top: 20px;
+	list-style: none;
+	display: flex;
+	justify-content: center;
+	padding: 0;
+	margin-top: 20px;
 }
 
 .pagination li {
-  margin: 0 5px;
+	margin: 0 5px;
 }
 
 .pagination li a {
-  display: block;
-  padding: 8px 12px;
-  background: #F5EBE0; /* 기본 버튼 색상으로 통일 */
-  color: #333;
-  text-decoration: none;
-  border: 1px solid #D5BDAF;
+	display: block;
+	padding: 8px 12px;
+	background: #F5EBE0;
+	/* 기본 버튼 색상으로 통일 */
+	color: #333;
+	text-decoration: none;
+	border: 1px solid #D5BDAF;
 }
 
 .pagination li.active a {
-  background: #D5BDAF; /* 활성화된 페이지 */
-  color: #fff;
-  border-color: #D5BDAF;
+	background: #D5BDAF;
+	/* 활성화된 페이지 */
+	color: #fff;
+	border-color: #D5BDAF;
 }
 
 .pagination li.disabled a {
-  color: #ccc;
-  pointer-events: none;
+	color: #ccc;
+	pointer-events: none;
 }

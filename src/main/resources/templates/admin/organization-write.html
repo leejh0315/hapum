@@ -107,14 +107,30 @@
 			$('#summernote').summernote({
 				height: 300,
 				placeholder: '내용을 입력하세요...',
+				toolbar: [
+					// 스타일 그룹
+					['style', ['style']],
+					// 폰트 그룹
+					['font', ['bold', 'italic', 'underline', 'strikethrough', 'clear']],
+					// 글자색/배경색
+					['color', ['color']],
+					// 문단
+					['para', ['ul', 'ol', 'paragraph']],
+					// 글꼴 크기, 글꼴, 높이
+					['fontsize', ['fontsize']],
+					['fontname', ['fontname']],
+					['height', ['height']],
+					// 삽입(insert) — video만 뺌!
+					['insert', ['link', 'picture', 'table', 'hr']],
+					// 보기(view)
+					['view', ['fullscreen', 'codeview', 'help']]
+				],
 				callbacks: {
-					// 이미지 업로드 처리: Summernote 콜백
 					onImageUpload: function (files) {
 						for (let i = 0; i < files.length; i++) {
 							uploadSummernoteImageFile(files[i], this);
 						}
 					},
-					// 이미지 삭제 처리: Summernote 콜백
 					onMediaDelete: function ($target) {
 						deleteSummernoteImageFile($target);
 					}

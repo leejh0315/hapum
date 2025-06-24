@@ -35,6 +35,12 @@
 		<div class="content">
 			<!-- 게시글 제목 -->
 			<div class="post-title" th:text="${news.title}">게시글 제목</div>
+			<div class="post-meta" style="margin:8px 0; color:#666; font-size:14px;">
+				<span>작성일: <span th:text="${#temporals.format(news.createOn, 'yyyy-MM-dd HH:mm')}"></span></span>
+				<span th:if="${news.updateOn != null}" style="margin-left:10px;">
+					수정일: <span th:text="${#temporals.format(news.updateOn, 'yyyy-MM-dd HH:mm')}"></span>
+				</span>
+			</div>
 			<div th:if="${user != null and user.email == 'admin'}" style="margin-top: 10px; text-align: right;">
 				<form th:action="@{/admin/news/update/{id}(id=${news.id})}" method="post"
 					onsubmit="return confirm('이 게시글을 삭제하시겠습니까??');">

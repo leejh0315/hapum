@@ -26,8 +26,8 @@
 	<insert id="insertOrganizationWrite"
 		parameterType="hapum.hapum.domain.OrganizationPost">
 		INSERT INTO hapumdb.organization_post(org_id, title,
-		content,thumbnailSrc)
-		VALUES(#{orgId}, #{title}, #{content},#{thumbnailSrc});
+		content,thumbnailSrc, open_status)
+		VALUES(#{orgId}, #{title}, #{content},#{thumbnailSrc}, 'Y');
 
 	</insert>
 

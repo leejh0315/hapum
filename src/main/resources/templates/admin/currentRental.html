@@ -1,23 +1,215 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>대관 신청 현황</title>
-  
-  <!-- flatpickr CSS -->
-  
+<html xmlns:th="http://www.thymeleaf.org">
 
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>대관 신청 현황</title>
 	<link rel="stylesheet" th:href="@{/css/admin/header.css}">
-  
+	  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+			margin-bottom: 2rem;
+		}
+
+		th,
+		td {
+			border: 1px solid #ccc;
+			padding: .5rem;
+			text-align: center;
+		}
+
+		th {
+			background: #f5f5f5;
+		}
+
+		.month-picker {
+			margin: 1rem 0;
+		}
+
+		/* 버튼 스타일 */
+		.btn {
+			padding: 4px 10px;
+			margin: 0 2px;
+			border: none;
+			border-radius: 3px;
+			cursor: pointer;
+		}
+
+		.approve {
+			background: #a2d5ab;
+			color: #fff;
+		}
+
+		.delete {
+			background: #e57373;
+			color: #fff;
+		}
+
+		.disapprove {
+			background: #f9a825;
+			color: #fff;
+		}
+	</style>
 </head>
 
 <body>
+	<div th:replace="~{admin/admin-header :: admin-header}"></div>
+	<div class="content">
+		<h1>대관 신청 현황</h1>
 
-  <!-- Header 항상 위 -->
-  <div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
+		<!-- 월 선택 -->
+		<div class="month-picker">
+			<label for="monthPicker">년·월 선택: </label>
+			<input type="month" id="monthPicker">
+		</div>
 
-<h1>대관 신청 현황</h1>
+		<!-- 승인 대관 -->
+		<h2>승인된 대관</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>장소</th>
+					<th>예약일</th>
+					<th>시작</th>
+					<th>종료</th>
+					<th>대관료</th>
+					<th>신청자</th>
+					<th>신청일</th>
+					<th>용도</th>
+					<th>단체명</th>
+					<th>액션</th>
+				</tr>
+			</thead>
+			<tbody id="approvedBody"></tbody>
+		</table>
 
+		<!-- 미승인 대관 -->
+		<h2>미승인 대관</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>ID</th>
+					<th>장소</th>
+					<th>예약일</th>
+					<th>시작</th>
+					<th>종료</th>
+					<th>대관료</th>
+					<th>신청자</th>
+					<th>신청일</th>
+					<th>용도</th>
+					<th>단체명</th>
+					<th>액션</th>
+				</tr>
+			</thead>
+			<tbody id="pendingBody"></tbody>
+		</table>
+	</div>
+
+	<!-- 서버에서 넘어온 데이터 -->
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+		var rentals = /*[[${rentals}]]*/[];
+		/*]]>*/
+	</script>
+
+	<script>
+		// 포맷 함수들(이전 예제와 동일)
+		function fmtDate(d) {if (!d) return ''; const [y, m, day] = d.split('-'); return `${y}. ${parseInt(m)}. ${parseInt(day)}`;}
+		function fmtDateTime(dt) {if (!dt) return ''; const [date, time] = dt.split('T'); const [y, m, day] = date.split('-'); const hhmmss = time.split('.')[0]; return `${y}. ${parseInt(m)}. ${parseInt(day)} ${hhmmss}`;}
+
+		function updateTables() {
+			const [y, m] = document.getElementById('monthPicker').value.split('-');
+			const apr = document.getElementById('approvedBody');
+			const pen = document.getElementById('pendingBody');
+			apr.innerHTML = pen.innerHTML = '';
+
+			rentals.forEach(r => {
+				const [ry, rm] = r.reservationDate.split('-');
+				if (ry === y && rm === m) {
+					const tr = document.createElement('tr');
+					tr.innerHTML = `
+            <td>${r.id}</td>
+            <td>${r.location}</td>
+            <td>${fmtDate(r.reservationDate)}</td>
+            <td>${r.startTime}</td>
+            <td>${r.endTime}</td>
+            <td>${r.price}</td>
+            <td>${r.userId}</td>
+            <td>${fmtDateTime(r.createdOn)}</td>
+            <td>${r.purpose || ''}</td>
+            <td>${r.groupName || ''}</td>
+            <td>
+              ${r.isApp == '1'
+							? `<button class="btn disapprove" data-id="${r.id}">미승인</button>`
+							: `<button class="btn approve" data-id="${r.id}">승인</button>
+                   <button class="btn delete" data-id="${r.id}">삭제</button>`
+						}
+            </td>`;
+					(r.isApp == '1' ? apr : pen).appendChild(tr);
+				}
+			});
+		}
+
+		document.addEventListener('DOMContentLoaded', () => {
+			const mp = document.getElementById('monthPicker');
+			mp.value = new Date().toISOString().substr(0, 7);
+			mp.addEventListener('change', updateTables);
+			updateTables();
+
+			// jQuery 이벤트 위임
+			$('body').on('click', '.approve', function () {
+				if (!confirm('이 예약을 승인하시겠습니까?')) return;
+				const id = $(this).data('id');
+				$.ajax({
+					url: `/admin/rental/approve/${id}`,
+					type: 'POST',
+					success: function () {
+						alert('승인되었습니다.');
+						location.reload();
+					},
+					error: function (xhr, status, err) {
+						alert('승인 실패: ' + err);
+					}
+				});
+			});
+
+			$('body').on('click', '.delete', function () {
+				if (!confirm('이 예약을 삭제하시겠습니까?')) return;
+				const id = $(this).data('id');
+				$.ajax({
+					url: `/admin/rental/delete/${id}`,
+					type: 'POST',
+					success: function () {
+						alert('삭제되었습니다.');
+						location.reload();
+					},
+					error: function (xhr, status, err) {
+						alert('삭제 실패: ' + err);
+					}
+				});
+			});
+
+			$('body').on('click', '.disapprove', function () {
+				if (!confirm('이 예약을 미승인 처리하시겠습니까?')) return;
+				const id = $(this).data('id');
+				$.ajax({
+					url: `/admin/rental/disapprove/${id}`,
+					type: 'POST',
+					success: function () {
+						alert('미승인 처리되었습니다.');
+						location.reload();
+					},
+					error: function (xhr, status, err) {
+						alert('미승인 실패: ' + err);
+					}
+				});
+			});
+		});
+	</script>
 </body>
+
 </html>
