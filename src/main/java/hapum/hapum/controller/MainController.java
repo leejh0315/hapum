@@ -73,7 +73,7 @@ public class MainController {
 
 		try {
 		    String eventsJson = new ObjectMapper().writeValueAsString(eventList);
-		    System.out.println(eventsJson);
+		    
 		    model.addAttribute("eventsJson", eventsJson);
 		} catch (Exception e) {
 		    e.printStackTrace();
@@ -146,7 +146,7 @@ public class MainController {
 		int temp = programService.programSub(ps);
 
 		emailService.sendProgramMessage(user.getEmail(), program);
-		System.out.println(temp);
+		
 		return temp;
 	}
 
@@ -158,7 +158,6 @@ public class MainController {
 		List<FixedReservation> fixedReservations = reservationService.getFixedReservations();
 		List<Rental> rentals = reservationService.getRentals();
 
-		System.out.println(rentals);
 
 		model.addAttribute("blockedDays", blockedDays);
 		model.addAttribute("fixedReservations", fixedReservations);
@@ -171,12 +170,6 @@ public class MainController {
 	public String submitRental(@RequestBody Rental rental, HttpServletRequest req) throws Exception {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
-
-		System.out.println("**************controller**************");
-		System.out.println(rental.getPurpose());
-		System.out.println(rental.getGroupName());
-		System.out.println("**************controller**************");
-		
 		rental.setUserId(user.getId());
 		reservationService.insertRental(rental);
 		emailService.sendRentalMessage(user.getEmail(), rental);
@@ -225,7 +218,7 @@ public class MainController {
 		int totalOrgPost = organizationService.getTotalOrgPost(id);
 		int totalPages = (int) Math.ceil((double) totalOrgPost / size);
 		
-		System.out.println(organizationPost);
+		
 		
 		model.addAttribute("organizationList",organizationList);
 		model.addAttribute("organizationPost", organizationPost);

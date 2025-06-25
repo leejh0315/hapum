@@ -4,17 +4,42 @@
 <mapper namespace="hapum.hapum.mapper.NotificationMapper">
 
 	<!-- 1) insertNews -->
-	<insert id="insertNotification" parameterType="hapum.hapum.domain.Notification">
+	<insert id="insertNotification"
+		parameterType="hapum.hapum.domain.Notification">
 		INSERT INTO hapumdb.notification (title, content)
 		VALUES (#{title}, #{content})
 	</insert>
 
 	<select id="selectAll" resultType="hapum.hapum.domain.Notification">
-		SELECT * FROM hapumdb.notification
+		SELECT * FROM hapumdb.notification n ORDER BY n.is_top DESC, n.order_num
+		limit 10
 	</select>
-	
+
 	<select id="selectById" resultType="hapum.hapum.domain.Notification">
 		SELECT * FROM hapumdb.notification
 		WHERE id=#{id}
 	</select>
+
+	<update id="updateOrder" parameterType="hapum.hapum.domain.Notification">
+		UPDATE hapumdb.notification SET order_num=#{orderNum} WHERE id=#{id}
+	</update>
+
+
+	<update id="toggleTop" parameterType="hapum.hapum.domain.Notification">
+		UPDATE hapumdb.notification
+		SET
+		is_top = #{isTop},
+		order_num = (
+		SELECT new_order_num FROM (
+		SELECT IFNULL(MAX(order_num), 0) + 1 AS new_order_num
+		FROM hapumdb.notification
+		) AS temp
+		)
+		WHERE id = #{id}
+	</update>
+
+	<update id="toggleDown" parameterType="hapum.hapum.domain.Notification">
+		UPDATE hapumdb.notification SET is_top=#{isTop}, order_num=#{orderNum}
+		WHERE id=#{id}
+	</update>
 </mapper>

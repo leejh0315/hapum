@@ -11,5 +11,7 @@ public class Notification {
     private String content;
     private LocalDateTime createOn;
     private LocalDateTime updateOn;
+    private String isTop;
+    private int orderNum;
     // getters/setters
 }

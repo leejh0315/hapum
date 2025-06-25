@@ -11,18 +11,17 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import hapum.hapum.controller.user.SummernoteController;
 import hapum.hapum.domain.News;
 import hapum.hapum.domain.Notification;
 import hapum.hapum.domain.Organization;
@@ -60,18 +59,47 @@ public class AdminController {
 	private final UserAuthService userAuthService;
 	private final OrganizationService organizationService;
 	private final ReservationService reservationService;
+
 	@PostConstruct
-	public void init() throws IOException {
+	public void init() {
 		tempDir = Paths.get(tempVideoDirStr);
 		videoDir = Paths.get(uploadVideoDirStr);
-		Files.createDirectories(tempDir);
+
+		try {
+			// temp 디렉토리 생성 (이미 있으면 무시)
+			Files.createDirectories(tempDir);
+			// upload 비디오 디렉토리도 생성
+			Files.createDirectories(videoDir);
+		} catch (IOException e) {
+			// 체크 예외는 IllegalStateException 등 런타임 예외로 감싸서 던지기
+			throw new IllegalStateException("디렉터리 생성 실패: " + tempVideoDirStr + " or " + uploadVideoDirStr, e);
+		}
+
 	}
 
 	@GetMapping("/main")
 	public String getAdminPage() {
 		return "admin/main";
 	}
-
+	
+	@PostMapping("/notification/order")
+	public String postNotificationOrder(@RequestBody List<Notification> notifications) {
+		notificationService.updateOrder(notifications);
+		return "redirect:/main/main";
+	}
+	
+	@PostMapping("notification/toggleTop")
+	public String postNotificationToggle(@RequestBody Notification notification) {
+		if(notification.getIsTop().equals("1")) {
+			notificationService.toggleTop(notification);
+		}else {
+			notification.setOrderNum(0);
+			notificationService.toggleDown(notification);
+		}
+		return "redirect:/main/main";
+	}
+	
+	
 	@GetMapping("/notification")
 	public String getNotification() {
 		return "admin/notification";
@@ -199,38 +227,30 @@ public class AdminController {
 
 	@GetMapping("/currentRental")
 	public String getCurrentRental(Model model) {
-		
+
 		List<Rental> rentals = reservationService.selectAllRentals();
 		System.out.println(rentals);
 		model.addAttribute("rentals", rentals);
 		return "admin/currentRental";
 	}
-	
+
 	@PostMapping("/rental/approve/{id}")
 	public String postApprove(@PathVariable("id") Long id) {
 		reservationService.approve(id);
 		return "redirect:/admin/currentRental";
 	}
-	
+
 	@PostMapping("/rental/delete/{id}")
 	public String postDelete(@PathVariable("id") Long id) {
 		reservationService.delete(id);
 		return "redirect:/admin/currentRental";
 	}
-	
+
 	@PostMapping("/rental/disapprove/{id}")
 	public String postDisapprove(@PathVariable("id") Long id) {
 		reservationService.disapprove(id);
 		return "redirect:/admin/currentRental";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 
 	@GetMapping("/allUser")
 	public String getAllUser(Model model) {

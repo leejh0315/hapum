@@ -9,7 +9,15 @@
 	<link rel="stylesheet" th:href="@{/css/main/programDetail.css}" />
 	    <link rel="stylesheet" th:href="@{/css/footer.css}">
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
+	<style>
+		.text {
+  overflow-x: auto;             /* 필요 시 가로 스크롤 */
+  word-break: break-word;       /* 단어 중간에도 줄바꿈 허용 */
+  white-space: pre-wrap;        /* 줄바꿈 보존 + 자동 줄바꿈 */
+  max-width: 100%;              /* 부모의 최대 너비를 넘지 않도록 */
+  box-sizing: border-box;
+}
+	</style>
 </head>
 
 <body>
@@ -21,6 +29,7 @@
 	</div>
 
 	<div class="program-detail-container">
+		<div class="content">
 		<div class="program-image">
 			<img th:src="@{${program.thumbnailSrc}}" alt="프로그램 썸네일" />
 		</div>
@@ -41,7 +50,7 @@
 				<li><strong>정원:</strong> <span th:text="${program.capacity} + '명'">15명</span></li>
 			</ul>
 
-			<div th:utext="${program.content}">
+			<div class="text" th:utext="${program.content}">
 				1) 부모-자녀 관계 이해<br />2) 자녀의 성격(학습유형) 이해(성격검사 활용)
 			</div>
 
@@ -67,6 +76,7 @@
 					</th:block>
 				</th:block>
 			</div>
+		</div>
 		</div>
 	</div>
 

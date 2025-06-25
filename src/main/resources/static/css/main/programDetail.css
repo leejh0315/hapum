@@ -12,15 +12,19 @@
 			flex: 1
 		}
 
-		.program-image {
-			flex: 1 1 300px;
-		}
+.program-image {
+  flex: 1 1 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
-		.program-image img {
-			width: 100%;
-			border-radius: 12px;
-			border: 1px solid #ccc;
-		}
+.program-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+}
 
 		.program-info {
 			flex: 1 1 400px;
@@ -138,11 +142,11 @@
 			text-align: center;
 			background-color: #F5EBE0;
 			border: none;
-			
+
 			font-size: 16px;
 			cursor: pointer;
 			color: #333;
-border-radius: 10%;
+			border-radius: 10%;
 			margin-bottom: 5px;
 		}
 
@@ -157,7 +161,7 @@ border-radius: 10%;
 			font-size: 16px;
 			cursor: pointer;
 			color: #333;
-			
+
 			margin-bottom: 5px;
 		}
 

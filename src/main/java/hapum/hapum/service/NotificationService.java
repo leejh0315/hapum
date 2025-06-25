@@ -25,4 +25,17 @@ public class NotificationService {
 	public Notification selectById(Long id) {
 		return notificationMapper.selectById(id);	}
 
+	public void updateOrder(List<Notification> notification) {
+		for(Notification n : notification) {
+			notificationMapper.updateOrder(n);
+		}
+	}
+	
+	public void toggleTop(Notification notification) {
+		notificationMapper.toggleTop(notification);
+	}
+	
+	public void toggleDown(Notification notification) {
+		notificationMapper.toggleDown(notification);
+	}
 }
