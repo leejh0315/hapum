@@ -1,17 +1,32 @@
-		.program-detail-container {
-			max-width: 1000px;
-			margin: 50px auto;
-			display: flex;
-			flex-wrap: wrap;
-			gap: 30px;
-			padding: 20px;
-			border: 1px solid #ddd;
-			border-radius: 12px;
-			background-color: #fffefa;
-			height: 100vh;
-			flex: 1
-		}
+/* 화면 전체 높이를 위한 설정 */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
+body {
+  display: flex;
+  flex-direction: column;
+  background-color: #fffefa;
+  font-family: sans-serif;
+}
+
+/* 본문 영역 */
+.program-detail-container {
+  flex: 1 0 auto;
+  max-width: 1000px;
+  margin: 50px auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  background-color: #fffefa;
+}
+
+/* 프로그램 이미지 (정사각형) */
 .program-image {
   flex: 1 1 100%;
   display: flex;
@@ -21,212 +36,160 @@
 }
 
 .program-image img {
-  max-width: 100%;
-  height: auto;
+  width: 800px;
+  height: 800px;
+  object-fit: cover;
   border-radius: 12px;
 }
 
-		.program-info {
-			flex: 1 1 400px;
-			display: flex;
-			flex-direction: column;
-			justify-content: space-between;
-		}
+/* 프로그램 정보 */
+.program-info {
+  flex: 1 1 400px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
 
-		.program-info h2 {
-			margin-bottom: 16px;
-			color: #333;
-		}
+.program-info h2 {
+  margin-bottom: 16px;
+  color: #333;
+}
 
-		.program-info ul {
-			list-style: none;
-			padding: 0;
-			margin-bottom: 20px;
-		}
+.program-info ul {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
 
-		.program-info li {
-			margin-bottom: 10px;
-			font-size: 15px;
-			line-height: 1.4;
-		}
+.program-info li {
+  margin-bottom: 10px;
+  font-size: 15px;
+  line-height: 1.4;
+}
 
-		.program-info li::before {
-			content: '– ';
-			color: #555;
-		}
+.program-info li::before {
+  content: '– ';
+  color: #555;
+}
 
-		.program-bottom {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			border-top: 1px solid #ddd;
-			padding-top: 15px;
-			margin-top: auto;
-		}
+/* 신청 정보 및 버튼 영역 */
+.program-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+  margin-top: auto;
+}
 
-		.capacity {
-			font-size: 14px;
-			color: #888;
-		}
+.capacity {
+  font-size: 14px;
+  color: #888;
+}
 
-		.apply-btn {
-			background-color: #F5EBE0;
-			;
-			color: #333;
-			padding: 10px 20px;
-			border: none;
-			border-radius: 8px;
-			font-weight: bold;
-			cursor: pointer;
-		}
+.apply-btn {
+  background-color: #F5EBE0;
+  color: #333;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
 
-		.apply-btn:disabled {
-			background-color: #ddd;
-			color: #aaa;
-			cursor: not-allowed;
-		}
+.apply-btn:disabled {
+  background-color: #ddd;
+  color: #aaa;
+  cursor: not-allowed;
+}
 
-		.modal-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.5);
-			justify-content: center;
-			align-items: center;
-			z-index: 9999;
-			display: none;
-		}
+/* 개인정보 동의 모달 */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  display: none;
+}
 
-		.modal-overlay.show {
-			display: flex;
-		}
+.modal-overlay.show {
+  display: flex;
+}
 
-		.modal {
-			background: white;
-			border-radius: 10px;
-			width: 90%;
-			max-width: 600px;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-			position: relative;
-		}
+.modal-content {
+  background: white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 700px;
+  height: 600px;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
 
-		.modal-content {
-			border-radius: 8px;
-			background: white;
-			box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-			padding: 20px;
-			max-height: 80vh;
-			overflow-y: auto;
-		}
+/* 스크롤 가능한 영역 */
+.scroll-box {
+  height: calc(100% - 150px);
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 10px 0;
+  font-size: 14px;
+  background: #fafafa;
+  white-space: pre-wrap;
+}
 
-		.scroll-box {
-			height: calc(100% - 150px);
-			overflow-y: auto;
-			border: 1px solid #ccc;
-			padding: 10px;
-			margin: 10px 0;
-			font-size: 14px;
-			white-space: pre-wrap;
-		}
+/* 버튼 */
+#confirmApplyBtn, #cancelApplyBtn {
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #F5EBE0;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  width: 100px;
+}
 
-		.hidden {
-			display: none;
-		}
+/* 스피너 오버레이 */
+.spinner-overlay {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10000;
+  display: none;
+}
 
-		#confirmApplyBtn {
-			display: block;
-			width: 10%;
-			padding: 12px;
-			text-align: center;
-			background-color: #F5EBE0;
-			border: none;
+.spinner {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px; height: 60px;
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #f5cc00;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
 
-			font-size: 16px;
-			cursor: pointer;
-			color: #333;
-			border-radius: 10%;
-			margin-bottom: 5px;
-		}
+@keyframes spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
-		#cancelApplyBtn {
-			display: block;
-			width: 10%;
-			padding: 12px;
-			text-align: center;
-			background-color: #F5EBE0;
-			border: none;
-			border-radius: 10%;
-			font-size: 16px;
-			cursor: pointer;
-			color: #333;
+/* 반응형 대응 */
+@media (max-width: 768px) {
+  .program-detail-container {
+    flex-direction: column;
+  }
+}
 
-			margin-bottom: 5px;
-		}
-
-
-
-		/* 모달 크기 조정 */
-		#programApplyModalOverlay .modal-content {
-			width: 700px;
-			max-width: 90%;
-			height: 600px;
-			max-height: 90%;
-			padding: 20px;
-			box-sizing: border-box;
-			overflow: hidden;
-		}
-
-		/* 스크롤 박스 높이 잡고 내부 스크롤 가능 
-		#programApplyModalOverlay .scroll-box {
-			height: calc(100% - 150px);
-			height: 50%;
-			overflow-y: auto;
-			border: 1px solid #ddd;
-			padding: 10px;
-			margin-bottom: 20px;
-			background: #fafafa;
-		}
-		*/
-
-		@media (max-width: 768px) {
-			.program-detail-container {
-				flex-direction: column;
-			}
-		}
-
-		/* ✅ Spinner 추가 */
-		.spinner-overlay {
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.5);
-			z-index: 10000;
-			display: none;
-		}
-
-		.spinner {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			width: 60px;
-			height: 60px;
-			border: 6px solid #f3f3f3;
-			border-top: 6px solid #f5cc00;
-			border-radius: 50%;
-			animation: spin 1s linear infinite;
-		}
-
-		@keyframes spin {
-			0% {
-				transform: rotate(0deg);
-			}
-
-			100% {
-				transform: rotate(360deg);
-			}
-		}
+/* 푸터 하단 고정 */
+footer, .footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}

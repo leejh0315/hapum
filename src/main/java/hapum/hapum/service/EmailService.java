@@ -3,6 +3,10 @@ package hapum.hapum.service;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
+
+
+import java.io.File;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -16,6 +20,9 @@ import jakarta.mail.Message.RecipientType;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.javamail.MimeMessageHelper;
+
+
 
 @Service
 @RequiredArgsConstructor
@@ -83,34 +90,71 @@ public class EmailService {
     }
     
     
-    private MimeMessage programMessage(String to, Program program)  throws Exception{
-    	MimeMessage message = emailSender.createMimeMessage();
-    	message.addRecipients(RecipientType.TO, to);//보내는 대상
-        message.setSubject("프로그램 정보 발송");//제목
-    	
-    	String msgg = "";
-    	msgg += "<div style='max-width:1000px;margin:50px auto;display:flex;flex-wrap:wrap;gap:30px;padding:20px;border:1px solid #ddd;border-radius:12px;background-color:#fffefa;'>";
-    	msgg += "  <div style='flex:1 1 300px;'>";
-    	msgg += "    <img src=' " + program.getThumbnailSrc() + "alt='프로그램 썸네일' style='width:100%;border-radius:12px;border:1px solid #ccc;' />";
-    	msgg += "  </div>";
-    	msgg += "  <div style='flex:1 1 400px;display:flex;flex-direction:column;justify-content:space-between;'>";
-    	msgg += "    <h2 style='margin-bottom:16px;color:#333;'>" +program.getTitle() + "</h2>";
-    	msgg += "    <ul style='list-style:none;padding:0;margin-bottom:20px;'>";
-    	msgg += "      <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>일시:</strong>" + program.getStartDate() +"~"+program.getEndDate()+ "</li>";
-    	msgg += "      <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>장소:</strong>"+ program.getLocation() +"</li>";
-    	msgg += "      <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>대상:</strong> "+program.getTarget()+"</li>";
-    	msgg += "      <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>참가비:</strong>"+program.getExpense() +"원" +"</li>";
-    	msgg += "      <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>주제:</strong>"+ program.getSubject()+"</li>";
-    	msgg += "      <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>입금 계좌:</strong><p style='color:blue'>하나은행 646-910019-24904 (천주교대전교구청소년교육원)</p></li>";
-    	msgg += "    </ul>";
-    	msgg += "    <div>" + program.getContent();
-    	msgg += "    </div>";
-    	msgg += "  </div>";
-    	msgg += "</div>";
-    	message.setText(msgg, "utf-8", "html");//내용
-        message.setFrom(new InternetAddress("hapum7179@gmail.com","<HAPUM>"));//보내는 사람
-        return message;
-    } 
+
+private MimeMessage programMessage(String to, Program program) throws Exception {
+    MimeMessage message = emailSender.createMimeMessage();
+    MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+    // 1) 받는 사람·제목·보내는 사람 설정
+    helper.setTo(to);
+    helper.setSubject("프로그램 정보 발송");
+    helper.setFrom(new InternetAddress("hapum7179@gmail.com", "<HAPUM>"));
+
+    // 2) HTML 본문 구성
+    StringBuilder html = new StringBuilder();
+    html.append("<div style='max-width:1000px;margin:50px auto;display:flex;flex-wrap:wrap;")
+        .append("gap:30px;padding:20px;border:1px solid #ddd;border-radius:12px;")
+        .append("background-color:#fffefa;'>")
+        .append("<div style='flex:1 1 300px;'>")
+        .append("<img src='cid:").append(program.getThumbnailSrc())
+        .append("' alt='프로그램 썸네일' style='width:100%;border-radius:12px;")
+        .append("border:1px solid #ccc;'/>")
+        .append("</div>")
+        .append("<div style='flex:1 1 400px;display:flex;flex-direction:column;")
+        .append("justify-content:space-between;'>")
+        .append("<h2 style='margin-bottom:16px;color:#333;'>")
+        .append(program.getTitle()).append("</h2>")
+        .append("<ul style='list-style:none;padding:0;margin-bottom:20px;'>")
+        .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+        .append("<strong>일시:</strong>")
+        .append(program.getStartDate()).append("~").append(program.getEndDate())
+        .append("</li>")
+        .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+        .append("<strong>장소:</strong>").append(program.getLocation())
+        .append("</li>")
+        .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+        .append("<strong>대상:</strong>").append(program.getTarget())
+        .append("</li>")
+        .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+        .append("<strong>참가비:</strong>").append(program.getExpense()).append("원")
+        .append("</li>")
+        .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+        .append("<strong>주제:</strong>").append(program.getSubject())
+        .append("</li>")
+        .append("</ul>")
+        .append("<div>").append(program.getContent()).append("</div>")
+        .append("</div>")
+        .append("</div>");
+
+    helper.setText(html.toString(), true);
+
+    // 3) 실제 파일 경로로 치환
+    // (program.getThumbnailSrc() => "/uploads/program/xxx.png")
+    String logicalPath = program.getThumbnailSrc();
+    String realPath    = logicalPath.replaceFirst("^/uploads", "/upload");
+
+    FileSystemResource thumbnail = new FileSystemResource(new File(realPath));
+    if (!thumbnail.exists()) {
+        throw new IllegalArgumentException("썸네일 파일이 없습니다: " + realPath);
+    }
+
+    // 4) HTML <img>의 cid와 동일한 key 로 inline 이미지 등록
+    helper.addInline(logicalPath, thumbnail);
+
+    return message;
+}
+
+
     
     private MimeMessage rentalMessage(String to, Rental rental) throws Exception {
         MimeMessage message = emailSender.createMimeMessage();
