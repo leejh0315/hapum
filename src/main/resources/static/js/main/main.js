@@ -48,87 +48,55 @@ $(function() {
 	});
 
 
-	// ────────────────────────────────────────────
-	// 2) 갤러리 슬라이더 (한 장씩 이동, 반응형)
-	// ────────────────────────────────────────────
-	var $container = $('.gallery-container'),
-		$track = $('.gallery-track'),
-		$items = $('.gallery-item'),
-		itemCount = $items.length,
-		currentIndex = 0,
-		itemWidth,
-		visibleCount,
-		maxIndex;
 
-	function recalc() {
-		itemWidth = $items.outerWidth(true);
-		visibleCount = Math.floor($container.width() / itemWidth);
-		maxIndex = Math.max(0, itemCount - visibleCount);
-		currentIndex = Math.min(currentIndex, maxIndex);
-		slide();
-	}
 
-	function slide() {
-		$track.css('transform', 'translateX(' + (-currentIndex * itemWidth) + 'px)');
-		$('#gallery-prev').prop('disabled', currentIndex === 0);
-		$('#gallery-next').prop('disabled', currentIndex === maxIndex);
-	}
 
-	$('#gallery-prev').on('click', function() {
-		if (currentIndex > 0) {
-			currentIndex--;
-			slide();
-		}
-	});
 
-	$('#gallery-next').on('click', function() {
-		if (currentIndex < maxIndex) {
-			currentIndex++;
-			slide();
-		}
-	});
 
-	$(window).on('resize', recalc);
-	recalc();
 });
+
+
 $(function() {
-	var $container = $('.gallery-container'),
-		$track = $('.gallery-track'),
-		$items = $('.gallery-item'),
-		currentIndex = 0,
-		itemWidth, visibleCount, maxIndex;
+  var $track    = $('.gallery-track'),
+      $items    = $('.gallery-item'),
+      total     = $items.length,
+      visible   = 5,                          // 한번에 보일 아이템 수
+      index     = 0,                          // 현재 슬라이드 offset
+      itemW     = $items.outerWidth(true),    // 150px + 10px 마진
+      maxIndex  = Math.max(0, total - visible);
 
-	// 슬라이더 상태 계산 & 렌더링
-	function update() {
-		itemWidth = $items.outerWidth(true);
-		visibleCount = Math.floor($container.width() / itemWidth);
-		maxIndex = Math.max(0, $items.length - visibleCount);
-		currentIndex = Math.min(Math.max(currentIndex, 0), maxIndex);
+  function update() {
+    // transform으로 X축 이동시켜 슬라이드
+    $track.css('transform', 'translateX(' + (-index * itemW) + 'px)');
+    // 버튼 활성/비활성 토글
+    $('#gallery-prev').prop('disabled', index >= maxIndex);
+    $('#gallery-next').prop('disabled', index <= 0);
+  }
 
-		$track.css('transform', 'translateX(' + (-currentIndex * itemWidth) + 'px)');
-		$('#gallery-prev').prop('disabled', currentIndex === 0);
-		$('#gallery-next').prop('disabled', currentIndex === maxIndex);
-	}
+  // 다음(→) 버튼 클릭: [1,2,3,4,5]→[2,3,4,5,6]
+  $('#gallery-prev').on('click', function() {
+    if (index < maxIndex) {
+      index++;
+      update();
+    }
+  });
 
-	// 오른쪽(다음) 버튼
-	$('#gallery-next').on('click', function() {
-		if (currentIndex < maxIndex) {
-			currentIndex++;
-			update();
-		}
-	});
+  // 이전(←) 버튼 클릭: [2,3,4,5,6]→[1,2,3,4,5]
+  $('#gallery-next').on('click', function() {
+    if (index > 0) {
+      index--;
+      update();
+    }
+  });
 
-	// 왼쪽(이전) 버튼
-	$('#gallery-prev').on('click', function() {
-		if (currentIndex > 0) {
-			currentIndex--;
-			update();
-		}
-	});
+  // 윈도우 리사이즈 시 재계산
+  $(window).on('resize', function() {
+    itemW    = $('.gallery-item').outerWidth(true);
+    maxIndex = Math.max(0, $('.gallery-item').length - visible);
+    index    = Math.min(index, maxIndex);
+    update();
+  });
 
-	// 윈도우 리사이즈 시 재계산
-	$(window).on('resize', update);
-
-	// 초기 실행
-	update();
+  // 초기 렌더링 (최초에는 index=0 이므로 1~5번만 보임)
+  update();
 });

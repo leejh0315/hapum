@@ -98,6 +98,10 @@ public class MainController {
 		List<Notification> notifications =
 		notificationService.selectAll();
 		
+		
+		System.out.println("*********************");
+		System.out.println(fileNames.size());
+		System.out.println("*********************");
 		model.addAttribute("fileNames", fileNames);
 		model.addAttribute("programs", programs);
 		model.addAttribute("notifications",notifications);
