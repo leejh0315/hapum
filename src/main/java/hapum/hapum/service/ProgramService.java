@@ -132,4 +132,11 @@ public void insertProgramAdd(ProgramAdd programadd, MultipartFile imageFile) thr
 	public void updateCode(Long programId, String code) {
 		programMapper.updateCode(code ,programId);
 	}
+	public List<ProgramAdd>selectAllProgramAdd(){
+		return programMapper.selectAllProgramAdd();
+	}
+	
+	public List<Program>selectProgramByAddId(Long id){
+		return programMapper.selectProgramByAddId(id);
+	}
 }

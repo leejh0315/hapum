@@ -31,4 +31,6 @@ public interface ProgramMapper {
 	 void updateCode(@Param("code") String code, @Param("programId") Long programId);
 	 
 	 void insertProgramAdd(ProgramAdd programAdd);
+	 List<ProgramAdd> selectAllProgramAdd();
+	 List<Program> selectProgramByAddId(@Param("id")Long id);
 }

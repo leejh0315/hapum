@@ -26,7 +26,13 @@ public class AdminProgramController {
 	private final ProgramService programService;
 
 	@GetMapping("/openProgram")
-	public String getOpenProgram() {
+	public String getOpenProgram(Model model) {
+		List<ProgramAdd> programAdds = programService.selectAllProgramAdd();
+		
+		System.out.println("*********************");
+		System.out.println(programAdds);
+		System.out.println("*********************");
+		model.addAttribute("programAdds", programAdds);
 		return "admin/openProgram";
 	}
 
@@ -52,10 +58,8 @@ public class AdminProgramController {
 
 	@GetMapping("/programs")
 	public String getPrograms(Model model) {
-
 		List<Program> programs = programService.selectAllPrograms();
 		model.addAttribute("programs", programs);
-
 		return "admin/programs";
 	}
 

@@ -58,7 +58,7 @@
 				<div class="capacity">
 					신청인원: <span th:text="${applyCount}">8</span>/<span th:text="${program.capacity}">15</span>명
 				</div>
-
+				
 				<th:block th:if="${user == null}">
 					<button class="apply-btn" disabled title="로그인 후 신청 가능합니다">로그인 필요</button>
 				</th:block>

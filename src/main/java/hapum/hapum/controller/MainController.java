@@ -28,6 +28,7 @@ import hapum.hapum.domain.Notification;
 import hapum.hapum.domain.Organization;
 import hapum.hapum.domain.OrganizationPost;
 import hapum.hapum.domain.Program;
+import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.ProgramSub;
 import hapum.hapum.domain.Rental;
 import hapum.hapum.domain.User;
@@ -118,9 +119,21 @@ public class MainController {
 	@GetMapping("/program")
 	public String getProgram(HttpServletRequest req, Model model) {
 		addUserToModel(req, model);
-		List<Program> programList = programService.selectAllPrograms();
-		model.addAttribute("programs", programList);
+		List<ProgramAdd> programAdd = programService.selectAllProgramAdd();
+		model.addAttribute("programs", programAdd);
 		return "main/program";
+	}
+	
+	@GetMapping("/programList/{id}")
+	public String getProgramList(HttpServletRequest req, Model model,@PathVariable("id") Long id) {
+		addUserToModel(req, model);
+		List<Program> programs = programService.selectProgramByAddId(id);
+		List<ProgramAdd> programAdds = programService.selectAllProgramAdd();
+				
+		model.addAttribute("programs", programs);
+		model.addAttribute("programAdds", programAdds);
+		model.addAttribute("activeTab", id);
+		return "main/programList";
 	}
 
 	@GetMapping("/program/detail/{id}")
