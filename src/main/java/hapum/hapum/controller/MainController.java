@@ -1,11 +1,14 @@
 package hapum.hapum.controller;
 
+import java.io.File;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -50,13 +53,26 @@ public class MainController {
 	private final OrganizationService organizationService;
 	private final NotificationService notificationService;
 	
-
+	@Value("${file.upload-dir}")
+	private String uploadDir; // e.g. "./uploads"
+	
+	
 	@GetMapping("/main")
 	public String getMain(HttpServletRequest req, Model model) {
 		addUserToModel(req, model);
 		List<Program> programs = programService.selectAllPrograms();
 		
-		
+		File folder = new File(uploadDir+"/news/");
+        File[] files = folder.listFiles();  
+        List<String> fileNames = new ArrayList<>();
+        if (files != null) {
+            for (File f : files) {
+                if (f.isFile()) {
+                    fileNames.add(f.getName());
+                }
+            }
+        }
+        
 		
 		List<Map<String, Object>> eventList = programs.stream().map(program -> {
 		    Map<String, Object> event = new HashMap<>();
@@ -81,6 +97,7 @@ public class MainController {
 		List<Notification> notifications =
 		notificationService.selectAll();
 		
+		model.addAttribute("fileNames", fileNames);
 		model.addAttribute("programs", programs);
 		model.addAttribute("notifications",notifications);
 		return "main/main";

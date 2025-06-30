@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
-	
+
 	</style>
 </head>
 
@@ -19,79 +19,100 @@
 	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 	<main>
 		<section id="top-section">
-
-			<div id="slideshow-wrapper">
-				<div id="slideshow-container">
-					<div id="slideshow">
-						<!-- Thymeleaf 반복문: programs 리스트의 각 thumbnailSrc -->
-						<div th:each="program : ${programs}">
-							<img th:src="${program.thumbnailSrc}" alt="슬라이드 이미지" />
+			<div class="left-section">
+				<div id="slideshow-wrapper">
+					<div id="slideshow-container">
+						<div id="slideshow">
+							<!-- Thymeleaf 반복문: programs 리스트의 각 thumbnailSrc -->
+							<div th:each="program : ${programs}">
+								<img th:src="${program.thumbnailSrc}" alt="슬라이드 이미지" />
+							</div>
 						</div>
 					</div>
-				</div>
-				<!-- 슬라이드 좌우 전환 버튼 -->
-				<div id="slideshow-controls">
-					<button id="prev-btn">&lt;</button>
-					<button id="next-btn">&gt;</button>
+					<!-- 슬라이드 좌우 전환 버튼 -->
+					<div id="slideshow-controls">
+						<button id="prev-btn">&lt;</button>
+						<button id="next-btn">&gt;</button>
+					</div>
 				</div>
 			</div>
 			<!-- 생략: 슬라이드 영역 -->
-			<div id="notification-list">
-				<!-- admin only: 수정/수정완료 버튼 -->
-				<div class="admin-controls" th:if="${user != null and user.email == 'admin'}">
-					<button id="edit-order-btn" type="button">
-						<i class="fa-solid fa-pen-to-square"></i>
-						<span>수정</span>
-					</button>
+			<div class="right-section">
+				<div id="notification-list">
+					<!-- admin only: 수정/수정완료 버튼 -->
+					<div class="admin-controls" th:if="${user != null and user.email == 'admin'}">
+						<button id="edit-order-btn" type="button">
+							<i class="fa-solid fa-pen-to-square"></i>
+							<span>수정</span>
+						</button>
+					</div>
+
+					<div th:if="${#lists.isEmpty(notifications)}">
+						등록된 공지사항이 없습니다.
+					</div>
+					<div th:if="${!#lists.isEmpty(notifications)}">
+						<h3 style="margin-bottom: 10px;">공지사항</h3>
+						<table>
+							<thead>
+								<tr>
+									<th>제목</th>
+									<th>작성일자</th>
+									<th class="order-col">순서</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="notif, iterStat : ${notifications}" th:if="${iterStat.index < 5}">
+									<td>
+										<a th:href="@{/main/notification/detail/{id}(id=${notif.id})}">
+											<span th:text="${notif.title}"
+												th:classappend="${notif.isTop=='1'} ? ' top-bold' : ''">
+												공지제목
+											</span>
+											<i th:if="${notif.isTop=='1'}" class="fa-solid fa-thumbtack pin-icon"
+												aria-hidden="true"></i>
+										</a>
+										<button type="button" class="toggle-top-btn"
+											th:if="${user != null and user.email=='admin'}"
+											th:attr="data-id=${notif.id},data-istro=${notif.isTop}">
+											<i class="fa-solid"
+												th:classappend="${notif.isTop=='1'} ? ' fa-arrow-turn-down' : ' fa-arrow-turn-up'">
+											</i>
+										</button>
+									</td>
+									<td th:text="${#temporals.format(notif.createOn,'yyyy-MM-dd HH:mm')}">
+										2025-06-23 14:30
+									</td>
+									<!-- isTop=1인 것만 input 활성화 -->
+									<td class="order-col" th:if="${notif.isTop=='1'}">
+										<input type="number" name="orderNum" th:value="${notif.orderNum}" min="1"
+											th:attr="data-id=${notif.id}" />
+									</td>
+									<!-- isTop!=1 or non-admin view: 빈 td -->
+									<td class="order-col" th:if="${notif.isTop!='1'}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div><!-- /#notification-list -->
+				<div class="gallery">
+					<h3 style="margin-top:10px;">갤러리</h3>
+					<div class="gallery-wrapper">
+						<button id="gallery-prev" type="button">&lt;</button>
+						<div class="gallery-container">
+							<div class="gallery-track">
+								<div class="gallery-item" th:each="fileName,iterStat : ${fileNames}"
+									th:if="${iterStat.index < 4}">
+									<img th:src="${fileName}" alt="gallery image" />
+								</div>
+							</div>
+
+						</div>
+						<button id="gallery-next" type="button">&gt;</button>
+					</div>
 				</div>
 
-				<div th:if="${#lists.isEmpty(notifications)}">
-					등록된 공지사항이 없습니다.
-				</div>
-				<div th:if="${!#lists.isEmpty(notifications)}">
-					<h3 style="margin-bottom: 10px;">공지사항</h3>
-					<table>
-						<thead>
-							<tr>
-								<th>제목</th>
-								<th>작성일자</th>
-								<th class="order-col">순서</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="notif, iterStat : ${notifications}" th:if="${iterStat.index < 5}">
-								<td>
-									<a th:href="@{/main/notification/detail/{id}(id=${notif.id})}">
-										<span th:text="${notif.title}"
-											th:classappend="${notif.isTop=='1'} ? ' top-bold' : ''">
-											공지제목
-										</span>
-										<i th:if="${notif.isTop=='1'}" class="fa-solid fa-thumbtack pin-icon"
-											aria-hidden="true"></i>
-									</a>
-									<button type="button" class="toggle-top-btn"
-										th:if="${user != null and user.email=='admin'}"
-										th:attr="data-id=${notif.id},data-istro=${notif.isTop}">
-										<i class="fa-solid"
-											th:classappend="${notif.isTop=='1'} ? ' fa-arrow-turn-down' : ' fa-arrow-turn-up'">
-										</i>
-									</button>
-								</td>
-								<td th:text="${#temporals.format(notif.createOn,'yyyy-MM-dd HH:mm')}">
-									2025-06-23 14:30
-								</td>
-								<!-- isTop=1인 것만 input 활성화 -->
-								<td class="order-col" th:if="${notif.isTop=='1'}">
-									<input type="number" name="orderNum" th:value="${notif.orderNum}" min="1"
-										th:attr="data-id=${notif.id}" />
-								</td>
-								<!-- isTop!=1 or non-admin view: 빈 td -->
-								<td class="order-col" th:if="${notif.isTop!='1'}"></td>
-							</tr>
-						</tbody>
-					</table>
-				</div>
-			</div><!-- /#notification-list -->
+			</div>
+			</div>
 		</section>
 	</main>
 	<div th:replace="~{main/footer :: footer}"></div>
@@ -103,7 +124,7 @@
 
 	<!-- 공지사항 순서 수정 스크립트 -->
 	<script>
-		
+
 	</script>
 </body>
 
