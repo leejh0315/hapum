@@ -19,7 +19,8 @@
 		update_on,
 		expense,
 		subject,
-		open_status
+		open_status,
+		add_id
 		) VALUES (
 		#{title},
 		#{content},
@@ -33,7 +34,8 @@
 		NOW(),
 		#{expense},
 		#{subject},
-		'Y'
+		'Y',
+		#{addId}
 		)
 	</insert>
 
