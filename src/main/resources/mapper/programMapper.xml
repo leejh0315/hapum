@@ -155,4 +155,11 @@
 	UPDATE hapumdb.program SET open_status=#{code} where id=#{programId}
 </update>
 
+
+<insert id="insertProgramAdd" parameterType="hapum.hapum.domain.ProgramAdd">
+	INSERT INTO hapumdb.program_add 
+	(name, thumbnail_src) VALUES
+	(#{name}, #{thumbnailSrc})
+</insert>
+
 </mapper>

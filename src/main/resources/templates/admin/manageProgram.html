@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>프로그램 추가</title>
+	<link rel="stylesheet" th:href="@{/css/admin/header.css}">
+	<!-- 별도의 조직 추가 전용 CSS를 사용하거나 아래와 같이 인라인으로 작성 -->
+	<style>
+		.form-container {
+			max-width: 600px;
+			margin: 30px auto;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 8px;
+			background-color: #fff;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		.form-container h1 {
+			text-align: center;
+			margin-bottom: 20px;
+			font-size: 24px;
+			color: #333;
+		}
+
+		.form-group {
+			margin-bottom: 15px;
+		}
+
+		.form-group label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+			font-size: 16px;
+			color: #555;
+		}
+
+		.form-group input[type="text"],
+		.form-group textarea {
+			width: 100%;
+			padding: 10px;
+			font-size: 16px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			box-sizing: border-box;
+		}
+
+		.form-group textarea {
+			height: 150px;
+			resize: vertical;
+		}
+
+		.form-group input[type="file"] {
+			font-size: 16px;
+		}
+
+		.submit-button {
+			display: block;
+			width: 100%;
+			padding: 12px;
+			font-size: 18px;
+			color: #fff;
+			background-color: #007bff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			margin-top: 20px;
+		}
+
+		.submit-button:hover {
+			background-color: #0069d9;
+		}
+
+
+	</style>
+
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+	<!-- 헤더 영역 -->
+	<div th:replace="~{admin/admin-header :: admin-header}"></div>
+
+	<div class="form-container">
+		<h1>프로그램 추가</h1>
+		<!-- 재단체 추가 폼: 이름, 소개, 사진 -->
+		<form action="/admin/program/add" method="post" enctype="multipart/form-data">
+			
+			<div class="form-group">
+				<label for="name">이름</label>
+				<input type="text" id="name" name="name" placeholder="프로그램 이름을 입력하세요" required />
+			</div>
+			
+			<div class="form-group">
+				<label for="profile">사진</label>
+				<input type="file" id="profile" name="photo" accept="image/*" required />
+			</div>
+			<button type="submit" class="submit-button">추가하기</button>
+		</form>
+	</div>
+
+	<!-- 푸터 영역 -->
+	<script th:src="@{/js/header.js}"></script>
+</body>
+
+</html>

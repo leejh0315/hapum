@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import hapum.hapum.domain.Program;
+import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.ProgramSub;
 import hapum.hapum.service.ProgramService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,17 @@ public class AdminProgramController {
 		return "admin/openProgram";
 	}
 
+	@GetMapping("/manageProgram")
+	public String getManageProgram() {
+		return "admin/manageProgram";
+	}
+	
+	@PostMapping("/program/add")
+	public String postProgramAdd(ProgramAdd programAdd, @RequestParam("photo") MultipartFile photo) throws IOException {
+		programService.insertProgramAdd(programAdd, photo);
+		return "admin/main";
+	}
+	
 	@PostMapping("/openProgram")
 	public String postOpenProgram(Program program, @RequestParam("image") MultipartFile imageFile) throws IOException {
 		if(program.getExpense()==null) {
