@@ -192,6 +192,29 @@
   transition: transform .3s ease-in-out;
 }
 
+
+
+    .gallery-item img {
+    		display: block;
+    		width: 100%;
+    		height: auto;
+    }
+
+    /* 네비게이션 버튼 */
+    #gallery-prev,
+    #gallery-next {
+    	background: none;
+    	border: none;
+    	font-size: 1.5rem;
+    	padding: 0 10px;
+    	cursor: pointer;
+    }
+
+    #gallery-prev:disabled,
+    #gallery-next:disabled {
+    	opacity: 0.3;
+    	cursor: default;
+    }
 /* 아이템: 고정 150px 폭, 오른쪽 마진 10px */
 .gallery-item {
   flex: 0 0 150px;
@@ -200,11 +223,4 @@
 }
 .gallery-item:last-child {
   margin-right: 0;
-}
-.gallery-item img {
-  display: block;
-  width: 100%;
-  height: auto;
-  border-radius: 4px;
-  object-fit: cover;
 }

@@ -90,6 +90,9 @@ body {
 
 /* 프로그램 리스트 (카드 형태) */
 .program-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
