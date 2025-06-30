@@ -94,22 +94,21 @@
 						</table>
 					</div>
 				</div><!-- /#notification-list -->
-				<div class="gallery">
-					<h3 style="margin-top:10px;">갤러리</h3>
+				<section class="gallery">
+					<h3>갤러리</h3>
 					<div class="gallery-wrapper">
 						<button id="gallery-prev" type="button">&lt;</button>
 						<div class="gallery-container">
 							<div class="gallery-track">
-								<div class="gallery-item" th:each="fileName,iterStat : ${fileNames}"
-									th:if="${iterStat.index < 5}">
+								<!-- fileNames 리스트의 모든 이미지를 렌더 -->
+								<div class="gallery-item" th:each="fileName : ${fileNames}">
 									<img th:src="${fileName}" alt="gallery image" />
 								</div>
 							</div>
-
 						</div>
 						<button id="gallery-next" type="button">&gt;</button>
 					</div>
-				</div>
+				</section>
 
 			</div>
 			</div>

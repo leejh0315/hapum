@@ -151,41 +151,48 @@
     	cursor: pointer;
     }
 
-    .gallery {
-    	flex: 1;
-    	margin-left: 5%;
-    	margin-top: 10px;
-    	max-width: calc(100%-420px);
-    	height: 400px;
-    }
+   .gallery {
+  margin: 20px 6%;
+}
+.gallery-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 3%;
+}
 
-    .gallery {
-    	margin-top: 10px;
-    }
+/* 이전/다음 버튼 */
+#gallery-prev,
+#gallery-next {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  width: 40px; height: 40px;
+  cursor: pointer;
+  transition: opacity .2s;
+}
+#gallery-prev:disabled,
+#gallery-next:disabled {
+  opacity: .3;
+  cursor: default;
+}
 
-    .gallery-wrapper {
-    	display: flex;
-    	align-items: center;
-    	position: relative;
-    }
+/* 보이는 영역: 딱 5개만 보여줄 너비 (150px × 5) */
+.gallery-container {
+  width: 150px * 5; /* CSS 계산 불가 → 아래처럼 직접 지정 */
+  width: 750px;
+  overflow: hidden;
+  box-sizing: border-box;
+  margin: 0 10px;
+}
 
-    .gallery-container {
-    	overflow: hidden;
-    	width: 100%;
-    }
+/* 트랙: 전체 너비 1000px (이미지 150px + 여유) */
+.gallery-track {
+  display: flex;
+  width: 1000px;
+  transition: transform .3s ease-in-out;
+}
 
-    .gallery-track {
-    	display: flex;
-    	transition: transform 0.3s ease-in-out;
-    }
 
-    .gallery-item {
-    	flex: 0 0 6%;
-    	/* 한 줄에 4개 */
-    	padding: 5px;
-    	box-sizing: border-box;
-	width : 150px;
-    }
 
     .gallery-item img {
     		display: block;
@@ -208,3 +215,12 @@
     	opacity: 0.3;
     	cursor: default;
     }
+/* 아이템: 고정 150px 폭, 오른쪽 마진 10px */
+.gallery-item {
+  flex: 0 0 150px;
+  margin-right: 10px;
+  box-sizing: border-box;
+}
+.gallery-item:last-child {
+  margin-right: 0;
+}

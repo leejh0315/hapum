@@ -162,4 +162,12 @@
 	(#{name}, #{thumbnailSrc})
 </insert>
 
+<select id="selectAllProgramAdd">
+	SELECT * FROM hapumdb.program_add
+</select>
+
+<select id="selectProgramByAddId">
+	SELECT *FROM hapumdb.program WHERE add_id=#{id}
+</select>
+
 </mapper>

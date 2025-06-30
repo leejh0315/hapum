@@ -18,19 +18,23 @@
 		<!-- 좌측 사이드바 -->
 		<div class="sidebar">
 			<div class="sidebar-title">프로그램</div>
-
-			<button th:each="program : ${programs}" th:text="${program.name}"
-				th:onclick="|location.href='/main/programList/${program.id}'|" class="menu-button">
-			</button>
+					<button
+		th:each="programAdd : ${programAdds}"
+		th:text="${programAdd.name}"
+		th:onclick="|location.href='/main/programList/${programAdd.id}'|"
+		class="menu-button"
+		th:classappend="${activeTab == programAdd.id} ? ' active' : ''">
+	</button>
+		
 		</div>
 
 		<!-- 오른쪽 콘텐츠 영역 -->
 		<div class="content">
 			<div class="program-list">
-				<a th:each="program : ${programs}" th:href="@{/main/programList/{id}(id=${program.id})}"
+				<a th:each="program : ${programs}" th:href="@{/main/program/detail/{id}(id=${program.id})}"
 					class="program-card">
 					<img th:src="@{${program.thumbnailSrc}}" alt="썸네일 이미지" />
-					<div class="program-title" th:text="${program.name}"></div>
+					<div class="program-title" th:text="${program.title}"></div>
 				</a>
 			</div>
 		</div>

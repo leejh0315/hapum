@@ -68,7 +68,19 @@
 			<div class="program-form-group">
 				<label for="subject">주제</label>
 				<input type="text" id="subject" name="subject" placeholder="예) 여름 성경학교 주제" />
+
+				<div class="program-form-group">
+					<label for="programAddId">분류</label>
+					<select id="programAddId" name="addId" required>
+						<option value="">-- 분류 선택 --</option>
+						<option th:each="programAdd : ${programAdds}" th:value="${programAdd.id}"
+							th:text="${programAdd.name}">
+						</option>
+					</select>
+				</div>
+
 			</div>
+
 			<div class="program-form-group">
 				<label for="content">내용</label>
 				<textarea id="content" name="content" rows="5" placeholder="프로그램 내용을 입력해주세요"></textarea>
