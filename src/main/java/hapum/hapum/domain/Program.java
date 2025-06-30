@@ -10,6 +10,9 @@ import lombok.Data;
 public class Program {
 
     private Long id;
+    
+    private Long addId;
+    
     private String title;       // 제목
     private String content;     // 내용
     private String subject;		//주제

@@ -79,7 +79,7 @@
     	align-items: flex-start;
     	/* 위쪽 정렬 */
     	flex-direction: row;
-    	margin: 20px 6%;
+    	margin: 5% 6%;
     }
 
     .right-section {
@@ -187,10 +187,11 @@
     }
 
     .gallery-item img {
-    	width: 200px;
-    	height: 100px;
-    	height: auto;
-    	display: block;
+    	.gallery-item img {
+    		display: block;
+    		width: 100%;
+    		height: auto;
+    	}
     }
 
     /* 네비게이션 버튼 */

@@ -31,7 +31,7 @@
 			flex: 1;
 			/* 본문 영역(사이드+메인)이 빈 공간을 전부 차지 */
 			display: flex;
-			height: 2000px;
+			height: 3300px;
 		}
 
 		.main-content {
@@ -46,8 +46,9 @@
 	<div class="container">
 		<!-- 사이드 메뉴 -->
 		<div class="sidebar">
+			<button class="sidebar-title">센터소개</button>
+			
 			<button class="menu-button active" onclick="changeContent('인사말')">인사말</button>
-			<button class="menu-button" onclick="changeContent('설립목적')">설립목적</button>
 			<button class="menu-button" onclick="changeContent('주요연혁')">주요연혁</button>
 			<button class="menu-button" onclick="changeContent('오시는길')">오시는길</button>
 		</div>
@@ -74,11 +75,15 @@
       이들이 꿈꾸는 세상, 자신을 만나는 삶의 여정, 때로 실패와 좌절 속에서도 포기하지 않는 <strong>열정</strong> 모두를<br>
       주님은 친히 <strong>아껴주시고 보살펴 주십니다</strong>.
       <br><br>
-      천주교 대전교구 천안지역청소년사목센터 <strong>‘하품’</strong>의 존재 이유도 이와 같습니다.<br>
-      하느님 안에서의 <strong>‘동행’과 ‘위로’</strong>입니다.<br>
-      옆에서 함께 웃고, 함께 고민하고 같이 신앙을 말하고 살아가는 것.<br>
-      일상의 작은 일들 안에서 <strong>하느님을 발견하고 소통</strong>하는 것입니다.<br>
-      그리고 <strong>그분 안에서 온전히 나를 발견하고 만나며 꿈을 꾸는 것</strong>입니다.
+          <p>
+      <span style="color: #5c9ccf;"><strong>하품</strong></span>은
+      자기다움 · 성장 · 행복을 바탕으로<br>
+      청소년 · 청년 · 학부모가
+      고유한 자신의 모습을 만나<br>
+      함께 성장하며
+      서로 행복을 나누는<br>
+      <span style="color: #5c9ccf;"><strong>하느님 품</strong></span>입니다.
+    </p>
       <br><br>
       이 아름다운 여정에 <strong>여러분과 늘 함께 하겠습니다</strong>. 감사합니다.
       <br><br>
@@ -88,15 +93,7 @@
 			'설립목적': `
     <h2>설립목적</h2>
     <br>
-    <p style="text-align: center; float: left">
-      <span style="color: #5c9ccf;"><strong>하품</strong></span>은<br>
-      자기다움 · 성장 · 행복을 바탕으로<br>
-      청소년 · 청년 · 학부모가<br>
-      고유한 자신의 모습을 만나<br>
-      함께 성장하며<br>
-      서로 행복을 나누는<br>
-      <span style="color: #5c9ccf;"><strong>하느님 품</strong></span>입니다.
-    </p>
+
   `,
 			'주요연혁': `
     <h2 class="text-center">하품 주요 연혁</h2>
@@ -116,7 +113,7 @@
         <div class="timeline-marker"></div>
         <div class="timeline-content">
           <h3 class="timeline-title" onclick="toggleProgram('program-2025')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2025" style="display: none; margin-top: 10px;">
+          <ul id="program-2025" style="display: block; margin-top: 10px;">
             <li>주님께 찬양을</li>
             <li>청년 떼제기도</li>
             <li>성주간 특강</li>
@@ -135,11 +132,12 @@
         <div class="timeline-marker"></div>
         <div class="timeline-content"><h2 class="timeline-title">2024년</h2></div>
       </li>
+      <li class="timeline-item"></li>
       <li class="timeline-item">
         <div class="timeline-marker"></div>
         <div class="timeline-content">
           <h3 class="timeline-title" onclick="toggleProgram('program-2024')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2024" style="display: none; margin-top: 10px;">
+          <ul id="program-2024" style="display: block; margin-top: 10px;">
             <li>주님께 찬양을</li>
             <li>청년 떼제기도</li>
             <li>청년 성시간</li>
@@ -151,17 +149,19 @@
           </ul>
         </div>
       </li>
+      
 
       <!-- 2023 -->
       <li class="timeline-item period">
         <div class="timeline-marker"></div>
         <div class="timeline-content"><h2 class="timeline-title">2023년</h2></div>
       </li>
+     <li class="timeline-item"></li>
       <li class="timeline-item">
         <div class="timeline-marker"></div>
         <div class="timeline-content">
           <h3 class="timeline-title" onclick="toggleProgram('program-2023')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2023" style="display: none; margin-top: 10px;">
+          <ul id="program-2023" style="display: block; margin-top: 10px;">
             <li>주님께 찬양을</li>
             <li>청년 떼제기도</li>
             <li>하품 특강-뭉클 클래스</li>
@@ -179,11 +179,12 @@
         <div class="timeline-marker"></div>
         <div class="timeline-content"><h2 class="timeline-title">2022년</h2></div>
       </li>
+      <li class="timeline-item"></li>
       <li class="timeline-item">
         <div class="timeline-marker"></div>
         <div class="timeline-content">
           <h3 class="timeline-title" onclick="toggleProgram('program-2022')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2022" style="display: none; margin-top: 10px;">
+          <ul id="program-2022" style="display: block; margin-top: 10px;">
             <li>주님께 찬양을</li>
             <li>청년 떼제기도</li>
             <li>하품 특강-주신부의 묵주공방</li>
@@ -212,7 +213,7 @@
         <div class="timeline-marker"></div>
         <div class="timeline-content">
           <h3 class="timeline-title" onclick="toggleProgram('program-2021')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2021" style="display: none; margin-top: 10px;">
+          <ul id="program-2021" style="display: block; margin-top: 10px;">
             <li>주님께 찬양을</li>
             <li>청년 떼제기도</li>
             <li>청년 교리</li>
@@ -238,7 +239,7 @@
         <div class="timeline-marker"></div>
         <div class="timeline-content">
           <h3 class="timeline-title" onclick="toggleProgram('program-2020')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2020" style="display: none; margin-top: 10px;">
+          <ul id="program-2020" style="display: block; margin-top: 10px;">
             <li>주님께 찬양을</li>
             <li>청년 떼제기도</li>
             <li>청년들을 위한 교리</li>
@@ -267,7 +268,7 @@
         <div class="timeline-marker"></div>
         <div class="timeline-content">
           <h3 class="timeline-title" onclick="toggleProgram('program-2019')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2019" style="display: none; margin-top: 10px;">
+          <ul id="program-2019" style="display: block; margin-top: 10px;">
             <li>몸신학·성교육</li>
             <li>청년 기도모임</li>
             <li>주님께 찬양을</li>
@@ -305,12 +306,14 @@
             쌍용고입구 하차(15개 정류장) → 하차 후 왼쪽 방향(권구성순대국밥 방향 50m) →<br>
             횡단보도 건넌 뒤 오른쪽(20m) → 쌍용수산시장 앞에서 왼쪽(30m) → 하품센터 도착
           </li>
+          <br>
           <li>
             <strong>시내버스 12번 (약 40분)</strong><br>
             고속터미널 앞 정류장에서 12번 노선 탑승(성정1동행정복지센터 방면) →<br>
             방아다리공원 정류장 하차(14개 정류장) → 하차 후 왼쪽(140m) →<br>
             보그헤어 앞에서 오른쪽(100m) → 하품센터 도착
           </li>
+          <br>
           <li>
             <strong>간선버스 900번 (약 40분)</strong><br>
             종합터미널 앞 정류장에서 900번 노선 탑승(방죽안오거리 방면) →<br>

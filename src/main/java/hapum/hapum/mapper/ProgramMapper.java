@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import hapum.hapum.domain.Program;
+import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.ProgramSub;
 import hapum.hapum.domain.ProgramWithSub;
 
@@ -28,4 +29,6 @@ public interface ProgramMapper {
 	 void deleteByProgramSubsId(@Param("id") Long subsId);
 	 
 	 void updateCode(@Param("code") String code, @Param("programId") Long programId);
+	 
+	 void insertProgramAdd(ProgramAdd programAdd);
 }

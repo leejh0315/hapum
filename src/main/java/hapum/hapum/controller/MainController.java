@@ -68,7 +68,7 @@ public class MainController {
         if (files != null) {
             for (File f : files) {
                 if (f.isFile()) {
-                    fileNames.add(f.getName());
+                    fileNames.add("/upload/news"+f.getName());
                 }
             }
         }

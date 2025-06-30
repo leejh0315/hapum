@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import hapum.hapum.domain.Program;
+import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.ProgramSub;
 import hapum.hapum.domain.ProgramWithSub;
 import hapum.hapum.mapper.ProgramMapper;
@@ -55,6 +56,38 @@ public class ProgramService {
 		
 		programMapper.insertProgram(program);
 	}
+	
+	
+public void insertProgramAdd(ProgramAdd programadd, MultipartFile imageFile) throws IOException {
+		
+        if (imageFile != null && !imageFile.isEmpty()) {
+            // 확장자
+            String originalFilename = imageFile.getOriginalFilename();
+            String ext = "";
+            if (originalFilename != null && originalFilename.contains(".")) {
+                ext = originalFilename.substring(originalFilename.lastIndexOf("."));
+            }
+
+            // UUID로 유니크 파일명 생성
+            String uniqueFileName = UUID.randomUUID().toString() + ext;
+
+            // 저장 경로 생성
+            Path filePath = Paths.get(uploadDir+"/program/thumbnail/", uniqueFileName);
+            Files.createDirectories(filePath.getParent());
+
+            // 실제 파일 저장
+            imageFile.transferTo(filePath.toFile());
+
+            // DB에 저장할 경로 설정 (웹에서 접근 가능한 상대경로)
+            String dbFilePath = "/uploads/program/thumbnail/" + uniqueFileName;
+            programadd.setThumbnailSrc(dbFilePath);
+        }		
+		
+		
+		programMapper.insertProgramAdd(programadd);
+	}
+	
+	
 	
     public List<Program> selectAllPrograms() {
         return programMapper.selectAllPrograms();
