@@ -76,28 +76,8 @@ public class MainController {
         }
         
 		
-		List<Map<String, Object>> eventList = programs.stream().map(program -> {
-		    Map<String, Object> event = new HashMap<>();
-		    event.put("id", program.getId());
-		    event.put("title", program.getTitle());
-		    // ISO-8601 형식: yyyy-MM-dd'T'HH:mm
-		    event.put("start", program.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
-		    event.put("end", program.getEndDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")));
-		    event.put("thumbnail", program.getThumbnailSrc());
-		    event.put("url", "/main/program/detail/" + program.getId());
-		    
-		    return event;
-		}).collect(Collectors.toList());
 
-		try {
-		    String eventsJson = new ObjectMapper().writeValueAsString(eventList);
-		    
-		    model.addAttribute("eventsJson", eventsJson);
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-		List<Notification> notifications =
-		notificationService.selectAll();
+		List<Notification> notifications = notificationService.selectAll();
 		
 		
 		System.out.println("*********************");
@@ -177,7 +157,10 @@ public class MainController {
 		ProgramSub ps = new ProgramSub();
 		ps.setUserId(user.getId());
 		ps.setProgramId(program.getId());
-
+		ps.setOrgName(program.getNeedOrgName());
+		ps.setPartCount(Integer.parseInt(program.getNeedPartCount()));
+		ps.setRelation(program.getNeedRelation());
+		
 		int temp = programService.programSub(ps);
 
 		emailService.sendProgramMessage(user.getEmail(), program);

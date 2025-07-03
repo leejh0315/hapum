@@ -33,4 +33,9 @@ public class Program {
     private LocalDateTime updateOn;
     
     private String openStatus;
+    
+    private String needOrgName;
+    private String needPartCount;
+    private String needRelation;
+    
 }

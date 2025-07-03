@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Login</title>
+	<title>하품센터-로그인</title>
 	<link rel="stylesheet" th:href="@{/css/header.css}" />
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
 	<link rel="stylesheet" th:href="@{/css/main/auth/login.css}">
@@ -44,8 +44,8 @@
 
 
 				<div class="move">
-					<div id="findPw">비밀번호 찾기</div>
-					<div id="goSignin">회원가입</div>
+					<div onclick="location.href='/auth/findPw'" id="findPw1">비밀번호 찾기</div>
+					<div onclick="location.href='/auth/signin'" id="goSignin1">회원가입</div>
 				</div>
 			</form>
 		</div>
@@ -65,15 +65,7 @@
 			}
 		});
 
-		let findPw = document.getElementById("findPw");
-		findPw.addEventListener("click", (e) => {
-			location.href = "/auth/findPw";
-		});
 
-		let goSignin = document.getElementById("goSignin");
-		goSignin.addEventListener("click", (e) => {
-			location.href = "/auth/signin";
-		})
 	</script>
 </body>
 

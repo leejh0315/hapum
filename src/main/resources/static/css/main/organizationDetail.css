@@ -9,7 +9,6 @@ body {
 .container {
 	display: flex;
 	flex: 1;
-	height: 100vh;
 	/* introduce 페이지와 동일 높이 */
 	padding-left: 7%;
 	padding-right: 7%;

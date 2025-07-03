@@ -57,46 +57,44 @@ $(function() {
 
 
 $(function() {
-  var $track    = $('.gallery-track'),
-      $items    = $('.gallery-item'),
-      total     = $items.length,
-      visible   = 5,                          // 한번에 보일 아이템 수
-      index     = 0,                          // 현재 슬라이드 offset
-      itemW     = $items.outerWidth(true),    // 150px + 10px 마진
-      maxIndex  = Math.max(0, total - visible);
+  const $track   = $('.gallery-track');
+  const $items   = $('.gallery-item');
+  let total      = $items.length;
+  let visible    = 5;                            // 한 번에 보일 개수
+  let index      = 0;
+  let itemW      = $items.outerWidth(true);      // 아이템 너비 + 마진
+  let maxIndex   = Math.max(0, total - visible); // 이동 가능 최대 index
 
   function update() {
-    // transform으로 X축 이동시켜 슬라이드
     $track.css('transform', 'translateX(' + (-index * itemW) + 'px)');
-    // 버튼 활성/비활성 토글
-    $('#gallery-prev').prop('disabled', index >= maxIndex);
-    $('#gallery-next').prop('disabled', index <= 0);
+    $('#gallery-prev').prop('disabled', index <= 0);
+    $('#gallery-next').prop('disabled', index >= maxIndex);
   }
 
-  // 다음(→) 버튼 클릭: [1,2,3,4,5]→[2,3,4,5,6]
-  $('#gallery-prev').on('click', function() {
+  // ✅ 오른쪽 버튼: 다음 이미지로 이동 (index 증가)
+  $('#gallery-next').on('click', function() {
     if (index < maxIndex) {
       index++;
       update();
     }
   });
 
-  // 이전(←) 버튼 클릭: [2,3,4,5,6]→[1,2,3,4,5]
-  $('#gallery-next').on('click', function() {
+  // ✅ 왼쪽 버튼: 이전 이미지로 이동 (index 감소)
+  $('#gallery-prev').on('click', function() {
     if (index > 0) {
       index--;
       update();
     }
   });
 
-  // 윈도우 리사이즈 시 재계산
+  // ✅ 리사이즈 시 다시 계산
   $(window).on('resize', function() {
     itemW    = $('.gallery-item').outerWidth(true);
-    maxIndex = Math.max(0, $('.gallery-item').length - visible);
+    total    = $('.gallery-item').length;
+    maxIndex = Math.max(0, total - visible);
     index    = Math.min(index, maxIndex);
     update();
   });
 
-  // 초기 렌더링 (최초에는 index=0 이므로 1~5번만 보임)
   update();
 });

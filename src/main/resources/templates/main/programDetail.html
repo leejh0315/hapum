@@ -4,19 +4,23 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Program Detail</title>
+	<title>하품센터-프로그램</title>
 	<link rel="stylesheet" th:href="@{/css/header.css}" />
 	<link rel="stylesheet" th:href="@{/css/main/programDetail.css}" />
-	    <link rel="stylesheet" th:href="@{/css/footer.css}">
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
 		.text {
-  overflow-x: auto;             /* 필요 시 가로 스크롤 */
-  word-break: break-word;       /* 단어 중간에도 줄바꿈 허용 */
-  white-space: pre-wrap;        /* 줄바꿈 보존 + 자동 줄바꿈 */
-  max-width: 100%;              /* 부모의 최대 너비를 넘지 않도록 */
-  box-sizing: border-box;
-}
+			overflow-x: auto;
+			/* 필요 시 가로 스크롤 */
+			word-break: break-word;
+			/* 단어 중간에도 줄바꿈 허용 */
+			white-space: pre-wrap;
+			/* 줄바꿈 보존 + 자동 줄바꿈 */
+			max-width: 100%;
+			/* 부모의 최대 너비를 넘지 않도록 */
+			box-sizing: border-box;
+		}
 	</style>
 </head>
 
@@ -28,107 +32,138 @@
 		<div class="spinner"></div>
 	</div>
 
-	<div class="program-detail-container">
+	<div class="container">
+		<!-- 좌측 사이드바 -->
+		<div class="sidebar">
+			<div class="sidebar-title" onclick="location.href='/main/program'">프로그램</div>
+			<button onclick="history.back()" class="menu-button">돌아가기</button>
+		</div>
+
+		<!-- 콘텐츠 영역 -->
 		<div class="content">
-		<div class="program-image">
-			<img th:src="@{${program.thumbnailSrc}}" alt="프로그램 썸네일" />
-		</div>
-
-		<div class="program-info">
-			<h2 th:text="${program.title}">프로그램 제목</h2>
-			<ul>
-				<li>
-					<strong>일시:</strong>
-					<span
-						th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">2025년
-						4월 8일 10:00~13:00</span>
-				</li>
-				<li><strong>장소:</strong> <span th:text="${program.location}">하품센터 2층 강당</span></li>
-				<li><strong>대상:</strong> <span th:text="${program.target}">초등학생 부모님(선착순 15명)</span></li>
-				<li><strong>참가비:</strong> <span th:text="${program.expense} + '원'">2만원</span></li>
-				<li><strong>주제:</strong> <span th:text="${program.subject}">“있는 그대로의 ‘나’”</span></li>
-				<li><strong>정원:</strong> <span th:text="${program.capacity} + '명'">15명</span></li>
-			</ul>
-
-			<div class="text" th:utext="${program.content}">
-				1) 부모-자녀 관계 이해<br />2) 자녀의 성격(학습유형) 이해(성격검사 활용)
+			<div class="program-image">
+				<img th:src="@{${program.thumbnailSrc}}" alt="프로그램 썸네일" />
 			</div>
 
-			<div class="program-bottom">
-				<div class="capacity">
-					신청인원: <span th:text="${applyCount}">8</span>/<span th:text="${program.capacity}">15</span>명
+			<div class="program-info">
+				<h2 th:text="${program.title}">프로그램 제목</h2>
+				<ul>
+					<li><strong>일시:</strong> <span
+							th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}"></span>
+					</li>
+					<li><strong>장소:</strong> <span th:text="${program.location}"></span></li>
+					<li><strong>대상:</strong> <span th:text="${program.target}"></span></li>
+					<li><strong>참가비:</strong> <span th:text="${program.expense} + '원'"></span></li>
+					<li><strong>주제:</strong> <span th:text="${program.subject}"></span></li>
+					<li><strong>정원:</strong> <span th:text="${program.capacity} + '명'"></span></li>
+				</ul>
+
+				<div class="text" th:utext="${program.content}"></div>
+
+				<div class="program-bottom">
+					<div class="capacity">
+						신청인원: <span th:text="${applyCount}"></span>/<span th:text="${program.capacity}"></span>명
+					</div>
+
+					<th:block th:if="${user == null}">
+						<button class="apply-btn" disabled title="로그인 후 신청 가능합니다">로그인 필요</button>
+					</th:block>
+					<th:block th:if="${user != null}">
+						<th:block th:if="${flag == 'Y'}">
+							<button class="apply-btn" disabled>신청완료</button>
+						</th:block>
+						<th:block th:if="${flag != 'Y' and applyCount >= program.capacity}">
+							<button class="apply-btn" disabled>신청마감</button>
+						</th:block>
+						<th:block th:if="${flag != 'Y' and applyCount < program.capacity}">
+							<button class="apply-btn" id="openPrivacyModalBtn">신청하기</button>
+						</th:block>
+					</th:block>
 				</div>
-				
-				<th:block th:if="${user == null}">
-					<button class="apply-btn" disabled title="로그인 후 신청 가능합니다">로그인 필요</button>
-				</th:block>
-
-				<th:block th:if="${user != null}">
-					<th:block th:if="${flag == 'Y'}">
-						
-						<button class="apply-btn" disabled>신청완료</button>
-					</th:block>
-					<th:block th:if="${flag != 'Y' and applyCount >= program.capacity}">
-						<button class="apply-btn" disabled>신청마감</button>
-					</th:block>
-					<th:block th:if="${flag != 'Y' and applyCount < program.capacity}">
-						<button class="apply-btn" id="openPrivacyModalBtn">신청하기</button>
-					</th:block>
-				</th:block>
 			</div>
-		</div>
 		</div>
 	</div>
 
- <div id="programApplyModalOverlay" class="modal-overlay">
-    <div class="modal-content">
-      <h3>[개인정보 수집·이용·제공 및 활용 동의서]</h3>
-      <div class="scroll-box">
-        <p><strong>□ 개인정보의 수집, 이용 목적</strong></p>
-        <ul>
-          <li>프로그램 신청자/참가자 명단 확인 및 관리</li>
-          <li>프로그램 진행 시 필요한 인적 사항</li>
-          <li>프로그램 허위 신청 방지</li>
-        </ul>
+	<div id="additionalInfoModalOverlay" class="modal-overlay">
+		<div class="info-modal-content">
+			<h3>프로그램 신청을 위한 추가 정보 입력</h3>
+			<br>
+			<form id="additionalInfoForm">
+				<div id="dynamicFields">
+					<div th:if="${program.needOrgName == 'Y'}" class="program-form-group">
+						<label>소속 단체명</label>
+						<input type="text" class="info-modal-input" name="orgName" placeholder="ex) ○○성당 청년회"
+							required />
+					</div>
+					<div th:if="${program.needPartCount == 'Y'}" class="program-form-group">
+						<label>참가 인원 수</label>
+						<input type="number" class="info-modal-input" name="partCount" placeholder="숫자만 입력" required />
+					</div>
+					<div th:if="${program.needRelation == 'Y'}" class="program-form-group">
+						<label>참가자와의 관계</label>
+						<input type="text" class="info-modal-input" name="relation" placeholder="ex) 연인, 가족, 친구"
+							required />
+					</div>
+				</div>
 
-        <p><strong>□ 수집, 이용할 개인정보의 내용</strong></p>
-        <ul>
-          <li>필수개인정보: 성명, 휴대폰번호</li>
-          <li>조건부 필수개인정보: 나이, 성별 (맞춤형 프로그램 신청 시)</li>
-          <li>선택개인정보: 본당, 세례명</li>
-        </ul>
+				<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+					<button type="submit" class="infoModalButton">확인</button>
+					<button type="button" class="infoModalButton" id="cancelAdditionalInfoBtn">취소</button>
+				</div>
+			</form>
+		</div>
+	</div>
 
-        <p><strong>□ 개인정보의 보유, 이용 기간</strong></p>
-        <ul>
-          <li>보유기간: 프로그램 신청 시부터 프로그램 종료까지</li>
-          <li>이용기간: 프로그램 신청·진행 기간</li>
-        </ul>
 
-        <p><strong>□ 개인 정보의 제3자 제공 안내</strong></p>
-        <ul>
-          <li>제공받는 자: 본 기관의 종사자 및 관계자, 프로그램 관계자(강사)</li>
-          <li>이용 목적: 맞춤형 프로그램 제공을 위해 인적 사항 제공</li>
-          <li>제공하는 개인정보 항목: 성명, 휴대폰번호, 나이(조건부), 성별(조건부), 본당(선택), 세례명(선택)</li>
-        </ul>
+	<div id="programApplyModalOverlay" class="modal-overlay">
+		<div class="modal-content">
+			<h3>[개인정보 수집·이용·제공 및 활용 동의서]</h3>
+			<div class="scroll-box">
+				<p><strong>□ 개인정보의 수집, 이용 목적</strong></p>
+				<ul>
+					<li>프로그램 신청자/참가자 명단 확인 및 관리</li>
+					<li>프로그램 진행 시 필요한 인적 사항</li>
+					<li>프로그램 허위 신청 방지</li>
+				</ul>
 
-        <p><strong>□ 동의를 거부할 권리 및 처리</strong></p>
-        <ul>
-          <li>귀하는 개인정보 제공·이용을 거부할 수 있습니다. 다만, 동의를 하지 않을 경우 프로그램 신청 및 증빙자료 발급 등에 불이익이 발생할 수 있습니다.</li>
-        </ul>
-      </div>
+				<p><strong>□ 수집, 이용할 개인정보의 내용</strong></p>
+				<ul>
+					<li>필수개인정보: 성명, 휴대폰번호</li>
+					<li>조건부 필수개인정보: 나이, 성별 (맞춤형 프로그램 신청 시)</li>
+					<li>선택개인정보: 본당, 세례명</li>
+				</ul>
 
-      <label>
-        <input type="checkbox" id="privacyConsentCheckbox" />
-        개인정보 수집·이용·제공에 동의합니다.
-      </label>
+				<p><strong>□ 개인정보의 보유, 이용 기간</strong></p>
+				<ul>
+					<li>보유기간: 프로그램 신청 시부터 프로그램 종료까지</li>
+					<li>이용기간: 프로그램 신청·진행 기간</li>
+				</ul>
 
-      <div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
-        <button id="confirmApplyBtn">확인</button>
-        <button id="cancelApplyBtn">취소</button>
-      </div>
-    </div>
-  </div>
-<div th:replace="~{main/footer :: footer}"></div>
+				<p><strong>□ 개인 정보의 제3자 제공 안내</strong></p>
+				<ul>
+					<li>제공받는 자: 본 기관의 종사자 및 관계자, 프로그램 관계자(강사)</li>
+					<li>이용 목적: 맞춤형 프로그램 제공을 위해 인적 사항 제공</li>
+					<li>제공하는 개인정보 항목: 성명, 휴대폰번호, 나이(조건부), 성별(조건부), 본당(선택), 세례명(선택)</li>
+				</ul>
+
+				<p><strong>□ 동의를 거부할 권리 및 처리</strong></p>
+				<ul>
+					<li>귀하는 개인정보 제공·이용을 거부할 수 있습니다. 다만, 동의를 하지 않을 경우 프로그램 신청 및 증빙자료 발급 등에 불이익이 발생할 수 있습니다.</li>
+				</ul>
+			</div>
+
+			<label>
+				<input type="checkbox" id="privacyConsentCheckbox" />
+				개인정보 수집·이용·제공에 동의합니다.
+			</label>
+
+			<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+				<button id="confirmApplyBtn">확인</button>
+				<button id="cancelApplyBtn">취소</button>
+			</div>
+		</div>
+	</div>
+	<div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
 	<script th:inline="javascript">
 		/*<![CDATA[*/
@@ -136,15 +171,50 @@
 		/*]]>*/
 
 		$(function () {
+			// 1. [신청하기] 클릭 시 → 추가 정보 입력 모달 먼저 보여줌
 			$('#openPrivacyModalBtn').on('click', function () {
+				const needOrg = program.needOrgName === 'Y';
+				const needPart = program.needPartCount === 'Y';
+				const needRel = program.needRelation === 'Y';
+
+				if (!needOrg && !needPart && !needRel) {
+					// 세 항목 모두 필요 없으면 → 바로 개인정보 동의 모달
+					$('#programApplyModalOverlay').addClass('show');
+				} else {
+					// 하나라도 필요하면 → 추가 정보 모달 먼저
+					$('#additionalInfoModalOverlay').addClass('show');
+				}
+			});
+
+			// 2. 추가 정보 입력 확인 → 개인정보 동의 모달로 이동
+			$('#additionalInfoForm').on('submit', function (e) {
+
+				e.preventDefault();
+
+				const orgName = $(this).find('input[name="orgName"]').val();
+				const partCount = $(this).find('input[name="partCount"]').val();
+				const relation = $(this).find('input[name="relation"]').val();
+
+				if (orgName) program.needOrgName = orgName;
+				if (partCount) program.needPartCount = partCount;
+				if (relation) program.needRelation = relation;
+
+				$('#additionalInfoModalOverlay').removeClass('show');
 				$('#programApplyModalOverlay').addClass('show');
 			});
 
+			// 3. 추가 정보 입력 취소
+			$('#cancelAdditionalInfoBtn').on('click', function () {
+				$('#additionalInfoModalOverlay').removeClass('show');
+			});
+
+			// 4. 개인정보 동의 확인 → 신청 요청 전송
 			$('#confirmApplyBtn').on('click', function () {
 				if (!$('#privacyConsentCheckbox').is(':checked')) {
 					alert('개인정보 수집·이용·제공에 동의하셔야 신청이 가능합니다.');
 					return;
 				}
+
 				$('#programApplyModalOverlay').removeClass('show');
 				$('#spinnerOverlay').show(); // ✅ 스피너 표시
 
@@ -155,7 +225,7 @@
 					data: JSON.stringify(program),
 					success: function () {
 						alert("신청에 성공하였습니다! 이메일을 확인해주세요.");
-						window.location.href = '/main/program'; // ✅ 성공 시 이동
+						window.location.href = '/main/program';
 					},
 					error: function (xhr, status, error) {
 						alert('신청 실패: ' + error);
@@ -164,17 +234,20 @@
 				});
 			});
 
+			// 5. 개인정보 동의 모달 취소
 			$('#cancelApplyBtn').on('click', function () {
 				$('#programApplyModalOverlay').removeClass('show');
 			});
 
-			$('#programApplyModalOverlay').on('click', function (e) {
-				if (e.target.id === 'programApplyModalOverlay') {
+			// 6. 모달 바깥 클릭 시 닫힘
+			$('#programApplyModalOverlay, #additionalInfoModalOverlay').on('click', function (e) {
+				if (e.target.id === this.id) {
 					$(this).removeClass('show');
 				}
 			});
 		});
 	</script>
+
 </body>
 
 </html>

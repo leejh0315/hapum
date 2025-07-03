@@ -14,4 +14,8 @@ public class ProgramSub {
     private User user;
     private LocalDateTime subsOn;	
     
+    private String orgName; 
+    private int partCount;
+    private String relation;
+    
 }

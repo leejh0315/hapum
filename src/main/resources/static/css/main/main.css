@@ -136,6 +136,7 @@
     	object-fit: contain;
     	object-position: center;
     	display: none;
+    	background-color: #E3D5CA;
     }
 
     /* 슬라이드 컨트롤 버튼 */
@@ -149,6 +150,9 @@
     	margin: 0 10px;
     	padding: 5px 10px;
     	cursor: pointer;
+    	background-color: #F1E6E1;
+    	border: 1px solid #D5BDAF;
+    	
     }
 
    .gallery {
@@ -169,6 +173,7 @@
   width: 40px; height: 40px;
   cursor: pointer;
   transition: opacity .2s;
+  background-color: #F1E6E1;
 }
 #gallery-prev:disabled,
 #gallery-next:disabled {
@@ -196,8 +201,8 @@
 
     .gallery-item img {
     		display: block;
-    		width: 100%;
-    		height: auto;
+    		width: 150px;
+    		height: 150px;
     }
 
     /* 네비게이션 버튼 */
@@ -219,6 +224,8 @@
 .gallery-item {
   flex: 0 0 150px;
   margin-right: 10px;
+  width: 150px;
+  height: 150px;
   box-sizing: border-box;
 }
 .gallery-item:last-child {

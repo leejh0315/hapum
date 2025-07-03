@@ -20,7 +20,10 @@
 		expense,
 		subject,
 		open_status,
-		add_id
+		add_id,
+		need_org_name,
+		need_part_count,
+		need_relation
 		) VALUES (
 		#{title},
 		#{content},
@@ -35,7 +38,10 @@
 		#{expense},
 		#{subject},
 		'Y',
-		#{addId}
+		#{addId},
+		#{needOrgName},
+		#{needPartCount},
+		#{needRelation}
 		)
 	</insert>
 
@@ -55,8 +61,8 @@
 	</select>
 
 	<insert id="programSub" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on, is_app)
-		VALUES (#{userId}, #{programId}, NOW(), 'N')
+		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on, is_app, part_count, relation, org_name)
+		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation}, #{orgName})
 	</insert>
 
 	<select id="selectPrograSubmById" resultType="hapum.hapum.domain.ProgramSub">

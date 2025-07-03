@@ -17,15 +17,35 @@
     height: 10vh;  /* 헤더 높이를 설정해 두면 자식 요소 위치 기준이 명확해집니다 */
 }
 
-/* 좌측 헤더 (교구 및 센터명) */
-.header-left {
-    text-align: left;
+.logodj{
+	width: 50px;
+	height: 50px;
 }
-.header-left h3 {
-    margin: 0;
-    padding: 0;
+.logohp{
+	width: 50px;
+	height: 50px;
+	opacity: 0.5;
+	position: absolute;
+	left: 295px;
 }
 
+/* 좌측 헤더 (교구 및 센터명) */
+
+.header-left {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+}
+.header-left .center-name {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.header-left .center-name h3 {
+  margin: 0;
+}
 /* 내비게이션 메뉴 */
 /* 내비게이션 메뉴 */
 #nav-desktop {

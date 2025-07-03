@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>단체소식</title>
+	<title>하품센터-단체소식</title>
 	<link rel="stylesheet" th:href="@{/css/header.css}">
 	<link rel="stylesheet" th:href="@{/css/main/organization.css}">
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
@@ -33,9 +33,10 @@
 			</div>
 			<div th:if="${!#lists.isEmpty(organizationList)}" class="organization-grid">
 				<div style="cursor: pointer;" th:each="org : ${organizationList}" class="organization-card" th:onclick="'location.href=\'/main/organization/'+ ${org.id} +'\''">
-					<h2 th:text="${org.name}">단체 이름</h2>
+					
 					<img th:src="@{${org.profileSrc}}" alt="프로필 이미지" class="organization-img" />
-					<p th:text="${org.introduce}">단체 소개</p>
+					<h3 th:text="${org.name}">단체 이름</h3>
+<!--					<p th:text="${org.introduce}">단체 소개</p>-->
 				</div>
 			</div>
 		</div>

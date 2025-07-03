@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>단체소식</title>
+	<title>하품센터-단체소식</title>
 	<link rel="stylesheet" th:href="@{/css/header.css}" />
 	<link rel="stylesheet" th:href="@{/css/main/organizationDetail.css}" />
 	<link rel="stylesheet" th:href="@{/css/footer.css}" />
@@ -35,7 +35,7 @@
 					<a th:href="@{/main/organization/{orgId}/post/{pid}(pid=${post.id},orgId=${id})}">
 						<img th:src="@{${post.thumbnailSrc}}" alt="썸네일" class="post-thumb" />
 						<div class="post-title" th:text="${post.title}">제목</div>
-						<div class="post-createOn" th:text="${post.createdAt}">날짜</div>
+						<div class="post-createOn"  th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</div>
 					</a>
 				</div>
 			</div>

@@ -88,6 +88,10 @@ public class MypageController {
         
         updateForm.setId(user.getId());
         userAuthService.updateUser(updateForm); // 실제 업데이트 로직 호출
+        User refreshUser = userAuthService.selectById(user.getId());
+        
+		session.setAttribute("loginMember", refreshUser);
+        
         
         return "redirect:/main/mypage/"+user.getId(); // 업데이트 후 메인 페이지로 리다이렉트
     }

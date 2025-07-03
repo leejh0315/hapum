@@ -576,6 +576,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		*/
 	};
 
-	// --- 초기 화면: 첫 번째 시설 버튼 클릭 ---
 
+document.querySelector('.room-btn[data-room="강의실1"]')?.click();
 });
+
+

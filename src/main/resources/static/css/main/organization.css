@@ -41,17 +41,17 @@ body {
 }
 
 .organization-card {
-	width: 100%;
+	width: 200px;
+	height: 200px;
 	max-width: 300px;
-	padding: 1rem;
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	text-align: center;
 }
 
 .organization-img {
-	width: 100%;
-	height: auto;
+	width: 160px;
+	height: 160px;
 	border-radius: 4px;
 	margin-bottom: 0.5rem;
 }
@@ -207,7 +207,4 @@ body {
   color: #ccc;
   pointer-events: none;
 }
-.organization-img{
-	height: 250px;
-	width: 250px;
-}
+

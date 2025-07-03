@@ -52,7 +52,16 @@ public class ProgramService {
             String dbFilePath = "/uploads/program/" + uniqueFileName;
             program.setThumbnailSrc(dbFilePath);
         }		
-		
+		if(program.getNeedOrgName() == "" || program.getNeedOrgName() == null) {
+			program.setNeedOrgName("N");
+		}
+		if(program.getNeedPartCount() == "" || program.getNeedPartCount() == null) {
+			program.setNeedPartCount("N");	
+		}
+		if(program.getNeedRelation() == "" || program.getNeedRelation() == null) {
+			program.setNeedRelation("N");
+		}
+        
 		
 		programMapper.insertProgram(program);
 	}

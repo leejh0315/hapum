@@ -1,52 +1,141 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>비밀번호 찾기</title>
-  <link rel="stylesheet" th:href="@{/css/header.css}">
-    <link rel="stylesheet" th:href="@{/css/footer.css}">
-  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>하품센터-비밀번호 찾기</title>
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<style>
+		body {
+			font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+
+		.container {
+			height: 90vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.content {
+			text-align: center;
+			width: 100%;
+			max-width: 400px;
+		}
+
+		.content h1 {
+			margin-bottom: 30px;
+			color: #5C4033;
+		}
+
+		form label {
+			display: flex;
+			flex-direction: column;
+			align-items: flex-start;
+			margin-bottom: 15px;
+			font-weight: bold;
+			color: #5C4033;
+		}
+
+		form input[type="text"],
+		form input[type="email"] {
+			width: 100%;
+			box-sizing: border-box;
+			padding: 10px 14px;
+			border: 1px solid #D6CCC2;
+			border-radius: 6px;
+			background-color: #EDEDE9;
+			margin-top: 6px;
+			transition: border-color 0.3s;
+		}
+
+		form input:focus {
+			outline: none;
+			border-color: #D5BDAF;
+		}
+
+		.error-msg {
+			color: #dc3545;
+			font-size: 0.875em;
+			text-align: left;
+			margin-top: -10px;
+			margin-bottom: 10px;
+		}
+
+		.submit-button {
+			width: 40%;
+			padding: 12px;
+			margin-top: 20px;
+			background-color: #D5BDAF;
+			color: #fff;
+			font-size: 16px;
+			font-weight: bold;
+			border: none;
+			border-radius: 6px;
+			cursor: pointer;
+			transition: background-color 0.3s ease, transform 0.2s ease;
+		}
+
+		.submit-button:hover {
+			background-color: #E3D5CA;
+			transform: translateY(-2px);
+		}
+	</style>
 </head>
+
 <body>
-  <!-- 헤더 영역: main/header 프래그먼트를 Thymeleaf로 포함 -->
-  <div th:replace="~{main/header :: headFrag(${user})}"></div>
-  
-  <h1>비밀번호 찾기</h1>
-  
-  <label>이메일: <input id="email" placeholder="이메일을 입력해주세요"></label><br>
-  <button id="findBtn">비밀번호 찾기</button>
-  <div th:replace="~{main/footer :: footer}"></div>
-  <script th:src="@{/js/header.js}"></script>
-  <script>
-    $(document).ready(function() {
-      $('#findBtn').click(function(e) {
-        e.preventDefault();
-        var emailVal = $('#email').val();  // input에 입력한 이메일 값을 가져옴
-        console.log("입력한 이메일: ", emailVal);
-        
-        $.ajax({
-          type: 'POST',
-          url: '/auth/findPw',
-          data: { email: emailVal },
-          success: function(response) {
-            if(response == 1 ){
-				alert("메일로 새로운 비밀번호가 발송되었습니다.");
-				window.location.href = '/auth/login';
-			}else{
-				alert("존재하지 않는 이메일입니다.");
-			}
-            // 서버에서 "redirect:/auth/login" 등의 문자열을 반환한다면, 수동으로 페이지 이동
-            
-            //window.location.href = '/auth/login';
-          },
-          error: function(xhr, status, error) {
-            console.error("에러 발생: ", error);
-          }
-        });
-      });
-    });
-  </script>
+	<!-- 헤더 영역: main/header 프래그먼트를 Thymeleaf로 포함 -->
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+	<div class="container">
+		<div class="content">
+			<h1>비밀번호 찾기</h1>
+			<form id="findPwForm">
+				<label for="email">이메일
+					<input type="email" id="email" placeholder="이메일을 입력해주세요" required>
+				</label>
+				<button type="submit" id="findBtn" class="submit-button">비밀번호 찾기</button>
+			</form>
+		</div>
+	</div>
+
+
+
+	<div th:replace="~{main/footer :: footer}"></div>
+	<script th:src="@{/js/header.js}"></script>
+	<script>
+		$(document).ready(function () {
+			$('#findBtn').click(function (e) {
+				e.preventDefault();
+				var emailVal = $('#email').val();  // input에 입력한 이메일 값을 가져옴
+				console.log("입력한 이메일: ", emailVal);
+
+				$.ajax({
+					type: 'POST',
+					url: '/auth/findPw',
+					data: {email: emailVal},
+					success: function (response) {
+						if (response == 1) {
+							alert("메일로 새로운 비밀번호가 발송되었습니다.");
+							window.location.href = '/auth/login';
+						} else {
+							alert("존재하지 않는 이메일입니다.");
+						}
+						// 서버에서 "redirect:/auth/login" 등의 문자열을 반환한다면, 수동으로 페이지 이동
+
+						//window.location.href = '/auth/login';
+					},
+					error: function (xhr, status, error) {
+						console.error("에러 발생: ", error);
+					}
+				});
+			});
+		});
+	</script>
 </body>
+
 </html>

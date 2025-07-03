@@ -25,7 +25,10 @@
 						<div id="slideshow">
 							<!-- Thymeleaf 반복문: programs 리스트의 각 thumbnailSrc -->
 							<div th:each="program : ${programs}">
-								<img th:src="${program.thumbnailSrc}" alt="슬라이드 이미지" />
+								<div th:onclick="'location.href=\'/main/program/detail/' + ${program.id} + '\''"
+									style="cursor: pointer;">
+									<img th:src="${program.thumbnailSrc}" alt="슬라이드 이미지" />
+								</div>
 							</div>
 						</div>
 					</div>
