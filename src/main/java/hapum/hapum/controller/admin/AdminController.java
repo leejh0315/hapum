@@ -5,6 +5,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.jsoup.Jsoup;
@@ -26,11 +29,13 @@ import hapum.hapum.domain.News;
 import hapum.hapum.domain.Notification;
 import hapum.hapum.domain.Organization;
 import hapum.hapum.domain.OrganizationPost;
+import hapum.hapum.domain.Program;
 import hapum.hapum.domain.Rental;
 import hapum.hapum.domain.User;
 import hapum.hapum.service.NewsService;
 import hapum.hapum.service.NotificationService;
 import hapum.hapum.service.OrganizationService;
+import hapum.hapum.service.ProgramService;
 import hapum.hapum.service.ReservationService;
 import hapum.hapum.service.UserAuthService;
 import jakarta.annotation.PostConstruct;
@@ -60,6 +65,8 @@ public class AdminController {
 	private final OrganizationService organizationService;
 	private final ReservationService reservationService;
 
+	private final ProgramService programService;
+
 	@PostConstruct
 	public void init() {
 		tempDir = Paths.get(tempVideoDirStr);
@@ -78,28 +85,52 @@ public class AdminController {
 	}
 
 	@GetMapping("/main")
-	public String getAdminPage() {
+	public String getAdminPage(@RequestParam(name="weekOffset", defaultValue="0") int weekOffset,
+			Model model) {
+		
+		  // 2) 이번 주(또는 weekOffset 주차)의 시작/끝 날짜 계산
+	    LocalDate today         = LocalDate.now();
+	    LocalDate startOfWeek   = today.with(DayOfWeek.MONDAY).plusWeeks(weekOffset);
+	    LocalDate endOfWeek     = startOfWeek.plusDays(6);
+
+	    DateTimeFormatter fmt   = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	    String weekStartStr     = startOfWeek.format(fmt);
+	    String weekEndStr       = endOfWeek.format(fmt);
+
+	    model.addAttribute("weekStart", weekStartStr);
+	    model.addAttribute("weekEnd", weekEndStr);
+		
+		List<Program> weeklyPrograms = programService.getProgramsForWeek(weekOffset);
+		
+		
+		System.out.println(reservationService.getReservationsForWeek(weekOffset));
+		
+		model.addAttribute("reservations",
+	            reservationService.getReservationsForWeek(weekOffset));
+		model.addAttribute("programs", weeklyPrograms);
+		model.addAttribute("weekOffset", weekOffset);
+		model.addAttribute("prevWeek", weekOffset - 1);
+		model.addAttribute("nextWeek", weekOffset + 1);
 		return "admin/main";
 	}
-	
+
 	@PostMapping("/notification/order")
 	public String postNotificationOrder(@RequestBody List<Notification> notifications) {
 		notificationService.updateOrder(notifications);
 		return "redirect:/main/main";
 	}
-	
+
 	@PostMapping("notification/toggleTop")
 	public String postNotificationToggle(@RequestBody Notification notification) {
-		if(notification.getIsTop().equals("1")) {
+		if (notification.getIsTop().equals("1")) {
 			notificationService.toggleTop(notification);
-		}else {
+		} else {
 			notification.setOrderNum(0);
 			notificationService.toggleDown(notification);
 		}
 		return "redirect:/main/main";
 	}
-	
-	
+
 	@GetMapping("/notification")
 	public String getNotification() {
 		return "admin/notification";

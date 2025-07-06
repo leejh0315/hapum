@@ -55,9 +55,8 @@
 		SELECT * FROM hapumdb.program WHERE id = #{id}
 	</select>
 	<!-- 신청자 수-->
-	<select id="getApplyCount" resultType="int">
-		SELECT COUNT(*) FROM hapumdb.program_subs WHERE program_id =
-		#{programId}
+	<select id="getApplyCount" resultType="Integer">
+		SELECT SUM(part_count) FROM hapumdb.program_subs WHERE program_id =#{programId}
 	</select>
 
 	<insert id="programSub" useGeneratedKeys="true" keyProperty="id">
@@ -178,4 +177,15 @@
 	SELECT *FROM hapumdb.program WHERE add_id=#{id}
 </select>
 
+<select id="selectThisMonthProgram" resultType="hapum.hapum.domain.Program">
+	SELECT * FROM hapumdb.program
+	WHERE start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+	
+</select>
+<select id="selectProgramsByDateRange" parameterType="map" resultType="Program">
+    SELECT *
+    FROM hapumdb.program
+    WHERE start_date BETWEEN #{start} AND #{end}
+    ORDER BY start_date
+</select>
 </mapper>

@@ -45,6 +45,31 @@ public class MypageController {
 		return "mypage/mypage";
 	}
 	
+	@GetMapping("/out")
+	public String getOut(Model model ,  HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("loginMember");
+		
+		model.addAttribute("user",user);
+	    model.addAttribute("activeTab", "update");
+		return "mypage/out";
+	}
+	
+	@PostMapping("/out/{id}")
+	public String postOut(@PathVariable("id")Long id, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("loginMember");
+		
+		System.out.println("session유저 : " + user.getId());
+		System.out.println("요청경로 :" + id);
+		
+		if(user.getId() == id) {
+			
+		}
+		
+		return "redirect:/main/main";
+	}
+	
     @GetMapping("/update/{id}")
     public String showUpdateForm(@PathVariable("id") Long id, Model model, HttpServletRequest req) {
     	HttpSession session = req.getSession();

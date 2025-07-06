@@ -1,5 +1,6 @@
 package hapum.hapum.mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -16,7 +17,7 @@ public interface ProgramMapper {
 	public void insertProgram(Program program); 
 	List<Program> selectAllPrograms();
 	Program selectProgramById(Long id);
-	public int getApplyCount(@Param("programId") Long programId);
+	public Integer getApplyCount(@Param("programId") Long programId);
 	
 	public int programSub(ProgramSub ps);
 	List<ProgramSub> selectPrograSubmById(@Param("programId") Long programId);
@@ -33,4 +34,7 @@ public interface ProgramMapper {
 	 void insertProgramAdd(ProgramAdd programAdd);
 	 List<ProgramAdd> selectAllProgramAdd();
 	 List<Program> selectProgramByAddId(@Param("id")Long id);
+	 
+	 List<Program> selectThisMonthProgram();
+	 List<Program> selectProgramsByDateRange(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }

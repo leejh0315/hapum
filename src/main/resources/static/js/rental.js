@@ -270,5 +270,5 @@ function submitRental() {
       document.getElementById('modalRoom').innerText = room;
 	 document.getElementById('rentalModalOverlay').classList.add('show');
 
-	//alert(`대관 신청 완료!\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n시간: ${selectedSlots[0]} ~ ${selectedSlots[3]}`);
+	//alert(`대관 신청 완료되었습니다!\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n시간: ${selectedSlots[0]} ~ ${selectedSlots[3]}`);
 }

@@ -108,4 +108,64 @@
 		UPDATE hapumdb.rental_reservation SET is_app = '0'
 		WHERE id=#{id}
 	</update>
+	
+	
+	
+	
+	<resultMap id="RentalWithUserMap" type="hapum.hapum.domain.RentalWithUser">
+    <!-- Rental 필드 매핑 -->
+    <id     property="id"               column="r_id"/>
+    <result property="location"         column="location"/>
+    <result property="reservationDate"  column="reservation_date"/>
+    <result property="startTime"        column="start_time"/>
+    <result property="endTime"          column="end_time"/>
+    <result property="price"            column="price"/>
+    <result property="userId"           column="user_id"/>
+    <result property="createdOn"        column="created_on"/>
+    <result property="isApp"            column="is_app"/>
+    <result property="purpose"          column="purpose"/>
+    <result property="groupName"        column="group_name"/>
+
+    <!-- User 필드 매핑 -->
+    <result property="email"            column="u_email"/>
+    <result property="name"             column="u_name"/>
+    <result property="birth"            column="u_birth"/>
+    <result property="phone"            column="u_phone"/>
+    <result property="cathedral"        column="u_cathedral"/>
+    <result property="baptismName"      column="u_baptism_name"/>
+    <result property="statusCode"       column="u_status_code"/>
+  </resultMap>
+
+  <!-- select 쿼리 -->
+  <select id="selectByDateRange"
+          resultMap="RentalWithUserMap"
+          parameterType="map">
+    SELECT
+      rr.id               AS r_id,
+      rr.location         AS location,
+      rr.reservation_date AS reservation_date,
+      rr.start_time       AS start_time,
+      rr.end_time         AS end_time,
+      rr.price            AS price,
+      rr.user_id          AS user_id,
+      rr.created_on       AS created_on,
+      rr.is_app           AS is_app,
+      rr.purpose          AS purpose,
+      rr.group_name       AS group_name,
+
+      u.email             AS u_email,
+      u.name              AS u_name,
+      u.birth             AS u_birth,
+      u.phone             AS u_phone,
+      u.cathedral         AS u_cathedral,
+      u.baptism_name       AS u_baptism_name,
+      u.statusCode       AS u_status_code
+
+    FROM hapumdb.rental_reservation rr
+    JOIN hapumdb.user u
+      ON rr.user_id = u.id
+    WHERE rr.reservation_date BETWEEN #{start} AND #{end}
+    ORDER BY rr.reservation_date, rr.start_time
+  </select>
 </mapper>
+	

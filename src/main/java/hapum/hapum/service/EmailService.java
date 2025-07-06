@@ -1,15 +1,16 @@
 package hapum.hapum.service;
 
+import java.io.File;
+import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.concurrent.CompletableFuture;
 
-
-
-import java.io.File;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,6 @@ import jakarta.mail.Message.RecipientType;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 
 
@@ -94,7 +94,7 @@ public class EmailService {
 private MimeMessage programMessage(String to, Program program) throws Exception {
     MimeMessage message = emailSender.createMimeMessage();
     MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     // 1) 받는 사람·제목·보내는 사람 설정
     helper.setTo(to);
     helper.setSubject("프로그램 정보 발송");
@@ -117,21 +117,65 @@ private MimeMessage programMessage(String to, Program program) throws Exception 
         .append("<ul style='list-style:none;padding:0;margin-bottom:20px;'>")
         .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
         .append("<strong>일시:</strong>")
-        .append(program.getStartDate()).append("~").append(program.getEndDate())
+        .append(
+        		formatter.format(program.getStartDate())
+        		).append("~")
+        .append(
+        		formatter.format(program.getEndDate())
+        		)
         .append("</li>")
         .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
         .append("<strong>장소:</strong>").append(program.getLocation())
         .append("</li>")
         .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
         .append("<strong>대상:</strong>").append(program.getTarget())
-        .append("</li>")
-        .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
-        .append("<strong>참가비:</strong>").append(program.getExpense()).append("원")
-        .append("</li>")
-        .append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+        .append("</li>");
+       
+    
+    	if(program.getExpense() != null || !program.getExpense().equals("")) {
+    		html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+            .append("<strong>1인 참가비:</strong>").append(program.getExpense()).append("원")
+            .append("</li>").append("    <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>입금 계좌:</strong><p style='color:blue'>하나은행 646-910019-24904 (천주교대전교구청소년교육원)</p></li>");
+    		
+    	}
+    
+    
+        html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
         .append("<strong>주제:</strong>").append(program.getSubject())
-        .append("</li>")
-        .append("</ul>")
+        .append("</li>");
+        
+    	if(program.getNeedOrgName() != null || !program.getNeedOrgName().equals("") ) {
+    		html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+            .append("<strong>소속 단체 명:</strong>").append(program.getNeedOrgName())
+            .append("</li>");
+    	}
+    	
+    	if (!program.getExpense().equals("0") && !program.getNeedPartCount().equals("N")) {
+    	    html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+    	        .append("<strong>총 참가비:</strong>");
+
+    	    // 콤마 제거 후 계산
+    	    int expense = Integer.parseInt(program.getExpense().replace(",", ""));
+    	    int count = Integer.parseInt(program.getNeedPartCount());
+    	    int total = expense * count;
+
+    	    // 천 단위 콤마 포맷
+    	    DecimalFormat formatter2 = new DecimalFormat("###,###");
+    	    String formattedTotal = formatter2.format(total);
+
+    	    html.append(formattedTotal).append("원")
+    	        .append("</li>");
+    	}
+    	
+    	if(program.getNeedPartCount() != null || program.getNeedPartCount() != "") {
+    		html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
+            .append("<strong>참가자와의 관계:</strong>").append(program.getNeedRelation())
+            .append("</li>");
+    	}
+    
+        
+        
+        html.append("</ul>")
         .append("<div>").append(program.getContent()).append("</div>")
         .append("</div>")
         .append("</div>");

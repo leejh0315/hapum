@@ -1,5 +1,6 @@
 package hapum.hapum.mapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -7,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 import hapum.hapum.domain.BlockedDay;
 import hapum.hapum.domain.FixedReservation;
 import hapum.hapum.domain.Rental;
+import hapum.hapum.domain.RentalWithUser;
 
 public interface FixedReservationMapper {
     List<FixedReservation> selectAllFixedReservations();
@@ -32,4 +34,8 @@ public interface FixedReservationMapper {
     void approve(@Param("id")Long id);
     void delete(@Param("id")Long id);
     void disapprove(@Param("id")Long id);
+    List<RentalWithUser> selectByDateRange(
+            @Param("start") LocalDateTime start,
+            @Param("end")   LocalDateTime end
+        );
 } 

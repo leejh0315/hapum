@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>내 정보 수정</title>
+
+	<!-- 공통 헤더 스타일 -->
+	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<!-- 기타 관리자/뉴스 관련 스타일 -->
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	<link rel="stylesheet" th:href="@{/css/mypage/update.css}">
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+	<!-- 헤더 -->
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+
+	<div class="container">
+		<div class="sidebar">
+			<div class="sidebar-title">
+				<a th:href="@{/main/mypage/{id}(id=${user.id})}">
+					마이페이지
+				</a>
+			</div>
+
+			<a th:href="@{/main/mypage/update/{id}(id=${user.id})}" class="menu-button"
+				th:classappend="${activeTab=='update'} ? ' active' : ''">
+				내 정보 수정
+			</a>
+			<a th:href="@{/main/mypage/rental/{id}(id=${user.id})}" class="menu-button"
+				th:classappend="${activeTab=='rental'} ? ' active' : ''">
+				신청한 대관 예약
+			</a>
+			<a th:href="@{/main/mypage/program/{id}(id=${user.id})}" class="menu-button"
+				th:classappend="${activeTab=='program'} ? ' active' : ''">
+				신청한 프로그램
+			</a>
+		</div>
+		<div class="content">
+			<div>
+				회원 탈퇴할 시 신청한 프로그램, 신청한 대관신청 내역이 삭제됩니다. 회원님의 정보 또한 영구적으로 삭제됩니다.
+				탈퇴하시려면 하단의 탈퇴하기 버튼을 눌러주세요.
+
+				<!-- 탈퇴 폼 -->
+				<form id="deleteForm" th:action="@{/main/mypageout/{id}(id=${user.id})}" method="post">
+					<input type="hidden" name="id" th:value="${user.id}" />
+					<button type="button" onclick="confirmDelete()">회원 탈퇴하기</button>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<!-- 푸터 -->
+	<div th:replace="~{main/footer :: footer}"></div>
+
+	<!-- 탈퇴 확인 스크립트 -->
+	<script>
+		function confirmDelete() {
+			const confirmed = confirm("하품센터 회원 탈퇴 하시겠습니까?");
+			if (confirmed) {
+				document.getElementById("deleteForm").submit();
+			}
+		}
+	</script>
+	<script th:src="@{/js/header.js}"></script>
+</body>
+
+</html>

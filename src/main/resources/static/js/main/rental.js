@@ -82,6 +82,11 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 			}
 		});
+		// ── 여기 바로 아래에 추가 ──
+		// programs 일정도 conflict 처리
+		const programTimes = getProgramTimesForDate(effectiveDate);
+		programTimes.forEach(({ time }) => blockedMap.set(time, true));
+		// ────────────────────────────
 		const startIndex = timeSlots.indexOf("09:00");
 		const endIndex = timeSlots.indexOf("22:00");
 		for (let i = startIndex; i <= endIndex; i++) {
@@ -121,6 +126,44 @@ document.addEventListener("DOMContentLoaded", function() {
 			}
 		}
 		return blocked;
+	}
+	// 1) 프로그램 시간대 추출 함수 추가 (rental.js 상단 가까이)
+	function getProgramTimesForDate(dateStr) {
+		const slots = [];
+		const day = dateStr.slice(0, 10);  // "YYYY-MM-DD"
+
+		programs.forEach(p => {
+			const startDay = p.startDate.slice(0, 10);
+			const endDay = p.endDate.slice(0, 10);
+			const startTime = p.startDate.slice(11, 16);  // "HH:MM"
+			const endTime = p.endDate.slice(11, 16);
+
+			const startIdx = timeSlots.indexOf(startTime);
+			const endIdx = timeSlots.indexOf(endTime);
+
+			if (startDay === endDay && day === startDay) {
+				// 1일짜리 프로그램: 시작→종료
+				for (let i = startIdx; i < endIdx; i++) {
+					slots.push({ time: timeSlots[i] });
+				}
+
+			} else if (day === startDay) {
+				// 시작일: 시작시간→마지막(22:00)
+				for (let i = startIdx; i < timeSlots.length; i++) {
+					slots.push({ time: timeSlots[i] });
+				}
+
+			} else if (day === endDay) {
+				// 종료일: 첫슬롯(09:00)→종료시간
+				for (let i = 0; i < endIdx; i++) {
+					slots.push({ time: timeSlots[i] });
+				}
+
+			}
+			// else { // 중간 날짜는 block 없음 }
+		});
+
+		return slots;
 	}
 
 	// --- 시설 간 conflict 검사 ---
@@ -298,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			const newSlot = slot.cloneNode(true);
 			slot.parentNode.replaceChild(newSlot, slot);
 		});
-
+		
 		const selDate = new Date(selectedDate);
 		const weekday = selDate.getDay();
 		const weekOfMonth = getWeekOfMonth(selDate);
@@ -323,6 +366,10 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 			}
 		});
+		
+		const progTimes = getProgramTimesForDate(selectedDate);
+		progTimes.forEach(({ time }) => blockedMap.set(time, true));
+
 
 		safeQuerySelectorAll('#time-slots-row .slot').forEach(slot => {
 			if (blockedMap.has(slot.dataset.time)) {
@@ -507,22 +554,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			payload.price = 10000;
 		}
 		const rawPrice = payload.price;
-		/*
-		const confirmMsg = (function() {
-			if (selectedRoom === "강당") {
-				const bookingChoice = document.querySelector('input[name="bookingType"]:checked');
-				let bookingType = bookingChoice ? bookingChoice.value : '4시간';
-				if (bookingType === "하루종일") {
-					return `예약하시겠습니까?\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n예약: 하루종일 (09:00 ~ 22:00)\n가격: ${formatPrice(rawPrice)}원`;
-				} else {
-					return `예약하시겠습니까?\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n시간: ${payload.startTime} ~ ${payload.endTime}\n가격: ${formatPrice(rawPrice)}원`;
-				}
-			} else {
-				return `예약하시겠습니까?\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n시간: ${payload.startTime} ~ ${payload.endTime}\n가격: ${formatPrice(rawPrice)}원`;
-			}
-		})();
-		*/
-		//if (confirm(confirmMsg)) 
+
 
 
 
@@ -542,7 +574,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				contentType: 'application/json',
 				success: function(response) {
 					if (response == "success") {
-						alert('대관 신청 완료!');
+						alert(`대관 신청 완료되었습니다!\n이메일을 확인해주세요.\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n시간: ${selectedSlots[0]} ~ ${selectedSlots[3]}`);
 						window.location.href = "/main/rental"
 					}
 				},
@@ -552,32 +584,10 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 			});
 		});
-		/*
-		{
-			submitBtn.disabled = true;
-			payload.price = formatPrice(rawPrice);
-			$.ajax({
-				url: '/main/submitRental',
-				type: 'POST',
-				data: JSON.stringify(payload),
-				contentType: 'application/json',
-				success: function(response) {
-					if(response == "success"){
-						alert('대관 신청 완료!');
-						window.location.href = "/main/rental"
-					}
-				},
-				error: function(xhr, status, error) {
-					alert('대관 신청 실패. 다시 시도해주세요.');
-					submitBtn.disabled = false;
-				}
-			});
-		}
-		*/
 	};
 
 
-document.querySelector('.room-btn[data-room="강의실1"]')?.click();
+	document.querySelector('.room-btn[data-room="강의실1"]')?.click();
 });
 
 

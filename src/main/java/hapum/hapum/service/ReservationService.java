@@ -1,6 +1,9 @@
 package hapum.hapum.service;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -8,6 +11,7 @@ import org.springframework.stereotype.Service;
 import hapum.hapum.domain.BlockedDay;
 import hapum.hapum.domain.FixedReservation;
 import hapum.hapum.domain.Rental;
+import hapum.hapum.domain.RentalWithUser;
 import hapum.hapum.mapper.FixedReservationMapper;
 
 @Service
@@ -90,6 +94,17 @@ public class ReservationService {
     }
     public void disapprove(Long id) {
     	reservationMapper.disapprove(id);
+    }
+    
+    public List<RentalWithUser> getReservationsForWeek(int weekOffset) {
+        LocalDate today       = LocalDate.now();
+        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY).plusWeeks(weekOffset);
+        LocalDate endOfWeek   = startOfWeek.plusDays(6);
+
+        LocalDateTime start = startOfWeek.atStartOfDay();
+        LocalDateTime end   = endOfWeek.atTime(LocalTime.MAX);
+
+        return reservationMapper.selectByDateRange(start, end);
     }
     
 }

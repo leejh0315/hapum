@@ -78,11 +78,7 @@ public class MainController {
 		
 
 		List<Notification> notifications = notificationService.selectAll();
-		
-		
-		System.out.println("*********************");
-		System.out.println(fileNames.size());
-		System.out.println("*********************");
+
 		model.addAttribute("fileNames", fileNames);
 		model.addAttribute("programs", programs);
 		model.addAttribute("notifications",notifications);
@@ -127,7 +123,9 @@ public class MainController {
 		User user = (User) session.getAttribute("loginMember");
 
 		Program program = programService.selectProgramById(id);
+		
 		int applyCount = programService.getApplyCount(program.getId()); // 현재 신청자 수
+		
 		int remainingSeats = program.getCapacity() - applyCount;
 		List<ProgramSub> ps = programService.selectPrograSubmById(id);
 
@@ -153,16 +151,38 @@ public class MainController {
 	public int postProgramSubs(@RequestBody Program program, HttpServletRequest req) throws Exception {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
-
+		
+		int applyCount = programService.getApplyCount(program.getId());
+		
+		System.out.println(program);
+		
 		ProgramSub ps = new ProgramSub();
 		ps.setUserId(user.getId());
 		ps.setProgramId(program.getId());
+		
+		
 		ps.setOrgName(program.getNeedOrgName());
-		ps.setPartCount(Integer.parseInt(program.getNeedPartCount()));
+		
+		
+		if(!program.getNeedPartCount().equals("N")) {
+			ps.setPartCount(Integer.parseInt(program.getNeedPartCount()));
+			
+			if(program.getCapacity()-applyCount < Integer.parseInt(program.getNeedPartCount())) {
+				return 2;
+			}
+		}
+		
 		ps.setRelation(program.getNeedRelation());
 		
 		int temp = programService.programSub(ps);
 
+		
+		
+		
+		
+				
+		
+		
 		emailService.sendProgramMessage(user.getEmail(), program);
 		
 		return temp;
@@ -176,10 +196,15 @@ public class MainController {
 		List<FixedReservation> fixedReservations = reservationService.getFixedReservations();
 		List<Rental> rentals = reservationService.getRentals();
 
+		
+		List<Program> programs = programService.selectThisMonthProgram();
+		System.out.println(programs);
+		
 
 		model.addAttribute("blockedDays", blockedDays);
 		model.addAttribute("fixedReservations", fixedReservations);
 		model.addAttribute("rentals", rentals);
+		model.addAttribute("programs",programs);
 		return "main/rental";
 	}
 

@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -108,12 +112,22 @@ public void insertProgramAdd(ProgramAdd programadd, MultipartFile imageFile) thr
     
     
     public int getApplyCount(Long programId) {
-    	int applyCount = programMapper.getApplyCount(programId);  // 신청자 수
+    	Integer applyCount = programMapper.getApplyCount(programId);  // 신청자 수
+    	
+    	if(applyCount == null) {
+    		applyCount = 0;
+    	}
     	return applyCount;
     }
     
     public int programSub(ProgramSub ps) {
+    	if(ps.getPartCount() ==0) {
+    		ps.setPartCount(1);
+    	}
+    	
+    	
     	int temp = programMapper.programSub(ps);
+    	
     	return temp;
     }
     
@@ -148,4 +162,19 @@ public void insertProgramAdd(ProgramAdd programadd, MultipartFile imageFile) thr
 	public List<Program>selectProgramByAddId(Long id){
 		return programMapper.selectProgramByAddId(id);
 	}
+	
+	public List<Program> selectThisMonthProgram(){
+		return programMapper.selectThisMonthProgram();
+	}
+	  public List<Program> getProgramsForWeek(int weekOffset) {
+	        LocalDate today = LocalDate.now();
+	        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY).plusWeeks(weekOffset);
+	        LocalDate endOfWeek = startOfWeek.plusDays(6);
+
+	        LocalDateTime startDateTime = startOfWeek.atStartOfDay();
+	        LocalDateTime endDateTime = endOfWeek.atTime(LocalTime.MAX);
+
+	        return programMapper.selectProgramsByDateRange(startDateTime, endDateTime);
+	    }
+	
 }

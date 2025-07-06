@@ -171,26 +171,26 @@
 		/*]]>*/
 
 		$(function () {
-			// 1. [신청하기] 클릭 시 → 추가 정보 입력 모달 먼저 보여줌
-			$('#openPrivacyModalBtn').on('click', function () {
-				const needOrg = program.needOrgName === 'Y';
-				const needPart = program.needPartCount === 'Y';
-				const needRel = program.needRelation === 'Y';
+			// ✅ 원래 Y/N 설정값을 별도 변수로 저장
+			const needOrg = program.needOrgName === 'Y';
+			const needPart = program.needPartCount === 'Y';
+			const needRel = program.needRelation === 'Y';
 
+			// 1. 신청하기 버튼 클릭 시
+			$('#openPrivacyModalBtn').on('click', function () {
+				// 원래 설정값 기준으로 판단해야 함!
 				if (!needOrg && !needPart && !needRel) {
-					// 세 항목 모두 필요 없으면 → 바로 개인정보 동의 모달
-					$('#programApplyModalOverlay').addClass('show');
+					$('#programApplyModalOverlay').addClass('show'); // 개인정보 모달 바로
 				} else {
-					// 하나라도 필요하면 → 추가 정보 모달 먼저
-					$('#additionalInfoModalOverlay').addClass('show');
+					$('#additionalInfoModalOverlay').addClass('show'); // 추가 정보 먼저
 				}
 			});
 
-			// 2. 추가 정보 입력 확인 → 개인정보 동의 모달로 이동
+			// 2. 추가 정보 입력 → 개인정보 동의 모달로 이동
 			$('#additionalInfoForm').on('submit', function (e) {
-
 				e.preventDefault();
 
+				// 추가정보 입력값은 별도로 저장
 				const orgName = $(this).find('input[name="orgName"]').val();
 				const partCount = $(this).find('input[name="partCount"]').val();
 				const relation = $(this).find('input[name="relation"]').val();
@@ -208,28 +208,40 @@
 				$('#additionalInfoModalOverlay').removeClass('show');
 			});
 
-			// 4. 개인정보 동의 확인 → 신청 요청 전송
+			// 4. 개인정보 동의 후 → 신청 AJAX
 			$('#confirmApplyBtn').on('click', function () {
+
+
 				if (!$('#privacyConsentCheckbox').is(':checked')) {
 					alert('개인정보 수집·이용·제공에 동의하셔야 신청이 가능합니다.');
 					return;
 				}
-
+				let partCount = parseInt(program.needPartCount); // 문자열 → 숫자 변환
+				console.log(partCount);
+				if (isNaN(partCount) || partCount <= 0 || partCount > program.capacity) {
+					alert("참여 인원 수를 다시 입력해주세요.");
+					return;
+				}
 				$('#programApplyModalOverlay').removeClass('show');
-				$('#spinnerOverlay').show(); // ✅ 스피너 표시
+				$('#spinnerOverlay').show();
 
 				$.ajax({
 					url: '/main/program/subs/' + program.programId,
 					type: 'POST',
 					contentType: 'application/json',
 					data: JSON.stringify(program),
-					success: function () {
-						alert("신청에 성공하였습니다! 이메일을 확인해주세요.");
-						window.location.href = '/main/program';
+					success: function (data) {
+						if (data == 1) {
+							alert("신청에 성공하였습니다! 이메일을 확인해주세요.");
+							window.location.href = '/main/program';
+						} else if (data == 2) {
+							alert("신청에 실패하였습니다. 인원이 초과되었습니다.");
+							window.location.reload();
+						}
 					},
 					error: function (xhr, status, error) {
 						alert('신청 실패: ' + error);
-						$('#spinnerOverlay').hide(); // 실패 시 스피너 숨김
+						$('#spinnerOverlay').hide();
 					}
 				});
 			});
@@ -237,6 +249,8 @@
 			// 5. 개인정보 동의 모달 취소
 			$('#cancelApplyBtn').on('click', function () {
 				$('#programApplyModalOverlay').removeClass('show');
+
+				// ✅ 입력된 값 초기화 (선택사항)
 			});
 
 			// 6. 모달 바깥 클릭 시 닫힘

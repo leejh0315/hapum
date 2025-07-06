@@ -1,17 +1,120 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 	<title>관리자 페이지</title>
-	<link rel="stylesheet" th:href="@{/css/header.css}">
+
+	<!-- Header CSS -->
+	<link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+
+	<!-- Bootstrap 5 CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-…" crossorigin="anonymous" />
+
+	<!-- jQuery (optional) -->
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<link rel="stylesheet" th:href="@{/css/admin/header.css}">
+	<!-- Bootstrap 5 Bundle JS (Popper 포함) -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-…"
+		crossorigin="anonymous"></script>
 </head>
 
 <body>
-	   
-	    <h1>Welcome Admin Page</h1>
-	    <div th:replace="~{admin/admin-header :: admin-header}"></div>
+	<!-- 공통 헤더 삽입 -->
+	<div th:replace="~{admin/admin-header :: admin-header}"></div>
+
+	<div class="container my-5">
+		<p class="text-muted">
+			이번 주 일정:
+			<strong th:text="${weekStart}">2025-07-07</strong>
+			~
+			<strong th:text="${weekEnd}">2025-07-13</strong>
+		</p>
+		<!-- 프로그램 일정 섹션 -->
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<h2>프로그램 일정</h2>
+			<div th:with="prev=${prevWeek}, next=${nextWeek}">
+				<a class="btn btn-outline-primary btn-sm" th:href="@{/admin/main(weekOffset=${prev})}">← 이전 주</a>
+				<a class="btn btn-primary btn-sm" th:href="@{/admin/main(weekOffset=0)}">이번 주</a>
+				<a class="btn btn-outline-primary btn-sm" th:href="@{/admin/main(weekOffset=${next})}">다음 주 →</a>
+			</div>
+		</div>
+
+
+
+		<div class="table-responsive shadow-sm mb-5">
+			<table class="table table-bordered table-hover mb-0">
+				<thead class="table-light">
+					<tr>
+						<th>제목</th>
+						<th>시작일</th>
+						<th>장소</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="p : ${programs}">
+						<td th:text="${p.title}">제목</td>
+						<td th:text="${#temporals.format(p.startDate,'yyyy-MM-dd HH:mm')}">날짜</td>
+						<td th:text="${p.location}">장소</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+
+		<!-- 대관 예약 일정 섹션 -->
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<h2>대관 예약 일정</h2>
+		</div>
+
+		<div class="table-responsive shadow-sm">
+			<table class="table table-bordered table-hover align-middle mb-0">
+				<thead class="table-light">
+					<tr>
+						<th>예약일자</th>
+						<th>장소</th>
+						<th>시작시간</th>
+						<th>종료시간</th>
+						<th>사용자 ID</th>
+						<th>용도</th>
+						<th>그룹명</th>
+						<th>승인여부</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="r : ${reservations}">
+						<td th:text="${#temporals.format(r.reservationDate,'yyyy-MM-dd')}">
+							2025-07-08
+						</td>
+						<td th:text="${r.location}">장소</td>
+						<td th:text="${#temporals.format(r.startTime,'HH:mm')}">시작</td>
+						<td th:text="${#temporals.format(r.endTime,'HH:mm')}">종료</td>
+
+						<!-- 툴팁으로 사용자 상세 정보 노출 -->
+						<td>
+							<span class="text-primary" data-bs-toggle="tooltip" data-bs-placement="top" th:attr="data-bs-title=
+                  ${'이름: '+r.name
+                    +'<br>이메일: '+r.email
+                    +'<br>전화: '+r.phone
+                    +'<br>본당: '+r.cathedral
+                    +'<br>세례명: '+r.baptismName}" th:text="${r.userId}">userId</span>
+						</td>
+
+						<td th:text="${r.purpose}">용도</td>
+						<td th:text="${r.groupName}">그룹</td>
+						<td th:text="${r.isApp}">승인여부</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!-- Bootstrap Tooltip 초기화 (HTML 안의 <script>에 bootstrap 객체 있음) -->
+	<script>
+		document
+			.querySelectorAll('[data-bs-toggle="tooltip"]')
+			.forEach((el) => new bootstrap.Tooltip(el, {html: true}));
+	</script>
 </body>
+
 </html>

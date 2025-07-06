@@ -288,8 +288,13 @@ body {
 	padding: 10px;
 	margin: 10px 0;
 	font-size: 14px;
-	white-space: pre-wrap;
+
 }
+
+.scroll-box li{
+	word-break: break-word;
+}
+
 
 
 #confirmApplyBtn {
