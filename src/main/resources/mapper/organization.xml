@@ -18,7 +18,7 @@
 
 	<insert id="insertOrganization"
 		parameterType="hapum.hapum.domain.Organization">
-		INSERT INTO hapumdb.organization(name, introduce, profileSrc, status_code)
+		INSERT INTO hapumdb.organization(name, introduce, profileSrc, open_status)
 		VALUES(#{name}, #{introduce}, #{profileSrc}, 'Y');
 
 	</insert>
