@@ -44,14 +44,13 @@
     	/* 남은 공간 전부 차지 */
     	margin-left: 5%;
     	margin-top: 10px;
-    	max-width: calc(100% - 420px);
     	/* 좌우 마진, 슬라이드 포함 여유분 배제 */
     	height: 400px;
     	/* 슬라이드와 동일 높이(선택) */
     }
 
     #notification-list table {
-    	width: 600px;
+    	width: 80%;
     	border-collapse: collapse;
     }
 

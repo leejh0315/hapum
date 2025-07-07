@@ -16,20 +16,25 @@
 
     /* 각 뉴스 카드의 기본 스타일 (링크 전체가 카드로 작동) */
     .news-card {
-    	text-align: center;
+    width: 200px;
+    height: 200px;
+    max-width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+
     }
 
     /* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */
     .news-card img {
-    	width: 200px;
-    	height: 200px;
-    	object-fit: cover;
-    	display: block;
+	   width: 160px;
+    height: 160px;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
     }
 
     /* 이미지 아래의 텍스트 영역 */
     .news-text {
-    	margin-top: 10px;
     }
 
     /* 제목 스타일 */

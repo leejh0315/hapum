@@ -218,9 +218,14 @@
 				}
 				let partCount = parseInt(program.needPartCount); // 문자열 → 숫자 변환
 				console.log(partCount);
-				if (isNaN(partCount) || partCount <= 0 || partCount > program.capacity) {
-					alert("참여 인원 수를 다시 입력해주세요.");
-					return;
+				console.log(program.needPartCount);
+				if(program.needPartCount != "N"){
+
+				
+					if (isNaN(partCount) || partCount <= 0 || partCount > program.capacity) {
+						alert("참여 인원 수를 다시 입력해주세요.");
+						return;
+					}
 				}
 				$('#programApplyModalOverlay').removeClass('show');
 				$('#spinnerOverlay').show();

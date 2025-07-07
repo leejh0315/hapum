@@ -93,25 +93,25 @@ body {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 20px;
 }
 
 /* 프로그램 카드 */
 .program-card {
-	width: 160px;
-	text-align: center;
+    width: 200px;
+    height: 200px;
+    max-width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
 }
 
 .program-card img {
-	width: 100%;
-	height: auto;
-	border-radius: 8px;
+width: 160px;
+    height: 160px;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
 }
 
 .program-title {
-	margin-top: 8px;
 	font-weight: 500;
 }
