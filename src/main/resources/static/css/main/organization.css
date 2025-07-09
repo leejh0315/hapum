@@ -24,7 +24,7 @@ body {
 	width: 100%;
 	/* 부모(.sidebar) 너비 100% */
 	box-sizing: border-box;
-
+	cursor: pointer;
 	padding: 12px 10px;
 	text-align: center;
 	background-color: #F5EBE0;

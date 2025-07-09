@@ -341,7 +341,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			const newSlot = slot.cloneNode(true);
 			slot.parentNode.replaceChild(newSlot, slot);
 		});
-		
+
 		const selDate = new Date(selectedDate);
 		const weekday = selDate.getDay();
 		const weekOfMonth = getWeekOfMonth(selDate);
@@ -366,7 +366,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				}
 			}
 		});
-		
+
 		const progTimes = getProgramTimesForDate(selectedDate);
 		progTimes.forEach(({ time }) => blockedMap.set(time, true));
 
@@ -479,19 +479,70 @@ document.addEventListener("DOMContentLoaded", function() {
 		$('#rentalModalOverlay').removeClass('show');
 	});
 
+	$('#rentalUseGuide').on('click', function(e) {
+		if (e.target.id === 'rentalUseGuide') {
+			$(this).removeClass('show');
+		}
+	});
+
 	$('#rentalModalOverlay').on('click', function(e) {
 		if (e.target.id === 'rentalModalOverlay') {
 			$(this).removeClass('show');
 		}
 	});
+
+
+	$('#rentalDetailModal').on('click', function(e) {
+		if (e.target.id === 'rentalDetailModal') {
+			$(this).removeClass('show');
+		}
+	});
 	// --- 예약 제출 ---
 	window.submitRental = function() {
-		console.log($('#purpose').val());
-		console.log($('#groupName').val());
+		document.getElementById('rentalUseGuide').classList.add('show');
+
+		$('#useGuideBtn').on('click', function() {
+			if (!$('#useGuideCheckBox').is(":checked")) {
+				alert("이용 안내 확인 체크를 해주세요.");
+				return;
+			} else {
+				$('#rentalUseGuide').removeClass('show');
+				document.getElementById('rentalDetailModal').classList.add('show');
+			}
+		})
+	}
+
+
+	$('#detailConfirmBtn').on('click', function(e) {
+		if (!$('#purpose').val() || !$('#groupName').val()) {
+			alert("항목들을 작성해주세요.");
+			return;
+		}
+		const headCount = $('#headCount').val();
+		if (!headCount || isNaN(headCount) || Number(headCount) <= 0 || Number(headCount) > 100) {
+			alert("사용 인원을 확인해주세요.");
+			return;
+		}
+
+		rental();
+	});
+
+	function rental() {
+		$('#rentalDetailModal').removeClass('show');
+		document.getElementById('rentalModalOverlay').classList.add('show');
 		if (!selectedRoom || !selectedDate) {
 			alert('시설과 날짜를 먼저 선택해주세요.');
 			return;
 		}
+		let equipmentList = [];
+
+		if ($('#needBeam').is(':checked')) {
+			equipmentList.push('빔프로젝터');
+		}
+		if ($('#needSound').is(':checked')) {
+			equipmentList.push('음향장비');
+		}
+		const headCount = $('#headCount').val();
 		const date = document.querySelector('#datePicker').value;
 		const times = document.querySelector('#selected-time-display').innerText;
 		const room = document.querySelector('.room-btn.active').dataset.room;
@@ -512,7 +563,9 @@ document.addEventListener("DOMContentLoaded", function() {
 			createdAt: null,
 			isApp: null,
 			purpose: $('#purpose').val(),
-			groupName: $('#groupName').val()
+			groupName: $('#groupName').val(),
+			equipment: equipmentList.join(', '),
+			headCount : headCount
 		};
 		if (selectedRoom === "강당") {
 			const bookingChoice = document.querySelector('input[name="bookingType"]:checked');
@@ -554,9 +607,6 @@ document.addEventListener("DOMContentLoaded", function() {
 			payload.price = 10000;
 		}
 		const rawPrice = payload.price;
-
-
-
 
 		$('#confirmApplyBtn').off('click').on('click', function() {
 			if (!$('#privacyConsentCheckbox').is(':checked')) {

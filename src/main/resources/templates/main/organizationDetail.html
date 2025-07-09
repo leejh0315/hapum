@@ -16,7 +16,7 @@
 	<div class="container">
 		<!-- SIDEBAR -->
 		<div class="sidebar">
-			<div class="sidebar-title">단체소식</div>
+			<div class="sidebar-title" onclick="location.href='/main/organization'">단체소식</div>
 			<button th:each="org : ${organizationList}" class="menu-button"
 				th:classappend="${org.id == id} ? ' active' : ''" th:text="${org.name}"
 				th:onclick="'location.href=\'/main/organization/'+${org.id}+'\''">

@@ -18,7 +18,7 @@
 	<div class="container">
 		<!-- 사이드바: organizationList 반복 -->
 		<div class="sidebar">
-			<div class="sidebar-title">단체소식</div>
+			<div class="sidebar-title" onclick="location.href='/main/organization'">단체소식</div>
 
 			<button th:each="org : ${organizationList}" class="menu-button" th:text="${org.name}"
 				th:onclick="'location.href=\'/main/organization/'+ ${org.id} +'\''">

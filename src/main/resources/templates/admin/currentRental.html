@@ -81,6 +81,8 @@
 					<th>신청일</th>
 					<th>용도</th>
 					<th>단체명</th>
+					<th>인원</th>
+					<th>장비</th>
 					<th>액션</th>
 				</tr>
 			</thead>
@@ -102,6 +104,8 @@
 					<th>신청일</th>
 					<th>용도</th>
 					<th>단체명</th>
+					<th>인원</th>
+					<th>장비</th>
 					<th>액션</th>
 				</tr>
 			</thead>
@@ -142,6 +146,8 @@
             <td>${fmtDateTime(r.createdOn)}</td>
             <td>${r.purpose || ''}</td>
             <td>${r.groupName || ''}</td>
+            <td>${r.equipment || ''}</td>
+            <td>${r.headCount || ''}</td>
             <td>
               ${r.isApp == '1'
 							? `<button class="btn disapprove" data-id="${r.id}">미승인</button>`

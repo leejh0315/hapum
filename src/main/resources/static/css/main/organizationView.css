@@ -28,7 +28,7 @@ body {
   font-size: 18px;
   font-weight: bold;
   color: #333;
-  
+  cursor: pointer;
    width: calc(100% + 20px);   /* 부모의 좌우 padding(10px * 2)을 보상 */
   margin: 0 -10px 10px;       /* 양쪽으로 -10px */
   box-sizing: border-box;  

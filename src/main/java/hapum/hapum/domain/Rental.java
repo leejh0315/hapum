@@ -19,4 +19,6 @@ public class Rental {
     private String isApp;            // TINYINT(1) NOT NULL DEFAULT 0, 승인여부 (0: 미승인, 1: 승인)
     private String purpose;
     private String groupName;
+    private String equipment;
+    private int headCount;
 }

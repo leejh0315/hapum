@@ -78,6 +78,8 @@
 						<th>사용자 ID</th>
 						<th>용도</th>
 						<th>그룹명</th>
+						<th>인원</th>
+						<th>장비</th>
 						<th>승인여부</th>
 					</tr>
 				</thead>
@@ -102,6 +104,8 @@
 
 						<td th:text="${r.purpose}">용도</td>
 						<td th:text="${r.groupName}">그룹</td>
+						<td th:text="${r.headCount}">인원</td>
+						<td th:text="${r.equipment}">장비</td>
 						<td th:text="${r.isApp}">승인여부</td>
 					</tr>
 				</tbody>

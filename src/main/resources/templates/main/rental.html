@@ -51,6 +51,64 @@
 		</div>
 	</div>
 
+	<div id="rentalUseGuide" class="use-guide-modal" style="margin-bottom: 20px;">
+		<div class="modal-content">
+			<h3>대관 이용 안내</h3>
+			<ol style="padding-left: 1.2em; line-height: 1.6; margin-top:40px">
+				<li>사용하신 공간은 반드시 깨끗하게 정리를 부탁드립니다. (화장실, 복도, 휴게실 등)</li>
+				<li>에어컨 및 난방기는 적정온도로 사용해 주시기 바랍니다.</li>
+				<li>건물 내 흡연은 절대 금지합니다.</li>
+				<li>쓰레기 분리수거를 부탁드립니다. (1층 휴게실, 2층 강당)</li>
+				<li>사용하신 컵, 접시 등 집기류는 반드시 설거지해서 정리해 주십시오. (휴게실)</li>
+				<li><strong>사용한 장비 및 냉·난방기를 꺼주시고 소등을 부탁드립니다.</strong></li>
+			</ol>
+			<p style="margin-top: 1em; font-style: italic; color: #555;">
+				※ 위 안내사항이 지켜지지 않을 시 추후 대관이 제한될 수 있습니다.
+			</p>
+			<div class="useGuideCheckBox">
+				<p>이용 안내를 확인하였습니다.</p><input id="useGuideCheckBox" type="checkbox">
+			</div>
+			<div class="useGuideBtn-wrapper">
+				<button id="useGuideBtn" class="useGuideBtn">다음</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="rentalDetailModal" class="rental-detail-modal" style="margin-bottom: 20px;">
+		<div class="modal-content">
+			<h3>대관 상세 정보 입력</h3>
+
+			<div class="modal-input-group" style="margin-top: 30px;">
+				<label for="purpose"><strong>대관 목적</strong></label>
+				<input type="text" id="purpose" placeholder="예: 청년 모임, 회의 등" />
+
+				<label for="groupName"><strong>단체명</strong></label>
+				<input type="text" id="groupName" placeholder="예: 청년부"/>
+
+				<label for="headCount"><strong>사용 인원</strong></label>
+				<input type="number" id="headCount" placeholder="예: 10"/>
+			</div>
+
+			<div class="modal-checkbox-group" style="margin-top: 15px;">
+				<p><strong>장비 사용 여부</strong></p>
+				<label style="margin-right: 15px;">
+					<input type="checkbox" id="needBeam" /> 빔프로젝터
+				</label>
+				<label>
+					<input type="checkbox" id="needSound" /> 음향 장비
+				</label>
+			</div>
+
+			<div class="useGuideBtn-wrapper" style="margin-top: 30px;">
+				<button id="detailConfirmBtn" class="useGuideBtn">다음</button>
+			</div>
+		</div>
+	</div>
+
+
+
+
+
 	<div id="rentalModalOverlay" class="modal-overlay">
 		<div class="modal-content">
 			<h3>대관 신청 확인</h3>
@@ -60,8 +118,6 @@
 					<li>선택하신 날짜: <span id="modalDate"></span></li>
 					<li>선택하신 시간: <span id="modalTime"></span></li>
 					<li>신청하시는 시설: <span id="modalRoom"></span></li>
-					<li>대관 목적: <input id="purpose"> </li>
-					<li>단체명: <input id="groupName"> </li>
 				</ul>
 				<div class="scroll-box">
 					<h3>[개인정보 수집·이용·제공 및 활용 동의서]</h3>

@@ -69,19 +69,31 @@
 	</select>
 
 
-	<insert id="insertRental" parameterType="hapum.hapum.domain.Rental"
-		useGeneratedKeys="true" keyProperty="id"> INSERT INTO
-		hapumdb.rental_reservation ( location, reservation_date, start_time,
-		end_time, price, user_id, is_app, purpose, group_name ) VALUES (
-		#{location}, #{reservationDate}, #{startTime}, #{endTime}, #{price},
-		#{userId}, <choose>
+	<insert id="insertRental" parameterType="hapum.hapum.domain.Rental" useGeneratedKeys="true" keyProperty="id"> 
+		INSERT INTO
+		hapumdb.rental_reservation ( 
+			location, 
+			reservation_date, 
+			start_time,
+			end_time, 
+			price, 
+			user_id, 
+			is_app, 
+			purpose, 
+			group_name,
+			equipment,
+			head_count 
+		) VALUES (
+		#{location}, #{reservationDate}, #{startTime}, #{endTime}, #{price}, #{userId}, 
+		<choose>
 			<when test="isApp != null">
 				#{isApp}
 			</when>
 			<otherwise>
 				0
 			</otherwise>
-		</choose> ,#{purpose}, #{groupName}) </insert>
+		</choose> 
+		,#{purpose}, #{groupName}, #{equipment}, #{headCount}) </insert>
 
 
 	<delete id="deleteRental">
@@ -125,6 +137,8 @@
     <result property="isApp"            column="is_app"/>
     <result property="purpose"          column="purpose"/>
     <result property="groupName"        column="group_name"/>
+    <result property="equipment"        column="equipment"/>
+    <result property="headCount"        column="head_count"/>
 
     <!-- User 필드 매핑 -->
     <result property="email"            column="u_email"/>
@@ -152,6 +166,8 @@
       rr.is_app           AS is_app,
       rr.purpose          AS purpose,
       rr.group_name       AS group_name,
+      rr.equipment       AS equipment,
+      rr.head_count       AS head_count,
 
       u.email             AS u_email,
       u.name              AS u_name,

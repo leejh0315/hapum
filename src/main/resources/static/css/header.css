@@ -37,6 +37,7 @@
   align-items: center;
   gap: 10px;
   position: relative;
+  margin-bottom: 20px;
 }
 .header-left .center-name {
   display: flex;
@@ -82,6 +83,7 @@
     display: inline-flex;
     align-items: center;
     gap: 20px;
+    margin-bottom: 25px;
 }
 
 /* 비로그인(게스트) 상태일 때 */
@@ -89,6 +91,7 @@
     display: inline-flex;
     align-items: center;
     gap: 20px;
+    margin-bottom: 25px;
 }
 
 /* 인증 링크 기본 스타일 및 인접 인증 링크 사이에 구분자 적용 */

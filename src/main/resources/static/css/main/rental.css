@@ -19,6 +19,10 @@ body {
 
 }
 
+
+ul ul li{
+	margin-left: 2.0rem;
+}
 .slot.past-slot {
 	background-color: #EDEDE9 !important;
 	color: #999;
@@ -223,6 +227,87 @@ body {
 	align-items: center;
 	justify-content: center;
 	z-index: 2000;
+}
+.useGuideCheckBox {
+  display: flex;
+  align-items: center;        /* 수직 중앙 정렬 */
+  justify-content: flex-end;  /* 부모 안에서 오른쪽 정렬 */
+  gap: 8px;                   /* p와 input 사이 간격 */
+  margin-top: 20px;           /* 필요 시 여백 조절 */
+}
+
+.useGuideBtn-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.useGuideBtn{
+	width: 10%;
+	padding: 12px;
+	text-align: center;
+	background-color: #F5EBE0;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	color: #333;
+	cursor: pointer;
+	border-radius: 10%;
+	margin-bottom: 5px;
+	display: flex;
+	align-items: center;        /* 수직 중앙 정렬 */
+	justify-content: flex-end; 
+	}
+
+.use-guide-modal{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 2000;
+}
+
+
+.rental-detail-modal{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 2000;
+}
+
+.modal-input-group{
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-input-group input{
+	width: 80%;
+	height: 40px;
+	border-radius: 6px;
+	border: 1px solid #D6CCC2;
+	    padding: 10px 14px;
+}
+.modal-input-group label{
+	margin-top : 10px;
+}
+
+.rental-detail-modal.show{
+	display: flex;
+}
+
+.use-guide-modal.show{
+	display: flex;
 }
 
 .modal-overlay.show {
