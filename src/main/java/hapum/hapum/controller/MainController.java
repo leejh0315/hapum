@@ -70,8 +70,6 @@ public class MainController {
             }
         }
         
-		
-
 		List<Notification> notifications = notificationService.selectAll();
 
 		model.addAttribute("fileNames", fileNames);
