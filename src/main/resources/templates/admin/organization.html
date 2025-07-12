@@ -5,152 +5,7 @@
 	<meta charset="UTF-8">
 	<title>제단체 관리</title>
 	<link rel="stylesheet" th:href="@{/css/admin/header.css}">
-	<style>
-		/* 페이지 전체 스크롤 숨기기 */
-		body {
-			margin: 0;
-			padding: 0;
-			
-overflow-x: hidden;   /* 가로 스크롤 차단 */
-overflow-y: auto;     /* 세로 스크롤 허용 */
-			font-family: Arial, sans-serif;
-		}
-
-		/* 최상위 컨테이너: 헤더+두 개의 섹션 */
-		.wrapper {
-			display: flex;
-			flex-direction: column;
-			height: calc(100vh - 60px);
-			/* 헤더 높이를 정확히 반영 */
-			overflow-y: auto;
-		}
-
-		.wrapper h1 {
-			text-align: center;
-			margin: 15px 0;
-		}
-
-		/* 섹션(활성 / 비활성) */
-		.section {
-			flex: 1;
-			display: flex;
-			flex-direction: column;
-		}
-
-		.section .title {
-			text-align: center;
-			margin: 5px 0;
-			font-size: 1.1rem;
-			font-weight: bold;
-		}
-
-		/* 카드 행: flex + 가로 스크롤 */
-		.org-row {
-			flex: 1;
-			display: flex;
-			gap: 20px;
-			padding: 0 20px;
-			overflow-x: auto;
-			overflow-y: hidden;
-			/* 스크롤바 스타일(필요시) */
-			scrollbar-width: thin;
-			scrollbar-color: #aaa transparent;
-		}
-
-		.org-row::-webkit-scrollbar {
-			height: 6px;
-		}
-
-		.org-row::-webkit-scrollbar-thumb {
-			background: #aaa;
-			border-radius: 3px;
-		}
-
-		/* 각 카드 */
-		.org-card {
-			position: relative;
-			flex: 0 0 250px;
-			border: 1px solid #ccc;
-			border-radius: 5px;
-			padding: 15px;
-			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-			background-color: #fff;
-			text-align: center;
-		}
-
-		.org-card img {
-			width: 150px;
-			height: 150px;
-			object-fit: cover;
-			border-radius: 50%;
-			margin-bottom: 10px;
-		}
-
-		.org-card h2 {
-			font-size: 18px;
-			margin: 10px 0 5px;
-			color: #333;
-		}
-
-		.org-card p {
-			font-size: 14px;
-			color: #666;
-			line-height: 1.4;
-		}
-
-		/* 삭제 버튼 (우측 상단) */
-		.delete-button {
-			position: absolute;
-			top: 8px;
-			right: 8px;
-			background: transparent;
-			border: none;
-			font-size: 18px;
-			color: #e74c3c;
-			cursor: pointer;
-		}
-
-		.delete-button:hover {
-			color: #c0392b;
-		}
-
-		/* 상태 변경 버튼 (우측 하단) */
-		.status-button {
-			position: absolute;
-			bottom: 8px;
-			right: 8px;
-			background: transparent;
-			border: none;
-			font-size: 18px;
-			color: #3498db;
-			cursor: pointer;
-		}
-
-		.status-button:hover {
-			color: #21618c;
-		}
-
-		/* 상단 “추가” 버튼 */
-		.top-actions {
-			text-align: center;
-			margin-bottom: 10px;
-		}
-
-		.add-org-button {
-			display: inline-block;
-			background-color: #007bff;
-			color: #fff;
-			padding: 8px 16px;
-			border-radius: 4px;
-			text-decoration: none;
-			font-size: 14px;
-			margin: 0 5px;
-		}
-
-		.add-org-button:hover {
-			background-color: #0069d9;
-		}
-	</style>
+	<link rel="stylesheet" th:href="@{/css/admin/organization.css}">
 </head>
 
 <body>
@@ -169,16 +24,26 @@ overflow-y: auto;     /* 세로 스크롤 허용 */
 			<div class="title">활성 단체</div>
 			<div class="org-row">
 				<div class="org-card" th:each="org : ${organizations}" th:if="${org.openStatus == 'Y'}">
+					<!-- 아이콘 액션 영역 -->
+					<div class="icon-actions">
+						<!-- 상태 변경 -->
+						<form th:action="@{/admin/organization/updateCode/{orgId}(orgId=${org.id})}" method="post">
+							<input type="hidden" name="statusCode" th:value="${org.openStatus}" />
+							<button type="submit" class="icon-button" title="상태 변경">🔄</button>
+						</form>
 
-					<form th:action="@{/admin/organization/updateCode/{orgId}(orgId=${org.id})}" method="post">
-						<!-- 현재 상태를 보내면, 컨트롤러에서 반전 처리 -->
-						<input type="hidden" name="statusCode" th:value="${org.openStatus}" />
-						<button type="submit" class="status-button"
-							th:title="${org.openStatus == 'Y' ? '비활성화' : '활성화'}">
-							🔄
-						</button>
-					</form>
+						<!-- 수정 -->
+						<a th:href="@{/admin/organization/update/{orgId}(orgId=${org.id})}" class="icon-button"
+							title="수정">✏️</a>
 
+						<!-- 삭제 -->
+						<form th:action="@{/admin/organization/delete/{orgId}(orgId=${org.id})}" method="post"
+							onsubmit="return confirm('정말 삭제하시겠습니까?');">
+							<button type="submit" class="icon-button delete" title="삭제">🗑️</button>
+						</form>
+					</div>
+
+					<!-- 이미지와 정보 -->
 					<img th:if="${org.profileSrc != null}" th:src="@{${org.profileSrc}}" alt="프로필 이미지" />
 					<h2 th:text="${org.name}">조직 이름</h2>
 					<p th:text="${org.introduce}">조직 소개</p>
@@ -191,15 +56,26 @@ overflow-y: auto;     /* 세로 스크롤 허용 */
 			<div class="title">비활성 단체</div>
 			<div class="org-row">
 				<div class="org-card" th:each="org : ${organizations}" th:if="${org.openStatus == 'N'}">
+					<!-- 아이콘 액션 영역 -->
+					<div class="icon-actions">
+						<!-- 상태 변경 -->
+						<form th:action="@{/admin/organization/updateCode/{orgId}(orgId=${org.id})}" method="post">
+							<input type="hidden" name="statusCode" th:value="${org.openStatus}" />
+							<button type="submit" class="icon-button" title="상태 변경">🔄</button>
+						</form>
 
-					<form th:action="@{/admin/organization/updateCode/{orgId}(orgId=${org.id})}" method="post">
-						<input type="hidden" name="statusCode" th:value="${org.openStatus}" />
-						<button type="submit" class="status-button"
-							th:title="${org.openStatus == 'Y' ? '비활성화' : '활성화'}">
-							🔄
-						</button>
-					</form>
+						<!-- 수정 -->
+						<a th:href="@{/admin/organization/update/{orgId}(orgId=${org.id})}" class="icon-button"
+							title="수정">✏️</a>
 
+						<!-- 삭제 -->
+						<form th:action="@{/admin/organization/delete/{orgId}(orgId=${org.id})}" method="post"
+							onsubmit="return confirm('정말 삭제하시겠습니까?');">
+							<button type="submit" class="icon-button delete" title="삭제">🗑️</button>
+						</form>
+					</div>
+
+					<!-- 이미지와 정보 -->
 					<img th:if="${org.profileSrc != null}" th:src="@{${org.profileSrc}}" alt="프로필 이미지" />
 					<h2 th:text="${org.name}">조직 이름</h2>
 					<p th:text="${org.introduce}">조직 소개</p>

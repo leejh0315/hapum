@@ -1,0 +1,178 @@
+		/* 페이지 전체 스크롤 숨기기 */
+		body {
+			margin: 0;
+			padding: 0;
+
+			overflow-x: hidden;
+			/* 가로 스크롤 차단 */
+			overflow-y: auto;
+			/* 세로 스크롤 허용 */
+			font-family: Arial, sans-serif;
+		}
+
+		/* 최상위 컨테이너: 헤더+두 개의 섹션 */
+		.wrapper {
+			display: flex;
+			flex-direction: column;
+			height: calc(100vh - 60px);
+			/* 헤더 높이를 정확히 반영 */
+			overflow-y: auto;
+		}
+
+		.wrapper h1 {
+			text-align: center;
+			margin: 15px 0;
+		}
+
+		/* 섹션(활성 / 비활성) */
+		.section {
+			flex: 1;
+			display: flex;
+			flex-direction: column;
+		}
+
+		.section .title {
+			text-align: center;
+			margin: 5px 0;
+			font-size: 1.1rem;
+			font-weight: bold;
+		}
+
+		/* 카드 행: flex + 가로 스크롤 */
+		.org-row {
+			flex: 1;
+			display: flex;
+			gap: 20px;
+			padding: 0 20px;
+			overflow-x: auto;
+			overflow-y: hidden;
+			/* 스크롤바 스타일(필요시) */
+			scrollbar-width: thin;
+			scrollbar-color: #aaa transparent;
+		}
+
+		.org-row::-webkit-scrollbar {
+			height: 6px;
+		}
+
+		.org-row::-webkit-scrollbar-thumb {
+			background: #aaa;
+			border-radius: 3px;
+		}
+
+		/* 각 카드 */
+		.org-card {
+			position: relative;
+			flex: 0 0 250px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			padding: 15px;
+			box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+			background-color: #fff;
+			text-align: center;
+		}
+
+		.org-card img {
+			width: 150px;
+			height: 150px;
+			object-fit: cover;
+			border-radius: 50%;
+			margin-bottom: 10px;
+		}
+
+		.org-card h2 {
+			font-size: 18px;
+			margin: 10px 0 5px;
+			color: #333;
+		}
+
+		.org-card p {
+			font-size: 14px;
+			color: #666;
+			line-height: 1.4;
+		}
+
+		/* 삭제 버튼 (우측 상단) */
+		.delete-button {
+			position: absolute;
+			top: 8px;
+			right: 8px;
+			background: transparent;
+			border: none;
+			font-size: 18px;
+			color: #e74c3c;
+			cursor: pointer;
+		}
+
+		.delete-button:hover {
+			color: #c0392b;
+		}
+
+		/* 상태 변경 버튼 (우측 하단) */
+		.status-button {
+			position: absolute;
+			bottom: 8px;
+			right: 8px;
+			background: transparent;
+			border: none;
+			font-size: 18px;
+			color: #3498db;
+			cursor: pointer;
+		}
+
+		.status-button:hover {
+			color: #21618c;
+		}
+
+		/* 상단 “추가” 버튼 */
+		.top-actions {
+			text-align: center;
+			margin-bottom: 10px;
+		}
+
+		.add-org-button {
+			display: inline-block;
+			background-color: #007bff;
+			color: #fff;
+			padding: 8px 16px;
+			border-radius: 4px;
+			text-decoration: none;
+			font-size: 14px;
+			margin: 0 5px;
+		}
+
+		.add-org-button:hover {
+			background-color: #0069d9;
+		}
+
+		/* 아이콘 그룹 (우측 상단 정렬) */
+		.icon-actions {
+			position: absolute;
+			top: 8px;
+			right: 8px;
+			display: flex;
+			gap: 6px;
+		}
+
+		/* 아이콘 버튼 공통 스타일 */
+		.icon-button {
+			background: transparent;
+			border: none;
+			font-size: 18px;
+			cursor: pointer;
+			color: #555;
+			padding: 0;
+		}
+
+		.icon-button:hover {
+			color: #000;
+		}
+
+		/* 삭제 전용 스타일 */
+		.icon-button.delete {
+			color: #e74c3c;
+		}
+
+		.icon-button.delete:hover {
+			color: #c0392b;
+		}

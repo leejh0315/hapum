@@ -16,10 +16,11 @@
 
 	<div class="container">
 		<!-- 좌측 사이드바 -->
+		<!-- 좌측 사이드바 -->
 		<div class="sidebar">
 			<div class="sidebar-title">프로그램</div>
 
-			<button th:each="program : ${programs}" th:text="${program.name}"
+			<button th:each="program : ${programs}" th:if="${program.openStatus == 'Y'}" th:text="${program.name}"
 				th:onclick="|location.href='/main/programList/${program.id}'|" class="menu-button">
 			</button>
 		</div>
@@ -27,13 +28,14 @@
 		<!-- 오른쪽 콘텐츠 영역 -->
 		<div class="content">
 			<div class="program-list">
-				<a th:each="program : ${programs}" th:href="@{/main/programList/{id}(id=${program.id})}"
-					class="program-card">
+				<a th:each="program : ${programs}" th:if="${program.openStatus == 'Y'}"
+					th:href="@{/main/programList/{id}(id=${program.id})}" class="program-card">
 					<img th:src="@{${program.thumbnailSrc}}" alt="썸네일 이미지" />
 					<div class="program-title" th:text="${program.name}"></div>
 				</a>
 			</div>
 		</div>
+
 	</div>
 
 	<div th:replace="~{main/footer :: footer}"></div>

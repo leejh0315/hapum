@@ -16,7 +16,6 @@
   display: flex;
   flex-direction: column;
   padding: 0 0 20px 0; /* 상단 패딩을 0으로 설정, 하단만 남김 */
-  gap: 10px;
 }
 
 /* 사이드바 제목: 상단 여백 제거하여 맨 위에 붙게 함 */
@@ -27,6 +26,10 @@
   padding: 12px 0;  /* 좌우 여백 없이 */
   background-color: #D5BDAF;  /* 제목 배경색 */
   color: white;
+  margin-bottom: 10px;
+}
+.menu-button.back{
+	margin-bottom: 10px;
 }
 
 /* 목록 버튼 */

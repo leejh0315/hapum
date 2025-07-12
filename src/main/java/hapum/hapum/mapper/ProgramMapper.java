@@ -37,4 +37,13 @@ public interface ProgramMapper {
 	 
 	 List<Program> selectThisMonthProgram();
 	 List<Program> selectProgramsByDateRange(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
+	 
+	 ProgramAdd selectProgramAddById(@Param("addId") Long addId);
+	 void updateProgramAddStatus(@Param("addId") Long addId, @Param("code") String code);
+	 void updateProgram(Program program);
+	 void updateProgramAdd(ProgramAdd programAdd); 
+	 
+	 void deleteProgramSubs(@Param("id")Long id);
+	 void deleteProgram(@Param("id") Long id);
+	 void deleteProgramAdd(@Param("id") Long id);
 }

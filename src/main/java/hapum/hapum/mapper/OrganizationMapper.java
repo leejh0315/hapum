@@ -21,4 +21,8 @@ public interface OrganizationMapper {
 	void deleteOrganization(@Param("orgId") Long orgId, @Param("code") String code);
 	void deleteOrganizationPost(@Param("orgPostId") Long orgPostId );
 	List<Organization> selectAllOrganizationAdmin();
-}
+	void updateOrganization(Organization organization);
+	void deletePosts(@Param("orgId") Long orgId);
+	void deleteOrganizationAndPosts(@Param("orgId") Long orgId);
+	void updateOrganizationPost(OrganizationPost organizationPost);
+ }

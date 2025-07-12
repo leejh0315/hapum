@@ -56,12 +56,15 @@
 	</select>
 	<!-- 신청자 수-->
 	<select id="getApplyCount" resultType="Integer">
-		SELECT SUM(part_count) FROM hapumdb.program_subs WHERE program_id =#{programId}
+		SELECT SUM(part_count) FROM hapumdb.program_subs WHERE program_id
+		=#{programId}
 	</select>
 
 	<insert id="programSub" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on, is_app, part_count, relation, org_name)
-		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation}, #{orgName})
+		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on, is_app,
+		part_count, relation, org_name)
+		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation},
+		#{orgName})
 	</insert>
 
 	<select id="selectPrograSubmById" resultType="hapum.hapum.domain.ProgramSub">
@@ -111,81 +114,141 @@
 		WHERE id=#{psId}
 	</update>
 
-<resultMap id="ProgramWithSubResultMap" type="hapum.hapum.domain.ProgramWithSub">
-  <id property="id" column="id" />
-  <result property="title" column="title"/>
-  <result property="content" column="content"/>
-  <result property="subject" column="subject"/>
-  <result property="startDate" column="startDate"/>
-  <result property="endDate" column="endDate"/>
-  <result property="location" column="location"/>
-  <result property="target" column="target"/>
-  <result property="capacity" column="capacity"/>
-  <result property="expense" column="expense"/>
-  <result property="thumbnailSrc" column="thumbnailSrc"/>
-  <result property="createOn" column="createOn"/>
-  <result property="updateOn" column="updateOn"/>
-  <result property="subsId" column="subsId"/>
-  <result property="isApp" column="isApp"/>
-  <result property="subsOn" column="subsOn"/>
-</resultMap>
+	<resultMap id="ProgramWithSubResultMap"
+		type="hapum.hapum.domain.ProgramWithSub">
+		<id property="id" column="id" />
+		<result property="title" column="title" />
+		<result property="content" column="content" />
+		<result property="subject" column="subject" />
+		<result property="startDate" column="startDate" />
+		<result property="endDate" column="endDate" />
+		<result property="location" column="location" />
+		<result property="target" column="target" />
+		<result property="capacity" column="capacity" />
+		<result property="expense" column="expense" />
+		<result property="thumbnailSrc" column="thumbnailSrc" />
+		<result property="createOn" column="createOn" />
+		<result property="updateOn" column="updateOn" />
+		<result property="subsId" column="subsId" />
+		<result property="isApp" column="isApp" />
+		<result property="subsOn" column="subsOn" />
+	</resultMap>
 
-<select id="selectProgramsWithSubByUserId" parameterType="java.lang.Long" resultMap="ProgramWithSubResultMap">
-  SELECT 
-    p.id,
-    p.title,
-    p.content,
-    p.subject,
-    p.start_date AS startDate,
-    p.end_date AS endDate,
-    p.location,
-    p.target,
-    p.capacity,
-    p.expense,
-    p.thumbnail_src AS thumbnailSrc,
-    p.create_on AS createOn,
-    p.update_on AS updateOn,
-    ps.id AS subsId,
-    ps.subs_on AS subsOn,
-    ps.is_app AS isApp
-  FROM hapumdb.program p
-  INNER JOIN hapumdb.program_subs ps ON p.id = ps.program_id
-  WHERE ps.user_id = #{userId}
-</select>
+	<select id="selectProgramsWithSubByUserId" parameterType="java.lang.Long"
+		resultMap="ProgramWithSubResultMap">
+		SELECT
+		p.id,
+		p.title,
+		p.content,
+		p.subject,
+		p.start_date AS startDate,
+		p.end_date AS endDate,
+		p.location,
+		p.target,
+		p.capacity,
+		p.expense,
+		p.thumbnail_src AS thumbnailSrc,
+		p.create_on AS createOn,
+		p.update_on AS updateOn,
+		ps.id AS subsId,
+		ps.subs_on AS subsOn,
+		ps.is_app AS isApp
+		FROM hapumdb.program p
+		INNER JOIN hapumdb.program_subs ps ON p.id = ps.program_id
+		WHERE ps.user_id = #{userId}
+	</select>
 
-<delete id="deleteByProgramSubsId">
-	DELETE FROM hapumdb.program_subs WHERE id=#{id}
-</delete>
-
-
-<update id="updateCode">
-	UPDATE hapumdb.program SET open_status=#{code} where id=#{programId}
-</update>
+	<delete id="deleteByProgramSubsId">
+		DELETE FROM hapumdb.program_subs WHERE id=#{id}
+	</delete>
 
 
-<insert id="insertProgramAdd" parameterType="hapum.hapum.domain.ProgramAdd">
-	INSERT INTO hapumdb.program_add 
-	(name, thumbnail_src) VALUES
-	(#{name}, #{thumbnailSrc})
-</insert>
+	<update id="updateCode">
+		UPDATE hapumdb.program SET open_status=#{code} where id=#{programId}
+	</update>
 
-<select id="selectAllProgramAdd">
-	SELECT * FROM hapumdb.program_add
-</select>
 
-<select id="selectProgramByAddId">
-	SELECT *FROM hapumdb.program WHERE add_id=#{id}
-</select>
+	<insert id="insertProgramAdd" parameterType="hapum.hapum.domain.ProgramAdd">
+		INSERT INTO hapumdb.program_add
+		(name, content, thumbnail_src ) VALUES
+		(#{name}, #{content}, #{thumbnailSrc})
+	</insert>
 
-<select id="selectThisMonthProgram" resultType="hapum.hapum.domain.Program">
-	SELECT * FROM hapumdb.program
-	WHERE start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)
+	<select id="selectAllProgramAdd">
+		SELECT * FROM hapumdb.program_add
+	</select>
+
+	<select id="selectProgramByAddId">
+		SELECT *FROM hapumdb.program WHERE add_id=#{id}
+	</select>
+
+	<select id="selectThisMonthProgram" resultType="hapum.hapum.domain.Program">
+		SELECT * FROM hapumdb.program
+		WHERE start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30
+		DAY)
+
+	</select>
+	<select id="selectProgramsByDateRange" parameterType="map"
+		resultType="hapum.hapum.domain.Program">
+		SELECT *
+		FROM hapumdb.program
+		WHERE start_date BETWEEN #{start} AND #{end}
+		ORDER BY start_date
+	</select>
+
+
+	<update id="updateProgramAddStatus">
+		UPDATE hapumdb.program_add SET
+		open_status=#{code}
+		WHERE id=#{addId}
+	</update>
+
+
+	<update id="updateProgram" parameterType="hapum.hapum.domain.Program">
+		UPDATE hapumdb.program
+		SET
+		add_id = #{addId},
+		title = #{title},
+		content = #{content},
+		subject = #{subject},
+		start_date = #{startDate},
+		end_date = #{endDate},
+		location = #{location},
+		target = #{target},
+		capacity = #{capacity},
+		expense = #{expense},
+		thumbnail_src = #{thumbnailSrc},
+		update_on = NOW(),
+		need_org_name = #{needOrgName},
+		need_part_count = #{needPartCount},
+		need_relation = #{needRelation}
+		WHERE id = #{id}
+	</update>
+
+	<select id="selectProgramAddById" resultType="hapum.hapum.domain.ProgramAdd">
+		SELECT * FROM hapumdb.program_add WHERE id=#{addId}
+	</select>
+
+	<update id="updateProgramAdd" parameterType="hapum.hapum.domain.ProgramAdd">
+		UPDATE hapumdb.program_add
+		SET
+		name = #{name},
+		content = #{content},
+		thumbnail_src = #{thumbnailSrc},
+		open_status = #{openStatus}
+		WHERE id = #{id}
+	</update>
 	
-</select>
-<select id="selectProgramsByDateRange" parameterType="map" resultType="Program">
-    SELECT *
-    FROM hapumdb.program
-    WHERE start_date BETWEEN #{start} AND #{end}
-    ORDER BY start_date
-</select>
+	<delete id="deleteProgramSubs">
+		DELETE from hapumdb.program_subs WHERE id=#{id}
+	</delete>
+
+	<delete id="deleteProgram">
+		DELETE from hapumdb.program WHERE id=#{id}
+	</delete>
+	
+	<delete id="deleteProgramAdd">
+		DELETE from hapumdb.program_add WHERE id=#{id}
+	</delete>
+
 </mapper>

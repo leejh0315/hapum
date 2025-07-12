@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>재단체 수정</title>
+	<link rel="stylesheet" th:href="@{/css/admin/header.css}">
+	<link rel="stylesheet" th:href="@{/css/admin/organizationAW.css}">
+	<!-- 별도의 조직 추가 전용 CSS를 사용하거나 아래와 같이 인라인으로 작성 -->
+
+
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+	<!-- 헤더 영역 -->
+	<div th:replace="~{admin/admin-header :: admin-header}"></div>
+
+	<div class="form-container">
+		<h1>재단체 수정</h1>
+		<!-- 재단체 추가 폼: 이름, 소개, 사진 -->
+		<form th:action="@{/admin/organization/update/{orgId}(orgId=${organization.id})}" method="post"
+			enctype="multipart/form-data">
+
+			<div class="form-group">
+				<label for="name">이름</label>
+				<input type="text" id="name" name="name" th:value="${organization.name}" required />
+			</div>
+
+			<div class="form-group">
+				<label for="introduce">소개</label>
+				<textarea id="introduce" name="introduce" required th:text="${organization.introduce}"></textarea>
+			</div>
+
+			<div class="form-group">
+				<label for="profile">사진</label>
+				<input type="file" id="profile" name="photo" accept="image/*" />
+
+				<!-- 기존 이미지 미리보기 -->
+				<div th:if="${organization.profileSrc != null}" style="margin-top: 10px;">
+					<p>기존 이미지:</p>
+					<img th:src="@{${organization.profileSrc}}" alt="기존 이미지"
+						style="max-width: 150px; border-radius: 5px;">
+				</div>
+
+				<!-- 기존 이미지 경로를 hidden으로 넘겨 유지 -->
+				<input type="hidden" name="profileSrc" th:value="${organization.profileSrc}" />
+			</div>
+
+			<!-- openStatus도 유지 -->
+			<input type="hidden" name="openStatus" th:value="${organization.openStatus}" />
+
+			<button type="submit" class="submit-button">수정하기</button>
+		</form>
+	</div>
+
+	<!-- 푸터 영역 -->
+	<script th:src="@{/js/header.js}"></script>
+	<script>
+		$(document).ready(function () {
+			$("#profile").on("change", function (event) {
+				const file = event.target.files[0];
+				const previewArea = $("<div id='new-image-preview' style='margin-top: 10px;'></div>");
+				const existingImage = $("img[alt='기존 이미지']").parent();
+
+				// 기존 이미지 숨기기
+				existingImage.hide();
+
+				// 기존 새 미리보기 제거
+				$("#new-image-preview").remove();
+
+				if (file && file.type.startsWith("image/")) {
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						const img = $("<img>", {
+							src: e.target.result,
+							css: {
+								"max-width": "150px",
+								"border-radius": "5px"
+							}
+						});
+						previewArea.append("<p>선택한 새 이미지:</p>").append(img);
+						$("#profile").closest(".form-group").append(previewArea);
+					};
+					reader.readAsDataURL(file);
+				}
+			});
+		});
+	</script>
+</body>
+
+</html>

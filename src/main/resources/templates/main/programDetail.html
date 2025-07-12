@@ -48,8 +48,12 @@
 			<div class="program-info">
 				<h2 th:text="${program.title}">프로그램 제목</h2>
 				<ul>
-					<li><strong>일시:</strong> <span
-							th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}"></span>
+					<li>
+						<strong>일시:</strong>
+						<span th:if="${program.startDate != null and program.endDate != null}"
+							th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">
+						</span>
+						<span th:if="${program.startDate == null or program.endDate == null}">[상시] - 문의전화 바람</span>
 					</li>
 					<li><strong>장소:</strong> <span th:text="${program.location}"></span></li>
 					<li><strong>대상:</strong> <span th:text="${program.target}"></span></li>
@@ -219,9 +223,9 @@
 				let partCount = parseInt(program.needPartCount); // 문자열 → 숫자 변환
 				console.log(partCount);
 				console.log(program.needPartCount);
-				if(program.needPartCount != "N"){
+				if (program.needPartCount != "N") {
 
-				
+
 					if (isNaN(partCount) || partCount <= 0 || partCount > program.capacity) {
 						alert("참여 인원 수를 다시 입력해주세요.");
 						return;

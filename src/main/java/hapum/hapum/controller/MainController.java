@@ -1,12 +1,9 @@
 package hapum.hapum.controller;
 
 import java.io.File;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -18,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import hapum.hapum.domain.BlockedDay;
 import hapum.hapum.domain.FixedReservation;
@@ -111,6 +106,18 @@ public class MainController {
 		List<Program> programs = programService.selectProgramByAddId(id);
 		List<ProgramAdd> programAdds = programService.selectAllProgramAdd();
 				
+		Optional<ProgramAdd> result = programAdds.stream()
+			    .filter(p -> p.getId() == id)
+			    .findFirst();
+		
+		ProgramAdd pa = new ProgramAdd();; 
+		
+		if (result.isPresent()) {
+		    pa = result.get();
+		    // 사용
+		}
+		
+		model.addAttribute("pa", pa);
 		model.addAttribute("programs", programs);
 		model.addAttribute("programAdds", programAdds);
 		model.addAttribute("activeTab", id);

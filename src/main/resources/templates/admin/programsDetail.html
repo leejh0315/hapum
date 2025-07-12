@@ -90,7 +90,7 @@
 </head>
 
 <body>
-  <div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
+	<div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
 
 
 	<div class="program-detail-container">
@@ -103,9 +103,10 @@
 			<ul>
 				<li>
 					<strong>일시:</strong>
-					<span
-						th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">2025년
-						4월 8일 10:00~13:00</span>
+					<span th:if="${program.startDate != null and program.endDate != null}"
+						th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">
+					</span>
+					<span th:if="${program.startDate == null or program.endDate == null}">[상시] - 문의전화 바람</span>
 				</li>
 				<li><strong>장소:</strong> <span th:text="${program.location}"></span></li>
 				<li><strong>대상:</strong> <span th:text="${program.target}"></span></li>
@@ -137,8 +138,8 @@
 								<span th:text="${sub.user.phone}"></span>)
 							</span>
 							<form th:action="@{/admin/program/cancel}" method="post" style="margin-left: 10px;">
-								  <input type="hidden" th:name="programSubId" th:value="${sub.id}" />
-								  <input type="hidden" name="programId" th:value="${program.id}" />	
+								<input type="hidden" th:name="programSubId" th:value="${sub.id}" />
+								<input type="hidden" name="programId" th:value="${program.id}" />
 								<button type="submit">승인취소</button>
 							</form>
 						</div>
@@ -159,8 +160,8 @@
 								<span th:text="${sub.user.phone}"></span>)
 							</span>
 							<form th:action="@{/admin/program/approve}" method="post" style="margin-left: 10px;">
-								  <input type="hidden" th:name="programSubId" th:value="${sub.id}" />
-								  <input type="hidden" name="programId" th:value="${program.id}" />	
+								<input type="hidden" th:name="programSubId" th:value="${sub.id}" />
+								<input type="hidden" name="programId" th:value="${program.id}" />
 								<button type="submit">승인</button>
 							</form>
 						</div>

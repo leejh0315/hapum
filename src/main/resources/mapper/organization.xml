@@ -9,8 +9,8 @@
 		SELECT * FROM hapumdb.organization where open_status='Y'
 
 	</select>
-	
-		<select id="selectAllOrganizationAdmin"
+
+	<select id="selectAllOrganizationAdmin"
 		resultType="hapum.hapum.domain.Organization">
 		SELECT * FROM hapumdb.organization
 
@@ -18,7 +18,8 @@
 
 	<insert id="insertOrganization"
 		parameterType="hapum.hapum.domain.Organization">
-		INSERT INTO hapumdb.organization(name, introduce, profileSrc, open_status)
+		INSERT INTO hapumdb.organization(name, introduce, profileSrc,
+		open_status)
 		VALUES(#{name}, #{introduce}, #{profileSrc}, 'Y');
 
 	</insert>
@@ -52,12 +53,46 @@
 		SET open_status = #{code}
 		WHERE id=#{orgId}
 	</update>
-	
-	
+
+
 	<delete id="deleteOrganizationPost">
 		DELETE FROM hapumdb.organization_post WHERE id=#{orgPostId}
 	</delete>
-	
 
+
+	<select id="selectOrganizationById">
+		SELECT * FROM hapumdb.organization WHERE id=#{id}
+	</select>
+
+	<update id="updateOrganization">
+		UPDATE hapumdb.organization
+		SET
+		name = #{name},
+		introduce = #{introduce},
+		profileSrc = #{profileSrc},
+		open_status = #{openStatus}
+		WHERE id = #{id}
+	</update>
+
+	<delete id="deletePosts">
+		DELETE FROM hapumdb.organization_post WHERE org_id=#{orgId};
+	</delete>
+
+	<delete id="deleteOrganizationAndPosts">
+		DELETE FROM hapumdb.organization WHERE id=#{orgId};
+	</delete>
+
+	<update id="updateOrganizationPost"
+		parameterType="hapum.hapum.domain.OrganizationPost">
+		UPDATE hapumdb.organization_post
+		SET
+		title = #{title},
+		content = #{content},
+		thumbnailSrc = #{thumbnailSrc},
+		open_status = #{openStatus},
+		updated_at = NOW()
+		WHERE id = #{id}
+
+	</update>
 
 </mapper>

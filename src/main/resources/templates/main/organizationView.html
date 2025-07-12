@@ -7,7 +7,7 @@
 	<title>하품센터-단체소식</title>
 
 	<link rel="stylesheet" th:href="@{/css/header.css}" />
-	<link rel="stylesheet" th:href="@{/css/main/organizationView.css}" />
+	<link rel="stylesheet" th:href="@{/css/main/postDetail.css}">
 	<link rel="stylesheet" th:href="@{/css/footer.css}" />
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
@@ -42,28 +42,49 @@
 
 		<!-- 콘텐츠 -->
 		<div class="content">
-			<div class="post-view">
-				<!-- 제목 -->
-				<h2 class="post-view-title" th:text="${organizationPost.title}">제목</h2>
 
-				<!-- 작성일 -->
-				<p class="post-view-date"
-					th:text="${#temporals.format(organizationPost.createdAt, 'yyyy-MM-dd HH:mm')}">
-					2025-06-15 14:30
-				</p>
+			<!-- 제목 -->
 
-				<!-- 썸네일 -->
-				<img class="post-view-thumb" th:if="${organizationPost.thumbnailSrc != null}"
-					th:src="@{${organizationPost.thumbnailSrc}}" alt="썸네일" />
+			<div class="post-title" th:text="${organizationPost.title}">제목</div>
+			<!-- 작성일 -->
 
-				<!-- 본문 (HTML 렌더링) -->
-				<div class="post-view-body" th:utext="${organizationPost.content}">
-					소식 본문 내용...
-				</div>
-
-				<!-- 목록으로 돌아가기 -->
-
+			<div class="post-meta" style="margin:8px 0; color:#666; font-size:14px;">
+				<span>작성일: <span
+						th:text="${#temporals.format(organizationPost.createdAt, 'yyyy-MM-dd HH:mm')}"></span></span>
+				<span th:if="${organizationPost.updatedAt != null}" style="margin-left:10px;">
+					수정일: <span th:text="${#temporals.format(organizationPost.updatedAt, 'yyyy-MM-dd HH:mm')}"></span>
+				</span>
 			</div>
+
+
+			<div th:if="${user != null and user.email == 'admin'}" style="margin-top: 10px; text-align: right;">
+				<form th:action="@{/admin/org/delete/{id}(id=${organizationPost.id})}" method="post"
+					onsubmit="return confirm('이 게시글을 삭제하시겠습니까??');">
+					<input type="hidden" name="code" th:value=${organizationPost.openStatus} />
+					<button type="submit"
+						style="background-color: orange; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+						게시글 삭제
+					</button>
+				</form>
+				<a th:href="@{/admin/org/updateOrgPost/{id}(id=${organizationPost.id})}" class="icon-button" title="수정"
+					style="margin-top: 10px;">
+					<button
+						style="background-color: orange; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">수정하기</button>
+				</a>
+			</div>
+			<hr>
+
+
+			<!-- 썸네일 -->
+
+
+			<!-- 본문 (HTML 렌더링) -->
+			<div class="post-view-body" th:utext="${organizationPost.content}">
+				소식 본문 내용...
+			</div>
+
+			<!-- 목록으로 돌아가기 -->
+
 		</div>
 	</div>
 

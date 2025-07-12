@@ -5,7 +5,7 @@
 
 	<!-- 1) insertNews -->
 	<insert id="insertNews" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO hapumdb.news (title, content, thumbnailSrc, open_status) 
+		INSERT INTO hapumdb.news (title, content, thumbnailSrc, open_status)
 		VALUES (#{title}, #{content}, #{thumbnailSrc}, 'Y')
 	</insert>
 
@@ -27,8 +27,19 @@
 	</select>
 
 
-	<update id="updateNews">
-		UPDATE hapumdb.news SET open_status=#{code} WHERE id=#{newsId}
+	<delete id="deleteNews">
+		DELETE FROM hapumdb.news WHERE id=#{newsId}
+	</delete>
+
+	<update id="updateNewsDetail" parameterType="hapum.hapum.domain.News">
+		UPDATE hapumdb.news
+		SET
+		title = #{title},
+		content = #{content},
+		thumbnailSrc = #{thumbnailSrc},
+		update_on = NOW(),
+		open_status = #{openStatus}
+		WHERE id = #{id}
 	</update>
 
 

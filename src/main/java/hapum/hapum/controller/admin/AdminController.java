@@ -178,6 +178,27 @@ public class AdminController {
 		model.addAttribute("organizations", organizations);
 		return "admin/organization";
 	}
+	
+	@GetMapping("/organization/update/{orgId}")
+	public String getUpdateOrganization(@PathVariable("orgId")Long orgId, Model model) {
+		Organization organization = organizationService.selectOrganizationById(orgId);
+		model.addAttribute("organization", organization);
+		return "admin/updateOrganization";
+	}	
+	@PostMapping("/organization/update/{orgId}")
+	public String updateOrganization(@PathVariable("orgId") Long orgId,
+	                                 Organization organization,
+	                                 @RequestParam("photo") MultipartFile photo) throws IOException {
+	    organization.setId(orgId); // ID 수동 세팅
+	    organizationService.updateOrganization(organization, photo);
+	    return "redirect:/admin/organization";
+	}
+	@PostMapping("organization/delete/{orgId}")
+	public String deleteOrganization(@PathVariable("orgId")Long orgId) {
+		organizationService.deleteOrganizationAndPosts(orgId);
+		return "redirect:/admin/organization";
+	}
+	
 
 	@GetMapping("/organization/add")
 	public String getOrganizationAdd(Model model) {
@@ -203,7 +224,7 @@ public class AdminController {
 		String updatedContent = newsService.moveTempImagesToPosts(organizationPost.getContent(), "organizationPost");
 		organizationPost.setContent(updatedContent);
 		organizationService.insertOrganizationWrite(organizationPost, photo);
-		return "admin/main";
+		return "redirect:/admin/organization";
 	}
 
 	@PostMapping("/organization/updateCode/{orgId}")
@@ -222,6 +243,33 @@ public class AdminController {
 		organizationService.deleteOrganizationPost(orgPostId);
 		return "redirect:/admin/organization";
 	}
+	
+	@GetMapping("/org/updateOrgPost/{id}")
+	public String getUpdateOrgPost(@PathVariable("id")Long id ,Model model) {
+		OrganizationPost op = organizationService.selectOrgPostById(id);
+		model.addAttribute("op", op);
+		return "admin/updateOrgPost";
+	}
+	
+	@PostMapping("/org/updateOrgPost/{id}")
+	public String updateOrgPost(
+	        @PathVariable("id") Long id,
+	        OrganizationPost op,
+	        @RequestParam("photo") MultipartFile photo
+	        ) throws IOException {
+
+	    op.setOrgId(id);
+	    organizationService.updateOrganizationPost(op, photo);
+	    
+	    return "redirect:/main/organization";
+	}
+	@PostMapping("/org/delete/{id}")
+	public String deleteOrgPost(@PathVariable("id") Long id) {
+		organizationService.deleteOrganizationPost(id);
+		return "redirect:/main/organization"; 
+	}
+	
+	
 
 	@GetMapping("/updateHistory")
 	public String getUpdateHistory() {
@@ -242,19 +290,28 @@ public class AdminController {
 		return "redirect:/admin/main";
 	}
 
-	@PostMapping("/news/update/{newsId}")
-	public String updateNews(@PathVariable("newsId") Long newsId, @RequestParam("code") String code) {
-		if (code.equals("Y")) {
-			code = "N";
-		} else {
-			code = "Y";
-		}
-		newsService.updateNews(newsId, code);
-
-		System.out.println("*********************");
-
+	@PostMapping("/news/delete/{newsId}")
+	public String deleteNews(@PathVariable("newsId") Long newsId, @RequestParam("code") String code) {
+		newsService.deleteNews(newsId, code);
 		return "redirect:/main/news";
 	}
+	
+	@GetMapping("/news/updateNews/{id}")
+	public String updateNewsDetail(@PathVariable("id")Long id, Model model) {
+		News news = newsService.selectById(id);
+		model.addAttribute("news",news);
+		return "admin/updateNewsDetail";
+	}
+	
+	@PostMapping("/news/updateNewsDetail/{id}")
+	public String postUpdateNewsDetail(@PathVariable("id")Long id,News news, @RequestParam("photo") MultipartFile photo) {
+		System.out.println(news);
+		news.setId(id);
+		newsService.updateNewsDetail(news, photo);
+		
+		return "redirect:/main/news/detail/"+id;
+	}
+	
 
 	@GetMapping("/currentRental")
 	public String getCurrentRental(Model model) {
@@ -303,5 +360,9 @@ public class AdminController {
 		userAuthService.deleteUserById(id); // 회원 삭제 처리
 		return "redirect:/admin/allUser";
 	}
+	
+	
+	
+	
 
 }

@@ -10,6 +10,31 @@
 	<link rel="stylesheet" th:href="@{/css/main/program.css}">
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
+		.program-intro {
+			display: flex;
+			align-items: flex-start;
+			/* 이미지와 텍스트 상단 정렬 */
+			gap: 20px;
+			/* 이미지와 텍스트 사이 간격 */
+			margin-bottom: 3%;
+		}
+
+		.pi-img {
+			width: 150px;
+			height: 150px;
+			object-fit: cover;
+			
+		}
+
+		.program-intro {
+			display: flex;
+			align-items: center;
+			/* 이미지 높이 기준으로 텍스트 세로 중앙 정렬 */
+			gap: 20px;
+		}
+		.program-list{
+			margin-top: 3%;
+		}
 	</style>
 </head>
 
@@ -29,9 +54,17 @@
 
 		<!-- 오른쪽 콘텐츠 영역 -->
 		<div class="content">
+
+			<div class="program-intro">
+				<img class="pi-img" th:src="@{${pa.thumbnailSrc}}">
+				<div th:utext="${pa.content}"></div>
+
+			</div>
+			<hr>
+
 			<div class="program-list">
-				<a th:each="program : ${programs}" th:href="@{/main/program/detail/{id}(id=${program.id})}"
-					class="program-card">
+				<a th:each="program : ${programs}" th:if="${program.openStatus == 'Y'}"
+					th:href="@{/main/program/detail/{id}(id=${program.id})}" class="program-card">
 					<img th:src="@{${program.thumbnailSrc}}" alt="썸네일 이미지" />
 					<div class="program-title" th:text="${program.title}"></div>
 				</a>

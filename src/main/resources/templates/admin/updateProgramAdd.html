@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>프로그램 추가</title>
+	<title>프로그램 카테고리 수정</title>
 	<link rel="stylesheet" th:href="@{/css/admin/header.css}">
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
 
@@ -89,24 +89,36 @@
 	<div class="form-container">
 		<h1>프로그램 추가</h1>
 		<!-- 재단체 추가 폼: 이름, 소개, 사진 -->
-		<form action="/admin/program/add" method="post" enctype="multipart/form-data">
-
+		<form th:action="@{/admin/programAdd/update/{id}(id=${programAdd.id})}" method="post"
+			enctype="multipart/form-data">
 			<div class="form-group">
 				<label for="name">이름</label>
-				<input type="text" id="name" name="name" placeholder="프로그램 이름을 입력하세요" required />
+				<input type="text" id="name" name="name" th:value="${programAdd.name}" required />
 			</div>
 
 			<div class="form-group">
 				<label for="profile">사진</label>
-				<input type="file" id="profile" name="photo" accept="image/*" required />
+				<input type="file" id="profile" name="photo" accept="image/*" />
+				<div id="new-image-preview" style="margin-top: 10px;"></div>
+				<!-- 기존 이미지 미리보기 -->
+				<div th:if="${programAdd.thumbnailSrc != null}" id="existing-image-container">
+					<p>기존 이미지:</p>
+					<img th:src="@{${programAdd.thumbnailSrc}}" alt="썸네일" style="max-width: 200px; border-radius: 5px;">
+				</div>
 			</div>
 
 			<div class="form-group">
 				<label for="summernote">내용</label>
-				<textarea id="summernote" name="content" placeholder="소식 내용을 입력하세요" required>
-   				 </textarea>
+				<textarea id="summernote" name="content" required th:text="${programAdd.content}"></textarea>
 			</div>
-			<button type="submit" class="submit-button">추가하기</button>
+
+			<!-- openStatus는 상태 변경 버튼이 따로 있는 경우 생략 가능 -->
+			<!-- <input type="hidden" name="openStatus" th:value="${programAdd.openStatus}" /> -->
+
+			<button type="submit" class="submit-button">수정하기</button>
+			
+			<input type="hidden" name="openStatus" th:value="${programAdd.openStatus}" />
+			<input type="hidden" name="thumbnailSrc" th:value="${programAdd.thumbnailSrc}" />
 		</form>
 	</div>
 
@@ -131,7 +143,7 @@
 					['fontname', ['fontname']],
 					['height', ['height']],
 					// 삽입(insert) — video만 뺌!
-					['insert', ['link',  'table', 'hr']],
+					['insert', ['link', 'table', 'hr']],
 					// 보기(view)
 					['view', ['fullscreen', 'codeview', 'help']]
 				],
@@ -140,11 +152,37 @@
 				}
 			});
 
+			$("#profile").on("change", function (event) {
+				const file = event.target.files[0];
+				const previewContainer = $("#new-image-preview");
+				const existingImageContainer = $("#existing-image-container");
 
+				previewContainer.empty(); // 기존 새 이미지 미리보기 초기화
+
+				// 기존 이미지 숨기기
+				if (existingImageContainer.length > 0) {
+					existingImageContainer.hide(); // 또는 existingImageContainer.remove();
+				}
+
+				if (file && file.type.startsWith("image/")) {
+					const reader = new FileReader();
+					reader.onload = function (e) {
+						const img = $("<img>", {
+							src: e.target.result,
+							css: {
+								"max-width": "200px",
+								"border-radius": "5px"
+							}
+						});
+						previewContainer.append("<p>선택한 새 이미지:</p>").append(img);
+					};
+					reader.readAsDataURL(file);
+				}
+			});
 		});
 
 		// 이미지 업로드 함수
-	
+
 	</script>
 </body>
 

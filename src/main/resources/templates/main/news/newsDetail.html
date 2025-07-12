@@ -42,7 +42,7 @@
 				</span>
 			</div>
 			<div th:if="${user != null and user.email == 'admin'}" style="margin-top: 10px; text-align: right;">
-				<form th:action="@{/admin/news/update/{id}(id=${news.id})}" method="post"
+				<form th:action="@{/admin/news/delete/{id}(id=${news.id})}" method="post"
 					onsubmit="return confirm('이 게시글을 삭제하시겠습니까??');">
 					<input type="hidden" name="code" th:value=${news.openStatus} />
 					<button type="submit"
@@ -50,6 +50,9 @@
 						게시글 삭제
 					</button>
 				</form>
+				<a th:href="@{/admin/news/updateNews/{id}(id=${news.id})}" class="icon-button" title="수정" style="margin-top: 10px;">
+					<button style="background-color: orange; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">수정하기</button>
+				</a>
 			</div>
 			<br>
 			<hr>

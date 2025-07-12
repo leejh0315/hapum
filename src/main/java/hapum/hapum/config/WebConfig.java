@@ -4,14 +4,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.spring6.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 
-import hapum.hapum.interceptor.AdminInterceptor;
 import hapum.hapum.interceptor.UserInterceptor;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
 
-    private final AdminInterceptor adminInterceptor;
+//    private final AdminInterceptor adminInterceptor;
     private final UserInterceptor userInterceptor;
 
     @Value("${file.upload-dir}")
@@ -69,6 +67,8 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/uploads/temp/**")
                 .addResourceLocations("file:///" + uploadDir + "/temp/");
 
+        
+        
         registry.addResourceHandler("/uploads/news/**")
                 .addResourceLocations("file:///" + uploadDir + "/news/");
         
@@ -92,12 +92,12 @@ public class WebConfig implements WebMvcConfigurer {
                 );
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(adminInterceptor)
-                .addPathPatterns("/admin/**");
-
-        registry.addInterceptor(userInterceptor)
-                .addPathPatterns("/main/mypage/**");
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(adminInterceptor)
+//                .addPathPatterns("/admin/**");
+//
+//        registry.addInterceptor(userInterceptor)
+//                .addPathPatterns("/main/mypage/**");
+//    }
 }

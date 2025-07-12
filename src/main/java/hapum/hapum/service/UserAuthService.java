@@ -129,6 +129,7 @@ public class UserAuthService {
     }
     
     public void deleteUserById(Long userId) {
+    	//////////////////회원삭제 추가
     	userMapper.deleteUserById(userId);
     }
     
