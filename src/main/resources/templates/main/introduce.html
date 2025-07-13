@@ -5,38 +5,25 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>하품센터-센터 소개</title>
-	<link rel="stylesheet" th:href="@{/css/header.css}">
+
+
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
+	<link rel="stylesheet" th:href="@{/css/main/introduce.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/introduce.css}" media="only screen and (max-width: 768px)">
+
+
+
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
-	<link rel="stylesheet" th:href="@{/css/main/introduce.css}">
 	<link rel="stylesheet" th:href="@{/css/main/timeline.css}">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
 	<style>
-		html,
-		body {
-			margin: 0;
-			padding: 0;
-			height: 100%;
-		}
 
-		body {
-			display: flex;
-			flex-direction: column;
-			min-height: 100vh;
-			/* 뷰포트 전체 높이 이상 확보 */
-		}
-
-		.container {
-			flex: 1;
-			/* 본문 영역(사이드+메인)이 빈 공간을 전부 차지 */
-			display: flex;
-			height: 3300px;
-		}
-
-		.main-content {
-			flex: 1;
-		}
 	</style>
 </head>
 
@@ -46,11 +33,13 @@
 	<div class="container">
 		<!-- 사이드 메뉴 -->
 		<div class="sidebar">
+
 			<button class="sidebar-title">센터소개</button>
-			
-			<button class="menu-button active" onclick="changeContent('인사말')">인사말</button>
-			<button class="menu-button" onclick="changeContent('주요연혁')">주요연혁</button>
-			<button class="menu-button" onclick="changeContent('오시는길')">오시는길</button>
+			<div class="menu-group">
+				<button class="menu-button active" onclick="changeContent('인사말')">인사말</button>
+				<button class="menu-button" onclick="changeContent('주요연혁')">주요연혁</button>
+				<button class="menu-button" onclick="changeContent('오시는길')">오시는길</button>
+			</div>
 		</div>
 
 		<!-- 메인 콘텐츠 -->

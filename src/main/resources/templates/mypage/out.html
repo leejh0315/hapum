@@ -7,10 +7,16 @@
 	<title>내 정보 수정</title>
 
 	<!-- 공통 헤더 스타일 -->
-	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
 	<!-- 기타 관리자/뉴스 관련 스타일 -->
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
-	<link rel="stylesheet" th:href="@{/css/mypage/update.css}">
+	
+	 <link rel="stylesheet" th:href="@{/css/mypage/update.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/update.css}" media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
@@ -20,24 +26,25 @@
 
 	<div class="container">
 		<div class="sidebar">
-			<div class="sidebar-title">
-				<a th:href="@{/main/mypage/{id}(id=${user.id})}">
+			<a th:href="@{/main/mypage/{id}(id=${user.id})}">
+				<div class="sidebar-title">
 					마이페이지
+				</div>
+			</a>
+			<div class="menu-group">
+				<a th:href="@{/main/mypage/update/{id}(id=${user.id})}" class="menu-button"
+					th:classappend="${activeTab=='update'} ? ' active' : ''">
+					내 정보 수정
+				</a>
+				<a th:href="@{/main/mypage/rental/{id}(id=${user.id})}" class="menu-button"
+					th:classappend="${activeTab=='rental'} ? ' active' : ''">
+					신청한 대관 예약
+				</a>
+				<a th:href="@{/main/mypage/program/{id}(id=${user.id})}" class="menu-button"
+					th:classappend="${activeTab=='program'} ? ' active' : ''">
+					신청한 프로그램
 				</a>
 			</div>
-
-			<a th:href="@{/main/mypage/update/{id}(id=${user.id})}" class="menu-button"
-				th:classappend="${activeTab=='update'} ? ' active' : ''">
-				내 정보 수정
-			</a>
-			<a th:href="@{/main/mypage/rental/{id}(id=${user.id})}" class="menu-button"
-				th:classappend="${activeTab=='rental'} ? ' active' : ''">
-				신청한 대관 예약
-			</a>
-			<a th:href="@{/main/mypage/program/{id}(id=${user.id})}" class="menu-button"
-				th:classappend="${activeTab=='program'} ? ' active' : ''">
-				신청한 프로그램
-			</a>
 		</div>
 		<div class="content">
 			<div>

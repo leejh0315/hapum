@@ -1,0 +1,101 @@
+@media screen and (max-width: 768px) {
+	.container {
+		flex-direction: column;
+		height: 100vh;
+	}
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		height: 100%;
+	}
+
+	.sidebar {
+		display: flex;
+		flex-direction: column;
+		background-color: #D6CCC2;
+
+	}
+
+	/* 1행: 제목 */
+	.sidebar-title {
+		width: 100%;
+		/* 전체 행 차지 */
+		text-align: center;
+		background-color: #D6CCC2;
+		color: white;
+		font-size: 14px;
+		font-weight: bold;
+		cursor: default;
+		padding: 10px 0;
+		border: none;
+	}
+
+	/* 2행: 버튼 4개 정렬 */
+	.menu-group {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		/* 4개로 나눔 */
+		width: 100%;
+	}
+
+	.menu-button {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 10px 0;
+		font-size: 14px;
+		background-color: #F5EBE0;
+		border: none;
+		color: #333;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+		text-align: center;
+		border: 1px solid #D6CCC2;
+	}
+
+
+	.main-content {
+		flex-direction: column;
+		width: 100%;
+		font-size: small;
+	}
+
+	.content-placeholder {
+		font-size: 22px;
+		text-align: center;
+	}
+
+
+
+	/*#EDEDE9*/
+	/*#D6CCC2*/
+	/*#F5EBE0*/
+	/*#E3D5CA*/
+	/*#D5BDAF*/
+
+	.main-content {
+		width: 90%;
+		padding: 5%;
+		overflow-wrap: break-word;
+		word-break: break-word;
+		white-space: normal;
+		flex: 1;
+	}
+
+	.container {
+		flex: 1;
+		/* 본문 영역(사이드+메인)이 빈 공간을 전부 차지 */
+		display: flex;
+		height: 5000px;
+	}
+
+	.menu-button.active {
+		background-color: #D5BDAF;
+		/* 활성화 버튼 배경 */
+		color: white;
+		font-weight: bold;
+	}
+
+}

@@ -21,6 +21,12 @@
 	width: 100%;
 	box-sizing: border-box;
 }
+.admin-controls {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 1vh;
+}
 
 #notification-list {
 	position: relative;
@@ -30,12 +36,6 @@
 	height: 50vh;
 }
 
-.admin-controls {
-	position: absolute;
-	top: 0;
-	right: 0;
-	margin: 1vh;
-}
 
 #notification-list table {
 	width: 80%;
@@ -73,7 +73,12 @@
 .left-section {
 	flex: 0 0 25vw;
 }
-
+.datetime-full {
+	display: inline;
+}
+.datetime-dateonly {
+	display: none;
+}
 #slideshow-wrapper {
 	flex: 0 0 25vw;
 	width: 25vw;
@@ -198,4 +203,8 @@
 }
 .gallery-item:last-child {
   margin-right: 0;
+}
+
+.mobile-box{
+	display: none;
 }

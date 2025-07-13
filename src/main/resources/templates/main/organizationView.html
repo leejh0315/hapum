@@ -6,19 +6,19 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>하품센터-단체소식</title>
 
-	<link rel="stylesheet" th:href="@{/css/header.css}" />
-	<link rel="stylesheet" th:href="@{/css/main/postDetail.css}">
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
+
+	<link rel="stylesheet" th:href="@{/css/main/postDetail.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/organizationView.css}"
+		media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
 	<link rel="stylesheet" th:href="@{/css/footer.css}" />
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
-		.post-content {
-			overflow: auto;
-		}
 
-		.content {
-			width: 80%;
-			max-width: 100vw;
-		}
 	</style>
 </head>
 
@@ -29,21 +29,24 @@
 	<div class="container">
 		<!-- 사이드바 -->
 		<div class="sidebar">
+				<div class="sidebar-header">
 			<div class="sidebar-title" onclick="location.href='/main/organization'">단체소식</div>
 			<button class="menu-button back" onclick="history.back();">
 				목록으로 돌아가기
 			</button>
-			<button th:each="org : ${organizationList}" class="menu-button"
-				th:classappend="${org.id == id} ? ' active' : ''" th:text="${org.name}"
-				th:onclick="'location.href=\'/main/organization/'+${org.id}+'\''">
-			</button>
+			</div>
+			<div class="menu-group">
+				<button th:each="org : ${organizationList}" class="menu-button"
+					th:classappend="${org.id == id} ? ' active' : ''" th:text="${org.name}"
+					th:onclick="'location.href=\'/main/organization/'+${org.id}+'\''">
+				</button>
+			</div>
 
 		</div>
 
 		<!-- 콘텐츠 -->
 		<div class="content">
 
-			<!-- 제목 -->
 
 			<div class="post-title" th:text="${organizationPost.title}">제목</div>
 			<!-- 작성일 -->

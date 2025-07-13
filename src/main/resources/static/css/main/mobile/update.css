@@ -1,0 +1,222 @@
+@media screen and (max-width: 768px) {
+	.container {
+		flex-direction: column;
+		height: 100vh;
+	}
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		height: 100%;
+	}
+
+	.sidebar {
+		display: flex;
+		flex-direction: column;
+		background-color: #D6CCC2;
+
+	}
+
+	/* 1행: 제목 */
+	.sidebar-title {
+		width: 100%;
+		/* 전체 행 차지 */
+		text-align: center;
+		background-color: #D6CCC2;
+		color: white;
+		font-size: 14px;
+		font-weight: bold;
+		cursor: default;
+		padding: 10px 0;
+		border: none;
+	}
+
+	/* 2행: 버튼 4개 정렬 */
+	.menu-group {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		/* 4개로 나눔 */
+		width: 100%;
+	}
+
+	.menu-button {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 10px 0;
+		font-size: 14px;
+		background-color: #F5EBE0;
+		border: none;
+		color: #333;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+		text-align: center;
+		border: 1px solid #D6CCC2;
+	}
+
+
+	.main-content {
+		flex-direction: column;
+		width: 100%;
+		font-size: small;
+	}
+
+	.content-placeholder {
+		font-size: 22px;
+		text-align: center;
+	}
+
+
+
+	/*#EDEDE9*/
+	/*#D6CCC2*/
+	/*#F5EBE0*/
+	/*#E3D5CA*/
+	/*#D5BDAF*/
+
+	.content {
+		width: 90%;
+		padding: 5%;
+		overflow-wrap: break-word;
+		word-break: break-word;
+		white-space: normal;
+		flex: 1;
+		
+		/* 사이드바 옆에서 남은 공간 모두 차지 */
+		/* 내부 여백 */
+		border-radius: 8px;
+		/* 모서리 둥글게 */
+		box-sizing: border-box;
+		display: flex;
+		flex-direction: column;
+		gap: 20px;
+		/* 폼과 링크 사이 간격 */
+		
+		/* 내용이 길어지면 스크롤 */
+	}
+
+	.container {
+		flex: 1;
+		/* 본문 영역(사이드+메인)이 빈 공간을 전부 차지 */
+		display: flex;
+		height: 5000px;
+	}
+
+	.menu-button.active {
+		background-color: #D5BDAF;
+		/* 활성화 버튼 배경 */
+		color: white;
+		font-weight: bold;
+	}
+
+
+	/* --------------------------------------------------------------------------------------------------
+   2. 폼 전체 스타일
+   -------------------------------------------------------------------------------------------------- */
+	.content form {
+		/* 너무 넓어지지 않게 제한 */
+		display: flex;
+		flex-direction: column;
+		gap: 15px;
+		/* 각 입력 그룹 간격 */
+	}
+
+	/* 각 입력 블록 */
+	.content form>div {
+		display: flex;
+		flex-direction: column;
+		gap: 5px;
+	}
+
+	/* 라벨 스타일 */
+	.content form label {
+		font-size: 1rem;
+		font-weight: 600;
+		color: #333;
+	}
+
+	/* 인풋 필드 스타일 */
+	.content form input {
+		padding: 10px;
+		font-size: 1rem;
+		border: 1px solid #D5BDAF;
+		border-radius: 4px;
+		box-sizing: border-box;
+		width: 300px;
+	}
+
+	.content form input:focus {
+		outline: none;
+		border-color: #A99A8E;
+	}
+
+	form>.bottom {
+		display: flex;
+		flex-direction: row;
+	}
+
+	/* --------------------------------------------------------------------------------------------------
+   3. 버튼 스타일
+   -------------------------------------------------------------------------------------------------- */
+	.content form button {
+		align-self: flex-start;
+		/* 왼쪽 정렬 */
+		padding: 10px 20px;
+		background-color: #D6CCC2;
+		color: #fff;
+		border: none;
+		border-radius: 4px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background-color .2s;
+	}
+
+	.content form button:hover {
+		background-color: #E3D5CA;
+	}
+
+	/* --------------------------------------------------------------------------------------------------
+   4. 하단 링크 (비밀번호 수정) 스타일
+   -------------------------------------------------------------------------------------------------- */
+	.content>a {
+		display: block;
+		text-align: center;
+		margin-top: 10px;
+	}
+
+	.content>a h6 {
+		font-size: 0.9rem;
+		color: #333;
+		text-decoration: underline;
+		cursor: pointer;
+	}
+
+
+	.bottom>button {
+		align-self: flex-start;
+		/* 왼쪽 정렬 */
+		padding: 10px 20px;
+		background-color: #D6CCC2;
+		color: #fff;
+		border: none;
+		border-radius: 4px;
+		font-weight: 600;
+		cursor: pointer;
+		transition: background-color .2s;
+	}
+
+	.bottom {
+		width: 300px;
+		display: flex;
+		justify-content: space-between;
+	}
+
+
+	.error {
+		color: #D5BDAF;
+	}
+
+
+
+}

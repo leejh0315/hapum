@@ -24,7 +24,21 @@ body {
   display: flex;
   flex-direction: column;
 }
+ .sidebar-title {
+    	padding: 12px;
+    	text-align: center;
+    	background-color: #F5EBE0;
+    	color: black;
+    	font-size: 18px;
+    	font-weight: bold;
+    	cursor: default;
 
+    	/* 아래 두 줄 추가 또는 수정 */
+    	border: none;
+    	/* 모든 테두리 제거 */
+    	margin-bottom: 5px;
+    	/* 필요할 경우 아래만 살짝 */
+    }
 /* 각 층(section) 내부를 세로 정렬 */
 .floor-section {
   display: flex;

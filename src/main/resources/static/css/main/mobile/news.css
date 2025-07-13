@@ -1,0 +1,123 @@
+@media screen and (max-width: 768px) {
+	.container {
+		flex-direction: column;
+		height: 100vh;
+	}
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		height: 100%;
+	}
+
+	.sidebar {
+		display: flex;
+		flex-direction: column;
+		background-color: #D6CCC2;
+
+	}
+
+	/* 1행: 제목 */
+	.sidebar-title {
+		width: 100%;
+		/* 전체 행 차지 */
+		text-align: center;
+		background-color: #D6CCC2;
+		color: white;
+		font-size: 14px;
+		font-weight: bold;
+		cursor: default;
+		padding: 10px 0;
+		border: none;
+	}
+
+	.news-grid {
+    	display: grid;
+    	grid-template-columns: repeat(2, 1fr);
+		row-gap: 50px;    	
+    	margin-top: 3%;
+    }
+    
+    .news-card {
+    width: 150px;
+    height: 150px;
+    max-width: 300px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    text-align: center;
+	margin-top:5%;
+    }
+
+    /* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */
+    .news-card img {
+	   width: 140px;
+    height: 140px;
+    border-radius: 4px;
+    margin-bottom: 0.5rem;
+    }
+
+
+	/*#EDEDE9*/
+	/*#D6CCC2*/
+	/*#F5EBE0*/
+	/*#E3D5CA*/
+	/*#D5BDAF*/
+
+	.main-content {
+		width: 90%;
+		padding: 5%;
+		overflow-wrap: break-word;
+		word-break: break-word;
+		white-space: normal;
+		flex: 1;
+	}
+
+	.container {
+		flex: 1;
+		/* 본문 영역(사이드+메인)이 빈 공간을 전부 차지 */
+		display: flex;
+		height: 5000px;
+	}
+
+    .news-title {
+    	font-size: 16px;
+    	font-weight: bold;
+    	margin-bottom: 5px;
+    }
+    
+    .pagination {
+    	list-style: none;
+    	display: flex;
+    	justify-content: center;
+    	padding: 0;
+    	margin-top: 70px;
+    }
+
+    .pagination li {
+		font-size: smaller;
+    }
+
+    .pagination li a {
+    	display: block;
+    	padding: 8px 12px;
+    	background: #F5EBE0;
+    	/* 기본 버튼 색상으로 통일 */
+    	color: #333;
+    	text-decoration: none;
+    	border: 1px solid #D5BDAF;
+    }
+
+    .pagination li.active a {
+    	background: #D5BDAF;
+    	/* 활성화된 페이지 */
+    	color: #fff;
+    	border-color: #D5BDAF;
+    }
+
+    .pagination li.disabled a {
+    	color: #ccc;
+    	pointer-events: none;
+    }
+}

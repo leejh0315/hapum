@@ -5,8 +5,14 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>하품센터-단체소식</title>
-	<link rel="stylesheet" th:href="@{/css/header.css}" />
-	<link rel="stylesheet" th:href="@{/css/main/organizationDetail.css}" />
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
+	<link rel="stylesheet" th:href="@{/css/main/organizationDetail.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/organizationDetail.css}"
+		media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
 	<link rel="stylesheet" th:href="@{/css/footer.css}" />
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
@@ -17,25 +23,26 @@
 		<!-- SIDEBAR -->
 		<div class="sidebar">
 			<div class="sidebar-title" onclick="location.href='/main/organization'">단체소식</div>
-			<button th:each="org : ${organizationList}" class="menu-button"
-				th:classappend="${org.id == id} ? ' active' : ''" th:text="${org.name}"
-				th:onclick="'location.href=\'/main/organization/'+${org.id}+'\''">
-			</button>
+			<div class="menu-group">
+				<button th:each="org : ${organizationList}" class="menu-button"
+					th:classappend="${org.id == id} ? ' active' : ''" th:text="${org.name}"
+					th:onclick="'location.href=\'/main/organization/'+${org.id}+'\''">
+				</button>
+			</div>
 		</div>
 
 		<!-- CONTENT -->
 		<div class="content">
-			
+
 			<div th:if="${#lists.isEmpty(organizationPost)}">
 				게시글이 없습니다.
 			</div>
-			
+
 			<div th:if="${!#lists.isEmpty(organizationPost)}" class="post-list">
 				<div th:each="post : ${organizationPost}" class="post-card">
-					<a th:href="@{/main/organization/{orgId}/post/{pid}(pid=${post.id},orgId=${id})}">
+					<a th:href="@{/main/organization/{orgId}/post/{pid}(pid=${post.id},orgId=${id})}" >
 						<img th:src="@{${post.thumbnailSrc}}" alt="썸네일" class="post-thumb" />
 						<div class="post-title" th:text="${post.title}">제목</div>
-						<div class="post-createOn"  th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">날짜</div>
 					</a>
 				</div>
 			</div>

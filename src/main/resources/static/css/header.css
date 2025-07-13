@@ -139,3 +139,14 @@ hr {
     border: none;
     border-top: 1px solid #FFCC97;
 }
+
+
+.mobile-menu{
+	display: none;
+}
+.sidebar-backdrop{
+	display: none;
+}
+.right-side-overlay{
+	display: none;
+	}

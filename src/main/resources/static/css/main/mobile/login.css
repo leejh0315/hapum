@@ -1,0 +1,115 @@
+@media screen and (max-width: 768px) {
+	.container {
+		flex-direction: column;
+		height: 100vh;
+	}
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		height: 100%;
+	}
+
+
+	body {
+		font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+	}
+
+	.container {
+		height: 90vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.content {
+		
+		text-align: center;
+		width: 90%;
+		padding: 5%;
+		max-width: 400px;
+	}
+
+	.content h1 {
+		margin-bottom: 30px;
+		color: #5C4033;
+	}
+
+	form label {
+		display: block;
+		margin-bottom: 15px;
+		text-align: left;
+		font-weight: bold;
+		color: #5C4033;
+	}
+
+	form input[type="text"],
+	form input[type="password"] {
+		display: block;
+		/* block 요소로 변경 */
+		width: 90%;
+		padding: 10px 14px;
+		border: 1px solid #D6CCC2;
+		border-radius: 6px;
+		background-color: #EDEDE9;
+		transition: border-color 0.3s;
+		margin-top: 6px;
+	}
+
+	form input:focus {
+		border-color: #D5BDAF;
+		outline: none;
+	}
+
+	#loginId,
+	#password {
+		margin-left: 0;
+		/* 혹은 제거 */
+	}
+
+	.login-button {
+		width: 100%;
+		padding: 12px;
+		margin-top: 20px;
+		background-color: #D5BDAF;
+		color: white;
+		font-size: 16px;
+		font-weight: bold;
+		border: none;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background-color 0.3s ease, transform 0.2s ease;
+	}
+
+	.login-button:hover {
+		background-color: #E3D5CA;
+		transform: translateY(-2px);
+	}
+
+	#findPw {
+		display: inline-block;
+	}
+
+	#goSignin {
+		display: inline-block;
+	}
+
+	.move {
+		margin-top: 15px;
+		color: #5C4033;
+		cursor: pointer;
+		font-size: 14px;
+		transition: color 0.3s;
+		display: flex;
+		justify-content: center;
+		/* 가운데 정렬 */
+		gap: 50px;
+	}
+
+	#findPw:hover {
+		color: #A47148;
+	}
+
+}

@@ -5,8 +5,16 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>하품센터-회원가입</title>
-	<link rel="stylesheet" th:href="@{/css/header.css}">
-	<link rel="stylesheet" th:href="@{/css/main/auth/signin.css}">
+	
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
+
+<link rel="stylesheet" th:href="@{/css/main/auth/signin.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/signin.css}" media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>

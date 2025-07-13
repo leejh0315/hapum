@@ -1,16 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>공지사항</title>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
-  <link rel="stylesheet" th:href="@{/css/header.css}"/>
-  <link rel="stylesheet" th:href="@{/css/main/organizationView.css}"/>
-  <link rel="stylesheet" th:href="@{/css/footer.css}"/>
-  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-  <style>
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>공지사항</title>
+
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
+	<link rel="stylesheet" th:href="@{/css/main/organizationView.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/organizationView.css}"
+		media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+
+
+	<link rel="stylesheet" th:href="@{/css/footer.css}" />
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<style>
 		.post-content {
 			overflow: auto;
 		}
@@ -19,52 +27,53 @@
 			width: 80%;
 			max-width: 100vw;
 		}
-  </style>
+	</style>
 </head>
+
 <body>
-  <!-- 헤더 -->
-  <div th:replace="~{main/header :: headFrag(${user})}"></div>
+	<!-- 헤더 -->
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-  <div class="container">
-    <!-- 사이드바 -->
-    <div class="sidebar">
-      <div class="sidebar-title" >공지사항</div>
-      
-        <button class="menu-button" onclick="history.back();">
-         이전으로 돌아가기
-        </button>
-    </div>
+	<div class="container">
+		<!-- 사이드바 -->
+		<div class="sidebar">
+			<div class="sidebar-header">
+				<div class="sidebar-title">공지사항</div>
 
-    <!-- 콘텐츠 -->
-    <div class="content">
-      <div class="post-view">
-        <!-- 제목 -->
-        <h2 class="post-view-title"
-            th:text="${notification.title}">제목</h2>
+				<button class="menu-button" onclick="history.back();">
+					이전으로 돌아가기
+				</button>
+			</div>
+		</div>
 
-        <!-- 작성일 -->
-        <p class="post-view-date"
-           th:text="${#temporals.format(notification.createOn, 'yyyy-MM-dd HH:mm')}">
-          2025-06-15 14:30
-        </p>
+		<!-- 콘텐츠 -->
+		<div class="content">
+			<div class="post-view">
+				<!-- 제목 -->
+				<h2 class="post-view-title" th:text="${notification.title}">제목</h2>
 
-        <!-- 썸네일 -->
-     
+				<!-- 작성일 -->
+				<p class="post-view-date" th:text="${#temporals.format(notification.createOn, 'yyyy-MM-dd HH:mm')}">
+					2025-06-15 14:30
+				</p>
 
-        <!-- 본문 (HTML 렌더링) -->
-        <div class="post-view-body"
-             th:utext="${notification.content}">
-          소식 본문 내용...
-        </div>
+				<!-- 썸네일 -->
 
-        <!-- 목록으로 돌아가기 -->
-      
-      </div>
-    </div>
-  </div>
 
-  <!-- 푸터 -->
-  <div th:replace="~{main/footer :: footer}"></div>
-  <script th:src="@{/js/header.js}"></script>
+				<!-- 본문 (HTML 렌더링) -->
+				<div class="post-view-body" th:utext="${notification.content}">
+					소식 본문 내용...
+				</div>
+
+				<!-- 목록으로 돌아가기 -->
+
+			</div>
+		</div>
+	</div>
+
+	<!-- 푸터 -->
+	<div th:replace="~{main/footer :: footer}"></div>
+	<script th:src="@{/js/header.js}"></script>
 </body>
+
 </html>

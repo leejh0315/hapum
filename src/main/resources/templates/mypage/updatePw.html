@@ -4,81 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>비밀번호 수정</title>
-  <link rel="stylesheet" th:href="@{/css/header.css}" />
+  <link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
   <link rel="stylesheet" th:href="@{/css/footer.css}" />
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      height: 90vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .content {
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-    }
-    .content h1 {
-      margin-bottom: 30px;
-      color: #5C4033;
-    }
-  form label {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;  /* 레이블 텍스트는 왼쪽 정렬 */
-  margin-bottom: 15px;
-  font-weight: bold;
-  color: #5C4033;
-}
+  
+  <link rel="stylesheet" th:href="@{/css/mypage/updatePw.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/updatePw.css}" media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-/* 2) input이 부모 너비를 100%로 차지하도록 */
-form input[type="password"],
-form input[type="text"] {
-  width: 100%;
-  box-sizing: border-box;   /* 패딩/테두리까지 포함해서 100% */
-  padding: 10px 14px;
-  border: 1px solid #D6CCC2;
-  border-radius: 6px;
-  background-color: #EDEDE9;
-  margin-top: 6px;
-  transition: border-color 0.3s;
-}
+  
 
-/* 포커스시 테두리 강조 */
-form input:focus {
-  outline: none;
-  border-color: #D5BDAF;
-}
-    .error-msg {
-      color: #dc3545;
-      font-size: 0.875em;
-      text-align: left;
-      margin-top: -10px;
-      margin-bottom: 10px;
-    }
-    .login-button {
-      width: 40%;
-      padding: 12px;
-      margin-top: 20px;
-      background-color: #D5BDAF;
-      color: #fff;
-      font-size: 16px;
-      font-weight: bold;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-    .login-button:hover {
-      background-color: #E3D5CA;
-      transform: translateY(-2px);
-    }
-  </style>
   <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>

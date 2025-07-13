@@ -5,9 +5,17 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>하품센터</title>
-	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
+
 	<link rel="stylesheet" th:href="@{/css/footer.css}" />
-	<link rel="stylesheet" th:href="@{/css/main/main.css}" />
+
+
+	<link rel="stylesheet" th:href="@{/css/main/main.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/main.css}" media="only screen and (max-width: 768px)" />
+
+
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
@@ -19,7 +27,31 @@
 	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 	<main>
 		<section id="top-section">
+
+			<div class="mobile-box">
+				<div class="mobile-img">
+					<div class="mobile-text">
+						<div>
+							<span class="highlight">하품센터</span>는 함께 성장하며
+						</div>
+						<div>
+							서로 행복을 나누는 <span class="highlight">하느님 품</span>입니다
+						</div>
+					</div>
+					<div class="mobile-btn">
+						<button class="btn btn1">센터소개</button>
+						<button class="btn btn2">시설안내</button>
+						<button class="btn btn3">프로그램</button>
+						<button class="btn btn4">대관신청</button>
+						<button class="btn btn5">갤러리</button>
+						<button class="btn btn6">단체소식</button>
+					</div>
+				</div>
+			</div>
+
+
 			<div class="left-section">
+				<h3 style="margin-bottom: 10px;">프로그램</h3>
 				<div id="slideshow-wrapper">
 					<div id="slideshow-container">
 						<div id="slideshow">
@@ -67,7 +99,7 @@
 								<tr th:each="notif, iterStat : ${notifications}" th:if="${iterStat.index < 5}">
 									<td>
 										<a th:href="@{/main/notification/detail/{id}(id=${notif.id})}">
-											<span th:text="${notif.title}"
+											<span th:text="${notif.title}" class="notice-title"
 												th:classappend="${notif.isTop=='1'} ? ' top-bold' : ''">
 												공지제목
 											</span>
@@ -82,8 +114,13 @@
 											</i>
 										</button>
 									</td>
-									<td th:text="${#temporals.format(notif.createOn,'yyyy-MM-dd HH:mm')}">
-										2025-06-23 14:30
+									<td>
+										<span class="datetime-full"
+											th:text="${#temporals.format(notif.createOn, 'yyyy-MM-dd HH:mm')}"></span>
+
+										<!-- 모바일용 (날짜만) -->
+										<span class="datetime-dateonly"
+											th:text="${#temporals.format(notif.createOn, 'yyyy-MM-dd')}"></span>
 									</td>
 									<!-- isTop=1인 것만 input 활성화 -->
 									<td class="order-col" th:if="${notif.isTop=='1'}">

@@ -1,0 +1,145 @@
+@media screen and (max-width: 768px) {
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		height: 100%;
+	}
+
+	.sidebar {
+		display: flex;
+		flex-direction: column;
+		background-color: #D6CCC2;
+
+	}
+
+	/* 1행: 제목 */
+	.sidebar-title {
+		width: 100%;
+		/* 전체 행 차지 */
+		text-align: center;
+		background-color: #D6CCC2;
+		color: white;
+		font-size: 14px;
+		font-weight: bold;
+		cursor: default;
+		padding: 10px 0;
+		border: none;
+	}
+
+	.menu-group {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		width: 100%;
+	}
+
+	/* active 상태인 메뉴 버튼 (필요에 따라 수정) */
+	.menu-button.active {
+		background-color: #D5BDAF;
+		color: white;
+		font-weight: bold;
+	}
+
+	.menu-button {
+		width: 100%;
+		box-sizing: border-box;
+		padding: 10px 0;
+		font-size: 14px;
+		background-color: #F5EBE0;
+		border: none;
+		color: #333;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+	}
+
+	.menu-button.current {
+		background-color: #D5BDAF;
+		color: white;
+		font-weight: bold;
+	}
+
+	.content {
+		width: 90%;
+		padding: 5%;
+		overflow-wrap: break-word;
+		word-break: break-word;
+		white-space: normal;
+		flex: 1;
+	}
+
+	.container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+	/* 기존 active 클래스 (필요시 사용) */
+	.menu-button.active {
+		background-color: #D5BDAF;
+		color: white;
+		font-weight: bold;
+	}
+
+	.post-list {
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		row-gap: 50px;
+		margin-top: 3%;
+	}
+
+	.post-card {
+		width: 150px;
+		height: 150px;
+		max-width: 300px;
+		border: 1px solid #ddd;
+		border-radius: 8px;
+		text-align: center;
+		margin-top: 5%;
+	}
+
+	/* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */
+	.post-card img {
+		width: 140px;
+		height: 140px;
+		border-radius: 4px;
+		margin-bottom: 0.5rem;
+	}
+
+
+	.pagination {
+		list-style: none;
+		display: flex;
+		justify-content: center;
+		padding: 0;
+		margin-top: 70px;
+	}
+
+	.pagination li {
+		font-size: smaller;
+	}
+
+	.pagination li a {
+		display: block;
+		padding: 8px 12px;
+		background: #F5EBE0;
+		/* 기본 버튼 색상으로 통일 */
+		color: #333;
+		text-decoration: none;
+		border: 1px solid #D5BDAF;
+	}
+
+	.pagination li.active a {
+		background: #D5BDAF;
+		/* 활성화된 페이지 */
+		color: #fff;
+		border-color: #D5BDAF;
+	}
+
+	.pagination li.disabled a {
+		color: #ccc;
+		pointer-events: none;
+	}
+
+}

@@ -1,0 +1,92 @@
+@media screen and (max-width: 768px) {
+	.container {
+		display: flex;
+		flex-direction: column;
+		flex: 1;
+	}
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		height: 100%;
+	}
+
+	.sidebar {
+		display: flex;
+		flex-direction: row;
+		background-color: #D6CCC2;
+
+	}
+
+	body {
+		display: flex;
+		flex-direction: column;
+		min-height: 100vh;
+		/* 화면 높이 기준 */
+	}
+
+	/* 1행: 제목 */
+	.sidebar-title {
+		width: 70%;
+		/* 전체 행 차지 */
+		text-align: center;
+		background-color: #D6CCC2;
+		color: white;
+		font-size: 14px;
+		font-weight: bold;
+		cursor: default;
+		padding: 10px 0;
+		border: none;
+	}
+
+	/* 2행: 버튼 4개 정렬 */
+
+
+	.menu-button {
+		width: 30%;
+		box-sizing: border-box;
+		padding: 10px 0;
+		font-size: 12px;
+		background-color: #F5EBE0;
+		border: none;
+		color: #333;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+	}
+
+
+	.content {
+		flex-direction: column;
+		width: 100%;
+		font-size: small;
+		flex: 1;
+	}
+
+	.post-title {
+		font-size: xx-large;
+		margin-bottom: 20px;
+	}
+
+	.post-content {
+		margin-top: 3%;
+		word-wrap: break-word;
+		overflow-wrap: break-word;
+		word-break: break-word;
+		white-space: normal;
+
+	}
+
+	.post-content img {
+		max-width: 80%;
+	}
+
+
+	/* 게시글 내용 영역 (기존 postDetail.css 내 다른 스타일들은 그대로 사용) */
+	.content {
+		flex: 1;
+		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
+			"Malgun Gothic", "Apple SD Gothic Neo", "Helvetica Neue", Helvetica, Arial, sans-serif;
+	}
+}

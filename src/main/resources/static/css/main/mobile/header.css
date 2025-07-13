@@ -1,0 +1,153 @@
+/* 모바일 레이아웃: 화면 너비 768px 이하일 때 */
+@media (max-width: 768px) {
+	.logodj {
+		width: 40px;
+		height: 40px;
+	}
+
+	.logohp {
+		width: 40px;
+		height: 40px;
+		opacity: 0.5;
+		position: absolute;
+		left: 210px;
+	}
+
+	.header-top {
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		/* 추가: 요소를 양 끝으로 정렬 */
+		align-items: center;
+		/* 세로 정렬 정리 */
+		padding: 0 10px;
+		/* 좌우 여백 약간 추가 */
+		position: relative;
+		/* logohp의 absolute 기준을 위해 */
+	}
+
+	.header-left {
+		order: 1;
+		cursor: pointer;
+		display: flex;
+		align-items: center;
+		gap: 5px;
+		position: relative;
+		margin-bottom: 10px;
+		margin-top: 10px;
+		width: 70%;
+	}
+
+	.header-left .center-name {
+		display: flex;
+		flex-direction: column;
+		line-height: 1.2;
+	}
+
+	.header-left .center-name h3 {
+		margin: 0;
+		font-size: small;
+	}
+
+	a,
+	a:visited {
+		color: inherit;
+		/* 부모 요소의 색상 상속 (혹은 원하는 색으로 지정 ex: black, #000 등) */
+		text-decoration: none;
+		/* 밑줄 제거 */
+	}
+
+
+	#nav-desktop {
+		display: none;
+	}
+
+
+	/* 헤더 우측 그룹 */
+	.header-right-group {
+		display: none;
+
+		/* 내부 요소들 사이에 고정 간격을 부여 */
+	}
+
+	.mobile-menu {
+		order: 2;
+		margin-left: auto;
+		/* 오른쪽으로 밀어냄 */
+		font-size: 24px;
+		cursor: pointer;
+	}
+
+	.right-side-overlay {
+		position: fixed;
+		top: 0;
+		right: 0;
+		width: 250px;
+		height: 100%;
+		background-color: white;
+		box-shadow: -2px 0 5px rgba(0, 0, 0, 0.2);
+		transform: translateX(100%);
+		transition: transform 0.3s ease;
+		z-index: 9999;
+	}
+
+	/* 보여질 때 클래스 */
+	.right-side-overlay.active {
+		transform: translateX(0);
+	}
+
+	/* 사이드 메뉴 안 컨텐츠 스타일 */
+	.right-side-content {
+		padding: 20px;
+	}
+
+	.right-side-content ul {
+		list-style: none;
+		padding: 0;
+	}
+
+	.right-side-content ul li {
+		margin-bottom: 15px;
+	}
+
+	.right-side-content ul li a {
+		color: black;
+		text-decoration: none;
+		font-size: 18px;
+	}
+
+	.header-right-mobile {
+		margin-bottom: 10px;
+	}
+
+	.auth-link {
+		display: inline-block;
+		margin-right: 10px;
+		font-size: 16px;
+		cursor: pointer;
+	}
+
+	.separator {
+		margin: 0 5px;
+		color: #ccc;
+	}
+
+	#sidebarBackdrop {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0);
+		/* 투명. 필요시 0.3 정도로 조정 */
+		z-index: 9998;
+		/* 사이드바(9999) 바로 아래 */
+		display: none;
+		/* 기본 숨김 */
+	}
+
+	#sidebarBackdrop.active {
+		display: block;
+		/* 사이드바 열리면 백드롭 표시 */
+	}
+}

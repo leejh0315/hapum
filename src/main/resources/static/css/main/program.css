@@ -90,28 +90,64 @@ body {
 
 /* 프로그램 리스트 (카드 형태) */
 .program-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 20px;
 }
 
 /* 프로그램 카드 */
 .program-card {
-    width: 200px;
-    height: 200px;
-    max-width: 300px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    text-align: center;
+	width: 200px;
+	height: 200px;
+	max-width: 300px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	text-align: center;
 }
 
 .program-card img {
-width: 160px;
-    height: 160px;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
+	width: 160px;
+	height: 160px;
+	border-radius: 4px;
+	margin-bottom: 0.5rem;
 }
 
 .program-title {
 	font-weight: 500;
+}
+
+
+.pi-img {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+
+}
+
+.program-intro {
+	display: flex;
+	flex-wrap: wrap;
+	/* 줄바꿈 허용 */
+	align-items: center;
+	gap: 20px;
+	margin-bottom: 3%;
+}
+
+.program-list {
+	margin-top: 3%;
+}
+
+.pi-ex {
+	width: 80%;
+	padding: 10px;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	white-space: normal;
+	display: block;
+}
+
+.pi-ex * {
+	white-space: normal !important;
+	word-break: break-word;
+	overflow-wrap: break-word;
 }

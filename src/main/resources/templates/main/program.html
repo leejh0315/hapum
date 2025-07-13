@@ -5,9 +5,14 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>하품센터-프로그램</title>
-	<link rel="stylesheet" th:href="@{/css/header.css}">
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
+	<link rel="stylesheet" th:href="@{/css/main/program.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/program.css}" media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
-	<link rel="stylesheet" th:href="@{/css/main/program.css}">
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
@@ -19,10 +24,11 @@
 		<!-- 좌측 사이드바 -->
 		<div class="sidebar">
 			<div class="sidebar-title">프로그램</div>
-
+			<div class="menu-group">
 			<button th:each="program : ${programs}" th:if="${program.openStatus == 'Y'}" th:text="${program.name}"
 				th:onclick="|location.href='/main/programList/${program.id}'|" class="menu-button">
 			</button>
+			</div>
 		</div>
 
 		<!-- 오른쪽 콘텐츠 영역 -->

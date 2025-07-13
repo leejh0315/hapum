@@ -5,8 +5,17 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>하품센터-대관신청</title>
-	<link rel="stylesheet" th:href="@{/css/header.css}" />
-	<link rel="stylesheet" th:href="@{/css/main/rental.css}" />
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
+
+
+
+	<link rel="stylesheet" th:href="@{/css/main/rental.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/rental.css}" media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+
 	<link rel="stylesheet" th:href="@{/css/footer.css}" />
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
@@ -18,33 +27,38 @@
 	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 	<div class="container">
 		<div class="sidebar">
-			<div class="sidebar-title">시설 선택</div>
-			<button class="menu-button room-btn active" data-room="강의실1">강의실1</button>
-			<button class="menu-button room-btn" data-room="강의실2">강의실2</button>
-			<button class="menu-button room-btn" data-room="강당">강당</button>
-			<button class="menu-button room-btn" data-room="연습실">연습실</button>
+			<div class="sidebar-title">대관신청</div>
+			<div class="room-grid">
+				<button class="menu-button room-btn active" data-room="강의실1">강의실1</button>
+				<button class="menu-button room-btn" data-room="강의실2">강의실2</button>
+				<button class="menu-button room-btn" data-room="강당">강당</button>
+				<button class="menu-button room-btn" data-room="연습실">연습실</button>
+			</div>
 		</div>
-		<!-- 시설 정보 및 타임테이블 -->
-		<div id="room-info" style="display: none;">
-			<h3 id="room-title"></h3>
-			<h4 id="floor-title" style="color: #666;"></h4>
-			<div class="room-flex-container">
-				<!-- 사진 + 설명 -->
-				<div id="room-content"></div>
-				<!-- 타임테이블 -->
-				<div class="timetable-wrapper">
-					<div id="timetable-container" class="timetable" style="display: none;">
-						<div class="slot-row-container">
-							<div class="slot-row" id="time-slots-row">
-								<div class="label-cell">예약</div>
+
+		<div class="content">
+			<!-- 시설 정보 및 타임테이블 -->
+			<div id="room-info" style="display: none;">
+				<h3 id="room-title"></h3>
+				<h4 id="floor-title" style="color: #666;"></h4>
+				<div class="room-flex-container">
+					<!-- 사진 + 설명 -->
+					<div id="room-content"></div>
+					<!-- 타임테이블 -->
+					<div class="timetable-wrapper">
+						<div id="timetable-container" class="timetable" style="display: none;">
+							<div class="slot-row-container">
+								<div class="slot-row" id="time-slots-row">
+									<div class="label-cell">예약</div>
+								</div>
 							</div>
+							<div style="margin: 20px 0;">
+								<span>예약 가능 날짜 : <span id="date-range-text"></span></span><br />
+								<input type="date" id="datePicker" />
+							</div>
+							<div class="selected-time-display" id="selected-time-display"></div>
+							<button id="submit-btn" disabled onclick="submitRental()">대관 신청하기</button>
 						</div>
-						<div style="margin: 20px 0;">
-							<span>예약 가능 날짜 : <span id="date-range-text"></span></span><br />
-							<input type="date" id="datePicker" />
-						</div>
-						<div class="selected-time-display" id="selected-time-display"></div>
-						<button id="submit-btn" disabled onclick="submitRental()">대관 신청하기</button>
 					</div>
 				</div>
 			</div>
@@ -83,10 +97,10 @@
 				<input type="text" id="purpose" placeholder="예: 청년 모임, 회의 등" />
 
 				<label for="groupName"><strong>단체명</strong></label>
-				<input type="text" id="groupName" placeholder="예: 청년부"/>
+				<input type="text" id="groupName" placeholder="예: 청년부" />
 
 				<label for="headCount"><strong>사용 인원</strong></label>
-				<input type="number" id="headCount" placeholder="예: 10"/>
+				<input type="number" id="headCount" placeholder="예: 10" />
 			</div>
 
 			<div class="modal-checkbox-group" style="margin-top: 15px;">

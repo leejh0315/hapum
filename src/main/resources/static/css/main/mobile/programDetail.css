@@ -1,0 +1,290 @@
+@media screen and (max-width: 768px) {
+
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		overflow-x: hidden;
+		height: 100%;
+	}
+
+	.sidebar {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: flex-start;
+		background-color: #D6CCC2;
+		border: none;
+	}
+
+	.sidebar-title {
+		text-align: center;
+		background-color: #D6CCC2;
+		color: white;
+		font-size: 14px;
+		font-weight: bold;
+		cursor: default;
+		width: 33.3%;
+		border: none;
+		padding-top: 10px;
+	}
+
+	/* active 상태인 메뉴 버튼 (필요에 따라 수정) */
+	.menu-button.active {
+		background-color: #D5BDAF;
+		color: white;
+		font-weight: bold;
+	}
+
+	.menu-button {
+		width: 33.333%;
+		/* 3개씩 배치 (gap 고려) */
+		box-sizing: border-box;
+		padding: 10px 0;
+		font-size: 14px;
+		background-color: #F5EBE0;
+		border: none;
+		color: #333;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+		text-align: center;
+	}
+
+	.menu-button.current {
+		background-color: #D5BDAF;
+		color: white;
+		font-weight: bold;
+	}
+
+	.content {
+		width: 90%;
+		padding: 5%;
+		overflow-wrap: break-word;
+		word-break: break-word;
+		white-space: normal;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+	}
+
+
+
+
+	.container {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
+
+	.info-modal-content {
+		background: white;
+		border-radius: 10px;
+		width: 90%;
+		max-width: 700px;
+		height: 380px;
+		padding: 20px;
+		box-sizing: border-box;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+		overflow: hidden;
+	}
+
+	.info-modal-input {
+		width: 70%;
+		padding: 12px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		font-size: 15px;
+		font-family: 'Pretendard', 'Arial', sans-serif;
+		box-sizing: border-box;
+		color: #333;
+		display: block;
+	}
+
+	.infoModalButton {
+		display: block;
+		width: 20%;
+		padding: 12px;
+		text-align: center;
+		background-color: #F5EBE0;
+		border: none;
+
+		font-size: 16px;
+		cursor: pointer;
+		color: #333;
+		border-radius: 10%;
+		margin-bottom: 5px;
+	}
+
+	/* 프로그램 이미지 (정사각형) */
+	.program-image {
+		flex: 1 1 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-bottom: 20px;
+		width: 90%;
+		height: 90%;
+	}
+
+	.program-image img {
+		width: 100%;
+		height: 100%;
+
+		object-fit: cover;
+		border-radius: 12px;
+	}
+
+	/* 프로그램 정보 */
+	.program-info {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.program-info h2 {
+		margin-bottom: 16px;
+		color: #333;
+	}
+
+	.program-info ul {
+		list-style: none;
+		padding: 0;
+		margin-bottom: 20px;
+	}
+
+	.program-info li {
+		margin-bottom: 10px;
+		font-size: 15px;
+		line-height: 1.4;
+	}
+
+	.program-info li::before {
+		content: '– ';
+		color: #555;
+	}
+
+	/* 신청 정보 및 버튼 영역 */
+	.program-bottom {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border-top: 1px solid #ddd;
+		padding-top: 15px;
+		margin-top: auto;
+	}
+
+
+	.capacity {
+		font-size: 14px;
+		color: #888;
+	}
+
+	.apply-btn {
+		background-color: #F5EBE0;
+		color: #333;
+		padding: 10px 20px;
+		border: none;
+		border-radius: 8px;
+		font-weight: bold;
+		cursor: pointer;
+	}
+
+	.apply-btn:disabled {
+		background-color: #ddd;
+		color: #aaa;
+		cursor: not-allowed;
+	}
+
+	/* 개인정보 동의 모달 */
+	.modal-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		justify-content: center;
+		align-items: center;
+		z-index: 9999;
+		display: none;
+	}
+
+	.modal-overlay.show {
+		display: flex;
+	}
+
+	.modal-content {
+		background: white;
+		border-radius: 10px;
+		width: 90%;
+		display: flex;
+		flex-direction: column;
+		max-width: 700px;
+		height: 600px;
+		padding: 20px;
+		box-sizing: border-box;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+		overflow: hidden;
+	}
+
+	/* 스크롤 가능한 영역 */
+	.scroll-box {
+		height: calc(100% - 150px);
+		overflow-y: auto;
+		border: 1px solid #ccc;
+		padding: 10px;
+		margin: 10px 0;
+		font-size: 14px;
+		background: #fafafa;
+
+	}
+
+	/* 버튼 */
+	#confirmApplyBtn,
+	#cancelApplyBtn {
+		padding: 12px;
+		font-size: 16px;
+		cursor: pointer;
+		background-color: #F5EBE0;
+		color: #333;
+		border: none;
+		border-radius: 8px;
+		width: 100px;
+	}
+
+	/* 스피너 오버레이 */
+	.spinner-overlay {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: rgba(0, 0, 0, 0.5);
+		z-index: 10000;
+		display: none;
+	}
+
+	.spinner {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 60px;
+		height: 60px;
+		border: 6px solid #f3f3f3;
+		border-top: 6px solid #f5cc00;
+		border-radius: 50%;
+		animation: spin 1s linear infinite;
+	}
+
+	@keyframes spin {
+		0% {
+			transform: rotate(0deg);
+		}
+
+		100% {
+			transform: rotate(360deg);
+		}
+	}
+}

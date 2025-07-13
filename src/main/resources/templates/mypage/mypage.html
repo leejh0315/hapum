@@ -7,8 +7,15 @@
 	<title>MyPage</title>
 
 	<!-- 공통 헤더/사이드바/컨텐츠 레이아웃 -->
-	<link rel="stylesheet" th:href="@{/css/header.css}" />
-	<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}" />
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+
+
+	<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}" media="only screen and (min-width: 769px)">
+	<link rel="stylesheet" th:href="@{/css/main/mobile/mypage.css}" media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+
 	<link rel="stylesheet" th:href="@{/css/footer.css}" />
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
@@ -22,25 +29,28 @@
 		<div class="sidebar">
 			<div class="sidebar-title">마이페이지</div>
 
-			<a th:href="@{/main/mypage/update/{id}(id=${user.id})}" class="menu-button"
-				th:classappend="${activeTab=='update'} ? ' active' : ''">
-				내 정보 수정
-			</a>
-			<a th:href="@{/main/mypage/rental/{id}(id=${user.id})}" class="menu-button"
-				th:classappend="${activeTab=='rental'} ? ' active' : ''">
-				신청한 대관 예약
-			</a>
-			<a th:href="@{/main/mypage/program/{id}(id=${user.id})}" class="menu-button"
-				th:classappend="${activeTab=='program'} ? ' active' : ''">
-				신청한 프로그램
-			</a>
+			<div class="menu-group">
+
+				<a th:href="@{/main/mypage/update/{id}(id=${user.id})}" class="menu-button"
+					th:classappend="${activeTab=='update'} ? ' active' : ''">
+					내 정보 수정
+				</a>
+				<a th:href="@{/main/mypage/rental/{id}(id=${user.id})}" class="menu-button"
+					th:classappend="${activeTab=='rental'} ? ' active' : ''">
+					신청한 대관 예약
+				</a>
+				<a th:href="@{/main/mypage/program/{id}(id=${user.id})}" class="menu-button"
+					th:classappend="${activeTab=='program'} ? ' active' : ''">
+					신청한 프로그램
+				</a>
+			</div>
 		</div>
 		<!-- 오른쪽 컨텐츠 -->
 
 		<div class="content">
 
-		<h1 class="page-title center" th:text="${user.name} + '님의 마이페이지'">
-		</h1>
+			<h1 class="page-title center" th:text="${user.name} + '님의 마이페이지'">
+			</h1>
 
 		</div>
 	</div>
