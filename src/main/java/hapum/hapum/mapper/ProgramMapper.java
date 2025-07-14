@@ -48,4 +48,8 @@ public interface ProgramMapper {
 	 void deleteProgramAdd(@Param("id") Long id);
 	 
 	 List<ProgramAdd> selectAllProgramsMain();
+	 
+	 void changePopup(@Param("id")Long id, @Param("code") String code);
+	 
+	 List<Program>selectPopupProgram();
 }

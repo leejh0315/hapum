@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import hapum.hapum.domain.Organization;
+import hapum.hapum.domain.OrganizationOrderDto;
 import hapum.hapum.domain.OrganizationPost;
 
 @Mapper
@@ -25,4 +26,6 @@ public interface OrganizationMapper {
 	void deletePosts(@Param("orgId") Long orgId);
 	void deleteOrganizationAndPosts(@Param("orgId") Long orgId);
 	void updateOrganizationPost(OrganizationPost organizationPost);
+	
+	void updateSeq(OrganizationOrderDto dto);
  }

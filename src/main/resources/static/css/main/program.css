@@ -82,7 +82,7 @@ body {
 /* 오른쪽 콘텐츠 영역 */
 .content {
 	flex: 1;
-	padding: 3%;
+	padding: 5%;
 	background-color: #FFFFFF;
 	overflow-y: auto;
 

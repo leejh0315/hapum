@@ -37,5 +37,6 @@ public class Program {
     private String needOrgName;
     private String needPartCount;
     private String needRelation;
-    
+ 
+    private String isPopup;
 }

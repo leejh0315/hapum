@@ -9,20 +9,28 @@ body {
 
 /* 전체 컨테이너: 사이드바와 메인 콘텐츠를 가로로 배치 */
 .container {
-	display: flex;
-	flex-direction: row;
-	height: 100vh;
-	padding: 0 7%;
-	gap: 10px;
-	/* 사이드바와 메인 콘텐츠 간 간격은 유지 */
-	box-sizing: border-box;
-	height: max-content;
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+  padding: 0 7%;
+  gap: 10px;
+  box-sizing: border-box;
 }
 
 
-ul ul li{
+.content {
+  flex: 1;
+  min-width: 0; /* flex-item에서 overflow-x 처리 위해 필요 */
+  padding-left: 5%;
+  padding-top: 5%;
+  display: flex;
+  flex-direction: column;
+}
+
+ul ul li {
 	margin-left: 2.0rem;
 }
+
 .slot.past-slot {
 	background-color: #EDEDE9 !important;
 	color: #999;
@@ -31,12 +39,13 @@ ul ul li{
 
 /* 좌측 사이드바 (고정 폭 180px) */
 .sidebar {
-	width: 180px;
-	background-color: #D6CCC2;
-	border: 1px solid #D5BDAF;
-	display: flex;
-	flex-direction: column;
-	padding: 0 10px 10px;
+  width: 180px;
+  flex-shrink: 0; /* 절대 줄어들지 않게 */
+  background-color: #D6CCC2;
+  border: 1px solid #D5BDAF;
+  display: flex;
+  flex-direction: column;
+  padding: 0 10px 10px;
 }
 
 .sidebar-title {
@@ -69,30 +78,25 @@ ul ul li{
 
 /* room-flex-container: 시설정보와 타임테이블을 가로로 균등 배치 */
 .room-flex-container {
-	display: flex;
-	justify-content: flex-start;
-	gap: 0;
-	/* 간격 없애기 */
-	width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 0;
+  overflow: hidden;
 }
 
 
 /* 양쪽 모두 동일한 비율, 여백 제거 */
 #room-content {
-
-	flex: 0 0 40%;
-	max-width: 40%;
+	max-width: 400px;
 	padding-right: 16px;
+	overflow-wrap: break-word;
+	word-break: break-word;
+	white-space: normal;
 	/* 오른쪽 여백만 약간 줌 */
 
 }
 
-#timetable-wrapper {
-	flex: 0 0 60%;
-	max-width: 60%;
-	margin-left: -8px;
-	/* 왼쪽으로 조금 더 붙이기 */
-}
 
 /* 시설 정보 영역 */
 #room-content {
@@ -102,19 +106,22 @@ ul ul li{
 }
 
 
-#room-content img{
+#room-content img {
 	min-width: 400px;
 	height: auto;
 }
 
 /* 타임테이블 영역 - 고정 폭 제거하고 유동 폭으로 변경 */
+/* timetable-wrapper는 내부가 넘칠 경우 스크롤 */
 .timetable-wrapper {
-	flex: 1;
-	flex-shrink: 1;
-	overflow-x: auto;
-	width: auto;
+  flex: 1;
+  overflow-x: auto;
+  margin-left: 5%;
 }
 
+#timetable-container{
+	width: 100%;
+}
 /* 타임테이블 내부 스타일 */
 .timetable {
 	display: flex;
@@ -122,8 +129,9 @@ ul ul li{
 }
 
 .slot-row-container {
-	overflow-x: auto;
-	padding-bottom: 10px;
+  overflow-x: auto;
+  width: 100%;
+  padding-bottom: 10px;
 }
 
 .slot-row {
@@ -234,21 +242,26 @@ ul ul li{
 	justify-content: center;
 	z-index: 2000;
 }
+
 .useGuideCheckBox {
-  display: flex;
-  align-items: center;        /* 수직 중앙 정렬 */
-  justify-content: flex-end;  /* 부모 안에서 오른쪽 정렬 */
-  gap: 8px;                   /* p와 input 사이 간격 */
-  margin-top: 20px;           /* 필요 시 여백 조절 */
+	display: flex;
+	align-items: center;
+	/* 수직 중앙 정렬 */
+	justify-content: flex-end;
+	/* 부모 안에서 오른쪽 정렬 */
+	gap: 8px;
+	/* p와 input 사이 간격 */
+	margin-top: 20px;
+	/* 필요 시 여백 조절 */
 }
 
 .useGuideBtn-wrapper {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 10px;
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 10px;
 }
 
-.useGuideBtn{
+.useGuideBtn {
 	width: 10%;
 	padding: 12px;
 	text-align: center;
@@ -261,11 +274,12 @@ ul ul li{
 	border-radius: 10%;
 	margin-bottom: 5px;
 	display: flex;
-	align-items: center;        /* 수직 중앙 정렬 */
-	justify-content: flex-end; 
-	}
+	align-items: center;
+	/* 수직 중앙 정렬 */
+	justify-content: flex-end;
+}
 
-.use-guide-modal{
+.use-guide-modal {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -279,7 +293,7 @@ ul ul li{
 }
 
 
-.rental-detail-modal{
+.rental-detail-modal {
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -292,27 +306,28 @@ ul ul li{
 	z-index: 2000;
 }
 
-.modal-input-group{
-  display: flex;
-  flex-direction: column;
+.modal-input-group {
+	display: flex;
+	flex-direction: column;
 }
 
-.modal-input-group input{
+.modal-input-group input {
 	width: 80%;
 	height: 40px;
 	border-radius: 6px;
 	border: 1px solid #D6CCC2;
-	    padding: 10px 14px;
-}
-.modal-input-group label{
-	margin-top : 10px;
+	padding: 10px 14px;
 }
 
-.rental-detail-modal.show{
+.modal-input-group label {
+	margin-top: 10px;
+}
+
+.rental-detail-modal.show {
 	display: flex;
 }
 
-.use-guide-modal.show{
+.use-guide-modal.show {
 	display: flex;
 }
 
@@ -382,7 +397,7 @@ ul ul li{
 
 }
 
-.scroll-box li{
+.scroll-box li {
 	word-break: break-word;
 }
 

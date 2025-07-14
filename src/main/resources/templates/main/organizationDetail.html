@@ -33,14 +33,25 @@
 
 		<!-- CONTENT -->
 		<div class="content">
+			<div class="program-intro">
+				<img class="pi-img" th:src="@{${org.profileSrc}}">
+				<div class="pi-ex" th:utext="${org.introduce}"></div>
 
+			</div>
+			
+			<hr>
 			<div th:if="${#lists.isEmpty(organizationPost)}">
 				게시글이 없습니다.
 			</div>
 
 			<div th:if="${!#lists.isEmpty(organizationPost)}" class="post-list">
+
+
+
+
+
 				<div th:each="post : ${organizationPost}" class="post-card">
-					<a th:href="@{/main/organization/{orgId}/post/{pid}(pid=${post.id},orgId=${id})}" >
+					<a th:href="@{/main/organization/{orgId}/post/{pid}(pid=${post.id},orgId=${id})}" class="org-link">
 						<img th:src="@{${post.thumbnailSrc}}" alt="썸네일" class="post-thumb" />
 						<div class="post-title" th:text="${post.title}">제목</div>
 					</a>

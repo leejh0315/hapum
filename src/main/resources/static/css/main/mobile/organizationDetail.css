@@ -142,4 +142,40 @@
 		pointer-events: none;
 	}
 
+
+	.program-title {
+		font-weight: 500;
+	}
+
+	.pi-img {
+		width: 150px;
+		height: 150px;
+		object-fit: cover;
+
+		display: block;
+		/* 블록 요소로 변경 */
+		margin-left: auto;
+		/* 좌측 마진 자동 */
+		margin-right: auto;
+		/* 우측 마진 자동 */
+
+	}
+
+	.program-intro {
+		display: flex;
+		flex-direction: column;
+		flex-wrap: wrap;
+		/* 줄바꿈 허용 */
+		align-items: center;
+		gap: 20px;
+		margin-bottom: 3%;
+	}
+
+	.program-list {
+		margin-top: 3%;
+
+	}
+
+
+
 }

@@ -257,5 +257,14 @@
 	<delete id="deleteProgramAdd">
 		DELETE from hapumdb.program_add WHERE id=#{id}
 	</delete>
+	
+	<update id="changePopup">
+		UPDATE hapumdb.program SET is_popup=#{code}
+		WHERE id=#{id}
+	</update>
+	
+	<select id="selectPopupProgram" resultType="hapum.hapum.domain.Program">
+		SELECT * FROM hapumdb.program WHERE is_popup='Y'
+	</select>
 
 </mapper>

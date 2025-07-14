@@ -123,6 +123,7 @@
 
 	.program-intro {
 		display: flex;
+		flex-direction: column;
 		flex-wrap: wrap;
 		/* 줄바꿈 허용 */
 		align-items: center;

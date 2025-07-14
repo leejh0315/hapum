@@ -54,6 +54,19 @@ public class AdminProgramController {
 		programService.insertProgram(program, imageFile);
 		return "admin/main";
 	}
+	@PostMapping("/program/changePopup/{id}")
+	public String changePopup(@PathVariable("id")Long id) {
+		Program program = programService.selectProgramById(id);
+		String code = "N";
+		
+		if(program.getIsPopup().equals("N")) {
+			code = "Y";
+		}
+		programService.changePopup(id, code);
+		
+		return "redirect:/admin/programs";
+	}
+	
 
 	@GetMapping("/programs")
 	public String getPrograms(Model model) {

@@ -17,6 +17,7 @@
 		<div class="top-actions">
 			<a href="/admin/organization/add" class="add-org-button">제단체 추가</a>
 			<a href="/admin/organization/write" class="add-org-button">글쓰기</a>
+			<button type="button" id="toggle-order-btn" class="add-org-button">순서변경</button>
 		</div>
 
 		<!-- 활성 단체 -->
@@ -41,6 +42,9 @@
 							onsubmit="return confirm('정말 삭제하시겠습니까?');">
 							<button type="submit" class="icon-button delete" title="삭제">🗑️</button>
 						</form>
+						
+						<input type="number" name="seq" class="order-input" th:value="${org.seq}"
+       th:attr="data-id=${org.id}" style="display: none; width: 60px; margin-top: 5px;" />
 					</div>
 
 					<!-- 이미지와 정보 -->
@@ -84,6 +88,43 @@
 		</div>
 
 		<script th:src="@{/js/header.js}"></script>
+		
+		<script>
+	let isEditingOrder = false;
+
+	document.getElementById('toggle-order-btn').addEventListener('click', function () {
+		const inputs = document.querySelectorAll('.order-input');
+
+		if (!isEditingOrder) {
+			// 순서변경 모드 활성화
+			inputs.forEach(input => input.style.display = 'inline-block');
+			this.textContent = '완료';
+			isEditingOrder = true;
+		} else {
+			// 완료: 변경된 순서들을 서버로 전송
+			const orderData = [];
+			inputs.forEach(input => {
+				const id = input.getAttribute('data-id');
+				const seq = input.value;
+				orderData.push({ id, seq });
+			});
+
+			fetch('/admin/organization/updateOrder', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(orderData)
+			})
+			.then(res => {
+				if (res.ok) {
+					alert('순서가 저장되었습니다.');
+					window.location.reload();
+				} else {
+					alert('저장에 실패했습니다.');
+				}
+			});
+		}
+	});
+</script>
 	</div>
 </body>
 

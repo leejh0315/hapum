@@ -9,6 +9,8 @@
 	<!-- Bootstrap CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
 	<style>
 		.program-scroll {
@@ -55,6 +57,12 @@
 			font-weight: bold;
 			margin-bottom: 10px;
 		}
+
+		.program-card.popup-border {
+			border: 2px solid #007bff;
+			/* Bootstrap primary color */
+			border-radius: 6px;
+		}
 	</style>
 </head>
 
@@ -93,7 +101,8 @@
 						</div>
 						<div class="program-scroll">
 							<div class="program-card" th:each="program : ${entry.value}"
-								th:if="${program.openStatus == 'Y'}">
+								th:if="${program.openStatus == 'Y'}"
+								th:classappend="${program.isPopup == 'Y'} ? ' border border-primary' : ''">
 								<a th:href="@{/admin/program/detail/{id}(id=${program.id})}">
 									<img th:src="@{${program.thumbnailSrc}}" alt="썸네일">
 									<div class="program-title" th:text="${program.title}">제목</div>
@@ -106,11 +115,21 @@
 									</form>
 									<a th:href="@{/admin/program/update/{id}(id=${program.id})}"
 										class="btn btn-sm btn-outline-primary mt-1" title="수정하기">✏️</a>
-									<form th:action="@{/admin/program/delete/{id}(id=${program.id})}"
-										method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" class="d-inline">
+									<form th:action="@{/admin/program/delete/{id}(id=${program.id})}" method="post"
+										onsubmit="return confirm('정말 삭제하시겠습니까?')" class="d-inline">
 										<button type="submit" class="btn btn-sm btn-outline-danger ms-1"
 											title="삭제하기">🗑️</button>
 									</form>
+
+
+									<form th:action="@{/admin/program/changePopup/{id}(id=${program.id})}" method="post"
+										onsubmit="return confirm('팝업 설정하시겠습니까?')" class="d-inline">
+										<button type="submit" class="btn btn-sm btn-outline-danger ms-1" title="팝업설정"
+											style="padding: 0.25rem 0.4rem; display: flex; align-items: center; justify-content: center;">
+											<i class="fa-regular fa-bell"></i>
+										</button>
+									</form>
+
 								</div>
 							</div>
 						</div>
@@ -156,8 +175,8 @@
 									</form>
 									<a th:href="@{/admin/program/update/{id}(id=${program.id})}"
 										class="btn btn-sm btn-outline-primary mt-1" title="수정하기">✏️</a>
-									<form th:action="@{/admin/program/delete/{id}(id=${program.id})}"
-										method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" class="d-inline">
+									<form th:action="@{/admin/program/delete/{id}(id=${program.id})}" method="post"
+										onsubmit="return confirm('정말 삭제하시겠습니까?')" class="d-inline">
 										<button type="submit" class="btn btn-sm btn-outline-danger ms-1"
 											title="삭제하기">🗑️</button>
 									</form>
@@ -189,8 +208,8 @@
 									</form>
 									<a th:href="@{/admin/program/update/{id}(id=${program.id})}"
 										class="btn btn-sm btn-outline-primary mt-1" title="수정하기">✏️</a>
-									<form th:action="@{/admin/program/delete/{id}(id=${program.id})}"
-										method="post" onsubmit="return confirm('정말 삭제하시겠습니까?')" class="d-inline">
+									<form th:action="@{/admin/program/delete/{id}(id=${program.id})}" method="post"
+										onsubmit="return confirm('정말 삭제하시겠습니까?')" class="d-inline">
 										<button type="submit" class="btn btn-sm btn-outline-danger ms-1"
 											title="삭제하기">🗑️</button>
 									</form>

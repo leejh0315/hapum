@@ -103,7 +103,7 @@
 
     .text-area {
     	flex: 1;
-    	padding: 20px;
+    	padding:5%;
     	/* 내부 여백 */
     	background-color: white;
     	/* 콘텐츠 내용 영역은 흰색 유지 */
@@ -114,3 +114,10 @@
     	color: #888;
     	margin-top: 30px;
     }
+    
+	.greetings{
+		width: 35%;
+		position: absolute;
+		top: 40%;
+		left: 60%;
+	}

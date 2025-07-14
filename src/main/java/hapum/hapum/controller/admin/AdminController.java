@@ -15,6 +15,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,11 +24,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import hapum.hapum.domain.News;
 import hapum.hapum.domain.Notification;
 import hapum.hapum.domain.Organization;
+import hapum.hapum.domain.OrganizationOrderDto;
 import hapum.hapum.domain.OrganizationPost;
 import hapum.hapum.domain.Program;
 import hapum.hapum.domain.Rental;
@@ -361,7 +364,12 @@ public class AdminController {
 		return "redirect:/admin/allUser";
 	}
 	
-	
+	@PostMapping("/organization/updateOrder")
+	@ResponseBody
+	public ResponseEntity<Void> updateOrder(@RequestBody List<OrganizationOrderDto> orderList) {
+	    organizationService.updateOrganizationOrder(orderList);
+	    return ResponseEntity.ok().build();
+	}
 	
 	
 

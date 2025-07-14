@@ -159,6 +159,26 @@
 			</div>
 			</div>
 		</section>
+
+		<div th:each="popup, iterStat : ${popupProgram}" th:if="${popup.thumbnailSrc != null}"
+			th:id="'popup-modal-' + ${popup.id}" class="popup-modal" th:style="'display: none;'">
+			<div class="popup-content">
+				<a th:href="@{/main/program/detail/{id}(id=${popup.id})}">
+					<img th:src="${popup.thumbnailSrc}" alt="팝업 이미지" class="popup-image" />
+				</a>
+				<div class="popup-footer">
+					<label>
+						<input type="checkbox" th:id="'dont-show-' + ${popup.id}" />
+						오늘 하루 보지 않기
+					</label>
+					<button th:id="'close-popup-btn-' + ${popup.id}" th:attr="data-id=${popup.id}">
+						닫기
+					</button>
+				</div>
+			</div>
+		</div>
+
+
 	</main>
 	<div th:replace="~{main/footer :: footer}"></div>
 
@@ -169,7 +189,44 @@
 
 	<!-- 공지사항 순서 수정 스크립트 -->
 	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const modals = document.querySelectorAll('.popup-modal');
 
+			modals.forEach(modal => {
+				const id = modal.id.replace('popup-modal-', '');
+
+				// localStorage 확인
+				const hideKey = 'popupHideUntil_' + id;
+				const hideUntil = localStorage.getItem(hideKey);
+				const now = new Date();
+
+				if (!hideUntil || new Date(hideUntil) <= now) {
+					modal.style.display = 'flex'; // 모달 띄우기
+				}
+
+				// 닫기 버튼
+				const closeBtn = document.getElementById('close-popup-btn-' + id);
+				const checkbox = document.getElementById('dont-show-' + id);
+
+				if (closeBtn) {
+					closeBtn.addEventListener('click', function () {
+						if (checkbox && checkbox.checked) {
+							const tomorrow = new Date();
+							tomorrow.setDate(tomorrow.getDate() + 1);
+							localStorage.setItem(hideKey, tomorrow.toISOString());
+						}
+						modal.style.display = 'none';
+					});
+				}
+
+				// 바깥 클릭 시 닫기
+				modal.addEventListener('click', function (e) {
+					if (e.target === modal) {
+						modal.style.display = 'none';
+					}
+				});
+			});
+		});
 	</script>
 </body>
 

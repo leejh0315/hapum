@@ -57,6 +57,12 @@ public class MainController {
 		addUserToModel(req, model);
 		List<ProgramAdd> programs = programService.selectAllProgramsMain();
 
+		
+		List<Program> popupProgram = programService.selectPopupProgram();
+		
+		
+		System.out.println(popupProgram);
+		
 		File folder = new File(uploadDir + "/news/");
 		File[] files = folder.listFiles();
 		List<String> fileNames = new ArrayList<>();
@@ -75,6 +81,8 @@ public class MainController {
 
 		List<Notification> notifications = notificationService.selectAll();
 
+		
+		model.addAttribute("popupProgram", popupProgram);
 		model.addAttribute("fileNames", fileNames);
 		model.addAttribute("programs", programs);
 		model.addAttribute("notifications", notifications);
@@ -249,11 +257,11 @@ public class MainController {
 
 	@GetMapping("/organization/{id}")
 	public String getOrganizationDetail(@RequestParam(name = "page", defaultValue = "1") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size, Model model, HttpServletRequest req,
+			@RequestParam(name = "size", defaultValue = "5") int size, Model model, HttpServletRequest req,
 			@PathVariable("id") Long id) {
 		addUserToModel(req, model);
 		List<Organization> organizationList = organizationService.selectAllOrganization();
-
+		Organization org = organizationService.selectOrganizationById(id);
 		List<OrganizationPost> organizationPost = organizationService.selectByOrgId(id, page, size);
 		int totalOrgPost = organizationService.getTotalOrgPost(id);
 		int totalPages = (int) Math.ceil((double) totalOrgPost / size);
@@ -263,6 +271,7 @@ public class MainController {
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("id", id);
+		model.addAttribute("org", org);
 		return "main/organizationDetail";
 	}
 

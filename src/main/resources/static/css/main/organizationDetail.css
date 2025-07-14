@@ -103,6 +103,17 @@ body {
 	cursor: pointer;
 	color: #333;
 	transition: background-color 0.3s;
+	
+	
+		white-space: nowrap;
+	/* 줄바꿈 금지 */
+	overflow: hidden;
+	/* 넘치는 부분 숨김 */
+	text-overflow: ellipsis;
+	/* 말줄임표 (…) 표시 */
+	font-size: 14px;
+	/* 기본 폰트 크기 고정 */
+	letter-spacing: normal;
 }
 
 .menu-button:hover {
@@ -126,7 +137,8 @@ body {
 /* 메인 콘텐츠 영역 */
 .content {
 	flex: 1;
-	padding: 20px;
+	padding-left: 5%;
+	padding-top: 5%;
 	background-color: #FFFFFF;
 }
 
@@ -140,6 +152,13 @@ body {
 #room-title {
 	font-size: 22px;
 	margin-bottom: 15px;
+}
+.menu-group{
+	width : 180px;
+}
+
+.org-link{
+	width: 160px;
 }
 
 /* 방 이미지 */
@@ -158,26 +177,45 @@ body {
 	justify-content: center;
 	/* 전체 중앙 정렬 */
 	gap: 20px;
-    grid-template-columns: repeat(5, 1fr);
-    margin-top: 3%;
+	grid-template-columns: repeat(5, 1fr);
+	margin-top: 3%;
 }
 
 .post-card {
 	width: 160px;
 	text-align: center;
+
+
+
+
 }
 
+
+
 .post-thumb {
-    width: 200px;
-    height: 200px;
-    object-fit: cover;
-/*    display: block;*/
+	width: 200px;
+	height: 200px;
+	object-fit: cover;
+	/*    display: block;*/
 }
 
 .post-title {
 	margin-top: 8px;
 	font-weight: 500;
 	color: #333;
+
+	white-space: nowrap;
+	/* 줄바꿈 금지 */
+	overflow: hidden;
+	/* 넘치는 부분 숨김 */
+	text-overflow: ellipsis;
+	/* 말줄임표 (…) 표시 */
+	font-size: 14px;
+	/* 기본 폰트 크기 고정 */
+	letter-spacing: normal;
+	/* 자간 기본 */
+
+
 }
 
 /* 페이지네이션 스타일 */
@@ -187,6 +225,7 @@ body {
 	justify-content: center;
 	padding: 0;
 	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 .pagination li {
@@ -213,4 +252,40 @@ body {
 .pagination li.disabled a {
 	color: #ccc;
 	pointer-events: none;
+}
+
+
+.pi-img {
+	width: 150px;
+	height: 150px;
+	object-fit: cover;
+
+}
+
+.program-intro {
+	display: flex;
+	flex-wrap: wrap;
+	/* 줄바꿈 허용 */
+	align-items: center;
+	gap: 20px;
+	margin-bottom: 3%;
+}
+
+.program-list {
+	margin-top: 3%;
+}
+
+.pi-ex {
+	width: 80%;
+	padding: 10px;
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	white-space: normal;
+	display: block;
+}
+
+.pi-ex * {
+	white-space: normal !important;
+	word-break: break-word;
+	overflow-wrap: break-word;
 }

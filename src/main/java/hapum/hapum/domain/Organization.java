@@ -10,4 +10,5 @@ public class Organization {
 	private String introduce;
 	private String profileSrc;
 	private String openStatus;
+	private int seq;
 }

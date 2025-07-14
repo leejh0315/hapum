@@ -274,5 +274,12 @@ public class ProgramService {
 	public List<ProgramAdd> selectAllProgramsMain(){
 		return programMapper.selectAllProgramsMain();
 	}
+	
+	public void changePopup(Long id, String code) {
+		programMapper.changePopup(id, code);
+	}
 
+	public List<Program> selectPopupProgram(){
+		return programMapper.selectPopupProgram();
+	} 
 }

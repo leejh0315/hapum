@@ -213,3 +213,58 @@
 .mobile-box{
 	display: none;
 }
+
+
+.popup-modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: rgba(0, 0, 0, 0.6);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 9999;
+}
+
+.popup-content {
+	position: relative;
+	background-color: #fff;
+	padding: 10px;
+	border-radius: 10px;
+	box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+	max-width: 90vw;
+	max-height: 90vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.popup-image {
+	width: 600px;
+	height: 600px;
+	
+	border-radius: 6px;
+	margin-bottom: 10px;
+}
+
+.popup-footer {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-size: 14px;
+}
+
+.popup-footer button {
+	background-color: #007bff;
+	color: white;
+	border: none;
+	padding: 5px 10px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+#close-popup-btn:hover {
+	background-color: #0056b3;
+}

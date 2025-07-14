@@ -6,7 +6,7 @@
 
 	<select id="selectAllOrganization"
 		resultType="hapum.hapum.domain.Organization">
-		SELECT * FROM hapumdb.organization where open_status='Y'
+		SELECT * FROM hapumdb.organization where open_status='Y' order by seq
 
 	</select>
 
@@ -19,8 +19,8 @@
 	<insert id="insertOrganization"
 		parameterType="hapum.hapum.domain.Organization">
 		INSERT INTO hapumdb.organization(name, introduce, profileSrc,
-		open_status)
-		VALUES(#{name}, #{introduce}, #{profileSrc}, 'Y');
+		open_status, seq)
+		VALUES(#{name}, #{introduce}, #{profileSrc}, 'Y', 99999);
 
 	</insert>
 
@@ -94,5 +94,13 @@
 		WHERE id = #{id}
 
 	</update>
+
+
+	<update id="updateSeq" parameterType="hapum.hapum.domain.OrganizationOrderDto">
+		UPDATE hapumdb.organization
+		SET seq = #{seq}
+		WHERE id = #{id}
+	</update>
+
 
 </mapper>
