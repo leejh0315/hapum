@@ -2,7 +2,11 @@ main {
 	display: flex;
 	flex-direction: column;
 }
-
+.pin-icon {
+	margin-left: 0.5vw;
+	color: #f39c12;
+	font-size: 0.9em;
+}
 html,
 body {
 	margin: 0;

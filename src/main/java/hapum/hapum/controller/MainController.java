@@ -48,33 +48,36 @@ public class MainController {
 	private final ReservationService reservationService;
 	private final OrganizationService organizationService;
 	private final NotificationService notificationService;
-	
+
 	@Value("${file.upload-dir}")
 	private String uploadDir; // e.g. "./uploads"
-	
-	
+
 	@GetMapping("/main")
 	public String getMain(HttpServletRequest req, Model model) {
 		addUserToModel(req, model);
-		List<Program> programs = programService.selectAllPrograms();
-		
-		File folder = new File(uploadDir+"/news/");
-        File[] files = folder.listFiles();  
-        List<String> fileNames = new ArrayList<>();
-        if (files != null) {
-            for (File f : files) {
-                if (f.isFile()) {
+		List<ProgramAdd> programs = programService.selectAllProgramsMain();
 
-                    fileNames.add("/uploads/news/"+f.getName());
-                }
-            }
-        }
-        
+		File folder = new File(uploadDir + "/news/");
+		File[] files = folder.listFiles();
+		List<String> fileNames = new ArrayList<>();
+
+		if (files != null) {
+			int count = 0;
+			for (File f : files) {
+				if (f.isFile()) {
+					fileNames.add("/uploads/news/" + f.getName());
+					count++;
+					if (count >= 20)
+						break; // 최대 20개까지만 추가
+				}
+			}
+		}
+
 		List<Notification> notifications = notificationService.selectAll();
 
 		model.addAttribute("fileNames", fileNames);
 		model.addAttribute("programs", programs);
-		model.addAttribute("notifications",notifications);
+		model.addAttribute("notifications", notifications);
 		return "main/main";
 	}
 
@@ -97,24 +100,23 @@ public class MainController {
 		model.addAttribute("programs", programAdd);
 		return "main/program";
 	}
-	
+
 	@GetMapping("/programList/{id}")
-	public String getProgramList(HttpServletRequest req, Model model,@PathVariable("id") Long id) {
+	public String getProgramList(HttpServletRequest req, Model model, @PathVariable("id") Long id) {
 		addUserToModel(req, model);
 		List<Program> programs = programService.selectProgramByAddId(id);
 		List<ProgramAdd> programAdds = programService.selectAllProgramAdd();
-				
-		Optional<ProgramAdd> result = programAdds.stream()
-			    .filter(p -> p.getId() == id)
-			    .findFirst();
-		
-		ProgramAdd pa = new ProgramAdd();; 
-		
+
+		Optional<ProgramAdd> result = programAdds.stream().filter(p -> p.getId() == id).findFirst();
+
+		ProgramAdd pa = new ProgramAdd();
+		;
+
 		if (result.isPresent()) {
-		    pa = result.get();
-		    // 사용
+			pa = result.get();
+			// 사용
 		}
-		
+
 		model.addAttribute("pa", pa);
 		model.addAttribute("programs", programs);
 		model.addAttribute("programAdds", programAdds);
@@ -128,9 +130,9 @@ public class MainController {
 		User user = (User) session.getAttribute("loginMember");
 
 		Program program = programService.selectProgramById(id);
-		
+
 		int applyCount = programService.getApplyCount(program.getId()); // 현재 신청자 수
-		
+
 		int remainingSeats = program.getCapacity() - applyCount;
 		List<ProgramSub> ps = programService.selectPrograSubmById(id);
 
@@ -156,40 +158,31 @@ public class MainController {
 	public int postProgramSubs(@RequestBody Program program, HttpServletRequest req) throws Exception {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
-		
+
 		int applyCount = programService.getApplyCount(program.getId());
-		
+
 		System.out.println(program);
-		
+
 		ProgramSub ps = new ProgramSub();
 		ps.setUserId(user.getId());
 		ps.setProgramId(program.getId());
-		
-		
+
 		ps.setOrgName(program.getNeedOrgName());
-		
-		
-		if(!program.getNeedPartCount().equals("N")) {
+
+		if (!program.getNeedPartCount().equals("N")) {
 			ps.setPartCount(Integer.parseInt(program.getNeedPartCount()));
-			
-			if(program.getCapacity()-applyCount < Integer.parseInt(program.getNeedPartCount())) {
+
+			if (program.getCapacity() - applyCount < Integer.parseInt(program.getNeedPartCount())) {
 				return 2;
 			}
 		}
-		
+
 		ps.setRelation(program.getNeedRelation());
-		
+
 		int temp = programService.programSub(ps);
 
-		
-		
-		
-		
-				
-		
-		
 		emailService.sendProgramMessage(user.getEmail(), program);
-		
+
 		return temp;
 	}
 
@@ -201,15 +194,13 @@ public class MainController {
 		List<FixedReservation> fixedReservations = reservationService.getFixedReservations();
 		List<Rental> rentals = reservationService.getRentals();
 
-		
 		List<Program> programs = programService.selectThisMonthProgram();
 		System.out.println(programs);
-		
 
 		model.addAttribute("blockedDays", blockedDays);
 		model.addAttribute("fixedReservations", fixedReservations);
 		model.addAttribute("rentals", rentals);
-		model.addAttribute("programs",programs);
+		model.addAttribute("programs", programs);
 		return "main/rental";
 	}
 
@@ -241,10 +232,10 @@ public class MainController {
 	@GetMapping("/news/detail/{id}")
 	public String getNewsDetail(@PathVariable("id") Long id, HttpServletRequest req, Model model) {
 		addUserToModel(req, model);
-		
+
 		News news = newsService.selectById(id);
 		model.addAttribute("news", news);
-		
+
 		return "main/news/newsDetail";
 	}
 
@@ -252,50 +243,48 @@ public class MainController {
 	public String getOrganizationList(Model model, HttpServletRequest req) {
 		addUserToModel(req, model);
 		List<Organization> organizationList = organizationService.selectAllOrganization();
-		model.addAttribute("organizationList",organizationList);
+		model.addAttribute("organizationList", organizationList);
 		return "main/organizationList";
 	}
 
 	@GetMapping("/organization/{id}")
 	public String getOrganizationDetail(@RequestParam(name = "page", defaultValue = "1") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size,Model model, HttpServletRequest req, @PathVariable("id")Long id) {
+			@RequestParam(name = "size", defaultValue = "10") int size, Model model, HttpServletRequest req,
+			@PathVariable("id") Long id) {
 		addUserToModel(req, model);
 		List<Organization> organizationList = organizationService.selectAllOrganization();
-		
-		List<OrganizationPost> organizationPost = organizationService.selectByOrgId(id, page,size);
+
+		List<OrganizationPost> organizationPost = organizationService.selectByOrgId(id, page, size);
 		int totalOrgPost = organizationService.getTotalOrgPost(id);
 		int totalPages = (int) Math.ceil((double) totalOrgPost / size);
-		
-		
-		
-		model.addAttribute("organizationList",organizationList);
+
+		model.addAttribute("organizationList", organizationList);
 		model.addAttribute("organizationPost", organizationPost);
 		model.addAttribute("currentPage", page);
 		model.addAttribute("totalPages", totalPages);
 		model.addAttribute("id", id);
 		return "main/organizationDetail";
 	}
-	
+
 	@GetMapping("/organization/{orgId}/post/{id}")
-	public String getOrganizationPost(HttpServletRequest req, Model model, @PathVariable("id")Long id, @PathVariable("orgId") Long orgId) {
+	public String getOrganizationPost(HttpServletRequest req, Model model, @PathVariable("id") Long id,
+			@PathVariable("orgId") Long orgId) {
 		addUserToModel(req, model);
 		OrganizationPost organizationPost = organizationService.selectOrgPostById(id);
 		List<Organization> organizationList = organizationService.selectAllOrganization();
-		model.addAttribute("organizationList",organizationList);
+		model.addAttribute("organizationList", organizationList);
 		model.addAttribute("organizationPost", organizationPost);
 		model.addAttribute("id", orgId);
 		return "main/organizationView";
 	}
-	
+
 	@GetMapping("/notification/detail/{id}")
-	public String getNotificationDetail(@PathVariable("id")Long id, Model model, HttpServletRequest req) {
+	public String getNotificationDetail(@PathVariable("id") Long id, Model model, HttpServletRequest req) {
 		addUserToModel(req, model);
 		Notification notification = notificationService.selectById(id);
-		model.addAttribute("notification",notification);
+		model.addAttribute("notification", notification);
 		return "main/notification-detail";
 	}
-	
-	
 
 	// 공통 코드 중복 제거
 	private void addUserToModel(HttpServletRequest req, Model model) {

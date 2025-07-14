@@ -5,6 +5,12 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>하품센터</title>
+
+	<meta property="og:title" content="하품센터" />
+	<meta property="og:description" content="천주교 대전교구 천안지역 청소년 사목 하품센터" />
+	<meta property="og:image" content="/img/main.png" />
+	<meta property="og:url" content="https://hapum.org/main/main" />
+
 	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
 	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
 
@@ -39,12 +45,12 @@
 						</div>
 					</div>
 					<div class="mobile-btn">
-						<button class="btn btn1">센터소개</button>
-						<button class="btn btn2">시설안내</button>
-						<button class="btn btn3">프로그램</button>
-						<button class="btn btn4">대관신청</button>
-						<button class="btn btn5">갤러리</button>
-						<button class="btn btn6">단체소식</button>
+						<button class="btn btn1" onclick="location.href='/main/introduce'">센터소개</button>
+						<button class="btn btn2" onclick="location.href='/main/information'">시설안내</button>
+						<button class="btn btn3" onclick="location.href='/main/program'">프로그램</button>
+						<button class="btn btn4" onclick="location.href='/main/rental'">대관신청</button>
+						<button class="btn btn5" onclick="location.href='/main/news'">갤러리</button>
+						<button class="btn btn6" onclick="location.href='/main/organization'">단체소식</button>
 					</div>
 				</div>
 			</div>

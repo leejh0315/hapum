@@ -22,6 +22,7 @@ import hapum.hapum.domain.ProgramSub;
 import hapum.hapum.domain.ProgramWithSub;
 import hapum.hapum.mapper.ProgramMapper;
 import lombok.RequiredArgsConstructor;
+import net.coobird.thumbnailator.Thumbnails;
 
 @Service
 @RequiredArgsConstructor
@@ -50,7 +51,12 @@ public class ProgramService {
 			Files.createDirectories(filePath.getParent());
 
 			// 실제 파일 저장
-			imageFile.transferTo(filePath.toFile());
+			Thumbnails.of(imageFile.getInputStream())
+	          .size(800, 800)              // 크기 제한 (비율 유지)
+	          .outputQuality(0.7f)         // 품질 70% (용량 줄이기)
+	          .toFile(filePath.toFile());
+			
+			//imageFile.transferTo(filePath.toFile());
 
 			// DB에 저장할 경로 설정 (웹에서 접근 가능한 상대경로)
 			String dbFilePath = "/uploads/program/" + uniqueFileName;
@@ -87,7 +93,11 @@ public class ProgramService {
 			Files.createDirectories(filePath.getParent());
 
 			// 실제 파일 저장
-			imageFile.transferTo(filePath.toFile());
+			Thumbnails.of(imageFile.getInputStream())
+	          .size(800, 800)              // 크기 제한 (비율 유지)
+	          .outputQuality(0.7f)         // 품질 70% (용량 줄이기)
+	          .toFile(filePath.toFile());
+			//imageFile.transferTo(filePath.toFile());
 
 			// DB에 저장할 경로 설정 (웹에서 접근 가능한 상대경로)
 			String dbFilePath = "/uploads/program/" + uniqueFileName;
@@ -117,7 +127,11 @@ public class ProgramService {
 			Files.createDirectories(filePath.getParent());
 
 			// 실제 파일 저장
-			imageFile.transferTo(filePath.toFile());
+			Thumbnails.of(imageFile.getInputStream())
+	          .size(800, 800)              // 크기 제한 (비율 유지)
+	          .outputQuality(0.7f)         // 품질 70% (용량 줄이기)
+	          .toFile(filePath.toFile());
+			//imageFile.transferTo(filePath.toFile());
 
 			// DB에 저장할 경로 설정 (웹에서 접근 가능한 상대경로)
 			String dbFilePath = "/uploads/program/thumbnail/" + uniqueFileName;
@@ -145,7 +159,11 @@ public class ProgramService {
 			Files.createDirectories(filePath.getParent());
 
 			// 실제 파일 저장
-			imageFile.transferTo(filePath.toFile());
+			Thumbnails.of(imageFile.getInputStream())
+	          .size(800, 800)              // 크기 제한 (비율 유지)
+	          .outputQuality(0.7f)         // 품질 70% (용량 줄이기)
+	          .toFile(filePath.toFile());
+//			imageFile.transferTo(filePath.toFile());
 
 			// DB에 저장할 경로 설정 (웹에서 접근 가능한 상대경로)
 			String dbFilePath = "/uploads/program/thumbnail/" + uniqueFileName;
@@ -253,5 +271,8 @@ public class ProgramService {
 		programMapper.deleteProgramAdd(id);
 	}
 	
+	public List<ProgramAdd> selectAllProgramsMain(){
+		return programMapper.selectAllProgramsMain();
+	}
 
 }

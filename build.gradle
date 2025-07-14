@@ -40,6 +40,9 @@ dependencies {
 	
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	
+	//사진크기 압축
+	implementation 'net.coobird:thumbnailator:0.4.20'
+	
 	//지우기
 	//runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 		implementation 'org.jsoup:jsoup:1.17.2'

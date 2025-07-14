@@ -51,6 +51,13 @@
 		ORDER BY id DESC
 	</select>
 
+
+	<select id="selectAllProgramsMain" resultType="hapum.hapum.domain.ProgramAdd">
+		SELECT * FROM hapumdb.program_add WHERE open_status='Y'
+	</select>
+
+
+
 	<select id="selectProgramById" resultType="hapum.hapum.domain.Program">
 		SELECT * FROM hapumdb.program WHERE id = #{id}
 	</select>

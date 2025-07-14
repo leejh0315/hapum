@@ -9,6 +9,11 @@
 	font-size: 0.9em;
 }
 
+.left-section h3{
+	position: relative;
+	left: 15px;
+}
+
 .order-col {
 	display: none;
 	width: 5vw;

@@ -78,7 +78,7 @@
 	.program-list {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 6%;
+		gap: 9%;
 		justify-content: center;
 		/* 추가: 내부 항목들 가운데 정렬 */
 	}
@@ -90,6 +90,7 @@
 		border: 1px solid #ddd;
 		border-radius: 8px;
 		text-align: center;
+		margin-top: 5%;
 	}
 
 

@@ -2,7 +2,6 @@ package hapum.hapum.controller.user;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -26,6 +25,7 @@ import com.google.gson.JsonObject;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
+import net.coobird.thumbnailator.Thumbnails;
 @Controller
 public class SummernoteController {
 
@@ -61,8 +61,10 @@ public class SummernoteController {
         File targetFile = new File(uploadDir + "/temp/", savedFileName);
 
         try {
-            InputStream fileStream = multipartFile.getInputStream();
-            FileUtils.copyInputStreamToFile(fileStream, targetFile);
+        	Thumbnails.of(multipartFile.getInputStream())
+            .size(800, 800)         // ✅ 크기 제한 (최대 800px, 비율 유지)
+            .outputQuality(0.7f)    // ✅ 품질 70%로 압축
+            .toFile(targetFile); 
             // temp 폴더에 저장했으므로 반환 경로도 변경합니다.
             jsonObject.addProperty("src", "/uploads/temp/" + savedFileName);
             jsonObject.addProperty("responseCode", "success");

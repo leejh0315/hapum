@@ -59,7 +59,8 @@
 
 	.content {
 		flex-direction: column;
-		width: 100%;
+		width: 90%;
+		padding: 5%;
 		font-size: small;
 		flex: 1;
 	}

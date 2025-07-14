@@ -16,7 +16,7 @@ body {
 	gap: 10px;
 	/* 사이드바와 메인 콘텐츠 간 간격은 유지 */
 	box-sizing: border-box;
-
+	height: max-content;
 }
 
 
@@ -99,6 +99,12 @@ ul ul li{
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
+}
+
+
+#room-content img{
+	min-width: 400px;
+	height: auto;
 }
 
 /* 타임테이블 영역 - 고정 폭 제거하고 유동 폭으로 변경 */

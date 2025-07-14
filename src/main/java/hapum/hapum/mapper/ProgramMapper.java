@@ -46,4 +46,6 @@ public interface ProgramMapper {
 	 void deleteProgramSubs(@Param("id")Long id);
 	 void deleteProgram(@Param("id") Long id);
 	 void deleteProgramAdd(@Param("id") Long id);
+	 
+	 List<ProgramAdd> selectAllProgramsMain();
 }

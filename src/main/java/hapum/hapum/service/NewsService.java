@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import hapum.hapum.domain.News;
 import hapum.hapum.mapper.NewsMapper;
+import net.coobird.thumbnailator.Thumbnails;
 
 @Service
 public class NewsService{
@@ -66,7 +67,14 @@ public class NewsService{
             File destFile = new File(targetDirectory, savedFilename);
             try {
                 // 파일을 지정한 위치로 저장
-                photo.transferTo(destFile);
+            	Thumbnails.of(photo.getInputStream())
+                .size(800, 800)              // 최대 크기 제한 (비율 유지)
+                .outputQuality(0.7f)         // 품질을 70%로 낮춰 압축
+                .toFile(destFile);   
+            	
+            	//photo.transferTo(destFile);
+            	
+            	
                 // News 객체의 썸네일 경로 업데이트 (웹 접근 경로)
                 news.setThumbnailSrc("/uploads/news/" + savedFilename);
             } catch (Exception e) {
@@ -93,7 +101,13 @@ public class NewsService{
              File destFile = new File(targetDirectory, savedFilename);
              try {
                  // 파일을 지정한 위치로 저장
-                 photo.transferTo(destFile);
+            	 Thumbnails.of(photo.getInputStream())
+                 .size(800, 800)              // 최대 크기 제한 (비율 유지)
+                 .outputQuality(0.7f)         // 품질을 70%로 낮춰 압축
+                 .toFile(destFile);   
+             	
+            	 
+//                 photo.transferTo(destFile);
                  // News 객체의 썸네일 경로 업데이트 (웹 접근 경로)
                  news.setThumbnailSrc("/uploads/news/" + savedFilename);
              } catch (Exception e) {
