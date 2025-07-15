@@ -134,6 +134,10 @@ public class NewsService{
 	public void deleteNews(Long newsId, String code) {
 		newsMapper.deleteNews(newsId);
 	}
+	
+	public List<News> select20news() {
+		return newsMapper.select20news();
+	}
 
 }
 

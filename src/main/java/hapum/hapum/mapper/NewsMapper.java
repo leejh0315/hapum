@@ -15,4 +15,5 @@ public interface NewsMapper {
 	News selectById(@Param("id")Long id);
 	void deleteNews(@Param("newsId") Long newsId);
 	void updateNewsDetail(News news);
+	List<News> select20news();
 }

@@ -1,9 +1,9 @@
 /* 기본 공통 스타일 */
 * {
+	font-family: 'Malgun Gothic', '맑은 고딕', sans-serif ;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    white-space: nowrap;  /* 텍스트가 줄바꿈되지 않도록 */
 }
 
 /* 헤더 최상단 영역 */
@@ -26,7 +26,7 @@
 	height: 50px;
 	opacity: 0.5;
 	position: absolute;
-	left: 295px;
+	left: 315px;
 }
 
 /* 좌측 헤더 (교구 및 센터명) */

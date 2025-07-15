@@ -145,7 +145,7 @@ public class OrganizationService {
 				// 필요한 경우 에러 처리 (예: 예외 던지기)
 			}
 		} else {
-			organization.setProfileSrc(null);
+			
 		}
 
 		organizationMapper.updateOrganization(organization);

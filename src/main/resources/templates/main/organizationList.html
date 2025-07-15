@@ -12,7 +12,7 @@
 	<link rel="stylesheet" th:href="@{/css/main/organization.css}" media="only screen and (min-width: 769px)">
 	<link rel="stylesheet" th:href="@{/css/main/mobile/organization.css}" media="only screen and (max-width: 768px)">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-	
+
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
@@ -48,9 +48,9 @@
 				</div>
 			</div>
 		</div>
+		<div th:replace="~{main/footer :: footer}"></div>
 	</div>
 
-	<div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
 </body>
 

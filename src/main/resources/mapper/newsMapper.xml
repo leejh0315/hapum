@@ -41,6 +41,10 @@
 		open_status = #{openStatus}
 		WHERE id = #{id}
 	</update>
+	
+	<select id="select20news" resultType="hapum.hapum.domain.News">
+		SELECT * FROM hapumdb.news ORDER BY id DESC LIMIT 20;
+	</select>
 
 
 </mapper>

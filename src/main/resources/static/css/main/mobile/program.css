@@ -29,6 +29,19 @@
 		border: none;
 	}
 
+	.badge-ended {
+		position: absolute;
+		top: 8px;
+		right: 8px;
+		background-color: #D6CCC2;
+		color: white;
+		padding: 4px 8px;
+		border-radius: 4px;
+		font-size: 12px;
+		font-weight: bold;
+		z-index: 10;
+	}
+
 	.menu-group {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
@@ -52,8 +65,9 @@
 		color: #333;
 		cursor: pointer;
 		transition: background-color 0.2s ease;
-				border: 1px solid #D6CCC2;
+		border: 1px solid #D6CCC2;
 	}
+
 	.menu-button.current {
 		background-color: #D5BDAF;
 		color: white;
@@ -91,6 +105,8 @@
 		border-radius: 8px;
 		text-align: center;
 		margin-top: 5%;
+		position: relative;
+		display: block;
 	}
 
 

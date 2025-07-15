@@ -281,5 +281,8 @@ public class ProgramService {
 
 	public List<Program> selectPopupProgram(){
 		return programMapper.selectPopupProgram();
-	} 
+	}
+	public List<Program> selectHomeProgram(){
+		return programMapper.selectHomeProgram();
+	}
 }

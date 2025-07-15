@@ -104,9 +104,7 @@ body {
 	color: #333;
 	transition: background-color 0.3s;
 	
-  white-space: nowrap;       /* 줄바꿈 금지 */
   overflow: hidden;          /* 넘치는 부분 숨김 */
-  text-overflow: ellipsis;   /* 말줄임표 (…) 표시 */
   font-size: clamp(12px, 2vw, 16px); /* 뷰포트 크기에 따라 폰트 크기 유동 조절 */
   letter-spacing: normal;
 	
@@ -148,6 +146,7 @@ body {
   text-overflow: ellipsis;   /* 말줄임표 (…) 표시 */
   font-size: clamp(12px, 2vw, 16px); /* 뷰포트 크기에 따라 폰트 크기 유동 조절 */
   letter-spacing: normal;
+  
 	
 }
 

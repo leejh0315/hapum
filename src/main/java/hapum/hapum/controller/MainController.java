@@ -55,35 +55,21 @@ public class MainController {
 	@GetMapping("/main")
 	public String getMain(HttpServletRequest req, Model model) {
 		addUserToModel(req, model);
-		List<ProgramAdd> programs = programService.selectAllProgramsMain();
+//		List<ProgramAdd> programs = programService.selectAllProgramsMain();
 
+		List<Program> programs = programService.selectHomeProgram();
 		
 		List<Program> popupProgram = programService.selectPopupProgram();
 		
+		List<News> news = newsService.select20news();
 		
-		System.out.println(popupProgram);
 		
-		File folder = new File(uploadDir + "/news/");
-		File[] files = folder.listFiles();
-		List<String> fileNames = new ArrayList<>();
-
-		if (files != null) {
-			int count = 0;
-			for (File f : files) {
-				if (f.isFile()) {
-					fileNames.add("/uploads/news/" + f.getName());
-					count++;
-					if (count >= 20)
-						break; // 최대 20개까지만 추가
-				}
-			}
-		}
-
 		List<Notification> notifications = notificationService.selectAll();
 
 		
 		model.addAttribute("popupProgram", popupProgram);
-		model.addAttribute("fileNames", fileNames);
+
+		model.addAttribute("news",news);
 		model.addAttribute("programs", programs);
 		model.addAttribute("notifications", notifications);
 		return "main/main";

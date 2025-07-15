@@ -44,6 +44,18 @@ body {
 	color: #333;
 }
 
+.badge-ended {
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	background-color:#D6CCC2;
+	color: white;
+	padding: 4px 8px;
+	border-radius: 4px;
+	font-size: 12px;
+	font-weight: bold;
+	z-index: 10;
+}
 
 /* 메뉴 버튼 (세로 정렬) */
 .menu-button {
@@ -103,6 +115,8 @@ body {
 	border: 1px solid #ddd;
 	border-radius: 8px;
 	text-align: center;
+	position: relative;
+	display: block;
 }
 
 .program-card img {

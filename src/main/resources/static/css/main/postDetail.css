@@ -11,13 +11,14 @@
 /* 사이드바: 상단 패딩 제거 */
 .sidebar {
 	width: 180px;
+	min-width: 180px;
 	background-color: #D6CCC2;
-	/* 사이드바 전체 배경색 */
 	border-right: 1px solid #D5BDAF;
 	display: flex;
 	flex-direction: column;
 	padding: 0 0 20px 0;
-	/* 상단 패딩을 0으로 설정, 하단만 남김 */
+	box-sizing: border-box;
+	flex-shrink: 0; /* content가 커져도 줄어들지 않게 */
 }
 
 /* 사이드바 제목: 상단 여백 제거하여 맨 위에 붙게 함 */
@@ -51,6 +52,8 @@
 	cursor: pointer;
 	color: #000;
 	transition: background-color 0.3s;
+	
+	white-space: normal;   /* ✅ 줄바꿈 허용 */
 }
 
 
@@ -59,7 +62,7 @@
 }
 
 .post-title {
-	font-size: 3em;
+	font-size: 1.5em;
 	margin-bottom: 20px;
 	font-weight: 400;
 }
@@ -69,14 +72,16 @@
 }
 
 .content {
-	width: 80%;
-	max-width: 100vw;
+	flex: 1;
+	overflow: auto;
+	box-sizing: border-box;
+	padding: 5%;
 }
 
 .post-content {
 	margin-top: 3%;
+	overflow: auto;
 }
-
 .post-content {
 	overflow: auto;
 }

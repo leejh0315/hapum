@@ -44,10 +44,13 @@
 
 			</div>
 			<hr>
-
+<!--th:if="${program.openStatus == 'Y'}"-->
 			<div class="program-list">
-				<a th:each="program : ${programs}" th:if="${program.openStatus == 'Y'}"
+				<a th:each="program : ${programs}" 
 					th:href="@{/main/program/detail/{id}(id=${program.id})}" class="program-card">
+							<th:block th:if="${program.openStatus == 'N'}">
+								<div class="badge-ended">종료</div>
+							</th:block>
 					<img th:src="@{${program.thumbnailSrc}}" alt="썸네일 이미지" />
 					<div class="program-title" th:text="${program.title}"></div>
 				</a>

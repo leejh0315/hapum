@@ -192,7 +192,8 @@ public class AdminController {
 	public String updateOrganization(@PathVariable("orgId") Long orgId,
 	                                 Organization organization,
 	                                 @RequestParam("photo") MultipartFile photo) throws IOException {
-	    organization.setId(orgId); // ID 수동 세팅
+		organization.setId(orgId); // ID 수동 세팅
+	    
 	    organizationService.updateOrganization(organization, photo);
 	    return "redirect:/admin/organization";
 	}

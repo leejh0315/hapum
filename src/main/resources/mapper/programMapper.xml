@@ -52,10 +52,10 @@
 	</select>
 
 
-	<select id="selectAllProgramsMain" resultType="hapum.hapum.domain.ProgramAdd">
+	<select id="selectAllProgramsMain"
+		resultType="hapum.hapum.domain.ProgramAdd">
 		SELECT * FROM hapumdb.program_add WHERE open_status='Y'
 	</select>
-
 
 
 	<select id="selectProgramById" resultType="hapum.hapum.domain.Program">
@@ -186,7 +186,7 @@
 	</select>
 
 	<select id="selectProgramByAddId">
-		SELECT *FROM hapumdb.program WHERE add_id=#{id}
+		select * from hapumdb.program where add_id =#{id} order by open_status desc,  start_date
 	</select>
 
 	<select id="selectThisMonthProgram" resultType="hapum.hapum.domain.Program">
@@ -245,7 +245,7 @@
 		open_status = #{openStatus}
 		WHERE id = #{id}
 	</update>
-	
+
 	<delete id="deleteProgramSubs">
 		DELETE from hapumdb.program_subs WHERE id=#{id}
 	</delete>
@@ -253,18 +253,30 @@
 	<delete id="deleteProgram">
 		DELETE from hapumdb.program WHERE id=#{id}
 	</delete>
-	
+
 	<delete id="deleteProgramAdd">
 		DELETE from hapumdb.program_add WHERE id=#{id}
 	</delete>
-	
+
 	<update id="changePopup">
 		UPDATE hapumdb.program SET is_popup=#{code}
 		WHERE id=#{id}
 	</update>
-	
+
 	<select id="selectPopupProgram" resultType="hapum.hapum.domain.Program">
 		SELECT * FROM hapumdb.program WHERE is_popup='Y'
+	</select>
+
+	<select id="selectHomeProgram" resultType="hapum.hapum.domain.Program">
+		SELECT p.*
+		FROM hapumdb.program p
+		INNER JOIN (
+		SELECT add_id, MAX(start_date) AS max_start_date
+		FROM hapumdb.program
+		GROUP BY add_id
+		) latest
+		ON p.add_id = latest.add_id
+		AND p.start_date = latest.max_start_date;
 	</select>
 
 </mapper>

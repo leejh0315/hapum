@@ -105,11 +105,9 @@ body {
 	transition: background-color 0.3s;
 	
 	
-		white-space: nowrap;
 	/* 줄바꿈 금지 */
 	overflow: hidden;
 	/* 넘치는 부분 숨김 */
-	text-overflow: ellipsis;
 	/* 말줄임표 (…) 표시 */
 	font-size: 14px;
 	/* 기본 폰트 크기 고정 */

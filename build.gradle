@@ -44,7 +44,7 @@ dependencies {
 	implementation 'net.coobird:thumbnailator:0.4.20'
 	
 	//지우기
-	//runtimeOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 		implementation 'org.jsoup:jsoup:1.17.2'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.springframework.boot:spring-boot-starter-data-redis' //redis

@@ -5,16 +5,16 @@
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>하품센터-프로그램</title>
-<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
 	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
 
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
-	
+
 	<link rel="stylesheet" th:href="@{/css/main/programDetail.css}" media="only screen and (min-width: 769px)">
 	<link rel="stylesheet" th:href="@{/css/main/mobile/programDetail.css}" media="only screen and (max-width: 768px)">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-	
+
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<style>
 		.text {
@@ -76,17 +76,32 @@
 						신청인원: <span th:text="${applyCount}"></span>/<span th:text="${program.capacity}"></span>명
 					</div>
 
-					<th:block th:if="${user == null}">
-						<button class="apply-btn" disabled title="로그인 후 신청 가능합니다">로그인 필요</button>
+					<th:block th:if="${program.openStatus == 'N'}">
+
 					</th:block>
+
+					<th:block th:if="${user == null}">
+						<th:block th:if="${program.openStatus == 'N'}">
+							<button class="apply-btn" disabled title="종료된 프로그램입니다">종료된 프로그램</button>
+						</th:block>
+						<th:block th:if="${program.openStatus == 'Y'}">
+							<button class="apply-btn" disabled title="로그인 후 신청 가능합니다">로그인 필요</button>
+						</th:block>
+					</th:block>
+
 					<th:block th:if="${user != null}">
+						<th:block th:if="${program.openStatus == 'N'}">
+							<button class="apply-btn" disabled title="종료된 프로그램입니다">종료된 프로그램</button>
+						</th:block>
+
 						<th:block th:if="${flag == 'Y'}">
 							<button class="apply-btn" disabled>신청완료</button>
 						</th:block>
+
 						<th:block th:if="${flag != 'Y' and applyCount >= program.capacity}">
 							<button class="apply-btn" disabled>신청마감</button>
 						</th:block>
-						<th:block th:if="${flag != 'Y' and applyCount < program.capacity}">
+						<th:block th:if="${flag != 'Y' and applyCount < program.capacity and program.openStatus=='Y'}">
 							<button class="apply-btn" id="openPrivacyModalBtn">신청하기</button>
 						</th:block>
 					</th:block>

@@ -52,4 +52,5 @@ public interface ProgramMapper {
 	 void changePopup(@Param("id")Long id, @Param("code") String code);
 	 
 	 List<Program>selectPopupProgram();
+	 List<Program> selectHomeProgram();
 }

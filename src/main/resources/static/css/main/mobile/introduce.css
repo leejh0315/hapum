@@ -19,6 +19,9 @@
 
 	}
 
+.greetings{
+	display: none;
+}
 	/* 1행: 제목 */
 	.sidebar-title {
 		width: 100%;
