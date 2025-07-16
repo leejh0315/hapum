@@ -42,4 +42,16 @@
 		UPDATE hapumdb.notification SET is_top=#{isTop}, order_num=#{orderNum}
 		WHERE id=#{id}
 	</update>
+	
+	<delete id="deleteByNotification">
+		DELETE FROM hapumdb.notification WHERE id=#{id}
+	</delete>
+	
+	<update id="updateNotification">
+		UPDATE hapumdb.notification 
+		SET
+			title=#{title},
+			content=#{content}
+		WHERE id=#{id}
+	</update>
 </mapper>

@@ -42,6 +42,9 @@ public class AdminProgramController {
 	
 	@PostMapping("/program/add")
 	public String postProgramAdd(ProgramAdd programAdd, @RequestParam("photo") MultipartFile photo) throws IOException {
+		
+		
+		
 		programService.insertProgramAdd(programAdd, photo);
 		return "admin/main";
 	}

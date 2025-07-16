@@ -16,4 +16,6 @@ public interface NotificationMapper {
 	void updateOrder(Notification notification);
 	void toggleTop(Notification notification);
 	void toggleDown(Notification notification);
+	void deleteByNotification(@Param("id") Long id);
+	void updateNotification(Notification notification);
 }

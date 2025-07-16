@@ -57,11 +57,27 @@
 				<p class="post-view-date" th:text="${#temporals.format(notification.createOn, 'yyyy-MM-dd HH:mm')}">
 					2025-06-15 14:30
 				</p>
-
+				<div th:if="${user != null and user.email == 'admin'}" style="margin-top: 10px; text-align: right;">
+					<form th:action="@{/admin/notification/delete/{id}(id=${notification.id})}" method="post"
+						onsubmit="return confirm('이 게시글을 삭제하시겠습니까??');">
+						
+						<button type="submit"
+							style="background-color: orange; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+							게시글 삭제
+						</button>
+					</form>
+					<a th:href="@{/admin/notification/updateNoti/{id}(id=${notification.id})}" class="icon-button" title="수정"
+						style="margin-top: 10px;">
+						<button
+							style="background-color: orange; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">수정하기</button>
+					</a>
+				</div>
 				<!-- 썸네일 -->
 
 
 				<!-- 본문 (HTML 렌더링) -->
+				<br>
+				<hr>
 				<div class="post-view-body" th:utext="${notification.content}">
 					소식 본문 내용...
 				</div>

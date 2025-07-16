@@ -6,7 +6,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title>프로그램 개설</title>
 	<link href="https://fonts.googleapis.com/css2?family=Pretendard&display=swap" rel="stylesheet" />
-
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
+	<!-- jQuery + Summernote JS -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
 	<!-- flatpickr CSS -->
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 	<link rel="stylesheet" th:href="@{/css/admin/openProgram.css}" />
@@ -83,7 +86,7 @@
 
 			<div class="program-form-group">
 				<label for="content">내용</label>
-				<textarea id="content" name="content" rows="5" placeholder="프로그램 내용을 입력해주세요"></textarea>
+				<textarea id="summernote" name="content" placeholder="내용을 입력하세요"></textarea>
 			</div>
 
 			<div class="program-form-group">
@@ -140,6 +143,30 @@
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 	<script th:src="@{/js/admin/openProgram.js}"></script>
+
+	<script>
+		$(function () {
+			$('#summernote').summernote({
+				height: 300,
+				placeholder: '프로그램 내용을 입력하세요...',
+				toolbar: [
+					// 글자 스타일
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					// 글자 크기, 색상
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					// 단락 관련
+					['para', ['ul', 'ol', 'paragraph']],
+					// 정렬
+					['height', ['height']],
+					// 링크 삽입 등
+					['insert', ['link']],
+					// 코드 보기 등
+					['view', ['codeview']]
+				]
+			});
+		});
+	</script>
 </body>
 
 </html>

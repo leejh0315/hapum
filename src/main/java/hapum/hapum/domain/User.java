@@ -16,7 +16,8 @@ public class User {
     private String cathedral;
     private String baptismName;
     private String statusCode;
-
+    private String isAdmin;
+    
 	public UserResponse toResponseDTO() {
 		return UserResponse.builder()
 				.id(this.id)

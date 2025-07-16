@@ -26,7 +26,7 @@ public class AdminInterceptor implements HandlerInterceptor {
         if (user != null && user instanceof User) {
 //            User user = (User) sessionObj;
             // 관리자 판단 로직: username 또는 role 기준
-            if ("admin".equals(user.getEmail())) {
+            if (user.getIsAdmin().equals("Y")) {
                 return true; // 관리자면 통과
             }
         }

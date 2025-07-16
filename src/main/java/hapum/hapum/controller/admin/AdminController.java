@@ -368,6 +368,28 @@ public class AdminController {
 	    return ResponseEntity.ok().build();
 	}
 	
+	@PostMapping("/notification/delete/{id}")
+	public String deleteNotification(@PathVariable("id") Long id) {
+		notificationService.deleteByNotification(id);		
+		return "redirect:/";
+	}
+	
+	@GetMapping("/notification/updateNoti/{id}")
+	public String updateNotification(@PathVariable("id")Long id, Model model) {
+		
+		Notification notification = notificationService.selectById(id);
+		model.addAttribute("notification", notification);
+		
+		return "admin/updateNotification";
+	}
+	
+	@PostMapping("/notification/updateNotification/{id}")
+	public String postUpdateNoti(@PathVariable("id")Long id, Notification notificaton) {
+		notificationService.updateNotification(notificaton);
+		return "redirect:/main/notification/detail/"+id.toString();
+	}
+	
+	
 	
 
 }

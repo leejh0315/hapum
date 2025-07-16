@@ -38,4 +38,12 @@ public class NotificationService {
 	public void toggleDown(Notification notification) {
 		notificationMapper.toggleDown(notification);
 	}
+	
+	public void deleteByNotification(Long id) {
+		notificationMapper.deleteByNotification(id);
+	}
+	
+	public void updateNotification(Notification notification) {
+		notificationMapper.updateNotification(notification);
+	}
 }
