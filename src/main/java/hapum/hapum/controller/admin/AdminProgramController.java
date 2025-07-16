@@ -85,8 +85,6 @@ public class AdminProgramController {
 	@PostMapping("/programAdd/updateCode/{addId}")
 	public String updateProgramAddOpenStatus(@PathVariable("addId") Long addId,  @RequestParam("code") String code) {
 	    // 상태를 Y <-> N 으로 전환
-		System.out.println(addId);
-		System.out.println(code);
 	    programService.updateProgramAddStatus(addId, code.equals("Y") ? "N" : "Y");
 	    return "redirect:/admin/programs";
 	}
@@ -156,7 +154,6 @@ public class AdminProgramController {
 	public String updateProgramAdd(@PathVariable("id") Long id,
 	                               ProgramAdd programAdd, 
 	                               @RequestParam("photo") MultipartFile photo) throws IOException {
-		System.out.println(programAdd);
 		programService.updateProgramAdd(programAdd, photo);
 		return "redirect:/admin/programs";
 	}

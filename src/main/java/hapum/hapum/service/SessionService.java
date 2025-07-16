@@ -27,10 +27,8 @@ public class SessionService {
 
 	public void remove(HttpServletRequest req) {
 		Cookie cookie = findCookie(req, SESSION_COOKIE_NAME);
-		System.out.println("여기는 오나");
 		if(cookie != null) {
 			sessionMap.remove(cookie.getValue());
-			System.out.println("지우기");
 		}
 	}
 

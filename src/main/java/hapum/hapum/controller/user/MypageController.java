@@ -23,10 +23,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/main/mypage")
 @RequiredArgsConstructor
+@Slf4j
 public class MypageController {
 	
 	
@@ -59,9 +61,6 @@ public class MypageController {
 	public String postOut(@PathVariable("id")Long id, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
-		
-		System.out.println("session유저 : " + user.getId());
-		System.out.println("요청경로 :" + id);
 		
 		if(user.getId() == id) {
 			
@@ -110,7 +109,10 @@ public class MypageController {
             model.addAttribute("activeTab", "update");
             return "mypage/update";
         }
-        
+        log.info("User '{}' (ID: {}) is updating profile with data: {}", 
+                user != null ? user.getName() : "guest", 
+                user != null ? user.getId() : "N/A",
+                updateForm);
         updateForm.setId(user.getId());
         userAuthService.updateUser(updateForm); // 실제 업데이트 로직 호출
         User refreshUser = userAuthService.selectById(user.getId());
@@ -132,7 +134,6 @@ public class MypageController {
 		}
 		
 		List<Rental> rentals = reservationService.selectByUserId(user.getId());
-		System.out.println(rentals);
 		model.addAttribute("activeTab", "rental");
 		model.addAttribute("rentals", rentals);
 		
@@ -143,6 +144,10 @@ public class MypageController {
 	public String postRentalDelete(@PathVariable("id") Long id,HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
+	    log.info("User '{}' (ID: {}) requested rental delete for rentalId: {}",
+	             user != null ? user.getName() : "guest",
+	             user != null ? user.getId() : "N/A",
+	             id);
 		reservationService.deleteRental(id);
 		return "redirect:/main/mypage/rental/"+user.getId();
 	}
@@ -166,7 +171,10 @@ public class MypageController {
 	public String postDeleteProgram(@PathVariable("id") Long id, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
-		
+		 log.info("User '{}' (ID: {}) requested program delete for programId: {}",
+	             user != null ? user.getName() : "guest",
+	             user != null ? user.getId() : "N/A",
+	             id);
 		programService.deleteByProgramSubsId(id);
 		
 		return "redirect:/main/mypage/program/"+user.getId();
@@ -210,7 +218,6 @@ public class MypageController {
 	            return "mypage/updatePw";
 	        }
 	      
-	        System.out.println("성공");
 	        userAuthService.updatePassword(user.getId(), updatePwForm.getPassword());
 	        // 업데이트 후 사용자 프로필 등 원하는 페이지로 리다이렉트
 	        

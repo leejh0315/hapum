@@ -6,8 +6,10 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class SigninForm {
 
 	@NotBlank(message = "이메일은 필수입니다.")

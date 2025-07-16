@@ -35,7 +35,9 @@ import hapum.hapum.service.ReservationService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequestMapping("/main")
 @RequiredArgsConstructor
@@ -156,7 +158,6 @@ public class MainController {
 
 		int applyCount = programService.getApplyCount(program.getId());
 
-		System.out.println(program);
 
 		ProgramSub ps = new ProgramSub();
 		ps.setUserId(user.getId());
@@ -178,6 +179,18 @@ public class MainController {
 
 		int temp = programService.programSub(ps);
 
+		
+		  log.info("User '{}' (ID: {}) subscribed to program {} (Org: '{}', Relation: '{}', PartCount: {}, Result: {})",
+		             user.getName(),
+		             user.getId(),
+		             program.getId(),
+		             ps.getOrgName(),
+		             ps.getRelation(),
+		             Integer.toString(ps.getPartCount())
+		              == null ? "N/A" : ps.getPartCount(),
+		             temp);
+
+		
 		emailService.sendProgramMessage(user.getEmail(), program);
 		
 		String result = convertService.generateProgramWordFromTemplate(ps, program, user);
@@ -196,7 +209,6 @@ public class MainController {
 		List<Rental> rentals = reservationService.getRentals();
 
 		List<Program> programs = programService.selectThisMonthProgram();
-		System.out.println(programs);
 
 		model.addAttribute("blockedDays", blockedDays);
 		model.addAttribute("fixedReservations", fixedReservations);
@@ -213,6 +225,12 @@ public class MainController {
 		
 		rental.setUserId(user.getId());
 		reservationService.insertRental(rental);
+		
+
+	    log.info("User '{}' (ID: {}) submitted a rental request. Rental Info: {}",
+	             user.getName(),
+	             user.getId(),
+	             rental);
 		
 		emailService.sendRentalMessage(user.getEmail(), rental);
 		
@@ -299,6 +317,5 @@ public class MainController {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
 		model.addAttribute("user", user);
-		System.out.println("This user : " + user);
 	}
 }

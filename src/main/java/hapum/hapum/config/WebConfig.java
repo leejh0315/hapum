@@ -22,7 +22,6 @@ public class WebConfig implements WebMvcConfigurer {
     private final AdminInterceptor adminInterceptor;
     private final UserInterceptor userInterceptor;
     
-    
 
     @Value("${file.upload-dir}")
     private String uploadDir;

@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class Program {
 
     private Long id;

@@ -3,8 +3,10 @@ package hapum.hapum.domain;
 import java.time.LocalDateTime;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class ProgramSub {
     private Long id;
     private Long userId;

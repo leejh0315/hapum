@@ -93,16 +93,12 @@ public class ConvertService {
             try (FileOutputStream out = new FileOutputStream(outputFile)) {
                 document.write(out);
             }
-            System.out.println("[DEBUG] 워드 파일 생성 완료 → " + outputFile.getAbsolutePath()
-            + ", exists=" + outputFile.exists());
-
+            
            
 
         }
 
         // 8) 다운로드용 URL 반환 (WebConfig의 /result/** 매핑과 일치)
-        System.out.println("convertService");
-        System.out.println(now);
         return fileName;
     }
 
@@ -156,8 +152,6 @@ public class ConvertService {
             try (FileOutputStream out = new FileOutputStream(outputFile)) {
                 document.write(out);
             }
-            System.out.println("[DEBUG] 워드 파일 생성 완료 → " + outputFile.getAbsolutePath()
-            + ", exists=" + outputFile.exists());
 
            
 

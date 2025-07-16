@@ -106,7 +106,6 @@ public class AdminController {
 		List<Program> weeklyPrograms = programService.getProgramsForWeek(weekOffset);
 		
 		
-		System.out.println(reservationService.getReservationsForWeek(weekOffset));
 		
 		model.addAttribute("reservations",
 	            reservationService.getReservationsForWeek(weekOffset));
@@ -224,7 +223,6 @@ public class AdminController {
 
 	@PostMapping("/organization/write")
 	public String postOrganizationWrite(OrganizationPost organizationPost, @RequestParam("photo") MultipartFile photo) {
-		System.out.println(organizationPost);
 		String updatedContent = newsService.moveTempImagesToPosts(organizationPost.getContent(), "organizationPost");
 		organizationPost.setContent(updatedContent);
 		organizationService.insertOrganizationWrite(organizationPost, photo);
@@ -309,7 +307,6 @@ public class AdminController {
 	
 	@PostMapping("/news/updateNewsDetail/{id}")
 	public String postUpdateNewsDetail(@PathVariable("id")Long id,News news, @RequestParam("photo") MultipartFile photo) {
-		System.out.println(news);
 		news.setId(id);
 		newsService.updateNewsDetail(news, photo);
 		
@@ -321,7 +318,6 @@ public class AdminController {
 	public String getCurrentRental(Model model) {
 
 		List<Rental> rentals = reservationService.selectAllRentals();
-		System.out.println(rentals);
 		model.addAttribute("rentals", rentals);
 		return "admin/currentRental";
 	}

@@ -1,6 +1,7 @@
 package hapum.hapum.domain;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 public class BlockedDay {

@@ -70,7 +70,6 @@ public class UserAuthService {
     	  if (bindingResult.hasErrors()) {
               return null;
           }
-    	  System.out.println(passwordEncoder.encode(password));
   		User user = userMapper.selectByEmail(loginId);
   		if(user != null) {
 			if(passwordEncoder.matches(password, user.getPassword())) {

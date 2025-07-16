@@ -52,6 +52,5 @@ public class DefatultController {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
 		model.addAttribute("user", user);
-		System.out.println("This user : " + user);
 	}
 }

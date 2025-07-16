@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class Rental {
     private Long id;                     // BIGINT AUTO_INCREMENT PRIMARY KEY
     private String location;             // VARCHAR(100) NOT NULL, 대관장소

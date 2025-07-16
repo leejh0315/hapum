@@ -5,7 +5,9 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 import lombok.Data;
+import lombok.ToString;
 @Data
+@ToString
 public class UpdateForm {
 	
 	private Long id;

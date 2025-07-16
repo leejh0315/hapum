@@ -2,8 +2,10 @@ package hapum.hapum.domain;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
+@ToString
 public class LoginForm {
 
 	@NotBlank(message = "아이디는 필수입니다.")

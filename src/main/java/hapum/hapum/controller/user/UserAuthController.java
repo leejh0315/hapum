@@ -27,7 +27,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/auth")
@@ -46,8 +48,10 @@ public class UserAuthController {
 	@PostMapping("/doLogin")
 	public String doLogin(@Valid @ModelAttribute LoginForm loginForm, BindingResult bindingResult, Model model,
 			HttpServletRequest req, HttpServletResponse resp) {
+		   String loginId = loginForm.getLoginId();
 		User user = userAuthService.doLogin(loginForm.getLoginId(), loginForm.getPassword(), bindingResult);
 		if (user == null) {
+			 log.warn("Login failed for loginId: '{}'", loginId);
 			model.addAttribute("fail", "fail");
 			return "auth/login";
 		} else {
@@ -56,12 +60,13 @@ public class UserAuthController {
 			HttpSession session = req.getSession(true);// 세션에 정보가 없을 때, null을 반환하는 것이 아닌 새로운 객체를 생성하여 반환
 			session.setAttribute("loginMember", user);
 			if(user.getStatusCode().equals("N")) {
+				 log.warn("Login attempt with inactive account - loginId: '{}', userId: {}", loginId, user.getId());
 				session.invalidate();
 	            // 모델에 에러 메시지 추가
 	            model.addAttribute("inactiveMsg", "회원님의 계정은 현재 비활성 상태입니다. 관리자에게 문의하시기 바랍니다.");
 	            return "auth/login";
 			}
-			
+			 log.info("Login success for user '{}' (ID: {})", user.getName(), user.getId());
 			return "redirect:/main/main";
 		}
 	}
@@ -78,12 +83,15 @@ public class UserAuthController {
 	public ResponseEntity<Integer> checkEmail(@RequestBody Map<String, String> payload) {
 		String email = payload.get("email");
 		int result = userAuthService.checkEmail(email);
+		log.info("Email check requested for '{}', result: {}", email, result == 0 ? "available" : "duplicated");
+
 		return ResponseEntity.ok(result);
 	}
 
 	@PostMapping("/authEmail")
 	public ResponseEntity<String> authEmail(@RequestBody Map<String, String> payload) throws Exception {
 		String email = payload.get("email");
+		log.info("Authentication email requested for '{}'", email);
 		emailService.sendMessage(email);
 
 		return ResponseEntity.ok("");
@@ -93,6 +101,7 @@ public class UserAuthController {
 	@PostMapping("/numberCheck")
 	public String numberCheck(@RequestBody Map<String, String> payload) {
 		int num = userAuthService.numberCheck(payload);
+		
 		return String.valueOf(num);
 	}
 
@@ -141,7 +150,6 @@ public class UserAuthController {
 		if (count == 0) {
 			return count;
 		}
-		System.out.println(email);
 		CompletableFuture<String> newPw = emailService.sendNewPassword(email);
 		userAuthService.updatePasswordByEmail(email, newPw);
 		return count;

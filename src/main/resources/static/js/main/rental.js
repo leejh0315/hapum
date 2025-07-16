@@ -565,7 +565,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			purpose: $('#purpose').val(),
 			groupName: $('#groupName').val(),
 			equipment: equipmentList.join(', '),
-			headCount : headCount
+			headCount: headCount
 		};
 		if (selectedRoom === "강당") {
 			const bookingChoice = document.querySelector('input[name="bookingType"]:checked');
@@ -616,7 +616,9 @@ document.addEventListener("DOMContentLoaded", function() {
 			submitBtn.disabled = true;
 			payload.price = formatPrice(rawPrice);
 			payload.purpose = $('#purpose').val(),
-				payload.groupName = $('#groupName').val()
+				payload.groupName = $('#groupName').val();
+			$('#programApplyModalOverlay').removeClass('show');
+			$('#spinnerOverlay').show();
 			$.ajax({
 				url: '/main/submitRental',
 				type: 'POST',
@@ -630,6 +632,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				},
 				error: function(xhr, status, error) {
 					alert('대관 신청 실패. 다시 시도해주세요.');
+					$('#spinnerOverlay').hide();
 					submitBtn.disabled = false;
 				}
 			});

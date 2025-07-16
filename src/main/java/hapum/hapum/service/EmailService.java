@@ -63,7 +63,6 @@ public class EmailService {
 		message.setText(msgg, "utf-8", "html");// 내용
 		message.setFrom(new InternetAddress("hapum7179@gmail.com", "<HAPUM>"));// 보내는 사람
 		redisUtils.setDataExpire(to, ePw, 180);
-		System.out.println(ePw);
 		return message;
 	}
 
