@@ -33,6 +33,10 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${summernote.upload.video-dir}")
     private String uploadVideoDir;
 
+    @Value("${doc.program.output.dir}")
+    private String outputDir;
+
+    
     @Bean
     public SpringTemplateEngine templateEngine() {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -57,6 +61,19 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
+    	 String path = outputDir.replace("\\", "/");
+         if (!path.endsWith("/")) {
+             path += "/";
+         }
+         String resourceLocation = "file:///" + path;
+
+         registry
+           .addResourceHandler("/result/**")       // URL 패턴
+           .addResourceLocations(resourceLocation) // 실제 파일 시스템 위치
+           .setCachePeriod(0);                     // 개발 중이면 캐시 끄기
+    
+
+    	
         registry.addResourceHandler("/temp/videos/**")
                 .addResourceLocations("file:" + tempVideoDir + "/")
                 .setCachePeriod(0);

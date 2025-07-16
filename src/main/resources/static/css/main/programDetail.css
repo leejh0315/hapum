@@ -115,7 +115,6 @@ body {
 
 .program-image img {
 	width: 600px;
-	height: 600px;
 	object-fit: cover;
 	border-radius: 12px;
 }

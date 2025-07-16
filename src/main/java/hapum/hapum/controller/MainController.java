@@ -1,7 +1,5 @@
 package hapum.hapum.controller;
 
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +25,7 @@ import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.ProgramSub;
 import hapum.hapum.domain.Rental;
 import hapum.hapum.domain.User;
+import hapum.hapum.service.ConvertService;
 import hapum.hapum.service.EmailService;
 import hapum.hapum.service.NewsService;
 import hapum.hapum.service.NotificationService;
@@ -49,6 +48,8 @@ public class MainController {
 	private final OrganizationService organizationService;
 	private final NotificationService notificationService;
 
+	private final ConvertService convertService;
+	
 	@Value("${file.upload-dir}")
 	private String uploadDir; // e.g. "./uploads"
 
@@ -163,6 +164,8 @@ public class MainController {
 
 		ps.setOrgName(program.getNeedOrgName());
 
+		
+		
 		if (!program.getNeedPartCount().equals("N")) {
 			ps.setPartCount(Integer.parseInt(program.getNeedPartCount()));
 
@@ -176,6 +179,10 @@ public class MainController {
 		int temp = programService.programSub(ps);
 
 		emailService.sendProgramMessage(user.getEmail(), program);
+		
+		String result = convertService.generateProgramWordFromTemplate(ps, program, user);
+		
+		emailService.sendEmailProgram("hapum7179@gmail.com", result);
 		
 		return temp;
 	}
@@ -203,10 +210,16 @@ public class MainController {
 	public String submitRental(@RequestBody Rental rental, HttpServletRequest req) throws Exception {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
+		
 		rental.setUserId(user.getId());
 		reservationService.insertRental(rental);
+		
 		emailService.sendRentalMessage(user.getEmail(), rental);
+		
 
+		String result = convertService.generateRentalWordFromTemplate(rental, user);
+		emailService.sendEmailRental("hapum7179@gmail.com", result);
+		//hapum7179@gmail.com
 		return "success";
 	}
 
