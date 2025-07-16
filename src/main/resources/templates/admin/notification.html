@@ -44,91 +44,107 @@
 
   <script>
     $(function(){
-      $('#summernote').summernote({
-        height: 300,
-        placeholder: '소식 내용을 입력하세요...',
-        toolbar: [
-          ['insert', ['picture', 'videoUpload']]
-        ],
-        buttons: {
-          // 비디오 업로드 버튼 커스텀
-          videoUpload: function (context) {
-            var ui = $.summernote.ui;
-            return ui.button({
-              contents: '<i class="note-icon-video"/>',
-              tooltip: '비디오 업로드',
-              click: function () {
-                var inp = $('<input type="file" accept="video/*">');
-                inp.on('change', function () {
-                  var file = this.files[0],
-                      fd = new FormData();
-                  fd.append('file', file);
-                  $.ajax({
-                    url: '/upload/video-temp',
-                    method: 'POST',
-                    data: fd,
-                    processData: false,
-                    contentType: false
-                  }).done(function(res){
-                    // controls 속성으로 에디터에서도 재생/일시정지 가능
-                    context.invoke('editor.pasteHTML',
-                      '<video controls style="max-width:100%;" src="' + res.src + '"></video><br/>'
-                    );
-                  }).fail(function(){
-                    alert('비디오 업로드에 실패했습니다.');
-                  });
-                });
-                inp.click();
-              }
-            }).render();
+  $('#summernote').summernote({
+    height: 300,
+    placeholder: '소식 내용을 입력하세요...',
+    toolbar: [
+      // 스타일 변경
+      ['style', ['style', 'bold', 'italic', 'underline', 'strikethrough', 'clear']],
+      // 글꼴 및 크기
+      ['font', ['fontname', 'fontsize', 'color']],
+      // 단락 서식
+      ['para', ['ul', 'ol', 'paragraph', 'outdent', 'indent', 'lineheight']],
+      // 텍스트 정렬
+      ['align', ['alignleft', 'aligncenter', 'alignright', 'alignjustify']],
+      // 삽입 기능
+      ['insert', ['link', 'picture', 'videoUpload', 'table', 'hr']],
+      // 편집 기능
+      ['history', ['undo', 'redo']],
+      // 전체 화면, 코드뷰
+      ['view', ['fullscreen', 'codeview']],
+      // 도움말
+      ['help', ['help']]
+    ],
+    buttons: {
+      // 비디오 업로드 커스텀 버튼
+      videoUpload: function (context) {
+        var ui = $.summernote.ui;
+        return ui.button({
+          contents: '<i class="note-icon-video"/>',
+          tooltip: '비디오 업로드',
+          click: function () {
+            var inp = $('<input type="file" accept="video/*">');
+            inp.on('change', function () {
+              var file = this.files[0],
+                  fd = new FormData();
+              fd.append('file', file);
+              $.ajax({
+                url: '/upload/video-temp',
+                method: 'POST',
+                data: fd,
+                processData: false,
+                contentType: false
+              }).done(function(res){
+                context.invoke(
+                  'editor.pasteHTML',
+                  '<video controls style="max-width:100%;" src="' + res.src + '"></video><br/>'
+                );
+              }).fail(function(){
+                alert('비디오 업로드에 실패했습니다.');
+              });
+            });
+            inp.click();
           }
-        },
-        callbacks: {
-          // 이미지 업로드 로직(기존 활용)
-          onImageUpload: function(files) {
-            for (let f of files) uploadSummernoteImageFile(f, this);
-          },
-          // 미디어(이미지/비디오) 삭제 시 temp 서버에서도 파일 삭제
-          onMediaDelete: function($target) {
-            var src = $target.attr('src');
-            if (src && src.startsWith('/temp/videos/')) {
-              $.post('/delete/temp/video', { file: src });
-            }
-          }
+        }).render();
+      }
+    },
+    callbacks: {
+      // 이미지 업로드
+      onImageUpload: function(files) {
+        for (let f of files) uploadSummernoteImageFile(f, this);
+      },
+      // 미디어 삭제 시 임시 폴더 파일 삭제
+      onMediaDelete: function($target) {
+        var src = $target.attr('src');
+        if (src && src.startsWith('/temp/videos/')) {
+          $.post('/delete/temp/video', { file: src });
         }
-      });
-    });
-
-    // (기존) 이미지 업로드 헬퍼
-    function uploadSummernoteImageFile(file, editor) {
-      var data = new FormData();
-      data.append("file", file);
-      $.ajax({
-        url: "/writePost/uploadSummernoteImageFile",
-        data: data, cache: false,
-        contentType: false, processData: false,
-        type: "POST", dataType:"json"
-      }).done(function(resp){
-        if (resp.responseCode === "success") {
-          $(editor).summernote('insertImage', resp.src);
-        } else alert("이미지 업로드 실패");
-      }).fail(function(){
-        alert("이미지 업로드 중 오류");
-      });
-    }
-
-    // 폼 검증 (제목/내용 비어있는지 등)
-    function validateNewsForm(){
-      if (!$('#title').val().trim()) {
-        alert('제목을 입력하세요');
-        return false;
       }
-      if (!$('#summernote').summernote('isEmpty')) {
-        return true;
-      }
-      alert('내용을 입력하세요');
-      return false;
     }
+  });
+});
+
+// 이미지 업로드 헬퍼
+function uploadSummernoteImageFile(file, editor) {
+  var data = new FormData();
+  data.append("file", file);
+  $.ajax({
+    url: "/writePost/uploadSummernoteImageFile",
+    data: data, cache: false,
+    contentType: false, processData: false,
+    type: "POST", dataType:"json"
+  }).done(function(resp){
+    if (resp.responseCode === "success") {
+      $(editor).summernote('insertImage', resp.src);
+    } else alert("이미지 업로드 실패");
+  }).fail(function(){
+    alert("이미지 업로드 중 오류");
+  });
+}
+
+// 폼 검증
+function validateNewsForm(){
+  if (!$('#title').val().trim()) {
+    alert('제목을 입력하세요');
+    return false;
+  }
+  if (!$('#summernote').summernote('isEmpty')) {
+    return true;
+  }
+  alert('내용을 입력하세요');
+  return false;
+}
+
   </script>
 
   <script th:src="@{/js/admin/writeNews.js}"></script>
