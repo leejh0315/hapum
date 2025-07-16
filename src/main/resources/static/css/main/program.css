@@ -111,7 +111,7 @@ body {
 /* 프로그램 카드 */
 .program-card {
 	width: 200px;
-	height: 200px;
+	height: 220px;
 	max-width: 300px;
 	border: 1px solid #ddd;
 	border-radius: 8px;
@@ -128,7 +128,8 @@ body {
 }
 
 .program-title {
-	font-weight: 500;
+	font-weight: bold;
+	
 }
 
 

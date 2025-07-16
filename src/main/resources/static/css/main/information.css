@@ -117,6 +117,21 @@ body {
   margin-bottom: 15px;
 }
 
+#room-content {
+  display: flex;
+  align-items: flex-start; /* 이미지와 설명을 상단 정렬 */
+  gap: 30px; /* 이미지와 텍스트 사이 간격 */
+  flex-wrap: wrap; /* 화면이 작아지면 아래로 줄바꿈 */
+}
+
+.room-desc {
+  flex: 1;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 600px;
+  margin-left: 5%;
+}
+
 /* 방 이미지 */
 .room-image {
   max-width: 500px;

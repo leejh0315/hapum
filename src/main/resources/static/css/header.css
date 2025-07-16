@@ -51,7 +51,9 @@
 /* 내비게이션 메뉴 */
 /* 내비게이션 메뉴 */
 #nav-desktop {
-    align-self: flex-end;
+    position: absolute;
+    left: 35%;
+    top:8%;
 }
 
 #nav-desktop ul {

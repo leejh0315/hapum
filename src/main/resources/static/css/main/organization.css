@@ -42,7 +42,7 @@ body {
 
 .organization-card {
 	width: 200px;
-	height: 200px;
+	height: 220px;
 	max-width: 300px;
 	border: 1px solid #ddd;
 	border-radius: 8px;
@@ -142,11 +142,12 @@ body {
 	overflow: hidden;
 
   width: 100%;
-  white-space: nowrap;       /* 줄바꿈 금지 */
-  overflow: hidden;          /* 넘치는 부분 숨김 */
-  text-overflow: ellipsis;   /* 말줄임표 (…) 표시 */
   font-size: clamp(12px, 2vw, 16px); /* 뷰포트 크기에 따라 폰트 크기 유동 조절 */
   letter-spacing: normal;
+  
+  
+  word-break: keep-all;
+  white-space: normal;
   
 	
 }

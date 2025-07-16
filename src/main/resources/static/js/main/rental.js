@@ -215,8 +215,8 @@ document.addEventListener("DOMContentLoaded", function() {
 			document.getElementById('floor-title').textContent = `${roomInfo.floor}층`;
 			const contentDiv = document.getElementById('room-content');
 			contentDiv.innerHTML = `
-              <img src="${roomInfo.img}" style="max-width: 350px; max-height: 350px; border-radius: 10px;" />
-              <div>${roomInfo.html}</div>
+              <img class="roomInfoImg" src="${roomInfo.img}" style="max-width: 350px; max-height: 350px; border-radius: 10px;" />
+              <div class="roomInfoText">${roomInfo.html}</div>
             `;
 			if (selectedRoom === "강당") {
 				let tomorrow = new Date();
@@ -229,6 +229,7 @@ document.addEventListener("DOMContentLoaded", function() {
 				bookingChoiceDiv.className = 'booking-choice';
 				bookingChoiceDiv.id = 'booking-choice';
 				bookingChoiceDiv.innerHTML = `
+				
                 <label>
                   <input type="radio" name="bookingType" value="4시간" checked> 4시간 예약 (5만원)
                 </label>

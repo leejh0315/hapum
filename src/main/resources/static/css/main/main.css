@@ -43,6 +43,8 @@
 
 
 #notification-list table {
+	position: relative;
+	left: 5%;
 	width: 80%;
 	border-collapse: collapse;
 }

@@ -77,9 +77,13 @@ footer {
 /* 오른쪽 영역 - 소셜 아이콘 */
 .footer-right a {
 	margin-left: 10px;
-	display: inline-block;
+	 display: flex;
+	 flex-direction: column;
+  align-items: center; /* 수직 가운데 정렬 */
+  gap: 8px; /* 이미지와 글자 사이 간격 */
+  text-decoration: none;
+  color: inherit;
 }
-
 .footer-right img {
 	width: 28px;
 	height: 28px;

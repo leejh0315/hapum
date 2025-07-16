@@ -65,5 +65,5 @@ $(document).ready(function() {
 	setInterval(function() {
 		var nextIndex = (currentIndex + 1) % slideCount;
 		showSlide(nextIndex, 1);
-	}, 2000);
+	}, 4000);
 });

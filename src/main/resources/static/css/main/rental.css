@@ -11,10 +11,10 @@ body {
 .container {
   display: flex;
   flex-direction: row;
-  height: 100vh;
   padding: 0 7%;
   gap: 10px;
   box-sizing: border-box;
+  flex:1;
 }
 
 .spinner-overlay {
@@ -111,8 +111,10 @@ ul ul li {
 
 /* room-flex-container: 시설정보와 타임테이블을 가로로 균등 배치 */
 .room-flex-container {
-  display: flex;
-  justify-content: flex-start;
+  
+  display: flex !important;
+  flex-direction: column !important;
+  
   width: 100%;
   gap: 0;
   overflow: hidden;
@@ -121,27 +123,55 @@ ul ul li {
 
 /* 양쪽 모두 동일한 비율, 여백 제거 */
 #room-content {
-	max-width: 400px;
-	padding-right: 16px;
-	overflow-wrap: break-word;
-	word-break: break-word;
-	white-space: normal;
-	/* 오른쪽 여백만 약간 줌 */
-
+	display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "img    text"
+    "choice text"
+    "btn    text"
+    "warn   text";
+  column-gap: 20px;
+}
+.room-content .roomInfoImg {
+  grid-area: img;
+}
+.room-content .roomInfoText {
+  grid-area: text;
 }
 
-
-/* 시설 정보 영역 */
-#room-content {
-	display: flex;
-	flex-direction: column;
-	gap: 12px;
+.room-content .booking-choice {
+  grid-area: choice;
+}
+.booking-choice {
+	margin-top:10px;
+}
+.roomInfoText{
+	margin-left: 10%;
+	
+}
+.room-content #show-timetable-btn {
+  order: 2;
+  margin: 8px 0;
 }
 
-
+.room-content #login-wraning {
+  order: 3;
+  margin-bottom: 10px;
+ }
 #room-content img {
 	min-width: 400px;
 	height: auto;
+}
+#show-timetable-btn {
+  grid-area: btn;
+  justify-self: start; /* 왼쪽 정렬 */
+}
+
+#login-warning {
+  grid-area: warn;
+  justify-self: start;
+  margin-bottom: 10px;
 }
 
 /* 타임테이블 영역 - 고정 폭 제거하고 유동 폭으로 변경 */
@@ -149,7 +179,7 @@ ul ul li {
 .timetable-wrapper {
   flex: 1;
   overflow-x: auto;
-  margin-left: 5%;
+  margin-top: 5%;
 }
 
 #timetable-container{
@@ -225,6 +255,7 @@ ul ul li {
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
+	margin-bottom:5%;
 }
 
 #submit-btn:disabled {
