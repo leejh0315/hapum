@@ -104,7 +104,8 @@ body {
 	color: #333;
 	transition: background-color 0.3s;
 	
-	
+	 word-break: keep-all;
+
 	/* 줄바꿈 금지 */
 	overflow: hidden;
 	/* 넘치는 부분 숨김 */

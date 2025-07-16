@@ -52,7 +52,8 @@
 	cursor: pointer;
 	color: #000;
 	transition: background-color 0.3s;
-	
+	 word-break: keep-all;
+
 	white-space: normal;   /* ✅ 줄바꿈 허용 */
 }
 

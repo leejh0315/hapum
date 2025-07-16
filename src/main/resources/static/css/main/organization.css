@@ -103,7 +103,8 @@ body {
 	cursor: pointer;
 	color: #333;
 	transition: background-color 0.3s;
-	
+	 word-break: keep-all;
+
   overflow: hidden;          /* 넘치는 부분 숨김 */
   font-size: clamp(12px, 2vw, 16px); /* 뷰포트 크기에 따라 폰트 크기 유동 조절 */
   letter-spacing: normal;
@@ -170,6 +171,14 @@ body {
 	border-radius: 6px;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+footer {
+  width: 100%;
+  background: #F5EBE0;
+  text-align: center;
+  padding: 20px 0;
+}
+
 
 .post-list {
 	display: flex;

@@ -73,6 +73,7 @@ body {
 	cursor: pointer;
 	color: #333;
 	transition: background-color 0.3s;
+ word-break: keep-all;
 
 	/* 여기서 사이드바의 좌우 padding(10px) 만큼 음수 마진을 주고,
      width 를 100% + 2*padding 만큼 늘려서 꽉 차도록 한다 */

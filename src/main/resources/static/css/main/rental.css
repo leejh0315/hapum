@@ -216,6 +216,8 @@ ul ul li {
 	cursor: pointer;
 	color: #333;
 	transition: background-color 0.3s;
+	 word-break: keep-all;
+
 }
 
 .room-btn:hover,
