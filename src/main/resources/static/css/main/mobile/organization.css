@@ -104,6 +104,10 @@
 		margin-top: auto;
 	}
 
+.organization-card img{
+	margin:0px;
+}
+
 	/* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */
 	.organization-card img {
 		margin-top:10px;
