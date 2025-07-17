@@ -106,6 +106,7 @@
 
 	/* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */
 	.organization-card img {
+		margin-top:10px;
 		width: 140px;
 		height: 140px;
 		border-radius: 4px;

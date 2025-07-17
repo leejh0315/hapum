@@ -8,11 +8,14 @@ import java.util.regex.Pattern;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 
 import hapum.hapum.domain.SigninForm;
 import hapum.hapum.domain.UpdateForm;
 import hapum.hapum.domain.User;
+import hapum.hapum.mapper.FixedReservationMapper;
+import hapum.hapum.mapper.ProgramMapper;
 import hapum.hapum.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
 
@@ -23,6 +26,9 @@ public class UserAuthService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final RedisUtils redisUtils; 
+    
+    private final FixedReservationMapper frMapper;
+    private final ProgramMapper programMapper;
     
     
     public boolean processSignup(SigninForm signinForm, BindingResult bindingResult) {
@@ -130,6 +136,14 @@ public class UserAuthService {
     public void deleteUserById(Long userId) {
     	//////////////////회원삭제 추가
     	userMapper.deleteUserById(userId);
+    }
+    
+    @Transactional
+    public void out(Long id) {
+    	frMapper.deleteByUserId(id);
+    	programMapper.deleteByUserId(id);
+    	
+    	userMapper.deleteUserById(id);
     }
     
 }

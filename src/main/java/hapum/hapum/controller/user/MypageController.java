@@ -62,9 +62,12 @@ public class MypageController {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
 		
-		if(user.getId() == id) {
-			
+		
+		if(user.getId() != user.getId()) {
+			return "redircect:/main/mypage/"+user.getId().toString();
 		}
+		userAuthService.out(id);
+		session.invalidate();
 		
 		return "redirect:/main/main";
 	}

@@ -68,6 +68,7 @@
 		word-break: break-word;
 		white-space: normal;
 		flex: 1;
+		margin-bottom: 10%;
 	}
 
 	.container {
@@ -99,7 +100,8 @@
 		text-align: center;
 		margin-top: 5%;
 	}
-footer {
+.footer-container {
+	margin-top:5%;
 	flex-shrink: 0;
 }
 	/* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */

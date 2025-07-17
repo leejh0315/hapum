@@ -27,5 +27,6 @@ public interface UserMapper {
 	
 	
 	public void changeStatusToInactive(@Param("userId")Long userId, @Param("code") String currentStatus ); 
-    public void deleteUserById(@Param("userId")Long userId); 
+    public void deleteUserById(@Param("userId")Long userId);
+    
 }

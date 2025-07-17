@@ -53,4 +53,6 @@ public interface ProgramMapper {
 	 
 	 List<Program>selectPopupProgram();
 	 List<Program> selectHomeProgram();
+	 
+	 void deleteByUserId(@Param("id")Long id);
 }

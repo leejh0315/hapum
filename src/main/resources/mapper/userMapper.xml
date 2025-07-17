@@ -82,6 +82,7 @@
 		WHERE id=#{userId}
 	</delete>
 	
+	
 
 
 </mapper>

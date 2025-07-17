@@ -38,4 +38,6 @@ public interface FixedReservationMapper {
             @Param("start") LocalDateTime start,
             @Param("end")   LocalDateTime end
         );
+    
+    void deleteByUserId(@Param("id")Long id);
 } 

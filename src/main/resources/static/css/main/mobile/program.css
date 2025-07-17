@@ -111,6 +111,7 @@
 
 
 	.program-card img {
+		margin-top:10px;
 		width: 90%;
 		aspect-ratio: 1 / 1;
 		/* 비율 고정 (정사각형) */

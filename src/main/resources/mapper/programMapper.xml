@@ -289,5 +289,9 @@
 
 
 	</select>
+	
+	<delete id="deleteByUserId">
+		DELETE FROM hapumdb.program_subs WHERE id=#{id}
+	</delete>
 
 </mapper>

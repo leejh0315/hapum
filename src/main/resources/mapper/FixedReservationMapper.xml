@@ -183,5 +183,10 @@
     WHERE rr.reservation_date BETWEEN #{start} AND #{end}
     ORDER BY rr.reservation_date, rr.start_time
   </select>
+  
+  
+  <delete id="deleteByUserId">
+	  DELETE FROM hapumdb.rental_reservation WHERE id=#{id};
+  </delete>
 </mapper>
 	
