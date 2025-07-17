@@ -2,10 +2,11 @@
 
 	html,
 	body {
-		margin: 0;
-		padding: 0;
-		overflow-x: hidden;
-		height: 100%;
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	display: flex;
+	flex-direction: column;
 	}
 
 	.sidebar {
@@ -70,9 +71,9 @@
 	}
 
 	.container {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
+		flex: 1 0 auto; /* 성장 가능, 줄어들지 않음 */
+	display: flex;
+	flex-direction: column;
 	}
 
 	/* 기존 active 클래스 (필요시 사용) */
@@ -98,7 +99,9 @@
 		text-align: center;
 		margin-top: 5%;
 	}
-
+footer {
+	flex-shrink: 0;
+}
 	/* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */
 	.post-card img {
 		width: 140px;

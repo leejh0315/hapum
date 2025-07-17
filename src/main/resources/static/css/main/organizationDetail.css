@@ -103,8 +103,8 @@ body {
 	cursor: pointer;
 	color: #333;
 	transition: background-color 0.3s;
-	
-	 word-break: keep-all;
+
+	word-break: keep-all;
 
 	/* 줄바꿈 금지 */
 	overflow: hidden;
@@ -152,11 +152,12 @@ body {
 	font-size: 22px;
 	margin-bottom: 15px;
 }
-.menu-group{
-	width : 180px;
+
+.menu-group {
+	width: 180px;
 }
 
-.org-link{
+.org-link {
 	width: 160px;
 }
 
@@ -181,38 +182,31 @@ body {
 }
 
 .post-card {
-	width: 160px;
+	width: 200px;
+	height: 220px;
+	max-width: 300px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
 	text-align: center;
-
-
-
-
 }
 
 
 
 .post-thumb {
-	width: 200px;
-	height: 200px;
-	object-fit: cover;
-	/*    display: block;*/
+	width: 160px;
+	height: 160px;
+	border-radius: 4px;
+	margin-bottom: 0.5rem;
 }
 
 .post-title {
-	margin-top: 8px;
-	font-weight: 500;
-	color: #333;
-
-	white-space: nowrap;
-	/* 줄바꿈 금지 */
-	overflow: hidden;
-	/* 넘치는 부분 숨김 */
-	text-overflow: ellipsis;
-	/* 말줄임표 (…) 표시 */
+	width: 100%;
 	font-size: 14px;
-	/* 기본 폰트 크기 고정 */
-	letter-spacing: normal;
-	/* 자간 기본 */
+	font-weight: bold;
+	margin-bottom: 5px;
+	box-sizing: border-box;
+	word-break: keep-all;
+	white-space: normal;
 
 
 }
