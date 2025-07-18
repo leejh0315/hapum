@@ -1,69 +1,86 @@
-$(document).ready(function() {
+$(document).ready(function () {
+  const $slides = $('#slideshow img');
+  let currentIndex = 0;
+  const slideCount = $slides.length;
+  let transitioning = false;
 
+  const containerWidth = $('#slideshow-container').width();
 
-	var $slides = $('#slideshow img');
-	var currentIndex = 0;
-	var slideCount = $slides.length;
-	var transitioning = false;
+  // 초기 슬라이드 위치 설정
+  $slides.each(function (index) {
+    const $img = $(this);
+    const id = $img.data('program-id');
 
-	// 초기 설정: 첫 이미지 보이도록, 나머지는 오른쪽에 배치
-	var containerWidth = $('#slideshow-container').width();
-	$slides.each(function(index) {
-		if (index === 0) {
-			$(this).css({ left: '0px', display: 'block' });
-		} else {
-			$(this).css({ left: containerWidth + 'px', display: 'none' });
-		}
-	});
+    $img.css({
+      left: index === 0 ? '0px' : containerWidth + 'px',
+      display: index === 0 ? 'block' : 'none',
+      position: 'absolute',
+      'view-transition-name': `program-thumbnail-${id}`
+    });
+  });
 
-	// 슬라이드 전환 함수
-	// newIndex: 이동할 슬라이드 인덱스, direction: 1(다음 → 왼쪽 이동), -1(이전 → 오른쪽 이동)
-	function showSlide(newIndex, direction) {
-		if (transitioning || newIndex === currentIndex) return;
-		transitioning = true;
-		containerWidth = $('#slideshow-container').width();
+  function showSlide(newIndex, direction) {
+    if (transitioning || newIndex === currentIndex) return;
 
-		var $currentSlide = $slides.eq(currentIndex);
-		var $nextSlide = $slides.eq(newIndex);
-		var startLeft = (direction === 1) ? containerWidth : -containerWidth;
-		var endCurrentLeft = (direction === 1) ? -containerWidth : containerWidth;
+    transitioning = true;
+    const containerWidth = $('#slideshow-container').width();
 
-		// 다음 슬라이드를 위치시키고 표시
-		$nextSlide.css({ left: startLeft, display: 'block' });
+    const $currentSlide = $slides.eq(currentIndex);
+    const $nextSlide = $slides.eq(newIndex);
 
-		var animationsCompleted = 0;
-		function animationComplete() {
-			animationsCompleted++;
-			if (animationsCompleted === 2) {
-				transitioning = false;
-			}
-		}
+    const startLeft = direction === 1 ? containerWidth : -containerWidth;
+    const endCurrentLeft = direction === 1 ? -containerWidth : containerWidth;
 
-		// 현재 슬라이드는 바깥으로, 다음 슬라이드는 중앙으로 이동
-		$currentSlide.animate({ left: endCurrentLeft }, 500, function() {
-			$currentSlide.css({ display: 'none' });
-			animationComplete();
-		});
-		$nextSlide.animate({ left: 0 }, 500, animationComplete);
+    $nextSlide.css({ left: startLeft, display: 'block' });
 
-		currentIndex = newIndex;
-	}
+    let animationsDone = 0;
+    const onAnimationComplete = () => {
+      animationsDone++;
+      if (animationsDone === 2) {
+        transitioning = false;
+      }
+    };
 
-	// 다음 버튼 이벤트
-	$('#next-btn').click(function() {
-		var nextIndex = (currentIndex + 1) % slideCount;
-		showSlide(nextIndex, 1);
-	});
+    $currentSlide.animate({ left: endCurrentLeft }, 500, function () {
+      $currentSlide.css({ display: 'none' });
+      onAnimationComplete();
+    });
 
-	// 이전 버튼 이벤트
-	$('#prev-btn').click(function() {
-		var prevIndex = (currentIndex - 1 + slideCount) % slideCount;
-		showSlide(prevIndex, -1);
-	});
+    $nextSlide.animate({ left: 0 }, 500, onAnimationComplete);
 
-	// 자동 슬라이드: 2초마다 자동 전환
-	setInterval(function() {
-		var nextIndex = (currentIndex + 1) % slideCount;
-		showSlide(nextIndex, 1);
-	}, 4000);
+    currentIndex = newIndex;
+  }
+
+  $('#next-btn').click(function () {
+    const nextIndex = (currentIndex + 1) % slideCount;
+    showSlide(nextIndex, 1);
+  });
+
+  $('#prev-btn').click(function () {
+    const prevIndex = (currentIndex - 1 + slideCount) % slideCount;
+    showSlide(prevIndex, -1);
+  });
+
+  // 자동 슬라이드 (4초 간격)
+  setInterval(function () {
+    const nextIndex = (currentIndex + 1) % slideCount;
+    showSlide(nextIndex, 1);
+  }, 4000);
+
+  // View Transition 클릭 이벤트
+  $slides.each(function () {
+    const $img = $(this);
+    const id = $img.data('program-id');
+
+    $img.parent().css('cursor', 'pointer').on('click', function () {
+      const url = `/main/program/detail/${id}`;
+      if (document.startViewTransition) {
+        document.startViewTransition(() => {
+          window.location.href = url;
+        });
+      } else {
+        window.location.href = url;
+      }
+    });
+  });
 });

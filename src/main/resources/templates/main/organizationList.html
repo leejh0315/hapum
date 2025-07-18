@@ -44,7 +44,7 @@
 					th:onclick="'location.href=\'/main/organization/'+ ${org.id} +'\''">
 
 					<img th:src="@{${org.profileSrc}}" alt="프로필 이미지" class="organization-img" />
-					<h3 th:text="${org.name}">단체 이름</h3>
+					<div class="org-title" th:text="${org.name}">단체 이름</div>
 					<!--					<p th:text="${org.introduce}">단체 소개</p>-->
 				</div>
 			</div>

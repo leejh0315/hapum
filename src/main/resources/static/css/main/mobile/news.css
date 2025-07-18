@@ -34,30 +34,30 @@
 	}
 
 	.news-grid {
-    	display: grid;
-    	grid-template-columns: repeat(2, 1fr);
-		row-gap: 50px;    	
-    	margin-top: 3%;
-    }
-    
-    .news-card {
-    width: 150px;
-    height: 150px;
-    max-width: 300px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    text-align: center;
-	margin-top:5%;
-    }
+		display: grid;
+		grid-template-columns: repeat(2, 1fr);
+		row-gap: 50px;
+		margin-top: 3%;
+	}
 
-    /* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */
-    .news-card img {
-		margin-top:5px;
-	   width: 140px;
-    height: 140px;
-    border-radius: 4px;
-    margin-bottom: 0.5rem;
-    }
+	.news-card {
+		width: 150px;
+		height: 150px;
+		max-width: 300px;
+		border: 1px solid #ddd;
+		border-radius: 8px;
+		text-align: center;
+		margin-top: 5%;
+	}
+
+	/* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */
+	.news-card img {
+		margin-top: 5px;
+		width: 140px;
+		height: 140px;
+		border-radius: 4px;
+		margin-bottom: 0.5rem;
+	}
 
 
 	/*#EDEDE9*/
@@ -82,43 +82,53 @@
 		height: 5000px;
 	}
 
-    .news-title {
-    	font-size: 16px;
-    	font-weight: bold;
-    	margin-bottom: 5px;
-    }
-    
-    .pagination {
-    	list-style: none;
-    	display: flex;
-    	justify-content: center;
-    	padding: 0;
-    	margin-top: 70px;
-    }
+	.news-title {
+		font-size: 16px;
+		font-weight: bold;
+		margin-bottom: 5px;
+		word-break: keep-all;
+		/* 한글 단어 단위로 줄바꿈 */
+		line-break: auto;
+		/* 한글에 맞는 줄바꿈 규칙 */
+		white-space: normal;
+		/* 일반 줄바꿈 허용 */
+		word-spacing: 0.05em;
+		/* 한글에 어울리는 약간의 단어 간격 */
+		letter-spacing: 0;
+		/* 자간은 기본 유지 (너무 넓으면 부자연스러움) */
+	}
 
-    .pagination li {
+	.pagination {
+		list-style: none;
+		display: flex;
+		justify-content: center;
+		padding: 0;
+		margin-top: 70px;
+	}
+
+	.pagination li {
 		font-size: smaller;
-    }
+	}
 
-    .pagination li a {
-    	display: block;
-    	padding: 8px 12px;
-    	background: #F5EBE0;
-    	/* 기본 버튼 색상으로 통일 */
-    	color: #333;
-    	text-decoration: none;
-    	border: 1px solid #D5BDAF;
-    }
+	.pagination li a {
+		display: block;
+		padding: 8px 12px;
+		background: #F5EBE0;
+		/* 기본 버튼 색상으로 통일 */
+		color: #333;
+		text-decoration: none;
+		border: 1px solid #D5BDAF;
+	}
 
-    .pagination li.active a {
-    	background: #D5BDAF;
-    	/* 활성화된 페이지 */
-    	color: #fff;
-    	border-color: #D5BDAF;
-    }
+	.pagination li.active a {
+		background: #D5BDAF;
+		/* 활성화된 페이지 */
+		color: #fff;
+		border-color: #D5BDAF;
+	}
 
-    .pagination li.disabled a {
-    	color: #ccc;
-    	pointer-events: none;
-    }
+	.pagination li.disabled a {
+		color: #ccc;
+		pointer-events: none;
+	}
 }

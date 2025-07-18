@@ -5,9 +5,9 @@
 		margin: 0;
 		padding: 0;
 		overflow-x: hidden;
-		
-        min-height: 100vh;
-		
+
+		min-height: 100vh;
+
 	}
 
 	body {
@@ -19,6 +19,17 @@
 		flex-direction: column;
 		background-color: #D6CCC2;
 
+	}
+
+	.org-title {
+		font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            word-break: keep-all;
+            line-break: auto;
+            white-space: normal;
+            word-spacing: 0.05em;
+            letter-spacing: 0;
 	}
 
 	/* 1행: 제목 */
@@ -54,10 +65,20 @@
 		padding: 10px 0;
 		font-size: 14px;
 		background-color: #F5EBE0;
-		border: none;
 		color: #333;
 		cursor: pointer;
 		transition: background-color 0.2s ease;
+		border: solid 1px #D5BDAF;
+		word-break: keep-all;
+		/* 한글 단어 단위로 줄바꿈 */
+		line-break: auto;
+		/* 한글에 맞는 줄바꿈 규칙 */
+		white-space: normal;
+		/* 일반 줄바꿈 허용 */
+		word-spacing: 0.05em;
+		/* 한글에 어울리는 약간의 단어 간격 */
+		letter-spacing: 0;
+		/* 자간은 기본 유지 (너무 넓으면 부자연스러움) */
 	}
 
 	.menu-button.current {
@@ -78,7 +99,7 @@
 	.container {
 		display: flex;
 		flex-direction: column;
-		  min-height: 100vh;
+		min-height: 100vh;
 	}
 
 
@@ -104,13 +125,13 @@
 		margin-top: auto;
 	}
 
-.organization-card img{
-	margin:0px;
-}
+	.organization-card img {
+		margin: 0px;
+	}
 
 	/* 썸네일 이미지: 200px × 200px, object-fit: cover 로 이미지 비율 유지 */
 	.organization-card img {
-		margin-top:10px;
+		margin-top: 10px;
 		width: 140px;
 		height: 140px;
 		border-radius: 4px;

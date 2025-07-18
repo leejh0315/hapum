@@ -4,18 +4,18 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	
+	<meta name="view-transition" content="same-origin" />
 	<link rel="shortcut icon" href="/img/logohp.png">
-	
+
 	<title>하품센터</title>
-	
-	
+
+
 	<meta name="description" content="천주교 대전교구 천안지역 청소년사목 하품센터는 청소년과 청년들을 위한 신앙, 문화, 교육 프로그램을 운영하는 천안지역 복합 사목 공간입니다." />
 	<meta name="keywords" content="하품센터, 천주교, 대전교구, 천안 청소년, 청년 사목, 천안 하품, 청년센터, 청소년센터, 가톨릭 청년, 가톨릭" />
 	<meta name="author" content="하품센터" />
-<meta name="naver-site-verification" content="0e08634f0478bf532ff0f28a2dbfa176ce2fa473" />
-<!-- Open Graph (SNS 공유용) -->
-	
+	<meta name="naver-site-verification" content="0e08634f0478bf532ff0f28a2dbfa176ce2fa473" />
+	<!-- Open Graph (SNS 공유용) -->
+
 
 	<meta property="og:title" content="하품센터" />
 	<meta property="og:type" content="website" />
@@ -75,9 +75,10 @@
 						<div id="slideshow">
 							<!-- Thymeleaf 반복문: programs 리스트의 각 thumbnailSrc -->
 							<div th:each="program : ${programs}">
-								<div th:onclick="'location.href=\'/main/program/detail/' + ${program.id} + '\''"
-									style="cursor: pointer;">
-									<img th:src="${program.thumbnailSrc}" alt="슬라이드 이미지" />
+								<div class="slide-wrapper">
+									<img th:src="${program.thumbnailSrc}" th:attr="data-program-id=${program.id},
+                      style='view-transition-name: program-thumbnail-' + ${program.id}" alt="슬라이드 이미지"
+										style="position: absolute;" />
 								</div>
 							</div>
 						</div>

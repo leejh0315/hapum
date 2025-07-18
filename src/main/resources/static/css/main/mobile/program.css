@@ -66,6 +66,16 @@
 		cursor: pointer;
 		transition: background-color 0.2s ease;
 		border: 1px solid #D6CCC2;
+		word-break: keep-all;
+		/* 한글 단어 단위로 줄바꿈 */
+		line-break: auto;
+		/* 한글에 맞는 줄바꿈 규칙 */
+		white-space: normal;
+		/* 일반 줄바꿈 허용 */
+		word-spacing: 0.05em;
+		/* 한글에 어울리는 약간의 단어 간격 */
+		letter-spacing: 0;
+		/* 자간은 기본 유지 (너무 넓으면 부자연스러움) */
 	}
 
 	.menu-button.current {
@@ -111,7 +121,7 @@
 
 
 	.program-card img {
-		margin-top:10px;
+		margin-top: 10px;
 		width: 90%;
 		aspect-ratio: 1 / 1;
 		/* 비율 고정 (정사각형) */
@@ -122,6 +132,16 @@
 
 	.program-title {
 		font-weight: 500;
+		word-break: keep-all;
+		/* 한글 단어 단위로 줄바꿈 */
+		line-break: auto;
+		/* 한글에 맞는 줄바꿈 규칙 */
+		white-space: normal;
+		/* 일반 줄바꿈 허용 */
+		word-spacing: 0.05em;
+		/* 한글에 어울리는 약간의 단어 간격 */
+		letter-spacing: 0;
+		/* 자간은 기본 유지 (너무 넓으면 부자연스러움) */
 	}
 
 	.pi-img {
