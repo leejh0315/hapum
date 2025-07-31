@@ -34,7 +34,7 @@ body {
 	margin: 0 -10px 10px;
 	width: calc(100% + 20px);
 	box-sizing: border-box;
-
+	cursor: pointer;
 	padding: 12px 10px;
 	text-align: center;
 	background-color: #F5EBE0;
@@ -125,6 +125,7 @@ body {
 	height: 160px;
 	border-radius: 4px;
 	margin-bottom: 0.5rem;
+	margin-top: 5px;
 }
 
 .program-title {

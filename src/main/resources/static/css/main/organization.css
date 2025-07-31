@@ -54,6 +54,7 @@ body {
 	height: 160px;
 	border-radius: 4px;
 	margin-bottom: 0.5rem;
+	margin-top:5px;
 }
 
 /* 사이드바 */
@@ -203,6 +204,9 @@ footer {
 	margin-top: 8px;
 	font-weight: 500;
 	color: #333;
+}
+.org-title{
+	font-weight: bold;
 }
 
 /* 페이지네이션 스타일 */
