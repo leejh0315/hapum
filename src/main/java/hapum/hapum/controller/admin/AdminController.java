@@ -41,6 +41,7 @@ import hapum.hapum.service.OrganizationService;
 import hapum.hapum.service.ProgramService;
 import hapum.hapum.service.ReservationService;
 import hapum.hapum.service.UserAuthService;
+import hapum.hapum.service.VisitorService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
@@ -69,7 +70,9 @@ public class AdminController {
 	private final ReservationService reservationService;
 
 	private final ProgramService programService;
-
+	private final VisitorService visitorService;
+	
+	
 	@PostConstruct
 	public void init() {
 		tempDir = Paths.get(tempVideoDirStr);
@@ -92,7 +95,13 @@ public class AdminController {
 			Model model) {
 		
 		  // 2) 이번 주(또는 weekOffset 주차)의 시작/끝 날짜 계산
-	    LocalDate today         = LocalDate.now();
+		  LocalDate today         = LocalDate.now();
+		  
+	    int todayVisitCount = visitorService.getDailyVisitCount(today);
+	    int totalVisitCount = visitorService.getTotalVisitCount();
+
+		
+	  
 	    LocalDate startOfWeek   = today.with(DayOfWeek.MONDAY).plusWeeks(weekOffset);
 	    LocalDate endOfWeek     = startOfWeek.plusDays(6);
 
@@ -113,6 +122,8 @@ public class AdminController {
 		model.addAttribute("weekOffset", weekOffset);
 		model.addAttribute("prevWeek", weekOffset - 1);
 		model.addAttribute("nextWeek", weekOffset + 1);
+	    model.addAttribute("todayVisitCount", todayVisitCount);
+	    model.addAttribute("totalVisitCount", totalVisitCount);
 		return "admin/main";
 	}
 

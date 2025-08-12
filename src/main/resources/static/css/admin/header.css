@@ -28,6 +28,13 @@ body {
   transform: translateY(-1px);
 }
 
+.visit-count {
+	position: absolute;
+	top: 15%;
+	left: 80%;
+	font-size: smaller;
+}
+
 /* 반응형 디자인 */
 @media (max-width: 600px) {
   .navbar {

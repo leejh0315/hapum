@@ -13,6 +13,7 @@ import hapum.hapum.domain.User;
 import hapum.hapum.service.NewsService;
 import hapum.hapum.service.NotificationService;
 import hapum.hapum.service.ProgramService;
+import hapum.hapum.service.VisitorService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
@@ -23,30 +24,28 @@ public class DefatultController {
 	private final NewsService newsService;
 	private final ProgramService programService;
 	private final NotificationService notificationService;
-
+	private final VisitorService visitorService;
 	
 	@GetMapping("/")
 	public String getMain(HttpServletRequest req, Model model) {
-		addUserToModel(req, model);
-//		List<ProgramAdd> programs = programService.selectAllProgramsMain();
+	    // 방문 기록 남기기
+	    visitorService.logVisit(req);
 
-		List<Program> programs = programService.selectHomeProgram();
-		
-		List<Program> popupProgram = programService.selectPopupProgram();
-		
-		List<News> news = newsService.select20news();
-		
-		
-		List<Notification> notifications = notificationService.selectAll();
+	    addUserToModel(req, model);
 
-		
-		model.addAttribute("popupProgram", popupProgram);
+	    List<Program> programs = programService.selectHomeProgram();
+	    List<Program> popupProgram = programService.selectPopupProgram();
+	    List<News> news = newsService.select20news();
+	    List<Notification> notifications = notificationService.selectAll();
 
-		model.addAttribute("news",news);
-		model.addAttribute("programs", programs);
-		model.addAttribute("notifications", notifications);
-		return "main/main";
+	    model.addAttribute("popupProgram", popupProgram);
+	    model.addAttribute("news", news);
+	    model.addAttribute("programs", programs);
+	    model.addAttribute("notifications", notifications);
+
+	    return "main/main";
 	}
+
 	
 	private void addUserToModel(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();

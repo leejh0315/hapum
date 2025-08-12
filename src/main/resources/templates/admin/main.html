@@ -25,6 +25,9 @@
 	<div th:replace="~{admin/admin-header :: admin-header}"></div>
 
 	<div class="container my-5">
+		<div class="visit-count"
+					th:text="'오늘의 방문자 수 ' + ${todayVisitCount} + ' | 총 방문자 수 ' + ${totalVisitCount}">
+				</div>
 		<p class="text-muted">
 			이번 주 일정:
 			<strong th:text="${weekStart}">2025-07-07</strong>

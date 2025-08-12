@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="hapum.hapum.mapper.VisitorMapper">
+
+<insert id="insertVisitorLog" parameterType="hapum.hapum.domain.VisitorLog">
+    INSERT INTO hapumdb.visitor_log (session_id, visit_time)
+    VALUES (#{sessionId}, #{visitTime});
+</insert>
+
+<select id="countByDateTimeRange" resultType="int">
+    SELECT COUNT(*) FROM hapumdb.visitor_log
+    WHERE visit_time <![CDATA[>=]]> #{start}
+      AND visit_time <![CDATA[<]]> #{end}
+</select>
+
+<select id="countAll" resultType="int">
+    SELECT COUNT(*) FROM hapumdb.visitor_log
+</select>
+
+
+</mapper>

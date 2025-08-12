@@ -67,7 +67,7 @@ public class UserAuthController {
 	            return "auth/login";
 			}
 			 log.info("Login success for user '{}' (ID: {})", user.getName(), user.getId());
-			return "redirect:/main/main";
+			return "redirect:/";
 		}
 	}
 
