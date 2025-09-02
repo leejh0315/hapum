@@ -178,8 +178,6 @@ public class MainController {
 		}
 
 		ps.setRelation(program.getNeedRelation());
-		System.out.println(program);
-		System.out.println(ps);
 		int temp = programService.programSub(ps);
 
 		log.info("User '{}' (ID: {}) subscribed to program {} (Org: '{}', Relation: '{}', PartCount: {}, Result: {})",
