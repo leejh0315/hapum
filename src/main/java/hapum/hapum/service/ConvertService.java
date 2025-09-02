@@ -120,9 +120,14 @@ public class ConvertService {
         Map<String, String> replacements = new HashMap<>();
         
         String time = "";
-        time += rental.getStartTime().toString();
-        time += " ~ ";
-        time += rental.getEndTime().toString();
+        if(rental.getStartTime()!=null) {
+        	time += rental.getStartTime().toString();
+        	time += " ~ ";
+        }
+        if(rental.getEndTime()!=null) {
+        	time += rental.getEndTime().toString();	
+        }        
+        
         
         replacements.put("${organization}", rental.getGroupName());
         replacements.put("${purpose}", rental.getPurpose());
