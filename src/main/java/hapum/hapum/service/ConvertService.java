@@ -58,22 +58,43 @@ public class ConvertService {
 
         // 3) 치환 맵 준비
         Map<String, String> replacements = new HashMap<>();
-        replacements.put("${organization}", ps.getOrgName());
-        replacements.put("${title}", program.getTitle());
-        replacements.put("${username}", user.getName());
-        
-        if(program.getStartDate() != null) {
-        	replacements.put("${date}", formatter.format(program.getStartDate()).toString());
+        if (ps.getOrgName() != null) {
+            replacements.put("${organization}", ps.getOrgName());
         }
-        
+
+        if (program.getTitle() != null) {
+            replacements.put("${title}", program.getTitle());
+        }
+
+        if (user.getName() != null) {
+            replacements.put("${username}", user.getName());
+        }
+
+        if (program.getStartDate() != null) {
+            replacements.put("${date}", formatter.format(program.getStartDate()));
+        }
+
         replacements.put("${count}",Integer.toString(ps.getPartCount()));
-        replacements.put("${year}", String.valueOf(now.getYear()));
-        replacements.put("${month}", String.valueOf(now.getMonthValue()));
-        replacements.put("${day}", String.valueOf(now.getDayOfMonth()));
         
-        replacements.put("${userphone}", user.getPhone());
-        replacements.put("${opinion}", ps.getOpinion());
-        replacements.put("${reason}", ps.getReason());
+
+        if (now != null) { // now가 null일 가능성은 거의 없지만 안전하게
+            replacements.put("${year}", String.valueOf(now.getYear()));
+            replacements.put("${month}", String.valueOf(now.getMonthValue()));
+            replacements.put("${day}", String.valueOf(now.getDayOfMonth()));
+        }
+
+        if (user.getPhone() != null) {
+            replacements.put("${userphone}", user.getPhone());
+        }
+
+        if (ps.getOpinion() != null) {
+            replacements.put("${opinion}", ps.getOpinion());
+        }
+
+        if (ps.getReason() != null) {
+            replacements.put("${reason}", ps.getReason());
+        }
+
         
         
         // 4) 템플릿 열기
@@ -129,24 +150,45 @@ public class ConvertService {
         }        
         
         
-        replacements.put("${organization}", rental.getGroupName());
-        replacements.put("${purpose}", rental.getPurpose());
-        replacements.put("${date}", rental.getReservationDate().format(DateTimeFormatter.ISO_DATE));
-        replacements.put("${time}", time);
-        
+        if (rental.getGroupName() != null) {
+            replacements.put("${organization}", rental.getGroupName());
+        }
+
+        if (rental.getPurpose() != null) {
+            replacements.put("${purpose}", rental.getPurpose());
+        }
+
+        if (rental.getReservationDate() != null) {
+            replacements.put("${date}", rental.getReservationDate().format(DateTimeFormatter.ISO_DATE));
+        }
+
+            replacements.put("${time}", time);
+
         replacements.put("${count}",Integer.toString(rental.getHeadCount()));
-        
-        replacements.put("${username}", user.getName());
-        replacements.put("${userphone}", user.getPhone());
-        
-        replacements.put("${location}",rental.getLocation());
-        replacements.put("${equip}", rental.getEquipment());
-        
-        
-        replacements.put("${year}", String.valueOf(now.getYear()));
-        replacements.put("${month}", String.valueOf(now.getMonthValue()));
-        replacements.put("${day}", String.valueOf(now.getDayOfMonth()));
-        
+
+
+        if (user.getName() != null) {
+            replacements.put("${username}", user.getName());
+        }
+
+        if (user.getPhone() != null) {
+            replacements.put("${userphone}", user.getPhone());
+        }
+
+        if (rental.getLocation() != null) {
+            replacements.put("${location}", rental.getLocation());
+        }
+
+        if (rental.getEquipment() != null) {
+            replacements.put("${equip}", rental.getEquipment());
+        }
+
+        if (now != null) { // now는 보통 null이 아니지만 안전하게 체크
+            replacements.put("${year}", String.valueOf(now.getYear()));
+            replacements.put("${month}", String.valueOf(now.getMonthValue()));
+            replacements.put("${day}", String.valueOf(now.getDayOfMonth()));
+        }
+
 
         // 4) 템플릿 열기
         try (InputStream is = new FileInputStream(rentalTemplatePath);
