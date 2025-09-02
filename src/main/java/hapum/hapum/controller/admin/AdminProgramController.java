@@ -44,7 +44,6 @@ public class AdminProgramController {
 	public String postProgramAdd(ProgramAdd programAdd, @RequestParam("photo") MultipartFile photo) throws IOException {
 		
 		
-		
 		programService.insertProgramAdd(programAdd, photo);
 		return "admin/main";
 	}
@@ -54,6 +53,8 @@ public class AdminProgramController {
 		if(program.getExpense()==null) {
 			program.setExpense("0");
 		}
+		System.out.println(program);
+		
 		programService.insertProgram(program, imageFile);
 		return "admin/main";
 	}

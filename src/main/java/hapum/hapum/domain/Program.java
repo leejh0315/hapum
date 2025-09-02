@@ -27,7 +27,12 @@ public class Program {
     
     private String location;    // 장소
     private String target;      // 대상
+    
+    
     private Integer capacity;   // 정원
+    private String needCapacity; //상시?
+    
+    
     private String expense; 		//참가비
     private String thumbnailSrc;
     
@@ -39,6 +44,9 @@ public class Program {
     private String needOrgName;
     private String needPartCount;
     private String needRelation;
+    
+    private String needReason;	//신청동기
+    private String needOpinion; //협의사항
  
     private String isPopup;
 }

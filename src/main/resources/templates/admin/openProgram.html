@@ -93,6 +93,9 @@
 				<label><input type="checkbox" name="needPartCount" value="Y" /> 인원 수집</label>
 				<label><input type="checkbox" name="needRelation" value="Y" /> 관계 수집</label>
 				<label><input type="checkbox" name="needOrgName" value="Y" /> 단체명 수집</label>
+				<label><input type="checkbox" name="needReason" value="Y" /> 신청동기 수집</label>
+				
+				<label><input type="checkbox" name="needOpinion" value="Y" /> 협의사항 수집</label>
 			</div>
 			<div class="program-form-group">
 				<label for="startDate">시작일시</label>
@@ -126,6 +129,7 @@
 			<div class="program-form-group">
 				<label for="capacity">정원</label>
 				<input type="number" id="capacity" name="capacity" placeholder="예) 30명" min="1" />
+				<label><input id="needCapacityBox" type="checkbox" name="needCapacity" value="Y" /> 상시모집</label>
 			</div>
 
 			<div class="program-form-group image-upload">
@@ -142,8 +146,8 @@
 	<!-- flatpickr JS -->
 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
-	<script th:src="@{/js/admin/openProgram.js}"></script>
 
+	<script src="/js/admin/openProgram.js" defer></script>
 	<script>
 		$(function () {
 			$('#summernote').summernote({

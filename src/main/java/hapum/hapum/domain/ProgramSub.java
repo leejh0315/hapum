@@ -20,4 +20,8 @@ public class ProgramSub {
     private int partCount;
     private String relation;
     
+    private String reason;
+    private String opinion;
+    
+    
 }

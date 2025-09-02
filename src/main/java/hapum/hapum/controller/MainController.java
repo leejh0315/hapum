@@ -51,33 +51,31 @@ public class MainController {
 	private final OrganizationService organizationService;
 	private final NotificationService notificationService;
 	private final VisitorService visitorService;
-		
-	
+
 	private final ConvertService convertService;
-	
+
 	@Value("${file.upload-dir}")
 	private String uploadDir; // e.g. "./uploads"
 
 	@GetMapping("/main")
 	public String getMain(HttpServletRequest req, Model model) {
-	    // 방문 기록 남기기
-	    visitorService.logVisit(req);
+		// 방문 기록 남기기
+		visitorService.logVisit(req);
 
-	    addUserToModel(req, model);
+		addUserToModel(req, model);
 
-	    List<Program> programs = programService.selectHomeProgram();
-	    List<Program> popupProgram = programService.selectPopupProgram();
-	    List<News> news = newsService.select20news();
-	    List<Notification> notifications = notificationService.selectAll();
+		List<Program> programs = programService.selectHomeProgram();
+		List<Program> popupProgram = programService.selectPopupProgram();
+		List<News> news = newsService.select20news();
+		List<Notification> notifications = notificationService.selectAll();
 
-	    model.addAttribute("popupProgram", popupProgram);
-	    model.addAttribute("news", news);
-	    model.addAttribute("programs", programs);
-	    model.addAttribute("notifications", notifications);
+		model.addAttribute("popupProgram", popupProgram);
+		model.addAttribute("news", news);
+		model.addAttribute("programs", programs);
+		model.addAttribute("notifications", notifications);
 
-	    return "main/main";
+		return "main/main";
 	}
-
 
 	@GetMapping("/introduce")
 	public String getIntroduce(HttpServletRequest req, Model model) {
@@ -159,45 +157,40 @@ public class MainController {
 
 		int applyCount = programService.getApplyCount(program.getId());
 
-
 		ProgramSub ps = new ProgramSub();
 		ps.setUserId(user.getId());
 		ps.setProgramId(program.getId());
 
 		ps.setOrgName(program.getNeedOrgName());
-
+		ps.setReason(program.getNeedReason());
+		ps.setOpinion(program.getNeedOpinion());
 		
 		
-		if (!program.getNeedPartCount().equals("N")) {
+		
+		if (!"N".equals(program.getNeedPartCount())) {
 			ps.setPartCount(Integer.parseInt(program.getNeedPartCount()));
 
-			if (program.getCapacity() - applyCount < Integer.parseInt(program.getNeedPartCount())) {
+			// needCapacity가 null이 아니고 "Y"인 경우는 정원 체크를 건너뜀
+			if ((program.getNeedCapacity() == null || !"Y".equals(program.getNeedCapacity()))
+					&& program.getCapacity() - applyCount < Integer.parseInt(program.getNeedPartCount())) {
 				return 2;
 			}
 		}
 
 		ps.setRelation(program.getNeedRelation());
-
+		System.out.println(program);
+		System.out.println(ps);
 		int temp = programService.programSub(ps);
 
-		
-		  log.info("User '{}' (ID: {}) subscribed to program {} (Org: '{}', Relation: '{}', PartCount: {}, Result: {})",
-		             user.getName(),
-		             user.getId(),
-		             program.getId(),
-		             ps.getOrgName(),
-		             ps.getRelation(),
-		             Integer.toString(ps.getPartCount())
-		              == null ? "N/A" : ps.getPartCount(),
-		             temp);
+		log.info("User '{}' (ID: {}) subscribed to program {} (Org: '{}', Relation: '{}', PartCount: {}, Result: {})",
+				user.getName(), user.getId(), program.getId(), ps.getOrgName(), ps.getRelation(),
+				Integer.toString(ps.getPartCount()) == null ? "N/A" : ps.getPartCount(), temp);
 
-		
 		emailService.sendProgramMessage(user.getEmail(), program);
-		
+
 		String result = convertService.generateProgramWordFromTemplate(ps, program, user);
-		
+
 		emailService.sendEmailProgram("hapum7179@gmail.com", result);
-		
 		return temp;
 	}
 
@@ -223,22 +216,18 @@ public class MainController {
 	public String submitRental(@RequestBody Rental rental, HttpServletRequest req) throws Exception {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
-		
+
 		rental.setUserId(user.getId());
 		reservationService.insertRental(rental);
-		
 
-	    log.info("User '{}' (ID: {}) submitted a rental request. Rental Info: {}",
-	             user.getName(),
-	             user.getId(),
-	             rental);
-		
+		log.info("User '{}' (ID: {}) submitted a rental request. Rental Info: {}", user.getName(), user.getId(),
+				rental);
+
 		emailService.sendRentalMessage(user.getEmail(), rental);
-		
 
 		String result = convertService.generateRentalWordFromTemplate(rental, user);
 		emailService.sendEmailRental("hapum7179@gmail.com", result);
-		//hapum7179@gmail.com
+		// hapum7179@gmail.com
 		return "success";
 	}
 

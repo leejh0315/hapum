@@ -23,7 +23,13 @@
 		add_id,
 		need_org_name,
 		need_part_count,
-		need_relation
+		need_relation,
+		
+		need_capacity,
+		need_reason,
+		need_opinion
+		
+		
 		) VALUES (
 		#{title},
 		#{content},
@@ -41,7 +47,11 @@
 		#{addId},
 		#{needOrgName},
 		#{needPartCount},
-		#{needRelation}
+		#{needRelation},
+		
+		#{needCapacity},
+		#{needReason},
+		#{needOpinion}
 		)
 	</insert>
 
@@ -69,9 +79,9 @@
 
 	<insert id="programSub" useGeneratedKeys="true" keyProperty="id">
 		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on, is_app,
-		part_count, relation, org_name)
+		part_count, relation, org_name, reason, opinion)
 		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation},
-		#{orgName})
+		#{orgName},#{reason}, #{opinion})
 	</insert>
 
 	<select id="selectPrograSubmById" resultType="hapum.hapum.domain.ProgramSub">

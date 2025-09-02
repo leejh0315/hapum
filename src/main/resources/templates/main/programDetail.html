@@ -74,9 +74,10 @@
 				<div class="text" th:utext="${program.content}"></div>
 
 				<div class="program-bottom">
-					<div class="capacity">
+					<div class="capacity" th:if="${program.needCapacity == null or program.needCapacity != 'Y'}">
 						신청인원: <span th:text="${applyCount}"></span>/<span th:text="${program.capacity}"></span>명
 					</div>
+
 
 					<th:block th:if="${program.openStatus == 'N'}">
 
@@ -100,10 +101,15 @@
 							<button class="apply-btn" disabled>신청완료</button>
 						</th:block>
 
-						<th:block th:if="${flag != 'Y' and applyCount >= program.capacity}">
+						<th:block th:if="${flag != 'Y' 
+	                 and applyCount >= program.capacity 
+	                 and (program.needCapacity == null or program.needCapacity != 'Y')}">
 							<button class="apply-btn" disabled>신청마감</button>
 						</th:block>
-						<th:block th:if="${flag != 'Y' and applyCount < program.capacity and program.openStatus=='Y'}">
+
+						<th:block th:if="${flag != 'Y' 
+                 and (applyCount < program.capacity or program.needCapacity == 'Y') 
+                 and program.openStatus == 'Y'}">
 							<button class="apply-btn" id="openPrivacyModalBtn">신청하기</button>
 						</th:block>
 					</th:block>
@@ -133,6 +139,19 @@
 							required />
 					</div>
 				</div>
+				<!-- 신청동기 -->
+				<div th:if="${program.needReason == 'Y'}" class="program-form-group">
+					<label>신청 동기</label>
+					<textarea class="info-modal-input" name="reason" placeholder="신청 동기를 입력하세요" required></textarea>
+				</div>
+
+				<!-- 협의사항 -->
+				<div th:if="${program.needOpinion == 'Y'}" class="program-form-group">
+					<label>협의 사항</label>
+					<textarea class="info-modal-input" name="opinion" placeholder="협의 사항을 입력하세요" required></textarea>
+				</div>
+
+
 
 				<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
 					<button type="submit" class="infoModalButton">확인</button>
@@ -193,6 +212,9 @@
 	</div>
 	<div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
+
+
+
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		var program = /*[[${program}]]*/ {};
@@ -203,15 +225,18 @@
 			const needOrg = program.needOrgName === 'Y';
 			const needPart = program.needPartCount === 'Y';
 			const needRel = program.needRelation === 'Y';
+			const needReason = program.needReason === 'Y';
+			const needOpinion = program.needOpinion === 'Y';
 
 			// 1. 신청하기 버튼 클릭 시
 			$('#openPrivacyModalBtn').on('click', function () {
 				// 원래 설정값 기준으로 판단해야 함!
-				if (!needOrg && !needPart && !needRel) {
+				if (!needOrg && !needPart && !needRel && !needReason && !needOpinion) {
 					$('#programApplyModalOverlay').addClass('show'); // 개인정보 모달 바로
 				} else {
 					$('#additionalInfoModalOverlay').addClass('show'); // 추가 정보 먼저
 				}
+
 			});
 
 			// 2. 추가 정보 입력 → 개인정보 동의 모달로 이동
@@ -222,13 +247,19 @@
 				const orgName = $(this).find('input[name="orgName"]').val();
 				const partCount = $(this).find('input[name="partCount"]').val();
 				const relation = $(this).find('input[name="relation"]').val();
+				const reason = $(this).find('textarea[name="reason"]').val();
+				const opinion = $(this).find('textarea[name="opinion"]').val();
+
 
 				if (orgName) program.needOrgName = orgName;
 				if (partCount) program.needPartCount = partCount;
 				if (relation) program.needRelation = relation;
+				if (reason) program.needReason = reason;
+				if (opinion) program.needOpinion = opinion;
 
 				$('#additionalInfoModalOverlay').removeClass('show');
 				$('#programApplyModalOverlay').addClass('show');
+
 			});
 
 			// 3. 추가 정보 입력 취소

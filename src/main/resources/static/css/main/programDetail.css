@@ -70,7 +70,7 @@ body {
 	border-radius: 10px;
 	width: 90%;
 	max-width: 700px;
-	height: 380px;
+	max-height: 520px;
 	padding: 20px;
 	box-sizing: border-box;
 	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);

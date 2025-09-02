@@ -72,7 +72,10 @@ public class ConvertService {
         replacements.put("${day}", String.valueOf(now.getDayOfMonth()));
         
         replacements.put("${userphone}", user.getPhone());
-
+        replacements.put("${opinion}", ps.getOpinion());
+        replacements.put("${reason}", ps.getReason());
+        
+        
         // 4) 템플릿 열기
         try (InputStream is = new FileInputStream(templatePath);
              XWPFDocument document = new XWPFDocument(is)) {
@@ -118,6 +121,8 @@ public class ConvertService {
         replacements.put("${organization}", rental.getGroupName());
         replacements.put("${purpose}", rental.getPurpose());
         replacements.put("${date}", rental.getReservationDate().format(DateTimeFormatter.ISO_DATE));
+        replacements.put("${time}", rental.getStartTime().toString() + " ~ " + rental.getEndTime().toString());
+        
         replacements.put("${count}",Integer.toString(rental.getHeadCount()));
         
         replacements.put("${username}", user.getName());

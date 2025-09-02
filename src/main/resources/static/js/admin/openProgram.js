@@ -1,17 +1,5 @@
-// ✅ flatpickr 초기화
-flatpickr("#startDate", {
-	enableTime: true,
-	dateFormat: "Y-m-d H:i",
-	minDate: "today",
-	locale: "ko",
-});
 
-flatpickr("#endDate", {
-	enableTime: true,
-	dateFormat: "Y-m-d H:i",
-	minDate: "today",
-	locale: "ko",
-});
+
 
 function validateForm() {
 	const title = document.getElementById("title").value.trim();
@@ -23,10 +11,10 @@ function validateForm() {
 	const content = document.getElementById("content").value.trim();
 	const freeChecked = document.getElementById("freeCheck").checked;
 	const expenseInput = document.getElementById("expense");
-const subject = document.getElementById("subject").value.trim();  // 추가
+	const subject = document.getElementById("subject").value.trim();  // 추가
 	let expense = expenseInput.value.trim().replace(/,/g, '');
 
-	if (!title || !content ||  !location || !target || !capacity || !subject ) {
+	if (!title || !content || !location || !target || !capacity || !subject) {
 		alert("모든 항목을 입력해주세요.");
 		return false;
 	}
@@ -46,6 +34,46 @@ const subject = document.getElementById("subject").value.trim();  // 추가
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+	
+	// ✅ flatpickr 초기화
+flatpickr("#startDate", {
+	enableTime: true,
+	dateFormat: "Y-m-d H:i",
+	minDate: "today",
+	locale: "ko",
+});
+
+flatpickr("#endDate", {
+	enableTime: true,
+	dateFormat: "Y-m-d H:i",
+	minDate: "today",
+	locale: "ko",
+});
+
+
+
+	
+
+	document.getElementById('needCapacityBox').addEventListener('change', function() {
+		console.log("clicked");
+		
+		if (this.checked) {
+			startPicker.clear();
+			endPicker.clear();
+			startPicker.input.disabled = true;
+			endPicker.input.disabled = true;
+			console.log("if");
+		} else {
+			startPicker.input.disabled = false;
+			endPicker.input.disabled = false;
+			console.log("else");
+		}
+	});
+
+
+
+
+
 	// ✅ 이미지 처리
 	const imageInput = document.getElementById("image");
 	const previewContainer = document.getElementById("image-preview-container");
@@ -67,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		}
 
 		const reader = new FileReader();
-		reader.onload = function (e) {
+		reader.onload = function(e) {
 			const img = document.createElement("img");
 			img.src = e.target.result;
 
