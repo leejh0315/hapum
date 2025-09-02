@@ -118,10 +118,16 @@ public class ConvertService {
 
         // 3) 치환 맵 준비
         Map<String, String> replacements = new HashMap<>();
+        
+        String time = "";
+        time += rental.getStartTime().toString();
+        time += " ~ ";
+        time += rental.getEndTime().toString();
+        
         replacements.put("${organization}", rental.getGroupName());
         replacements.put("${purpose}", rental.getPurpose());
         replacements.put("${date}", rental.getReservationDate().format(DateTimeFormatter.ISO_DATE));
-        replacements.put("${time}", rental.getStartTime().toString() + " ~ " + rental.getEndTime().toString());
+        replacements.put("${time}", time);
         
         replacements.put("${count}",Integer.toString(rental.getHeadCount()));
         
