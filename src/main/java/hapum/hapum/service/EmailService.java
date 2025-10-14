@@ -156,10 +156,6 @@ public class EmailService {
 			html.append(formattedTotal).append("원").append("</li>");
 		}
 
-		if (program.getNeedPartCount() != null || program.getNeedPartCount() != "") {
-			html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
-					.append("<strong>참가자와의 관계:</strong>").append(program.getNeedRelation()).append("</li>");
-		}
 
 		html.append("</ul>").append("<div>").append(program.getContent()).append("</div>").append("</div>")
 				.append("</div>");
