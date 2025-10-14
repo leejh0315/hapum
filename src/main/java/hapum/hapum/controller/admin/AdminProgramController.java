@@ -122,6 +122,20 @@ public class AdminProgramController {
 		return "redirect:/admin/program/detail/" + programId; // 필요시 파라미터 유지
 	}
 	
+	@PostMapping("/program/approve/main")
+	public String approveMain(@RequestParam("programSubId") Long programSubId, @RequestParam("programId") Long programId) {
+		programService.approve(programSubId); // isApp = "Y" 로 변경
+		return "redirect:/admin/main"; // 필요시 파라미터 유지
+	}
+
+	@PostMapping("/program/cancel/main")
+	public String cancelMain(@RequestParam("programSubId") Long programSubId, @RequestParam("programId") Long programId) {
+		programService.cancel(programSubId); // isApp = "Y" 로 변경
+		return "redirect:/admin/main"; // 필요시 파라미터 유지
+	}
+	
+	
+	
 	@PostMapping("/program/updateCode/{programId}")
 	public String updateCode(@PathVariable("programId") Long programId, @RequestParam("code") String code) {
 		

@@ -9,6 +9,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -99,7 +100,9 @@ public class AdminController {
 		  
 	    int todayVisitCount = visitorService.getDailyVisitCount(today);
 	    int totalVisitCount = visitorService.getTotalVisitCount();
-
+	    
+	    List<Map<String, Object>> subsList = programService.getFutureProgramSubs();
+        model.addAttribute("subsList", subsList);
 		
 	  
 	    LocalDate startOfWeek   = today.with(DayOfWeek.MONDAY).plusWeeks(weekOffset);

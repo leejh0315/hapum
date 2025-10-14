@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -285,4 +286,9 @@ public class ProgramService {
 	public List<Program> selectHomeProgram(){
 		return programMapper.selectHomeProgram();
 	}
+	
+	public List<Map<String, Object>> getFutureProgramSubs() {
+        return programMapper.selectFutureProgramSubs();
+    }
+
 }

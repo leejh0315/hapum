@@ -303,5 +303,36 @@
 	<delete id="deleteByUserId">
 		DELETE FROM hapumdb.program_subs WHERE id=#{id}
 	</delete>
+	
+	<select id="selectFutureProgramSubs" resultType="map">
+    SELECT 
+        ps.id AS subs_id,
+        ps.user_id,
+        u.name AS user_name,   
+        ps.program_id,
+        ps.subs_on,
+        ps.is_app,
+        ps.part_count,
+        ps.relation,
+        ps.org_name,
+        ps.reason,
+        ps.opinion,
+        p.title,
+        p.start_date,
+        p.end_date,
+        p.location,
+        p.target,
+        ps.is_app
+    FROM program_subs ps
+    JOIN program p 
+        ON ps.program_id = p.id
+    JOIN user u
+        ON ps.user_id = u.id
+    WHERE p.start_date > NOW()
+    ORDER BY p.start_date ASC, ps.subs_on ASC
+</select>
+
+
+	
 
 </mapper>
