@@ -323,10 +323,10 @@
         p.location,
         p.target,
         ps.is_app
-    FROM program_subs ps
-    JOIN program p 
+    FROM hapumdb.program_subs ps
+    JOIN hapumdb.program p 
         ON ps.program_id = p.id
-    JOIN user u
+    JOIN hapumdb.user u
         ON ps.user_id = u.id
     WHERE p.start_date > NOW()
     ORDER BY p.start_date ASC, ps.subs_on ASC
