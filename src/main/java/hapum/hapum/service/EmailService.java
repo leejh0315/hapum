@@ -128,14 +128,14 @@ public class EmailService {
 		if (program.getExpense() != null || !program.getExpense().equals("")) {
 			html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
 					.append("<strong>1인 참가비:</strong>").append(program.getExpense()).append("원").append("</li>")
-					.append("    <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>입금 계좌:</strong><p style='color:blue'>하나은행 646-910019-24904 (천주교대전교구청소년교육원)</p></li>");
+					.append("    <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>입금 계좌:</strong><p style='color:blue'>하나은행 233-910013-52204 ((재)대전교구천주교유지재단 천안지역 청소년사목)</p></li>");
 
 		}
 
 		html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>").append("<strong>주제:</strong>")
 				.append(program.getSubject()).append("</li>");
 
-		if (program.getNeedOrgName() != null || !program.getNeedOrgName().equals("")) {
+		if (program.getNeedOrgName() != null ) {
 			html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
 					.append("<strong>소속 단체 명:</strong>").append(program.getNeedOrgName()).append("</li>");
 		}
@@ -196,7 +196,7 @@ public class EmailService {
 		msgg += "    <li style='margin-bottom:10px;'><strong>대관 시작시간:</strong> " + rental.getStartTime() + "</li>";
 		msgg += "    <li style='margin-bottom:10px;'><strong>대관 종료시간:</strong> " + rental.getEndTime() + "</li>";
 		msgg += "    <li style='margin-bottom:10px;'><strong>대관료:</strong> " + rental.getPrice() + "원</li>";
-		msgg += "    <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>입금 계좌:</strong><p style='color:blue'>하나은행 646-910019-24904 (천주교대전교구청소년교육원)</p></li>";
+		msgg += "    <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>입금 계좌:</strong><p style='color:blue'>하나은행 233-910013-52204((재)대전교구천주교유지재단 천안지역 청소년사목)</p></li>";
 		msgg += "  </ul>";
 		msgg += "</div>";
 
