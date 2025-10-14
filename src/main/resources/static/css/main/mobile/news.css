@@ -83,7 +83,7 @@
 	}
 
 	.news-title {
-		font-size: 16px;
+		font-size: 13px;
 		font-weight: bold;
 		margin-bottom: 5px;
 		word-break: keep-all;
@@ -96,6 +96,11 @@
 		/* 한글에 어울리는 약간의 단어 간격 */
 		letter-spacing: 0;
 		/* 자간은 기본 유지 (너무 넓으면 부자연스러움) */
+		width:150px;
+		white-space: nowrap;
+        overflow: hidden;
+         text-overflow: ellipsis;
+		
 	}
 
 	.pagination {
