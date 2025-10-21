@@ -117,7 +117,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="notif, iterStat : ${notifications}" th:if="${iterStat.index < 5}">
+								<tr th:each="notif, iterStat : ${notifications}" th:if="${iterStat.index < 6}">
 									<td>
 										<a th:href="@{/main/notification/detail/{id}(id=${notif.id})}">
 											<span th:text="${notif.title}" class="notice-title"
