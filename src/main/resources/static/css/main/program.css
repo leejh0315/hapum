@@ -126,6 +126,7 @@ body {
 	border-radius: 4px;
 	margin-bottom: 0.5rem;
 	margin-top: 5px;
+	border-radius:10%;
 }
 
 .program-title {
@@ -138,7 +139,7 @@ body {
 	width: 350px;
 	height: 350px;
 	object-fit: cover;
-
+border-radius:10%;
 }
 
 .program-intro {

@@ -201,6 +201,7 @@
 	display: block;
 	width: 150px;
 	height: 150px;
+	border-radius:15%;
 }
 
 /* 네비게이션 버튼 */
