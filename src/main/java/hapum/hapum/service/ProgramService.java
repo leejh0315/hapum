@@ -290,5 +290,22 @@ public class ProgramService {
 	public List<Map<String, Object>> getFutureProgramSubs() {
         return programMapper.selectFutureProgramSubs();
     }
+	
+	public List<Program> selectAllProgramsByOpenStatus(){
+		return programMapper.selectAllProgramsByOpenStatus();
+	}
 
+	public void insertProgramSubWithAdmin(ProgramSub programSub, String name, String baptismName, String phone) {
+		programSub.setIsApp("Y");
+		String originText = programSub.getOpinion();
+		  StringBuilder sb = new StringBuilder();
+		    sb.append("[관리자 대리신청]\n")
+		      .append("이름: ").append(name).append("\n")
+		      .append("세례명: ").append(baptismName).append("\n")
+		      .append("연락처: ").append(phone);
+
+		    programSub.setOpinion("협의사항 : " + originText  + sb.toString());
+		
+		programMapper.insertProgramSubWithAdmin(programSub);
+	}
 }

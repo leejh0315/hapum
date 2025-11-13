@@ -59,7 +59,7 @@
 		width: 100%;
 		box-sizing: border-box;
 		padding: 10px 0;
-		font-size: 14px;
+		font-size: 13px;
 		background-color: #F5EBE0;
 		border: none;
 		color: #333;
@@ -143,6 +143,7 @@
 		/* 한글에 어울리는 약간의 단어 간격 */
 		letter-spacing: 0;
 		/* 자간은 기본 유지 (너무 넓으면 부자연스러움) */
+		font-weight: bold;
 	}
 
 	.pi-img {

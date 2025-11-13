@@ -68,6 +68,12 @@
 	</select>
 
 
+	<select id="selectAllProgramsByOpenStatus"
+		resultType="hapum.hapum.domain.Program">
+		SELECT * FROM hapumdb.program WHERE open_status='Y'
+	</select>
+
+
 	<select id="selectProgramById" resultType="hapum.hapum.domain.Program">
 		SELECT * FROM hapumdb.program WHERE id = #{id}
 	</select>
@@ -315,7 +321,7 @@
         ps.part_count,
         ps.relation,
         ps.org_name,
-        ps.reason,
+         ps.reason,
         ps.opinion,
         p.title,
         p.start_date,
@@ -332,7 +338,13 @@
     ORDER BY p.start_date ASC, ps.subs_on ASC
 </select>
 
-
+<insert id="insertProgramSubWithAdmin" parameterType="hapum.hapum.domain.ProgramSub">
+	INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on, is_app,
+		part_count, relation, org_name, reason, opinion)
+		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation},
+		#{orgName},#{reason}, #{opinion})
+	
+</insert>
 	
 
 </mapper>

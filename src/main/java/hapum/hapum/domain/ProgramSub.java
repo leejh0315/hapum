@@ -23,5 +23,4 @@ public class ProgramSub {
     private String reason;
     private String opinion;
     
-    
 }

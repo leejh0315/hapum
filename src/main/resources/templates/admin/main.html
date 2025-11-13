@@ -18,7 +18,26 @@
 	<!-- Bootstrap 5 Bundle JS (Popper 포함) -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-…"
 		crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+	<style>
+		.tooltip-opinion {
+			position: absolute;
+			background: #fff8dc;
+			border: 1px solid #ccc;
+			padding: 8px;
+			font-size: 0.9rem;
+			max-width: 300px;
+			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+			display: none;
+			z-index: 1000;
+			white-space: pre-line;
+			/* opinion 줄바꿈 유지 */
+		}
+		.table-responsive{
+			margin-bottom: 10%;
+		}
+	</style>
+
 </head>
 
 <body>
@@ -137,7 +156,8 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr th:each="row : ${subsList}">
+					<tr th:each="row : ${subsList}" th:attr="data-opinion=${row['opinion']}">
+
 						<td th:text="${row.subs_id}"></td>
 						<td th:text="${row.user_id}"></td>
 						<td th:text="${row.user_name}"></td>
@@ -159,9 +179,9 @@
 								</button>
 							</form>
 						</td>
-
 					</tr>
 				</tbody>
+
 			</table>
 		</div>
 
@@ -174,6 +194,30 @@
 		document
 			.querySelectorAll('[data-bs-toggle="tooltip"]')
 			.forEach((el) => new bootstrap.Tooltip(el, {html: true}));
+
+
+		document.addEventListener("DOMContentLoaded", function () {
+			const tooltip = document.createElement("div");
+			tooltip.className = "tooltip-opinion";
+			document.body.appendChild(tooltip);
+
+			document.querySelectorAll("tbody tr").forEach(row => {
+				row.addEventListener("mouseenter", function (e) {
+					const opinion = this.getAttribute("data-opinion");
+					if (opinion) {
+						tooltip.textContent = opinion;
+						tooltip.style.display = "block";
+						const rect = this.getBoundingClientRect();
+						tooltip.style.top = (rect.top + window.scrollY + rect.height) + "px";
+						tooltip.style.left = (rect.left + window.scrollX) + "px";
+					}
+				});
+				row.addEventListener("mouseleave", function () {
+					tooltip.style.display = "none";
+				});
+			});
+		});
+
 	</script>
 </body>
 

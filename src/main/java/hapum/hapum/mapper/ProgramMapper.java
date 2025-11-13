@@ -49,7 +49,7 @@ public interface ProgramMapper {
 	 void deleteProgramAdd(@Param("id") Long id);
 	 
 	 List<ProgramAdd> selectAllProgramsMain();
-	 
+	 List<Program> selectAllProgramsByOpenStatus();
 	 void changePopup(@Param("id")Long id, @Param("code") String code);
 	 
 	 List<Program>selectPopupProgram();
@@ -57,5 +57,6 @@ public interface ProgramMapper {
 	 
 	 void deleteByUserId(@Param("id")Long id);
 	 List<Map<String, Object>> selectFutureProgramSubs();
-
+	 
+	 void insertProgramSubWithAdmin(ProgramSub programSub);
 }
