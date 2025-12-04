@@ -180,7 +180,8 @@
 		<div th:each="popup, iterStat : ${popupProgram}" th:if="${popup.thumbnailSrc != null}"
 			th:id="'popup-modal-' + ${popup.id}" class="popup-modal" th:style="'display: none;'">
 			<div class="popup-content">
-				<a th:href="@{/main/program/detail/{id}(id=${popup.id})}">
+				<a th:href="${popup.id == 76} ? @{/auth/signin} : @{/main/program/detail/{id}(id=${popup.id})}">
+
 					<img th:src="${popup.thumbnailSrc}" alt="팝업 이미지" class="popup-image" />
 				</a>
 				<div class="popup-footer">
