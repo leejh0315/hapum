@@ -27,14 +27,17 @@
 	<div class="container">
 		<!-- 좌측 사이드바 -->
 		<div class="sidebar">
-			<div class="sidebar-title" onclick="location.href='/main/program'">프로그램</div>
-			<div class="menu-group">
-				<button th:each="programAdd : ${programAdds}" th:text="${programAdd.name}"
-					th:onclick="|location.href='/main/programList/${programAdd.id}'|" class="menu-button"
-					th:classappend="${activeTab == programAdd.id} ? ' active' : ''">
-				</button>
-			</div>
-		</div>
+    <div class="sidebar-title" onclick="location.href='/main/program'">프로그램</div>
+    <div class="menu-group">
+        <button th:each="programAdd : ${programAdds}"
+                th:if="${programAdd.openStatus == 'Y'}"
+                th:text="${programAdd.name}"
+                th:onclick="|location.href='/main/programList/${programAdd.id}'|"
+                class="menu-button"
+                th:classappend="${activeTab == programAdd.id} ? ' active' : ''">
+        </button>
+    </div>
+</div>
 
 		<!-- 오른쪽 콘텐츠 영역 -->
 		<div class="content">
