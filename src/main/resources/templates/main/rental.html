@@ -184,6 +184,7 @@
 	<div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
 	<script th:src="@{/js/roomData.js}"></script>
+
 	<script th:inline="javascript">
 		const blockedDays = [[${blockedDays}]];
 		const fixedReservations = [[${fixedReservations}]];
@@ -192,7 +193,15 @@
 		const user = /*[[${user}]]*/ null;
 	</script>
 	<script th:src="@{/js/main/rental.js}"></script>
-
+<script th:inline="javascript">
+  window.addEventListener('load', () => {
+    // 자동으로 '강의실2' 버튼 클릭
+    const roomBtn = document.querySelector('.room-btn[data-room="강의실2"]');
+    if (roomBtn) {
+      roomBtn.click();
+    }
+  });
+</script>
 </body>
 
 </html>
