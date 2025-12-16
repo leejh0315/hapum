@@ -272,3 +272,10 @@ function submitRental() {
 
 	//alert(`대관 신청 완료되었습니다!\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n시간: ${selectedSlots[0]} ~ ${selectedSlots[3]}`);
 }
+document.addEventListener("DOMContentLoaded", () => {
+    // 기본적으로 '강의실2'를 클릭한 상태로 설정
+    const defaultRoomButton = document.querySelector('.room-btn[data-room="강의실2"]');
+    if (defaultRoomButton) {
+        defaultRoomButton.click();
+    }
+});
