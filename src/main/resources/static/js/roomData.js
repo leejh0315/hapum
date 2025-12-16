@@ -1,23 +1,23 @@
 const roomData = {
-  '강의실1': {
-    floor: 1,
-    img: '/img/1-1.jpg',
-    html: `
-      <ul>
-        <li><strong>수용 인원:</strong> 최대 20명</li>
-        <li><strong>용도:</strong> 모임, 회의, 면담 등</li>
-        <li>
-          <strong>부대시설:</strong>
-          <ul>
-            <li>냉·난방기, 이동식 스크린</li>
-            <li>미니 빔프로젝터 사용 가능</li>
-            <li>소형책상 4개, 의자 8개</li>
-          </ul>
-        </li>
-        <li><strong>이용 현황:</strong> 면담, 청년 성경 공부, 소규모 그룹 모임 및 회의 등 대관</li>
-      </ul>
-    `
-  },
+  // '강의실1': {
+  //   floor: 1,
+  //   img: '/img/1-1.jpg',
+  //   html: `
+  //     <ul>
+  //       <li><strong>수용 인원:</strong> 최대 20명</li>
+  //       <li><strong>용도:</strong> 모임, 회의, 면담 등</li>
+  //       <li>
+  //         <strong>부대시설:</strong>
+  //         <ul>
+  //           <li>냉·난방기, 이동식 스크린</li>
+  //           <li>미니 빔프로젝터 사용 가능</li>
+  //           <li>소형책상 4개, 의자 8개</li>
+  //         </ul>
+  //       </li>
+  //       <li><strong>이용 현황:</strong> 면담, 청년 성경 공부, 소규모 그룹 모임 및 회의 등 대관</li>
+  //     </ul>
+  //   `
+  // },
   '강의실2': {
     floor: 1,
     img: '/img/1-2.jpg',
