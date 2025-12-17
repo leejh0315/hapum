@@ -31,7 +31,7 @@
 			<div class="sidebar-title">대관신청</div>
 			<div class="room-grid">
 				<!--<button class="menu-button room-btn active" data-room="강의실1">강의실1</button>-->
-				<button class="menu-button room-btn active" data-room="강의실2">강의실2</button>
+				<button class="menu-button room-btn active" data-room="강의실">강의실</button>
 				<button class="menu-button room-btn" data-room="강당">강당</button>
 				<button class="menu-button room-btn" data-room="연습실">연습실</button>
 			</div>
@@ -196,7 +196,7 @@
 <script th:inline="javascript">
   window.addEventListener('load', () => {
     // 자동으로 '강의실2' 버튼 클릭
-    const roomBtn = document.querySelector('.room-btn[data-room="강의실2"]');
+    const roomBtn = document.querySelector('.room-btn[data-room="강의실"]');
     if (roomBtn) {
       roomBtn.click();
     }
