@@ -18,12 +18,12 @@ const roomData = {
   //     </ul>
   //   `
   // },
-  '강의실2': {
+  '강의실': {
     floor: 1,
     img: '/img/1-2.jpg',
     html: `
       <ul>
-        <li><strong>수용 인원:</strong> 최대 35명</li>
+        <li><strong>수용 인원:</strong> 최대 20명</li>
         <li><strong>용도:</strong> 모임, 회의, 강의, 각종 프로그램 등</li>
         <li>
           <strong>부대시설:</strong>
