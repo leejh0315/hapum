@@ -102,21 +102,43 @@ public class AdminController {
 	    int totalVisitCount = visitorService.getTotalVisitCount();
 	    
 	    List<Map<String, Object>> subsList = programService.getFutureProgramSubs();
-	    for (Map<String, Object> row : subsList) {
-	        if (row.get("part_count") == null) {
-	            row.put("part_count", "-");
-	        }
-	        if (row.get("relation") == null) {
-	            row.put("relation", "-");
-	        }
-	        if (row.get("org_name") == null) {
-	            row.put("org_name", "-");
-	        }
-	    }
-
+	    List<Map<String, Object>> subsListNoJoin = programService.selectFutureProgramSubsNoJoin();
+	    
+//	    for (Map<String, Object> row : subsList) {
+//	        if (row.get("part_count") == null) {
+//	            row.put("part_count", "-");
+//	        }
+//	        if (row.get("user_id") == null) {
+//	            row.put("user_id", "-");
+//	        }
+//	        
+//	        if (row.get("relation") == null) {
+//	            row.put("relation", "-");
+//	        }
+//	        if (row.get("org_name") == null) {
+//	            row.put("org_name", "-");
+//	        }
+//	    }
+//
+//	    for (Map<String, Object> row2 : subsListNoJoin) {
+//	        if (row2.get("part_count") == null) {
+//	            row2.put("part_count", "-");
+//	        }
+//	        if (row2.get("user_id") == null) {
+//	            row2.put("user_id", "-");
+//	        }
+//	        if (row2.get("relation") == null) {
+//	            row2.put("relation", "-");
+//	        }
+//	        if (row2.get("org_name") == null) {
+//	            row2.put("org_name", "-");
+//	        }
+//	    }
+	    System.out.println(subsList);
 	    
 	    
         model.addAttribute("subsList", subsList);
+        model.addAttribute("subsListNoJoin", subsListNoJoin);
 		
 	  
 	    LocalDate startOfWeek   = today.with(DayOfWeek.MONDAY).plusWeeks(weekOffset);

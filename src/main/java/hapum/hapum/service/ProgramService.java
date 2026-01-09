@@ -217,7 +217,13 @@ public class ProgramService {
 	public void cancel(Long psId) {
 		programMapper.cancel(psId);
 	}
+	public void approve2(Long psId) {
+		programMapper.approve2(psId);
+	}
 
+	public void cancel2(Long psId) {
+		programMapper.cancel2(psId);
+	}
 	public List<ProgramWithSub> selectProgramByUserId(Long userId) {
 		return programMapper.selectProgramsWithSubByUserId(userId);
 	}
@@ -290,6 +296,10 @@ public class ProgramService {
 	
 	public List<Map<String, Object>> getFutureProgramSubs() {
         return programMapper.selectFutureProgramSubs();
+    }
+	
+	public List<Map<String, Object>> selectFutureProgramSubsNoJoin() {
+        return programMapper.selectFutureProgramSubsNoJoin();
     }
 	
 	public List<Program> selectAllProgramsByOpenStatus(){

@@ -136,7 +136,7 @@
 		<br>
 		<br>
 		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h2>신청 내역</h2>
+			<h2>회원의 신청 내역</h2>
 		</div>
 
 		<div class="table-responsive shadow-sm">
@@ -176,6 +176,55 @@
 								<input type="hidden" name="programId" th:value="${row.program_id}" />
 								<button type="submit" class="btn btn-sm btn-outline-secondary">
 									<i th:class="${row.is_app == 'Y' ? 'fa fa-times' : 'fa fa-check'}"></i>
+								</button>
+							</form>
+						</td>
+					</tr>
+				</tbody>
+
+			</table>
+		</div>
+		
+		
+		<div class="d-flex justify-content-between align-items-center mb-3">
+			<h2>비회원의 신청 내역</h2>
+		</div>
+
+			<div class="table-responsive shadow-sm">
+			<table class="table table-bordered table-hover align-middle mb-0">
+				<thead class="table-light">
+					<tr>
+						<th>신청ID</th>
+						<th>유저명</th>
+						<th>프로그램명</th>
+						<th>시작일</th>
+						<th>신청일</th>
+						<th>참여자수</th>
+						<th>관계</th>
+						<th>기관명</th>
+						<th>승인여부</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="row2 : ${subsListNoJoin}" th:attr="data-opinion=${row2['opinion']}">
+
+						<td th:text="${row2.subs_id}"></td>
+						<td th:text="${row2.user_name}"></td>
+						<td th:text="${row2.title}"></td>
+						<td th:text="${#temporals.format(row2.start_date, 'yyyy-MM-dd HH:mm')}"></td>
+						<td th:text="${#temporals.format(row2.subs_on, 'yyyy-MM-dd HH:mm')}"></td>
+						<td th:text="${row2.part_count}"></td>
+						<td th:text="${row2.relation}"></td>
+						<td th:text="${row2.org_name}"></td>
+						<td>
+							<span th:text="${row2.is_app == 'Y' ? '승인' : '반려'}"></span>
+							<form
+								th:action="@{${row2.is_app == 'Y' ? '/admin/program/cancel/main2' : '/admin/program/approve/main2'}}"
+								method="post" style="display:inline; margin-left:8px;">
+								<input type="hidden" name="programSubId" th:value="${row2.subs_id}" />
+								<input type="hidden" name="programId" th:value="${row2.program_id}" />
+								<button type="submit" class="btn btn-sm btn-outline-secondary">
+									<i th:class="${row2.is_app == 'Y' ? 'fa fa-times' : 'fa fa-check'}"></i>
 								</button>
 							</form>
 						</td>

@@ -139,6 +139,20 @@
 		SET is_app = 'N'
 		WHERE id=#{psId}
 	</update>
+	
+	
+		<update id="approve2">
+		UPDATE hapumdb.program_subs_no_join
+		SET is_app = 'Y'
+		WHERE id=#{psId}
+	</update>
+
+	<update id="cancel2">
+		UPDATE hapumdb.program_subs_no_join
+		SET is_app = 'N'
+		WHERE id=#{psId}
+	</update>
+
 
 	<resultMap id="ProgramWithSubResultMap"
 		type="hapum.hapum.domain.ProgramWithSub">
@@ -316,32 +330,31 @@
 	</delete>
 
 	<select id="selectFutureProgramSubs" resultType="map">
-		SELECT
-		ps.id AS subs_id,
-		ps.user_id,
-		u.name AS user_name,
-		ps.program_id,
-		ps.subs_on,
-		ps.is_app,
-		ps.part_count,
-		ps.relation,
-		ps.org_name,
-		ps.reason,
-		ps.opinion,
-		p.title,
-		p.start_date,
-		p.end_date,
-		p.location,
-		p.target,
-		ps.is_app
-		FROM hapumdb.program_subs ps
-		JOIN hapumdb.program p
-		ON ps.program_id = p.id
-		JOIN hapumdb.user u
-		ON ps.user_id = u.id
-		WHERE p.start_date > NOW()
-		ORDER BY p.start_date ASC, ps.subs_on ASC
-	</select>
+    SELECT
+        ps.id AS subs_id,
+        COALESCE(ps.user_id, '-')        AS user_id,
+        COALESCE(u.name, '-')            AS user_name,
+        ps.program_id,
+        ps.subs_on,
+        ps.is_app,
+        COALESCE(ps.part_count, '-')     AS part_count,
+        COALESCE(ps.relation, '-')       AS relation,
+        COALESCE(ps.org_name, '-')       AS org_name,
+        COALESCE(ps.reason, '-')         AS reason,
+        COALESCE(ps.opinion, '-')        AS opinion,
+        p.title,
+        p.start_date,
+        p.end_date,
+        p.location,
+        p.target
+    FROM hapumdb.program_subs ps
+    JOIN hapumdb.program p
+      ON ps.program_id = p.id
+    JOIN hapumdb.user u
+      ON ps.user_id = u.id
+    WHERE p.start_date > NOW()
+    ORDER BY p.start_date ASC, ps.subs_on ASC
+</select>
 
 	<insert id="insertProgramSubWithAdmin"
 		parameterType="hapum.hapum.domain.ProgramSub">
@@ -394,4 +407,34 @@
 		program_id
 		=#{programId}
 	</select>
+	
+	<select id="selectFutureProgramSubsNoJoin" resultType="map">
+    SELECT
+        psnj.id AS subs_id,
+        '-' AS user_id,  -- no_join 테이블에는 user_id 없음
+        psnj.program_id,
+        psnj.subs_on,
+        psnj.is_app,
+        COALESCE(psnj.part_count, '-')   AS part_count,
+        COALESCE(psnj.relation, '-')     AS relation,
+        COALESCE(psnj.org_name, '-')     AS org_name,
+        COALESCE(psnj.reason, '-')       AS reason,
+        COALESCE(psnj.opinion, '-')      AS opinion,
+        COALESCE(psnj.name, '-')         AS user_name,
+        COALESCE(psnj.baptism_name, '-') AS baptism_name,
+        COALESCE(psnj.parish, '-')       AS parish,
+        COALESCE(psnj.phone, '-')        AS phone,
+        p.title,
+        p.start_date,
+        p.end_date,
+        p.location,
+        p.target
+    FROM hapumdb.program_subs_no_join psnj
+    JOIN hapumdb.program p
+      ON psnj.program_id = p.id
+    WHERE p.start_date > NOW()
+    ORDER BY p.start_date ASC, psnj.subs_on ASC
+</select>
+
+
 </mapper>

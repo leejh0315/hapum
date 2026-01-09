@@ -93,90 +93,140 @@ public class EmailService {
 	}
 
 	private MimeMessage programMessage(String to, Program program) throws Exception {
-		MimeMessage message = emailSender.createMimeMessage();
-		MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-		// 1) 받는 사람·제목·보내는 사람 설정
-		helper.setTo(to);
-		helper.setSubject("프로그램 정보 발송");
-		helper.setFrom(new InternetAddress("hapum7179@gmail.com", "<HAPUM>"));
 
-		// 2) HTML 본문 구성
-		StringBuilder html = new StringBuilder();
-		html.append("<div style='max-width:1000px;margin:50px auto;display:flex;flex-wrap:wrap;")
-				.append("gap:30px;padding:20px;border:1px solid #ddd;border-radius:12px;")
-				.append("background-color:#fffefa;'>").append("<div style='flex:1 1 300px;'>").append("<img src='cid:")
-				.append(program.getThumbnailSrc()).append("' alt='프로그램 썸네일' style='width:100%;border-radius:12px;")
-				.append("border:1px solid #ccc;'/>").append("</div>")
-				.append("<div style='flex:1 1 400px;display:flex;flex-direction:column;")
-				.append("justify-content:space-between;'>").append("<h2 style='margin-bottom:16px;color:#333;'>")
-				.append(program.getTitle()).append("</h2>")
-				.append("<ul style='list-style:none;padding:0;margin-bottom:20px;'>")
-				.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
-				.append("<strong>일시:</strong>");
+	    MimeMessage message = emailSender.createMimeMessage();
+	    MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-		if (program.getStartDate() != null) {
-			html.append(formatter.format(program.getStartDate())).append("~")
-					.append(formatter.format(program.getEndDate()));
-		}
+	    DateTimeFormatter dateFormatter =
+	            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-		html.append("</li>").append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
-				.append("<strong>장소:</strong>").append(program.getLocation()).append("</li>")
-				.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
-				.append("<strong>대상:</strong>").append(program.getTarget()).append("</li>");
+	    // =========================
+	    // 1. 기본 메일 정보
+	    // =========================
+	    helper.setTo(to);
+	    helper.setSubject("프로그램 정보 발송");
+	    helper.setFrom(new InternetAddress("hapum7179@gmail.com", "<HAPUM>"));
 
-		if (program.getExpense() != null || !program.getExpense().equals("")) {
-			html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
-					.append("<strong>1인 참가비:</strong>").append(program.getExpense()).append("원").append("</li>")
-					.append("    <li style='margin-bottom:10px;font-size:15px;line-height:1.4;'><strong>입금 계좌:</strong><p style='color:blue'>하나은행 233-910013-52204 ((재)대전교구천주교유지재단 천안지역 청소년사목)</p></li>");
+	    // =========================
+	    // 2. 값 미리 안전하게 꺼내기
+	    // =========================
+	    String title = program.getTitle() != null ? program.getTitle() : "-";
+	    String location = program.getLocation() != null ? program.getLocation() : "-";
+	    String target = program.getTarget() != null ? program.getTarget() : "-";
+	    String subject = program.getSubject() != null ? program.getSubject() : "-";
+	    String content = program.getContent() != null ? program.getContent() : "";
+	    String expense = program.getExpense();               // null 가능
+	    String needPartCount = program.getNeedPartCount();   // null 가능
+	    String needOrgName = program.getNeedOrgName();       // null 가능
+	    String thumbnailSrc = program.getThumbnailSrc();
 
-		}
+	    // =========================
+	    // 3. HTML 본문 구성
+	    // =========================
+	    StringBuilder html = new StringBuilder();
 
-		html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>").append("<strong>주제:</strong>")
-				.append(program.getSubject()).append("</li>");
+	    html.append("<div style='max-width:1000px;margin:50px auto;display:flex;flex-wrap:wrap;")
+	        .append("gap:30px;padding:20px;border:1px solid #ddd;border-radius:12px;")
+	        .append("background-color:#fffefa;'>");
 
-		if (program.getNeedOrgName() != null ) {
-			html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
-					.append("<strong>소속 단체 명:</strong>").append(program.getNeedOrgName()).append("</li>");
-		}
+	    // 썸네일
+	    html.append("<div style='flex:1 1 300px;'>");
+	    if (thumbnailSrc != null && !thumbnailSrc.isBlank()) {
+	        html.append("<img src='cid:")
+	            .append(thumbnailSrc)
+	            .append("' style='width:100%;border-radius:12px;border:1px solid #ccc;'/>");
+	    }
+	    html.append("</div>");
 
-		if (!program.getExpense().equals("0") && !program.getNeedPartCount().equals("N")) {
-			html.append("<li style='margin-bottom:10px;font-size:15px;line-height:1.4;'>")
-					.append("<strong>총 참가비:</strong>");
+	    // 내용 영역
+	    html.append("<div style='flex:1 1 400px;display:flex;flex-direction:column;'>")
+	        .append("<h2 style='margin-bottom:16px;color:#333;'>")
+	        .append(title)
+	        .append("</h2>")
+	        .append("<ul style='list-style:none;padding:0;margin-bottom:20px;'>");
 
-			// 콤마 제거 후 계산
-			int expense = Integer.parseInt(program.getExpense().replace(",", ""));
-			int count = Integer.parseInt(program.getNeedPartCount());
-			int total = expense * count;
+	    // 일시
+	    if (program.getStartDate() != null && program.getEndDate() != null) {
+	        html.append("<li><strong>일시:</strong> ")
+	            .append(dateFormatter.format(program.getStartDate()))
+	            .append(" ~ ")
+	            .append(dateFormatter.format(program.getEndDate()))
+	            .append("</li>");
+	    }
 
-			// 천 단위 콤마 포맷
-			DecimalFormat formatter2 = new DecimalFormat("###,###");
-			String formattedTotal = formatter2.format(total);
+	    // 장소 / 대상
+	    html.append("<li><strong>장소:</strong> ").append(location).append("</li>")
+	        .append("<li><strong>대상:</strong> ").append(target).append("</li>");
 
-			html.append(formattedTotal).append("원").append("</li>");
-		}
+	    // =========================
+	    // 4. 참가비
+	    // =========================
+	    if (expense != null && !expense.isBlank() && !"0".equals(expense)) {
 
+	        html.append("<li><strong>1인 참가비:</strong> ")
+	            .append(expense)
+	            .append("원</li>")
+	            .append("<li><strong>입금 계좌:</strong>")
+	            .append("<p style='color:blue'>")
+	            .append("하나은행 233-910013-52204 ((재)대전교구천주교유지재단 천안지역 청소년사목)")
+	            .append("</p></li>");
+	    }
 
-		html.append("</ul>").append("<div>").append(program.getContent()).append("</div>").append("</div>")
-				.append("</div>");
+	    // 주제
+	    html.append("<li><strong>주제:</strong> ").append(subject).append("</li>");
 
-		helper.setText(html.toString(), true);
+	    // 소속 단체명
+	    if (needOrgName != null && !needOrgName.isBlank()) {
+	        html.append("<li><strong>소속 단체 명:</strong> ")
+	            .append(needOrgName)
+	            .append("</li>");
+	    }
 
-		// 3) 실제 파일 경로로 치환
-		// (program.getThumbnailSrc() => "/uploads/program/xxx.png")
-		String logicalPath = program.getThumbnailSrc();
-		String realPath = logicalPath.replaceFirst("^/uploads", "/upload");
+	    // =========================
+	    // 5. 총 참가비 계산
+	    // =========================
+	    if (expense != null && needPartCount != null
+	            && !"0".equals(expense)
+	            && !"N".equals(needPartCount)
+	            && expense.matches("[0-9,]+")
+	            && needPartCount.matches("\\d+")) {
 
-		FileSystemResource thumbnail = new FileSystemResource(new File(realPath));
-		if (!thumbnail.exists()) {
-			throw new IllegalArgumentException("썸네일 파일이 없습니다: " + realPath);
-		}
+	        int expenseValue = Integer.parseInt(expense.replace(",", ""));
+	        int countValue = Integer.parseInt(needPartCount);
+	        int total = expenseValue * countValue;
 
-		// 4) HTML <img>의 cid와 동일한 key 로 inline 이미지 등록
-		helper.addInline(logicalPath, thumbnail);
+	        DecimalFormat formatter2 = new DecimalFormat("###,###");
 
-		return message;
+	        html.append("<li><strong>총 참가비:</strong> ")
+	            .append(formatter2.format(total))
+	            .append("원</li>");
+	    }
+
+	    html.append("</ul>")
+	        .append("<div>")
+	        .append(content)
+	        .append("</div>")
+	        .append("</div>")
+	        .append("</div>");
+
+	    helper.setText(html.toString(), true);
+
+	    // =========================
+	    // 6. 썸네일 inline 이미지
+	    // =========================
+	    if (thumbnailSrc != null && !thumbnailSrc.isBlank()) {
+	        String realPath = thumbnailSrc.replaceFirst("^/uploads", "/upload");
+	        FileSystemResource thumbnail =
+	                new FileSystemResource(new File(realPath));
+
+	        if (thumbnail.exists()) {
+	            helper.addInline(thumbnailSrc, thumbnail);
+	        }
+	    }
+
+	    return message;
 	}
+
 
 	private MimeMessage rentalMessage(String to, Rental rental) throws Exception {
 		MimeMessage message = emailSender.createMimeMessage();

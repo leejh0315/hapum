@@ -219,6 +219,8 @@ public class MainController {
 	            user = sessionUser;
 	            ps.setUserId(user.getId());
 	            temp = programService.programSub(ps);
+	            Program program = buildProgramFromPayload(payload, programId);
+	            emailService.sendProgramMessage(user.getEmail(), program);
 	        } else {
 	            // Case 4: 로그인 안 된 상태에서 비회원 신청
 	            user = new User();

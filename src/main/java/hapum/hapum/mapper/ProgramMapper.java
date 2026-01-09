@@ -28,6 +28,9 @@ public interface ProgramMapper {
 	 void approve(@Param("psId") Long psId);
 	 void cancel(@Param("psId") Long psId);
 	 
+	 void approve2(@Param("psId") Long psId);
+	 void cancel2(@Param("psId") Long psId);
+	 
 	 List<ProgramWithSub> selectProgramsWithSubByUserId(@Param("userId")Long userId);
 	 void deleteByProgramSubsId(@Param("id") Long subsId);
 	 
@@ -63,4 +66,5 @@ public interface ProgramMapper {
 	 
 	 public int programSubWithNoJoin(ProgramSubNoJoin programSub);
 	 public Integer getApplyCountNoJoin(@Param("programId") Long programId);
+	 List<Map<String, Object>> selectFutureProgramSubsNoJoin();
 }
