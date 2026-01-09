@@ -41,83 +41,93 @@
 	</div>
 
 	<div class="container">
-		<!-- 좌측 사이드바 -->
-		<div class="sidebar">
-			<div class="sidebar-title" onclick="location.href='/main/program'">프로그램</div>
-			<button onclick="history.back()" class="menu-button">돌아가기</button>
-		</div>
+    <!-- 좌측 사이드바 -->
+    <div class="sidebar">
+        <div class="sidebar-title" onclick="location.href='/main/program'">프로그램</div>
+        <button onclick="history.back()" class="menu-button">돌아가기</button>
+    </div>
 
-		<!-- 콘텐츠 영역 -->
-		<div class="content">
-			<div class="program-image">
-				<img th:src="@{${program.thumbnailSrc}}" alt="프로그램 썸네일"
-					th:attr="style='view-transition-name: program-thumbnail-' + ${program.id}" />
-			</div>
+    <!-- 콘텐츠 영역 -->
+    <div class="content">
+        <div class="program-image">
+            <img th:src="@{${program.thumbnailSrc}}" alt="프로그램 썸네일"
+                 th:attr="style='view-transition-name: program-thumbnail-' + ${program.id}" />
+        </div>
 
-			<div class="program-info">
-				<h2 th:text="${program.title}">프로그램 제목</h2>
-				<ul>
-					<li>
-						<strong>일시:</strong>
-						<span th:if="${program.startDate != null and program.endDate != null}"
-							th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">
-						</span>
-						<span th:if="${program.startDate == null or program.endDate == null}">[상시] - 문의전화 바람</span>
-					</li>
-					<li><strong>장소:</strong> <span th:text="${program.location}"></span></li>
-					<li><strong>대상:</strong> <span th:text="${program.target}"></span></li>
-					<li><strong>참가비:</strong> <span th:text="${program.expense} + '원'"></span></li>
-					<li><strong>주제:</strong> <span th:text="${program.subject}"></span></li>
-					<li><strong>정원:</strong> <span th:text="${program.capacity} + '명'"></span></li>
-				</ul>
+        <div class="program-info">
+            <h2 th:text="${program.title}">프로그램 제목</h2>
+            <ul>
+                <li>
+                    <strong>일시:</strong>
+                    <span th:if="${program.startDate != null and program.endDate != null}"
+                          th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">
+                    </span>
+                    <span th:if="${program.startDate == null or program.endDate == null}">[상시] - 문의전화 바람</span>
+                </li>
+                <li><strong>장소:</strong> <span th:text="${program.location}"></span></li>
+                <li><strong>대상:</strong> <span th:text="${program.target}"></span></li>
+                <li><strong>참가비:</strong> <span th:text="${program.expense} + '원'"></span></li>
+                <li><strong>주제:</strong> <span th:text="${program.subject}"></span></li>
+                <li><strong>정원:</strong> <span th:text="${program.capacity} + '명'"></span></li>
+            </ul>
 
-				<div class="text" th:utext="${program.content}"></div>
+            <div class="text" th:utext="${program.content}"></div>
 
-				<div class="program-bottom">
-					<div class="capacity" th:if="${program.needCapacity == null or program.needCapacity != 'Y'}">
-						신청인원: <span th:text="${applyCount}"></span>/<span th:text="${program.capacity}"></span>명
-					</div>
+            <div class="program-bottom">
+                <div class="capacity" th:if="${program.needCapacity == null or program.needCapacity != 'Y'}">
+                    신청인원: <span th:text="${applyCount}"></span>/<span th:text="${program.capacity}"></span>명
+                </div>
 
+                <!-- 프로그램 종료 상태 -->
+                <th:block th:if="${program.openStatus == 'N'}">
+                    <button class="apply-btn" disabled title="종료된 프로그램입니다">종료된 프로그램</button>
+                </th:block>
 
-					<th:block th:if="${program.openStatus == 'N'}">
+                <!-- needJoin == 'N' → 로그인 여부 무시, flag 기준으로만 처리 -->
+                <th:block th:if="${program.needJoin == 'N' and program.openStatus == 'Y'}">
+                    <th:block th:if="${flag == 'Y'}">
+                        <button class="apply-btn" disabled>신청완료</button>
+                    </th:block>
+                    <th:block th:if="${flag != 'Y'
+                        and applyCount >= program.capacity
+                        and (program.needCapacity == null or program.needCapacity != 'Y')}">
+                        <button class="apply-btn" disabled>신청마감</button>
+                    </th:block>
+                    <th:block th:if="${flag != 'Y'
+                        and (applyCount < program.capacity or program.needCapacity == 'Y')}">
+                        <button class="apply-btn" id="openPrivacyModalBtn">신청하기</button>
+                    </th:block>
+                </th:block>
 
-					</th:block>
+                <!-- needJoin == 'Y' → 로그인 여부 체크 -->
+                <th:block th:if="${program.needJoin == 'Y'}">
+                    <th:block th:if="${user == null}">
+                        <th:block th:if="${program.openStatus == 'Y'}">
+                            <button class="apply-btn" disabled title="로그인 후 신청 가능합니다">로그인 필요</button>
+                        </th:block>
+                    </th:block>
 
-					<th:block th:if="${user == null}">
-						<th:block th:if="${program.openStatus == 'N'}">
-							<button class="apply-btn" disabled title="종료된 프로그램입니다">종료된 프로그램</button>
-						</th:block>
-						<th:block th:if="${program.openStatus == 'Y'}">
-							<button class="apply-btn" disabled title="로그인 후 신청 가능합니다">로그인 필요</button>
-						</th:block>
-					</th:block>
-
-					<th:block th:if="${user != null}">
-						<th:block th:if="${program.openStatus == 'N'}">
-							<button class="apply-btn" disabled title="종료된 프로그램입니다">종료된 프로그램</button>
-						</th:block>
-
-						<th:block th:if="${flag == 'Y'}">
-							<button class="apply-btn" disabled>신청완료</button>
-						</th:block>
-
-						<th:block th:if="${flag != 'Y' 
-	                 and applyCount >= program.capacity 
-	                 and (program.needCapacity == null or program.needCapacity != 'Y')}">
-							<button class="apply-btn" disabled>신청마감</button>
-						</th:block>
-
-						<th:block th:if="${flag != 'Y' 
-                 and (applyCount < program.capacity or program.needCapacity == 'Y') 
-                 and program.openStatus == 'Y'}">
-							<button class="apply-btn" id="openPrivacyModalBtn">신청하기</button>
-						</th:block>
-					</th:block>
-				</div>
-			</div>
-		</div>
-	</div>
-
+                    <th:block th:if="${user != null}">
+                        <th:block th:if="${flag == 'Y'}">
+                            <button class="apply-btn" disabled>신청완료</button>
+                        </th:block>
+                        <th:block th:if="${flag != 'Y'
+                            and applyCount >= program.capacity
+                            and (program.needCapacity == null or program.needCapacity != 'Y')}">
+                            <button class="apply-btn" disabled>신청마감</button>
+                        </th:block>
+                        <th:block th:if="${flag != 'Y'
+                            and (applyCount < program.capacity or program.needCapacity == 'Y')
+                            and program.openStatus == 'Y'}">
+                            <button class="apply-btn" id="openPrivacyModalBtn">신청하기</button>
+                        </th:block>
+                    </th:block>
+                </th:block>
+            </div>
+        </div>
+    </div>
+</div>
+	<!-- 추가 정보 입력 모달 -->
 	<div id="additionalInfoModalOverlay" class="modal-overlay">
 		<div class="info-modal-content">
 			<h3>프로그램 신청을 위한 추가 정보 입력</h3>
@@ -151,11 +161,45 @@
 					<textarea class="info-modal-input" name="opinion" placeholder="협의 사항을 입력하세요" required></textarea>
 				</div>
 
-
-
 				<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
 					<button type="submit" class="infoModalButton">확인</button>
 					<button type="button" class="infoModalButton" id="cancelAdditionalInfoBtn">취소</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
+	<div id="userInfoModalOverlay" class="modal-overlay">
+		<div class="modal-content">
+			<h3>[신청자 정보 입력]</h3>
+			<form id="userInfoForm">
+				<div class="form-group">
+					<label for="userName">이름</label>
+					<input type="text" id="userName" name="name" class="modal-input" placeholder="성명을 입력하세요" required />
+				</div>
+
+				<div class="form-group">
+					<label for="baptismName">세례명</label>
+					<input type="text" id="baptismName" name="baptism_name" class="modal-input"
+						placeholder="세례명을 입력하세요" />
+				</div>
+
+				<div class="form-group">
+					<label for="parish">본당</label>
+					<input type="text" id="parish" name="parish" class="modal-input" placeholder="본당명을 입력하세요" />
+				</div>
+
+				<div class="form-group">
+					<label for="phone">핸드폰 번호</label>
+					<input type="tel" id="phone" name="phone" class="modal-input" placeholder="010-0000-0000"
+						required />
+				</div>
+
+				<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
+					<button type="submit" id="confirmUserInfoBtn" class="modal-btn">확인</button>
+					<button type="button" id="cancelUserInfoBtn" class="modal-btn">취소</button>
 				</div>
 			</form>
 		</div>
@@ -213,43 +257,81 @@
 	<div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
 
-
-
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		var program = /*[[${program}]]*/ {};
+		var user = /*[[${user}]]*/ null;   // ✅ 로그인 유저 내려받기
 		/*]]>*/
 
+
 		$(function () {
-			// ✅ 원래 Y/N 설정값을 별도 변수로 저장
 			const needOrg = program.needOrgName === 'Y';
 			const needPart = program.needPartCount === 'Y';
 			const needRel = program.needRelation === 'Y';
 			const needReason = program.needReason === 'Y';
 			const needOpinion = program.needOpinion === 'Y';
+			const needJoin = program.needJoin === 'Y';
 
-			// 1. 신청하기 버튼 클릭 시
+			// 신청하기 버튼 클릭
 			$('#openPrivacyModalBtn').on('click', function () {
-				// 원래 설정값 기준으로 판단해야 함!
-				if (!needOrg && !needPart && !needRel && !needReason && !needOpinion) {
-					$('#programApplyModalOverlay').addClass('show'); // 개인정보 모달 바로
-				} else {
-					$('#additionalInfoModalOverlay').addClass('show'); // 추가 정보 먼저
-				}
+				if (!needJoin) {
+					// 비회원 신청 프로그램
+					if (user != null) {
+						// 로그인된 경우 → 신청자 정보 모달 건너뛰기
+						if (!needOrg && !needPart && !needRel && !needReason && !needOpinion) {
+							$('#programApplyModalOverlay').addClass('show');
+						} else {
+							$('#additionalInfoModalOverlay').addClass('show');
+						}
+					} else {
+						// 로그인 안 된 경우 → 신청자 정보 입력 모달 띄우기
+						$('#userInfoModalOverlay').addClass('show');
 
+						$('#confirmUserInfoBtn').off('click').on('click', function (e) {
+							e.preventDefault();
+							program.name = $('#userName').val();
+							program.baptismName = $('#baptismName').val();
+							program.parish = $('#parish').val();
+							program.phone = $('#phone').val();
+
+							$('#userInfoModalOverlay').removeClass('show');
+							if (!needOrg && !needPart && !needRel && !needReason && !needOpinion) {
+								$('#programApplyModalOverlay').addClass('show');
+							} else {
+								$('#additionalInfoModalOverlay').addClass('show');
+							}
+						});
+
+						$('#cancelUserInfoBtn').off('click').on('click', function () {
+							$('#userInfoModalOverlay').removeClass('show');
+						});
+					}
+				} else {
+					// 회원가입 필요 프로그램
+					if (user != null) {
+						// 로그인된 경우 → 바로 추가정보/개인정보 모달
+						if (!needOrg && !needPart && !needRel && !needReason && !needOpinion) {
+							$('#programApplyModalOverlay').addClass('show');
+						} else {
+							$('#additionalInfoModalOverlay').addClass('show');
+						}
+					} else {
+						// 로그인 안 된 경우 → 신청 불가
+						alert("로그인 후 신청 가능합니다.");
+						window.location.href = '/login';
+					}
+				}
 			});
 
-			// 2. 추가 정보 입력 → 개인정보 동의 모달로 이동
-			$('#additionalInfoForm').on('submit', function (e) {
-				e.preventDefault();
 
-				// 추가정보 입력값은 별도로 저장
+			// 추가 정보 입력 → 개인정보 동의 모달
+			$('#additionalInfoForm').off('submit').on('submit', function (e) {
+				e.preventDefault();
 				const orgName = $(this).find('input[name="orgName"]').val();
 				const partCount = $(this).find('input[name="partCount"]').val();
 				const relation = $(this).find('input[name="relation"]').val();
 				const reason = $(this).find('textarea[name="reason"]').val();
 				const opinion = $(this).find('textarea[name="opinion"]').val();
-
 
 				if (orgName) program.needOrgName = orgName;
 				if (partCount) program.needPartCount = partCount;
@@ -259,44 +341,56 @@
 
 				$('#additionalInfoModalOverlay').removeClass('show');
 				$('#programApplyModalOverlay').addClass('show');
-
 			});
 
-			// 3. 추가 정보 입력 취소
-			$('#cancelAdditionalInfoBtn').on('click', function () {
-				$('#additionalInfoModalOverlay').removeClass('show');
-			});
-
-			// 4. 개인정보 동의 후 → 신청 AJAX
-			$('#confirmApplyBtn').on('click', function () {
-
-
+			// 개인정보 동의 후 → 신청 AJAX
+			$('#confirmApplyBtn').off('click').on('click', function () {
 				if (!$('#privacyConsentCheckbox').is(':checked')) {
 					alert('개인정보 수집·이용·제공에 동의하셔야 신청이 가능합니다.');
 					return;
 				}
-				let partCount = parseInt(program.needPartCount); // 문자열 → 숫자 변환
-				console.log(partCount);
-				console.log(program.needPartCount);
+
+				let partCount = parseInt(program.needPartCount);
 				if (program.needPartCount != "N") {
-
-
 					if (isNaN(partCount) || partCount <= 0 || partCount > program.capacity) {
 						alert("참여 인원 수를 다시 입력해주세요.");
+
+						// 개인정보 모달 닫기
+						$('#programApplyModalOverlay').removeClass('show');
+
+						// 추가정보 모달 다시 열기
+						$('#additionalInfoModalOverlay').removeClass('show').addClass('show');
+
 						return;
 					}
 				}
+
 				$('#programApplyModalOverlay').removeClass('show');
 				$('#spinnerOverlay').show();
 
 				$.ajax({
-					url: '/main/program/subs/' + program.programId,
+					url: '/main/program/subs/' + program.id,
 					type: 'POST',
 					contentType: 'application/json',
 					data: JSON.stringify(program),
 					success: function (data) {
 						if (data == 1) {
-							alert("신청에 성공하였습니다! 이메일을 확인해주세요.");
+							if (program.needJoin === 'Y') {
+								if(user != null){
+								alert("신청에 성공하였습니다! 이메일을 확인해주세요.");
+								}else{
+								alert("신청에 성공하였습니다! 신청하신 번호로 연락드리겠습니다.");	
+								}
+								// 회원가입 필요 프로그램
+							} else {
+								// 비회원 신청 프로그램
+								if(user != null){
+								alert("신청에 성공하였습니다! 이메일을 확인해주세요.");
+								}else{
+								alert("신청에 성공하였습니다! 신청하신 번호로 연락드리겠습니다.");	
+								}
+							}
+
 							window.location.href = '/main/program';
 						} else if (data == 2) {
 							alert("신청에 실패하였습니다. 인원이 초과되었습니다.");
@@ -310,21 +404,24 @@
 				});
 			});
 
-			// 5. 개인정보 동의 모달 취소
-			$('#cancelApplyBtn').on('click', function () {
+			// 취소 버튼 및 바깥쪽 클릭 이벤트 항상 유지
+			$('#cancelApplyBtn').off('click').on('click', function () {
 				$('#programApplyModalOverlay').removeClass('show');
-
-				// ✅ 입력된 값 초기화 (선택사항)
 			});
 
-			// 6. 모달 바깥 클릭 시 닫힘
-			$('#programApplyModalOverlay, #additionalInfoModalOverlay').on('click', function (e) {
+			$('#cancelAdditionalInfoBtn').off('click').on('click', function () {
+				$('#additionalInfoModalOverlay').removeClass('show');
+			});
+
+			$('#programApplyModalOverlay, #additionalInfoModalOverlay, #userInfoModalOverlay').on('click', function (e) {
 				if (e.target.id === this.id) {
 					$(this).removeClass('show');
 				}
 			});
 		});
 	</script>
+
+
 
 </body>
 

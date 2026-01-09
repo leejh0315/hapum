@@ -1,6 +1,7 @@
 package hapum.hapum.controller;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +24,7 @@ import hapum.hapum.domain.OrganizationPost;
 import hapum.hapum.domain.Program;
 import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.ProgramSub;
+import hapum.hapum.domain.ProgramSubNoJoin;
 import hapum.hapum.domain.Rental;
 import hapum.hapum.domain.User;
 import hapum.hapum.service.ConvertService;
@@ -122,74 +124,147 @@ public class MainController {
 
 	@GetMapping("/program/detail/{id}")
 	public String getProgramDetail(@PathVariable("id") Long id, HttpServletRequest req, Model model) {
-		HttpSession session = req.getSession();
-		User user = (User) session.getAttribute("loginMember");
+	    HttpSession session = req.getSession();
+	    User user = (User) session.getAttribute("loginMember");
 
-		Program program = programService.selectProgramById(id);
+	    Program program = programService.selectProgramById(id);
 
-		int applyCount = programService.getApplyCount(program.getId()); // 현재 신청자 수
+	    int applyCount;
+	    List<ProgramSub> ps = programService.selectPrograSubmById(id);
+	    List<ProgramSubNoJoin> psNoJoin = null;
 
-		int remainingSeats = program.getCapacity() - applyCount;
-		List<ProgramSub> ps = programService.selectPrograSubmById(id);
+	    // ✅ needJoin 여부에 따라 신청자 수 계산
+	    if ("Y".equals(program.getNeedJoin())) {
+	        applyCount = programService.getApplyCount(program.getId()); // 회원가입 신청자 수
+	        ps = programService.selectPrograSubmById(id);
+	    } else {
+	        applyCount = programService.getApplyCountNoJoin(program.getId()); // 비회원 신청자 수
+	    }
 
-		String flag = "N";
+	    int remainingSeats = program.getCapacity() - applyCount;
 
-		if (user != null) {
-			if (ps.stream().anyMatch(sub -> sub.getUserId() == user.getId())) {
-				flag = "Y";
-			}
-		}
+	    String flag = "N";
+	    if (user != null) {
+	        // 로그인된 상태라면 needJoin 값과 상관없이 userId 기준으로 신청 여부 체크
+	        if (ps != null && ps.stream().anyMatch(sub -> sub.getUserId() == user.getId())) {
+	            flag = "Y";
+	        }
+	    }
 
-		model.addAttribute("user", user);
-		model.addAttribute("program", program);
-		model.addAttribute("applyCount", applyCount);
-		model.addAttribute("remainingSeats", remainingSeats);
-		model.addAttribute("flag", flag);
-		model.addAttribute("isFull", remainingSeats <= 0); // true면 마감
-		return "main/programDetail";
+	    model.addAttribute("user", user);
+	    model.addAttribute("program", program);
+	    model.addAttribute("applyCount", applyCount);
+	    model.addAttribute("remainingSeats", remainingSeats);
+	    model.addAttribute("flag", flag);
+	    model.addAttribute("isFull", remainingSeats <= 0); // true면 마감
+	    return "main/programDetail";
 	}
 
 	@PostMapping("/program/subs/{id}")
 	@ResponseBody
-	public int postProgramSubs(@RequestBody Program program, HttpServletRequest req) throws Exception {
-		HttpSession session = req.getSession();
-		User user = (User) session.getAttribute("loginMember");
+	public int postProgramSubs(@RequestBody Map<String, Object> payload, HttpServletRequest req) throws Exception {
+	    Long programId = Long.valueOf(payload.get("id").toString());
+	    String needJoin = (String) payload.get("needJoin");
 
-		int applyCount = programService.getApplyCount(program.getId());
+	    HttpSession session = req.getSession();
+	    User sessionUser = (User) session.getAttribute("loginMember");
 
-		ProgramSub ps = new ProgramSub();
-		ps.setUserId(user.getId());
-		ps.setProgramId(program.getId());
+	    int applyCount = "Y".equals(needJoin)
+	            ? programService.getApplyCount(programId)
+	            : programService.getApplyCountNoJoin(programId);
 
-		ps.setOrgName(program.getNeedOrgName());
-		ps.setReason(program.getNeedReason());
-		ps.setOpinion(program.getNeedOpinion());
-		
-		
-		
-		if (!"N".equals(program.getNeedPartCount())) {
-			ps.setPartCount(Integer.parseInt(program.getNeedPartCount()));
+	    // 공통 ProgramSub 생성
+	    ProgramSub ps = new ProgramSub();
+	    ps.setProgramId(programId);
+	    ps.setOrgName((String) payload.get("needOrgName"));
+	    ps.setReason((String) payload.get("needReason"));
+	    ps.setOpinion((String) payload.get("needOpinion"));
+	    ps.setRelation((String) payload.get("needRelation"));
 
-			// needCapacity가 null이 아니고 "Y"인 경우는 정원 체크를 건너뜀
-			if ((program.getNeedCapacity() == null || !"Y".equals(program.getNeedCapacity()))
-					&& program.getCapacity() - applyCount < Integer.parseInt(program.getNeedPartCount())) {
-				return 2;
-			}
-		}
+	    // partCount 처리
+	    String partCountStr = (String) payload.get("needPartCount");
+	    if (partCountStr != null && !"N".equals(partCountStr)) {
+	        int partCount = Integer.parseInt(partCountStr);
+	        ps.setPartCount(partCount);
+	        if ((payload.get("needCapacity") == null || !"Y".equals(payload.get("needCapacity")))
+	                && ((Integer) payload.get("capacity") - applyCount < partCount)) {
+	            return 2;
+	        }
+	    }
 
-		ps.setRelation(program.getNeedRelation());
-		int temp = programService.programSub(ps);
+	    int temp;
+	    User user;
 
-		log.info("User '{}' (ID: {}) subscribed to program {} (Org: '{}', Relation: '{}', PartCount: {}, Result: {})",
-				user.getName(), user.getId(), program.getId(), ps.getOrgName(), ps.getRelation(),
-				Integer.toString(ps.getPartCount()) == null ? "N/A" : ps.getPartCount(), temp);
+	    if ("Y".equals(needJoin)) {
+	        // Case 1 & 2
+	        if (sessionUser == null) {
+	            // 로그인 필요 → 실패 코드 반환 or 예외 처리
+	            return -1; // 예: -1은 로그인 필요
+	        }
+	        user = sessionUser;
+	        ps.setUserId(user.getId());
 
-		emailService.sendProgramMessage(user.getEmail(), program);
+	        temp = programService.programSub(ps);
 
-		String result = convertService.generateProgramWordFromTemplate(ps, program, user);
+	        Program program = buildProgramFromPayload(payload, programId);
+	        emailService.sendProgramMessage(user.getEmail(), program);
 
-		emailService.sendEmailProgram("hapum7179@gmail.com", result);
-		return temp;
+	        String result = convertService.generateProgramWordFromTemplate(ps, program, user);
+	        emailService.sendEmailProgram("hapum7179@gmail.com", result);
+
+	    } else {
+	        // needJoin == "N"
+	        if (sessionUser != null) {
+	            // Case 3: 로그인된 상태에서 비회원 신청
+	            user = sessionUser;
+	            ps.setUserId(user.getId());
+	            temp = programService.programSub(ps);
+	        } else {
+	            // Case 4: 로그인 안 된 상태에서 비회원 신청
+	            user = new User();
+	            user.setName((String) payload.get("name"));
+	            user.setBaptismName((String) payload.get("baptismName"));
+	            user.setCathedral((String) payload.get("parish"));
+	            user.setPhone((String) payload.get("phone"));
+	        }
+
+	        ProgramSubNoJoin psNoJoin = new ProgramSubNoJoin();
+	        psNoJoin.setProgramId(programId);
+	        psNoJoin.setOrgName((String) payload.get("needOrgName"));
+	        psNoJoin.setReason((String) payload.get("needReason"));
+	        psNoJoin.setOpinion((String) payload.get("needOpinion"));
+	        psNoJoin.setRelation((String) payload.get("needRelation"));
+	        if (partCountStr != null && !"N".equals(partCountStr)) {
+	            psNoJoin.setPartCount(Integer.parseInt(partCountStr));
+	        }
+	        psNoJoin.setName(user.getName());
+	        psNoJoin.setBaptismName(user.getBaptismName());
+	        psNoJoin.setParish(user.getCathedral());
+	        psNoJoin.setPhone(user.getPhone());
+
+	        temp = programService.programSubWithNoJoin(psNoJoin);
+
+	        Program program = buildProgramFromPayload(payload, programId);
+	        String result = convertService.generateProgramWordFromTemplate(ps, program, user);
+	        emailService.sendEmailProgram("hapum7179@gmail.com", result);
+	    }
+
+	    return temp;
+	}
+
+	// ✅ Program 객체 생성 보조 메소드
+	private Program buildProgramFromPayload(Map<String, Object> payload, Long programId) {
+	    Program program = new Program();
+	    program.setId(programId);
+	    program.setCapacity((Integer) payload.get("capacity"));
+	    program.setNeedCapacity((String) payload.get("needCapacity"));
+	    program.setNeedOrgName((String) payload.get("needOrgName"));
+	    program.setNeedPartCount((String) payload.get("needPartCount"));
+	    program.setNeedRelation((String) payload.get("needRelation"));
+	    program.setNeedReason((String) payload.get("needReason"));
+	    program.setNeedOpinion((String) payload.get("needOpinion"));
+	    program.setNeedJoin((String) payload.get("needJoin"));
+	    return program;
 	}
 
 	@GetMapping("/rental")

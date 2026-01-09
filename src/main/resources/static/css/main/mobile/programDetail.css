@@ -277,6 +277,65 @@
 		border-radius: 50%;
 		animation: spin 1s linear infinite;
 	}
+	
+	.modal-content {
+	background: white;
+	border-radius: 10px;
+	width: 90%;
+	max-width: 700px;
+	height: 600px;
+	padding: 20px;
+	box-sizing: border-box;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+}
+
+/* 입력 그룹 */
+.form-group {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 15px;
+}
+
+.form-group label {
+	font-size: 14px;
+	font-weight: bold;
+	color: #333;
+	margin-bottom: 6px;
+}
+
+/* 입력 필드 (info-modal-input과 통일) */
+.modal-input {
+	width: 100%;
+	padding: 12px;
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	font-size: 15px;
+	font-family: 'Pretendard', 'Arial', sans-serif;
+	box-sizing: border-box;
+	color: #333;
+}
+
+/* 버튼 (infoModalButton과 통일) */
+.modal-btn {
+	width: 100px;
+	padding: 12px;
+	text-align: center;
+	background-color: #F5EBE0;
+	border: none;
+	font-size: 16px;
+	cursor: pointer;
+	color: #333;
+	border-radius: 8px;
+}
+
+.modal-btn:disabled {
+	background-color: #ddd;
+	color: #aaa;
+	cursor: not-allowed;
+}
 
 	@keyframes spin {
 		0% {

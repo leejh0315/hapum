@@ -45,6 +45,8 @@ public class Program {
     private String needPartCount;
     private String needRelation;
     
+    private String needJoin; //회원가입 필요유무
+    
     private String needReason;	//신청동기
     private String needOpinion; //협의사항
  

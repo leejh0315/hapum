@@ -65,7 +65,6 @@ public class AdminProgramController {
 
 	@PostMapping("/program/add")
 	public String postProgramAdd(ProgramAdd programAdd, @RequestParam("photo") MultipartFile photo) throws IOException {
-
 		programService.insertProgramAdd(programAdd, photo);
 		return "admin/main";
 	}
@@ -74,6 +73,9 @@ public class AdminProgramController {
 	public String postOpenProgram(Program program, @RequestParam("image") MultipartFile imageFile) throws IOException {
 		if (program.getExpense() == null) {
 			program.setExpense("0");
+		}
+		if(program.getNeedJoin() ==null) {
+			program.setNeedJoin("N");
 		}
 		System.out.println(program);
 

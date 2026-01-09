@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import hapum.hapum.domain.Program;
 import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.ProgramSub;
+import hapum.hapum.domain.ProgramSubNoJoin;
 import hapum.hapum.domain.ProgramWithSub;
 import hapum.hapum.mapper.ProgramMapper;
 import lombok.RequiredArgsConstructor;
@@ -308,4 +309,22 @@ public class ProgramService {
 		
 		programMapper.insertProgramSubWithAdmin(programSub);
 	}
+	
+	public int programSubWithNoJoin(ProgramSubNoJoin programSub) {
+		if (programSub.getPartCount() == 0) {
+			programSub.setPartCount(1);
+		}
+		int result = programMapper.programSubWithNoJoin(programSub);
+		return result;	
+			
+	}
+	
+	public int getApplyCountNoJoin(Long programId) {
+		Integer applyCount = programMapper.getApplyCountNoJoin(programId); // 신청자 수
+
+		if (applyCount == null) {
+			applyCount = 0;
+		}
+		return applyCount;
+	} 
 }

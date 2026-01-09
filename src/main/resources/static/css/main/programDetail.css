@@ -293,3 +293,42 @@ footer,
 	flex-shrink: 0;
 	margin-top: auto;
 }
+
+
+#userInfoModalOverlay .modal-content {
+  background: white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 700px;
+  height: auto; /* 내용에 맞게 높이 자동 */
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* 입력 필드 스타일 */
+#userInfoModalOverlay .modal-input {
+  width: 60%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: 'Pretendard', 'Arial', sans-serif;
+  box-sizing: border-box;
+  color: #333;
+  display: block;
+  margin-bottom: 15px;
+}
+
+/* 버튼 스타일 */
+#userInfoModalOverlay .modal-btn {
+  padding: 12px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: #F5EBE0;
+  color: #333;
+  border: none;
+  border-radius: 8px;
+  width: 100px;
+}

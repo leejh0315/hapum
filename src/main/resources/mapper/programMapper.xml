@@ -24,12 +24,12 @@
 		need_org_name,
 		need_part_count,
 		need_relation,
-		
+
 		need_capacity,
 		need_reason,
-		need_opinion
-		
-		
+		need_opinion,
+		need_join
+
 		) VALUES (
 		#{title},
 		#{content},
@@ -48,10 +48,10 @@
 		#{needOrgName},
 		#{needPartCount},
 		#{needRelation},
-		
 		#{needCapacity},
 		#{needReason},
-		#{needOpinion}
+		#{needOpinion},
+		#{needJoin}
 		)
 	</insert>
 
@@ -79,19 +79,22 @@
 	</select>
 	<!-- 신청자 수-->
 	<select id="getApplyCount" resultType="Integer">
-		SELECT SUM(part_count) FROM hapumdb.program_subs WHERE program_id
+		SELECT SUM(part_count) FROM hapumdb.program_subs WHERE
+		program_id
 		=#{programId}
 	</select>
 
 	<insert id="programSub" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on, is_app,
+		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on,
+		is_app,
 		part_count, relation, org_name, reason, opinion)
 		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation},
 		#{orgName},#{reason}, #{opinion})
 	</insert>
 
 	<select id="selectPrograSubmById" resultType="hapum.hapum.domain.ProgramSub">
-		SELECT * FROM hapumdb.program_subs WHERE program_id = #{programId}
+		SELECT * FROM hapumdb.program_subs WHERE program_id =
+		#{programId}
 	</select>
 
 
@@ -187,7 +190,8 @@
 
 
 	<update id="updateCode">
-		UPDATE hapumdb.program SET open_status=#{code} where id=#{programId}
+		UPDATE hapumdb.program SET open_status=#{code} where
+		id=#{programId}
 	</update>
 
 
@@ -202,7 +206,8 @@
 	</select>
 
 	<select id="selectProgramByAddId">
-		select * from hapumdb.program where add_id =#{id} order by open_status
+		select * from hapumdb.program where add_id =#{id} order by
+		open_status
 		desc, start_date
 	</select>
 
@@ -305,46 +310,88 @@
 
 
 	</select>
-	
+
 	<delete id="deleteByUserId">
 		DELETE FROM hapumdb.program_subs WHERE id=#{id}
 	</delete>
-	
-	<select id="selectFutureProgramSubs" resultType="map">
-    SELECT 
-        ps.id AS subs_id,
-        ps.user_id,
-        u.name AS user_name,   
-        ps.program_id,
-        ps.subs_on,
-        ps.is_app,
-        ps.part_count,
-        ps.relation,
-        ps.org_name,
-         ps.reason,
-        ps.opinion,
-        p.title,
-        p.start_date,
-        p.end_date,
-        p.location,
-        p.target,
-        ps.is_app
-    FROM hapumdb.program_subs ps
-    JOIN hapumdb.program p 
-        ON ps.program_id = p.id
-    JOIN hapumdb.user u
-        ON ps.user_id = u.id
-    WHERE p.start_date > NOW()
-    ORDER BY p.start_date ASC, ps.subs_on ASC
-</select>
 
-<insert id="insertProgramSubWithAdmin" parameterType="hapum.hapum.domain.ProgramSub">
-	INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on, is_app,
+	<select id="selectFutureProgramSubs" resultType="map">
+		SELECT
+		ps.id AS subs_id,
+		ps.user_id,
+		u.name AS user_name,
+		ps.program_id,
+		ps.subs_on,
+		ps.is_app,
+		ps.part_count,
+		ps.relation,
+		ps.org_name,
+		ps.reason,
+		ps.opinion,
+		p.title,
+		p.start_date,
+		p.end_date,
+		p.location,
+		p.target,
+		ps.is_app
+		FROM hapumdb.program_subs ps
+		JOIN hapumdb.program p
+		ON ps.program_id = p.id
+		JOIN hapumdb.user u
+		ON ps.user_id = u.id
+		WHERE p.start_date > NOW()
+		ORDER BY p.start_date ASC, ps.subs_on ASC
+	</select>
+
+	<insert id="insertProgramSubWithAdmin"
+		parameterType="hapum.hapum.domain.ProgramSub">
+		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on,
+		is_app,
 		part_count, relation, org_name, reason, opinion)
 		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation},
 		#{orgName},#{reason}, #{opinion})
-	
-</insert>
-	
 
+	</insert>
+
+	<insert id="programSubWithNoJoin"
+		parameterType="hapum.hapum.domain.ProgramSub">
+		INSERT INTO hapumdb.program_subs_no_join
+		(
+		program_id,
+		subs_on,
+		is_app,
+		part_count,
+		relation,
+		org_name,
+		reason,
+		opinion,
+		name,
+		baptism_name,
+		phone,
+		parish
+		)
+		VALUES
+		(
+		#{programId},
+		NOW(),
+		'N',
+		#{partCount},
+		#{relation},
+		#{orgName},
+		#{reason},
+		#{opinion},
+		#{name},
+		#{baptismName},
+		#{phone},
+		#{parish}
+		);
+
+	</insert>
+	
+	
+	<select id="getApplyCountNoJoin" resultType="Integer">
+		SELECT SUM(part_count) FROM hapumdb.program_subs_no_join WHERE
+		program_id
+		=#{programId}
+	</select>
 </mapper>

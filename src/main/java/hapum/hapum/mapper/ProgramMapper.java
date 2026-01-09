@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import hapum.hapum.domain.Program;
 import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.ProgramSub;
+import hapum.hapum.domain.ProgramSubNoJoin;
 import hapum.hapum.domain.ProgramWithSub;
 
 @Mapper
@@ -59,4 +60,7 @@ public interface ProgramMapper {
 	 List<Map<String, Object>> selectFutureProgramSubs();
 	 
 	 void insertProgramSubWithAdmin(ProgramSub programSub);
+	 
+	 public int programSubWithNoJoin(ProgramSubNoJoin programSub);
+	 public Integer getApplyCountNoJoin(@Param("programId") Long programId);
 }
