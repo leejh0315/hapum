@@ -43,6 +43,17 @@ public class AdminProgramController {
 		return "admin/manageProgram";
 	}
 
+	@GetMapping("/popupAndimage")
+	public String getpopupAndimage(Model model) {
+		List<Program> popupPrograms=programService.selectPopupProgram();
+		List<Program> iamgePrograms=programService.selectHomeProgram();
+		
+		model.addAttribute("popupPrograms", popupPrograms);
+		model.addAttribute("iamgePrograms", iamgePrograms);
+		
+		return "admin/popupAndimage";
+	}
+
 	@GetMapping("/programsub")
 	public String getProgramSub(Model model) {
 		List<Program> allPrograms = programService.selectAllProgramsByOpenStatus();
@@ -92,6 +103,19 @@ public class AdminProgramController {
 			code = "Y";
 		}
 		programService.changePopup(id, code);
+
+		return "redirect:/admin/programs";
+	}
+
+	@PostMapping("/program/changeImageSlide/{id}")
+	public String changeImageSlide(@PathVariable("id") Long id) {
+		Program program = programService.selectProgramById(id);
+		String code = "N";
+
+		if (program.getIsImageSlide().equals("N")) {
+			code = "Y";
+		}
+		programService.changeImageSlide(id, code);
 
 		return "redirect:/admin/programs";
 	}

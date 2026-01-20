@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>프로그램 팝업/이미지 목록</title>
+
+	<!-- Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+
+	<style>
+		.program-scroll {
+			display: flex;
+			gap: 1rem;
+			overflow-x: auto;
+			padding-bottom: 10px;
+			height: 250px;
+		}
+
+		.program-card {
+			min-width: 150px;
+			border: 1px solid #dee2e6;
+			border-radius: 8px;
+			padding: 10px;
+			background: #fff;
+		}
+
+		.program-card img {
+			width: 150px;
+			height: 150px;
+			border-radius: 4px;
+		}
+
+		.program-title {
+			font-weight: 600;
+			margin-top: 10px;
+		}
+
+		.status-button {
+			background: none;
+			border: none;
+			font-size: 18px;
+			cursor: pointer;
+			margin-top: 5px;
+		}
+
+		.program-add-section {
+			margin-bottom: 40px;
+		}
+
+		.program-add-title {
+			font-size: 1.25rem;
+			font-weight: bold;
+			margin-bottom: 10px;
+		}
+
+		.program-card.popup-border {
+			border: 2px solid #007bff;
+			border-radius: 6px;
+		}
+	</style>
+</head>
+
+<body>
+
+	<!-- 헤더 -->
+	<div class="program-header" th:replace="~{admin/admin-header :: admin-header}"></div>
+
+	<div class="container mt-4">
+		<div class="row">
+
+			<!-- 팝업 프로그램 -->
+			<div class="col-md-6">
+				<h3 class="text-center">팝업 프로그램</h3>
+				<div class="program-scroll">
+					<div class="program-card popup-border" th:each="program : ${popupPrograms}">
+						<a th:href="@{/admin/program/detail/{id}(id=${program.id})}">
+							<img th:src="@{${program.thumbnailSrc}}" alt="썸네일">
+							<div class="program-title" th:text="${program.title}">제목</div>
+						</a>
+						<div class="d-inline-flex align-items-center mt-1 gap-1">
+							<form th:action="@{/admin/program/changePopup/{id}(id=${program.id})}" method="post"
+								onsubmit="return confirm('팝업 해제하시겠습니까?')" class="d-inline">
+								<button type="submit" class="btn btn-sm btn-outline-danger ms-1" title="팝업 해제">
+									<i class="fa-regular fa-bell-slash"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 이미지 슬라이드 프로그램 -->
+			<div class="col-md-6">
+				<h3 class="text-center">이미지 슬라이드 프로그램</h3>
+				<div class="program-scroll">
+					<div class="program-card" th:each="program : ${iamgePrograms}">
+						<a th:href="@{/admin/program/detail/{id}(id=${program.id})}">
+							<img th:src="@{${program.thumbnailSrc}}" alt="썸네일">
+							<div class="program-title" th:text="${program.title}">제목</div>
+						</a>
+						<div class="d-inline-flex align-items-center mt-1 gap-1">
+							<form th:action="@{/admin/program/changeImageSlide/{id}(id=${program.id})}" method="post"
+								onsubmit="return confirm('이미지 슬라이드 해제하시겠습니까?')" class="d-inline">
+								<button type="submit" class="btn btn-sm btn-outline-danger ms-1" title="이미지 슬라이드 해제">
+									<i class="fa-regular fa-image"></i>
+								</button>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	<script th:src="@{/js/header.js}"></script>
+</body>
+
+</html>

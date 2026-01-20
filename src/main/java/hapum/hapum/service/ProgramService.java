@@ -286,6 +286,9 @@ public class ProgramService {
 	public void changePopup(Long id, String code) {
 		programMapper.changePopup(id, code);
 	}
+	public void changeImageSlide(Long id, String code) {
+		programMapper.changeImageSlide(id, code);
+	}
 
 	public List<Program> selectPopupProgram(){
 		return programMapper.selectPopupProgram();

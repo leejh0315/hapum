@@ -129,7 +129,14 @@
 											<i class="fa-regular fa-bell"></i>
 										</button>
 									</form>
-
+									
+									<form th:action="@{/admin/program/changeImageSlide/{id}(id=${program.id})}" method="post"
+										onsubmit="return confirm('이미지슬라이드 설정하시겠습니까?')" class="d-inline">
+										<button type="submit" class="btn btn-sm btn-outline-danger ms-1" title="이미지슬라이드설정"
+											style="padding: 0.25rem 0.4rem; display: flex; align-items: center; justify-content: center;">
+											<i class="fa-solid fa-image"></i>
+										</button>
+									</form>
 								</div>
 							</div>
 						</div>

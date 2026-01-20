@@ -13,6 +13,28 @@ flatpickr("#endDate", {
 	locale: "ko",
 });
 
+	$(function () {
+			$('#summernote').summernote({
+				height: 300,
+				placeholder: '프로그램 내용을 입력하세요...',
+				toolbar: [
+					// 글자 스타일
+					['style', ['bold', 'italic', 'underline', 'clear']],
+					// 글자 크기, 색상
+					['fontsize', ['fontsize']],
+					['color', ['color']],
+					// 단락 관련
+					['para', ['ul', 'ol', 'paragraph']],
+					// 정렬
+					['height', ['height']],
+					// 링크 삽입 등
+					['insert', ['link']],
+					// 코드 보기 등
+					['view', ['codeview']]
+				]
+			});
+		});
+
 function validateForm() {
 	const title = document.getElementById("title").value.trim();
 	const startDate = document.getElementById("startDate").value;

@@ -51,4 +51,6 @@ public class Program {
     private String needOpinion; //협의사항
  
     private String isPopup;
+    private String isImageSlide;
+    
 }

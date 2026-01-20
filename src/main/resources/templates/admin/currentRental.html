@@ -115,107 +115,131 @@
 
 	<!-- 서버에서 넘어온 데이터 -->
 	<script th:inline="javascript">
-		/*<![CDATA[*/
-		var rentals = /*[[${rentals}]]*/[];
-		/*]]>*/
-	</script>
+  /*<![CDATA[*/
+  var rentals = /*[[${rentals}]]*/[];
+  /*]]>*/
+</script>
 
-	<script>
-		// 포맷 함수들(이전 예제와 동일)
-		function fmtDate(d) {if (!d) return ''; const [y, m, day] = d.split('-'); return `${y}. ${parseInt(m)}. ${parseInt(day)}`;}
-		function fmtDateTime(dt) {if (!dt) return ''; const [date, time] = dt.split('T'); const [y, m, day] = date.split('-'); const hhmmss = time.split('.')[0]; return `${y}. ${parseInt(m)}. ${parseInt(day)} ${hhmmss}`;}
+<script>
+  // 날짜 포맷 함수
+  function fmtDate(d) {
+    if (!d) return '';
+    const [y, m, day] = d.split('-');
+    return `${y}. ${parseInt(m)}. ${parseInt(day)}`;
+  }
+  function fmtDateTime(dt) {
+    if (!dt) return '';
+    const [date, time] = dt.split('T');
+    const [y, m, day] = date.split('-');
+    const hhmmss = time.split('.')[0];
+    return `${y}. ${parseInt(m)}. ${parseInt(day)} ${hhmmss}`;
+  }
 
-		function updateTables() {
-			const [y, m] = document.getElementById('monthPicker').value.split('-');
-			const apr = document.getElementById('approvedBody');
-			const pen = document.getElementById('pendingBody');
-			apr.innerHTML = pen.innerHTML = '';
+  // 테이블 업데이트
+  function updateTables() {
+    const [y, m] = document.getElementById('monthPicker').value.split('-');
+    const apr = document.getElementById('approvedBody');
+    const pen = document.getElementById('pendingBody');
+    apr.innerHTML = pen.innerHTML = '';
 
-			rentals.forEach(r => {
-				const [ry, rm] = r.reservationDate.split('-');
-				if (ry === y && rm === m) {
-					const tr = document.createElement('tr');
-					tr.innerHTML = `
-            <td>${r.id}</td>
-            <td>${r.location}</td>
-            <td>${fmtDate(r.reservationDate)}</td>
-            <td>${r.startTime}</td>
-            <td>${r.endTime}</td>
-            <td>${r.price}</td>
-            <td>${r.userId}</td>
-            <td>${fmtDateTime(r.createdOn)}</td>
-            <td>${r.purpose || ''}</td>
-            <td>${r.groupName || ''}</td>
-            <td>${r.equipment || ''}</td>
-            <td>${r.headCount || ''}</td>
-            <td>
-              ${r.isApp == '1'
-							? `<button class="btn disapprove" data-id="${r.id}">미승인</button>`
-							: `<button class="btn approve" data-id="${r.id}">승인</button>
-                   <button class="btn delete" data-id="${r.id}">삭제</button>`
-						}
-            </td>`;
-					(r.isApp == '1' ? apr : pen).appendChild(tr);
-				}
-			});
-		}
+    rentals.forEach(r => {
+      const [ry, rm] = r.reservationDate.split('-');
+      if (ry === y && rm === m) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${r.id}</td>
+          <td>${r.location}</td>
+          <td>${fmtDate(r.reservationDate)}</td>
+          <td>${r.startTime}</td>
+          <td>${r.endTime}</td>
+          <td>${r.price}</td>
+          <td>${r.userId}</td>
+          <td>${fmtDateTime(r.createdOn)}</td>
+          <td>${r.purpose || ''}</td>
+          <td>${r.groupName || ''}</td>
+          <td>${r.headCount || ''}</td>
+          <td>${r.equipment || ''}</td>
+          <td>
+            ${r.isApp == '1'
+              ? `<button class="btn disapprove" data-id="${r.id}">미승인</button>`
+              : `<button class="btn approve" data-id="${r.id}">승인</button>
+                 <button class="btn delete" data-id="${r.id}">삭제</button>`}
+          </td>`;
+        (r.isApp == '1' ? apr : pen).appendChild(tr);
+      }
+    });
+  }
 
-		document.addEventListener('DOMContentLoaded', () => {
-			const mp = document.getElementById('monthPicker');
-			mp.value = new Date().toISOString().substr(0, 7);
-			mp.addEventListener('change', updateTables);
-			updateTables();
+  document.addEventListener('DOMContentLoaded', () => {
+    const mp = document.getElementById('monthPicker');
 
-			// jQuery 이벤트 위임
-			$('body').on('click', '.approve', function () {
-				if (!confirm('이 예약을 승인하시겠습니까?')) return;
-				const id = $(this).data('id');
-				$.ajax({
-					url: `/admin/rental/approve/${id}`,
-					type: 'POST',
-					success: function () {
-						alert('승인되었습니다.');
-						location.reload();
-					},
-					error: function (xhr, status, err) {
-						alert('승인 실패: ' + err);
-					}
-				});
-			});
+    // localStorage에서 선택한 월 복원
+    const savedMonth = localStorage.getItem('selectedMonth');
+    if (savedMonth) {
+      mp.value = savedMonth;
+    } else {
+      mp.value = new Date().toISOString().substr(0, 7);
+    }
 
-			$('body').on('click', '.delete', function () {
-				if (!confirm('이 예약을 삭제하시겠습니까?')) return;
-				const id = $(this).data('id');
-				$.ajax({
-					url: `/admin/rental/delete/${id}`,
-					type: 'POST',
-					success: function () {
-						alert('삭제되었습니다.');
-						location.reload();
-					},
-					error: function (xhr, status, err) {
-						alert('삭제 실패: ' + err);
-					}
-				});
-			});
+    // 월 선택 시 저장
+    mp.addEventListener('change', () => {
+      localStorage.setItem('selectedMonth', mp.value);
+      updateTables();
+    });
 
-			$('body').on('click', '.disapprove', function () {
-				if (!confirm('이 예약을 미승인 처리하시겠습니까?')) return;
-				const id = $(this).data('id');
-				$.ajax({
-					url: `/admin/rental/disapprove/${id}`,
-					type: 'POST',
-					success: function () {
-						alert('미승인 처리되었습니다.');
-						location.reload();
-					},
-					error: function (xhr, status, err) {
-						alert('미승인 실패: ' + err);
-					}
-				});
-			});
-		});
-	</script>
+    updateTables();
+
+    // jQuery 이벤트 위임
+    $('body').on('click', '.approve', function () {
+      if (!confirm('이 예약을 승인하시겠습니까?')) return;
+      const id = $(this).data('id');
+      $.ajax({
+        url: `/admin/rental/approve/${id}`,
+        type: 'POST',
+        success: function () {
+          alert('승인되었습니다.');
+          location.reload(); // 새로고침해도 선택한 월 유지됨
+        },
+        error: function (xhr, status, err) {
+          alert('승인 실패: ' + err);
+        }
+      });
+    });
+
+    $('body').on('click', '.delete', function () {
+      if (!confirm('이 예약을 삭제하시겠습니까?')) return;
+      const id = $(this).data('id');
+      $.ajax({
+        url: `/admin/rental/delete/${id}`,
+        type: 'POST',
+        success: function () {
+          alert('삭제되었습니다.');
+          location.reload();
+        },
+        error: function (xhr, status, err) {
+          alert('삭제 실패: ' + err);
+        }
+      });
+    });
+
+    $('body').on('click', '.disapprove', function () {
+      if (!confirm('이 예약을 미승인 처리하시겠습니까?')) return;
+      const id = $(this).data('id');
+      $.ajax({
+        url: `/admin/rental/disapprove/${id}`,
+        type: 'POST',
+        success: function () {
+          alert('미승인 처리되었습니다.');
+          location.reload();
+        },
+        error: function (xhr, status, err) {
+          alert('미승인 실패: ' + err);
+        }
+      });
+    });
+  });
+</script>
+
 </body>
 
 </html>

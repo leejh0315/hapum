@@ -55,6 +55,9 @@ public interface ProgramMapper {
 	 List<ProgramAdd> selectAllProgramsMain();
 	 List<Program> selectAllProgramsByOpenStatus();
 	 void changePopup(@Param("id")Long id, @Param("code") String code);
+	 void changeImageSlide(@Param("id")Long id, @Param("code") String code);
+	 
+	 
 	 
 	 List<Program>selectPopupProgram();
 	 List<Program> selectHomeProgram();
