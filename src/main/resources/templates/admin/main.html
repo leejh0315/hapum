@@ -196,6 +196,7 @@
 					<tr>
 						<th>신청ID</th>
 						<th>유저명</th>
+						<th>핸드폰번호</th>
 						<th>프로그램명</th>
 						<th>시작일</th>
 						<th>신청일</th>
@@ -210,6 +211,7 @@
 
 						<td th:text="${row2.subs_id}"></td>
 						<td th:text="${row2.user_name}"></td>
+						<td th:text="${row2.phone}"></td>
 						<td th:text="${row2.title}"></td>
 						<td th:text="${#temporals.format(row2.start_date, 'yyyy-MM-dd HH:mm')}"></td>
 						<td th:text="${#temporals.format(row2.subs_on, 'yyyy-MM-dd HH:mm')}"></td>

@@ -134,7 +134,6 @@ public class AdminController {
 //	            row2.put("org_name", "-");
 //	        }
 //	    }
-	    System.out.println(subsList);
 	    
 	    
         model.addAttribute("subsList", subsList);

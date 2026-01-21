@@ -257,6 +257,7 @@ public class MainController {
 	// ✅ Program 객체 생성 보조 메소드
 	private Program buildProgramFromPayload(Map<String, Object> payload, Long programId) {
 	    Program program = new Program();
+	    program = programService.selectProgramById(programId);
 	    program.setId(programId);
 	    program.setCapacity((Integer) payload.get("capacity"));
 	    program.setNeedCapacity((String) payload.get("needCapacity"));

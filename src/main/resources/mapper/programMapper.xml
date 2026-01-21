@@ -409,6 +409,7 @@
         COALESCE(psnj.reason, '-')       AS reason,
         COALESCE(psnj.opinion, '-')      AS opinion,
         COALESCE(psnj.name, '-')         AS user_name,
+        COALESCE(psnj.phone, '-')         AS phone,
         COALESCE(psnj.baptism_name, '-') AS baptism_name,
         COALESCE(psnj.parish, '-')       AS parish,
         COALESCE(psnj.phone, '-')        AS phone,
