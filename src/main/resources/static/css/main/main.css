@@ -265,8 +265,7 @@
 
 .popup-image {
 	width: 600px;
-	height: 600px;
-
+	max-height: 80vh;
 	border-radius: 6px;
 	margin-bottom: 10px;
 }
