@@ -33,7 +33,7 @@ body {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 	display: flex;
 	flex-direction: column;
-	background-color: #E3D5CA;
+	/*background-color: #E3D5CA;*/
 }
 
 #slideshow-container {
@@ -57,7 +57,7 @@ body {
 	object-fit: contain;
 	object-position: center;
 	display: none;
-	background-color: #E3D5CA;
+	background-color: white;
 }
 
 #slideshow-controls {
@@ -69,9 +69,9 @@ body {
 	font-size: 1.2em;
 	margin: 0 1vw;
 	padding: 0.5vh 1vw;
-
+	font-weight: bold;
 	cursor: pointer;
-	background-color: #F1E6E1;
+	background-color: white;
 	border: 1px solid #D5BDAF;
 }
 
