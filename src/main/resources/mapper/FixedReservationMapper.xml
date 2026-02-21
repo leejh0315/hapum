@@ -20,10 +20,10 @@
 		parameterType="hapum.hapum.domain.FixedReservation">
 		INSERT INTO hapumdb.fixed_reservation
 		(type, weekday, week_of_month, day_of_week, start_time, end_time,
-		description)
+		description,start_date,end_date)
 		VALUES
 		(#{type}, #{weekday}, #{weekOfMonth}, #{dayOfWeek}, #{startTime},
-		#{endTime}, #{description})
+		#{endTime}, #{description},#{startDate},#{endDate})
 	</insert>
 
 	<update id="updateFixedReservation"
@@ -35,7 +35,9 @@
 		day_of_week = #{dayOfWeek},
 		start_time = #{startTime},
 		end_time = #{endTime},
-		description = #{description}
+		description = #{description},
+		start_date=#{startDate},
+		end_date=#{endDate}
 		WHERE id = #{id}
 	</update>
 

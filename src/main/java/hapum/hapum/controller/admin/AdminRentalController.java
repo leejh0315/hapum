@@ -33,6 +33,8 @@ public class AdminRentalController {
 	}
 	@PostMapping("/insert")
 	public String insertFixedRental(FixedReservation fixedReservation) {
+		
+		
 		reservationService.insertFixedReservation(fixedReservation);
 		return "redirect:/admin/fixedRental";
 	}

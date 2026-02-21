@@ -1,6 +1,9 @@
 package hapum.hapum.domain;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+
+import org.springframework.format.annotation.DateTimeFormat;
 
 import lombok.Data;
 
@@ -14,4 +17,11 @@ public class FixedReservation {
     private LocalTime startTime;
     private LocalTime endTime;
     private String description;
+    
+    
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime startDate;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime endDate;
 }

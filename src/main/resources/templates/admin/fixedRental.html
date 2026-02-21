@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <link rel="stylesheet" th:href="@{/css/admin/header.css}" />
   <link rel="stylesheet" th:href="@{/css/admin/fixedRental.css}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css" />
 </head>
 
 <body>
@@ -34,6 +35,8 @@
         <th>요일 (dayOfWeek)</th>
         <th>시작 시간</th>
         <th>종료 시간</th>
+        <th>시작일</th>
+        <th>종료일</th>
         <th>설명</th>
       </tr>
     </thead>
@@ -119,6 +122,23 @@
                    style="display:none; width: 100%;" />
           </td>
           <td>
+            <span 
+            th:text="${#temporals.format(fr.startDate, 'yyyy년 M월 d일 (E) HH:mm')}"
+             th:id="'start-date-' + ${fr.id}"></span>
+            <input type="text" id="startDateEdit"name="startDate" class="edit-field" th:value="*{startDate}" 
+                   style="display:none; width: 100%;" />
+          </td>
+          <td>
+            <span 
+            
+			th:text="${#temporals.format(fr.endDate, 'yyyy년 M월 d일 (E) HH:mm')}"
+            th:id="'end-date-' + ${fr.id}"></span>
+            <input type="text" id="endDateEdit" name="endDate" class="edit-field" th:value="*{endDate}" 
+                   style="display:none; width: 100%;" />
+          </td>
+          
+          
+          <td>
             <span th:text="*{description}" th:id="'desc-text-' + ${fr.id}"></span>
             <input type="text" name="description" class="edit-field" th:value="*{description}" 
                    style="display:none; width: 65%;" />
@@ -188,6 +208,13 @@
           <td>
             <select id="endTimeSelect" name="endTime" required style="width: 100%;"></select>
           </td>
+          <td>
+			  <input type="text" id="startDate" name="startDate" placeholder="날짜/시간 선택" />
+          </td>
+          <td>
+			  <input type="text" id="endDate" name="endDate" placeholder="날짜/시간 선택" />
+          </td>
+          
           <td>
             <input type="text" name="description" placeholder="설명" required style="width: 70%;" />
             <button type="submit" style="width: 25%;">저장</button>
@@ -304,11 +331,16 @@
     </tbody>
   </table>
 
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
   <script>
+	  
     function toggleInputRow() {
       const row = document.getElementById("inputRow");
       row.style.display = (row.style.display === "none") ? "table-row" : "none";
     }
+    
+    
+    
 
     function handleTypeChange(type) {
       const weekday = document.getElementById("weekdaySelect");
@@ -460,6 +492,36 @@
         handleTypeChange(typeSelect.value);
       }
     };
+    
+    flatpickr("#startDate", {
+	enableTime: true,
+	dateFormat: "Y-m-d H:i",
+	minDate: "today",
+	locale: "ko",
+});
+
+flatpickr("#endDate", {
+	enableTime: true,
+	dateFormat: "Y-m-d H:i",
+	minDate: "today",
+	locale: "ko",
+});
+
+
+ flatpickr("#startDateEdit", {
+	enableTime: true,
+	dateFormat: "Y-m-d H:i",
+	minDate: "today",
+	locale: "ko",
+});
+
+flatpickr("#endDateEdit", {
+	enableTime: true,
+	dateFormat: "Y-m-d H:i",
+	minDate: "today",
+	locale: "ko",
+});
+    
   </script>
 </body>
 </html>

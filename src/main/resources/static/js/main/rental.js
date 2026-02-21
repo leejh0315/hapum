@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-
+	
 	// --- 기본 헬퍼 함수들 ---
 	function safeQuerySelectorAll(selector) {
 		const nodeList = document.querySelectorAll(selector);
@@ -27,6 +27,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	const todayFormatted = formatDate(today);
 	const endDate = new Date(today);
 	endDate.setDate(endDate.getDate() + 30);
+	
 	const timeSlots = [
 		'09:00', '09:30', '10:00', '10:30',
 		'11:00', '11:30', '12:00', '12:30',
@@ -96,8 +97,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 		return true;
 	}
-
-	// --- fixedReservations에 따른 시간대 가져오기 ---
 	function getFixedReservationTimesForDate(dateStr) {
 		const date = new Date(dateStr);
 		const weekday = date.getDay();
@@ -107,10 +106,21 @@ document.addEventListener("DOMContentLoaded", function() {
 			const frWeekday = fr.weekday !== null ? Number(fr.weekday) : null;
 			const frWeekOfMonth = fr.weekOfMonth !== null ? Number(fr.weekOfMonth) : null;
 			const frDayOfWeek = fr.dayOfWeek !== null ? Number(fr.dayOfWeek) : null;
+			let isInDateRange = true;
+			
+			if (fr.startDate && fr.endDate) {
+				const start = new Date(fr.startDate);
+				const end = new Date(fr.endDate);
+				start.setHours(0, 0, 0, 0);
+				end.setHours(23, 59, 59, 999);
+				isInDateRange = (date >= start && date <= end);
+			}
+			if (!isInDateRange) continue;
 			let match = false;
 			if (fr.type === 'WEEKLY' && frWeekday !== null) {
 				match = frWeekday === weekday;
-			} else if (fr.type === 'MONTHLY' && frWeekOfMonth !== null && frDayOfWeek !== null) {
+			}
+			else if (fr.type === 'MONTHLY' && frWeekOfMonth !== null && frDayOfWeek !== null) {
 				match = (frWeekOfMonth === weekOfMonth) && (frDayOfWeek === weekday);
 			}
 			if (match) {
@@ -127,6 +137,36 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 		return blocked;
 	}
+	// --- fixedReservations에 따른 시간대 가져오기 ---
+	//	function getFixedReservationTimesForDate(dateStr) {
+	//		const date = new Date(dateStr);
+	//		const weekday = date.getDay();
+	//		const weekOfMonth = getWeekOfMonth(date);
+	//		const blocked = [];
+	//		for (const fr of fixedReservations) {
+	//			const frWeekday = fr.weekday !== null ? Number(fr.weekday) : null;
+	//			const frWeekOfMonth = fr.weekOfMonth !== null ? Number(fr.weekOfMonth) : null;
+	//			const frDayOfWeek = fr.dayOfWeek !== null ? Number(fr.dayOfWeek) : null;
+	//			let match = false;
+	//			if (fr.type === 'WEEKLY' && frWeekday !== null) {
+	//				match = frWeekday === weekday;
+	//			} else if (fr.type === 'MONTHLY' && frWeekOfMonth !== null && frDayOfWeek !== null) {
+	//				match = (frWeekOfMonth === weekOfMonth) && (frDayOfWeek === weekday);
+	//			}
+	//			if (match) {
+	//				const startTime = fr.startTime.slice(0, 5);
+	//				const endTime = fr.endTime.slice(0, 5);
+	//				const startIdx = timeSlots.indexOf(startTime);
+	//				const endIdx = timeSlots.indexOf(endTime);
+	//				if (startIdx !== -1 && endIdx !== -1) {
+	//					for (let i = startIdx; i < endIdx; i++) {
+	//						blocked.push({ time: timeSlots[i] });
+	//					}
+	//				}
+	//			}
+	//		}
+	//		return blocked;
+	//	}
 	// 1) 프로그램 시간대 추출 함수 추가 (rental.js 상단 가까이)
 	function getProgramTimesForDate(dateStr) {
 		const slots = [];
