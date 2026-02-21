@@ -2,274 +2,226 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1" />
-	<title>관리자 페이지</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>관리자 페이지</title>
 
-	<!-- Header CSS -->
-	<link rel="stylesheet" th:href="@{/css/admin/header.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin/header.css}" />
 
-	<!-- Bootstrap 5 CSS -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"
-		integrity="sha384-…" crossorigin="anonymous" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+          rel="stylesheet" crossorigin="anonymous" />
 
-	<!-- jQuery (optional) -->
-	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<!-- Bootstrap 5 Bundle JS (Popper 포함) -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-…"
-		crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-	<style>
-		.tooltip-opinion {
-			position: absolute;
-			background: #fff8dc;
-			border: 1px solid #ccc;
-			padding: 8px;
-			font-size: 0.9rem;
-			max-width: 300px;
-			box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-			display: none;
-			z-index: 1000;
-			white-space: pre-line;
-			/* opinion 줄바꿈 유지 */
-		}
-		.table-responsive{
-			margin-bottom: 10%;
-		}
-	</style>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
 
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        .tooltip-opinion {
+            position: absolute;
+            background: #fff8dc;
+            border: 1px solid #ccc;
+            padding: 8px;
+            font-size: 0.9rem;
+            max-width: 300px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+            white-space: pre-line;
+        }
+
+        .table-responsive {
+            margin-bottom: 10%;
+        }
+    </style>
 </head>
 
 <body>
-	<!-- 공통 헤더 삽입 -->
-	<div th:replace="~{admin/admin-header :: admin-header}"></div>
 
-	<div class="container my-5">
-		<div class="visit-count" th:text="'오늘의 방문자 수 ' + ${todayVisitCount} + ' | 총 방문자 수 ' + ${totalVisitCount}">
-		</div>
-		<p class="text-muted">
-			이번 주 일정:
-			<strong th:text="${weekStart}">2025-07-07</strong>
-			~
-			<strong th:text="${weekEnd}">2025-07-13</strong>
-		</p>
-		<!-- 프로그램 일정 섹션 -->
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h2>프로그램 일정</h2>
-			<div th:with="prev=${prevWeek}, next=${nextWeek}">
-				<a class="btn btn-outline-primary btn-sm" th:href="@{/admin/main(weekOffset=${prev})}">← 이전 주</a>
-				<a class="btn btn-primary btn-sm" th:href="@{/admin/main(weekOffset=0)}">이번 주</a>
-				<a class="btn btn-outline-primary btn-sm" th:href="@{/admin/main(weekOffset=${next})}">다음 주 →</a>
-			</div>
-		</div>
+<div th:replace="~{admin/admin-header :: admin-header}"></div>
 
+<div class="container my-5">
 
+    <div class="visit-count"
+         th:text="'오늘의 방문자 수 ' + ${todayVisitCount} + ' | 총 방문자 수 ' + ${totalVisitCount}">
+    </div>
 
-		<div class="table-responsive shadow-sm mb-5">
-			<table class="table table-bordered table-hover mb-0">
-				<thead class="table-light">
-					<tr>
-						<th>제목</th>
-						<th>시작일</th>
-						<th>장소</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="p : ${programs}">
-						<td th:text="${p.title}">제목</td>
-						<td th:text="${#temporals.format(p.startDate,'yyyy-MM-dd HH:mm')}">날짜</td>
-						<td th:text="${p.location}">장소</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+    <p class="text-muted">
+        이번 주 일정:
+        <strong th:text="${weekStart}"></strong> ~
+        <strong th:text="${weekEnd}"></strong>
+    </p>
 
-		<!-- 대관 예약 일정 섹션 -->
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h2>대관 예약 일정</h2>
-		</div>
+    <!-- 프로그램 일정 -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>프로그램 일정</h2>
+        <div th:with="prev=${prevWeek}, next=${nextWeek}">
+            <a class="btn btn-outline-primary btn-sm"
+               th:href="@{/admin/main(weekOffset=${prev})}">← 이전 주</a>
+            <a class="btn btn-primary btn-sm"
+               th:href="@{/admin/main(weekOffset=0)}">이번 주</a>
+            <a class="btn btn-outline-primary btn-sm"
+               th:href="@{/admin/main(weekOffset=${next})}">다음 주 →</a>
+        </div>
+    </div>
 
-		<div class="table-responsive shadow-sm">
-			<table class="table table-bordered table-hover align-middle mb-0">
-				<thead class="table-light">
-					<tr>
-						<th>예약일자</th>
-						<th>장소</th>
-						<th>시작시간</th>
-						<th>종료시간</th>
-						<th>사용자 ID</th>
-						<th>용도</th>
-						<th>그룹명</th>
-						<th>인원</th>
-						<th>장비</th>
-						<th>승인여부</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="r : ${reservations}">
-						<td th:text="${#temporals.format(r.reservationDate,'yyyy-MM-dd')}">
-							2025-07-08
-						</td>
-						<td th:text="${r.location}">장소</td>
-						<td th:text="${#temporals.format(r.startTime,'HH:mm')}">시작</td>
-						<td th:text="${#temporals.format(r.endTime,'HH:mm')}">종료</td>
+    <div class="table-responsive shadow-sm mb-5">
+        <table class="table table-bordered table-hover mb-0">
+            <thead class="table-light">
+            <tr>
+                <th>제목</th>
+                <th>시작일</th>
+                <th>장소</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="p : ${programs}">
+                <td th:text="${p.title}"></td>
+                <td th:text="${p.startDate}"></td>
+                <td th:text="${p.location}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-						<!-- 툴팁으로 사용자 상세 정보 노출 -->
-						<td>
-							<span class="text-primary" data-bs-toggle="tooltip" data-bs-placement="top" th:attr="data-bs-title=
-                  ${'이름: '+r.name
-                    +'<br>이메일: '+r.email
-                    +'<br>전화: '+r.phone
-                    +'<br>본당: '+r.cathedral
-                    +'<br>세례명: '+r.baptismName}" th:text="${r.userId}">userId</span>
-						</td>
+    <!-- 대관 예약 일정 -->
+    <h2 class="mb-3">대관 예약 일정</h2>
 
-						<td th:text="${r.purpose}">용도</td>
-						<td th:text="${r.groupName}">그룹</td>
-						<td th:text="${r.headCount}">인원</td>
-						<td th:text="${r.equipment}">장비</td>
-						<td th:text="${r.isApp}">승인여부</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<br>
-		<br>
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h2>회원의 신청 내역</h2>
-		</div>
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="table-light">
+            <tr>
+                <th>예약일자</th>
+                <th>장소</th>
+                <th>시작시간</th>
+                <th>종료시간</th>
+                <th>사용자 ID</th>
+                <th>용도</th>
+                <th>그룹명</th>
+                <th>인원</th>
+                <th>장비</th>
+                <th>승인여부</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="r : ${reservations}">
+                <td th:text="${r.reservationDate}"></td>
+                <td th:text="${r.location}"></td>
+                <td th:text="${r.startTime}"></td>
+                <td th:text="${r.endTime}"></td>
 
-		<div class="table-responsive shadow-sm">
-			<table class="table table-bordered table-hover align-middle mb-0">
-				<thead class="table-light">
-					<tr>
-						<th>신청ID</th>
-						<th>유저ID</th>
-						<th>유저명</th>
-						<th>프로그램명</th>
-						<th>시작일</th>
-						<th>신청일</th>
-						<th>참여자수</th>
-						<th>관계</th>
-						<th>기관명</th>
-						<th>승인여부</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="row : ${subsList}" th:attr="data-opinion=${row['opinion']}">
+                <td>
+                    <span class="text-primary"
+                          data-bs-toggle="tooltip"
+                          data-bs-placement="top"
+                          th:attr="data-bs-title=
+                          ${'이름: '+r.name+
+                          '<br>이메일: '+r.email+
+                          '<br>전화: '+r.phone+
+                          '<br>본당: '+r.cathedral+
+                          '<br>세례명: '+r.baptismName}"
+                          th:text="${r.userId}">
+                    </span>
+                </td>
 
-						<td th:text="${row.subs_id}"></td>
-						<td th:text="${row.user_id}"></td>
-						<td th:text="${row.user_name}"></td>
-						<td th:text="${row.title}"></td>
-						<td th:text="${#temporals.format(row.start_date, 'yyyy-MM-dd HH:mm')}"></td>
-						<td th:text="${#temporals.format(row.subs_on, 'yyyy-MM-dd HH:mm')}"></td>
-						<td th:text="${row.part_count}"></td>
-						<td th:text="${row.relation}"></td>
-						<td th:text="${row.org_name}"></td>
-						<td>
-							<span th:text="${row.is_app == 'Y' ? '승인' : '반려'}"></span>
-							<form
-								th:action="@{${row.is_app == 'Y' ? '/admin/program/cancel/main' : '/admin/program/approve/main'}}"
-								method="post" style="display:inline; margin-left:8px;">
-								<input type="hidden" name="programSubId" th:value="${row.subs_id}" />
-								<input type="hidden" name="programId" th:value="${row.program_id}" />
-								<button type="submit" class="btn btn-sm btn-outline-secondary">
-									<i th:class="${row.is_app == 'Y' ? 'fa fa-times' : 'fa fa-check'}"></i>
-								</button>
-							</form>
-						</td>
-					</tr>
-				</tbody>
+                <td th:text="${r.purpose}"></td>
+                <td th:text="${r.groupName}"></td>
+                <td th:text="${r.headCount}"></td>
+                <td th:text="${r.equipment}"></td>
+                <td th:text="${r.isApp}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-			</table>
-		</div>
-		
-		
-		<div class="d-flex justify-content-between align-items-center mb-3">
-			<h2>비회원의 신청 내역</h2>
-		</div>
+    <br><br>
 
-			<div class="table-responsive shadow-sm">
-			<table class="table table-bordered table-hover align-middle mb-0">
-				<thead class="table-light">
-					<tr>
-						<th>신청ID</th>
-						<th>유저명</th>
-						<th>핸드폰번호</th>
-						<th>프로그램명</th>
-						<th>시작일</th>
-						<th>신청일</th>
-						<th>참여자수</th>
-						<th>관계</th>
-						<th>기관명</th>
-						<th>승인여부</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr th:each="row2 : ${subsListNoJoin}" th:attr="data-opinion=${row2['opinion']}">
+    <!-- 회원 신청 내역 -->
+    <h2 class="mb-3">회원의 신청 내역</h2>
 
-						<td th:text="${row2.subs_id}"></td>
-						<td th:text="${row2.user_name}"></td>
-						<td th:text="${row2.phone}"></td>
-						<td th:text="${row2.title}"></td>
-						<td th:text="${#temporals.format(row2.start_date, 'yyyy-MM-dd HH:mm')}"></td>
-						<td th:text="${#temporals.format(row2.subs_on, 'yyyy-MM-dd HH:mm')}"></td>
-						<td th:text="${row2.part_count}"></td>
-						<td th:text="${row2.relation}"></td>
-						<td th:text="${row2.org_name}"></td>
-						<td>
-							<span th:text="${row2.is_app == 'Y' ? '승인' : '반려'}"></span>
-							<form
-								th:action="@{${row2.is_app == 'Y' ? '/admin/program/cancel/main2' : '/admin/program/approve/main2'}}"
-								method="post" style="display:inline; margin-left:8px;">
-								<input type="hidden" name="programSubId" th:value="${row2.subs_id}" />
-								<input type="hidden" name="programId" th:value="${row2.program_id}" />
-								<button type="submit" class="btn btn-sm btn-outline-secondary">
-									<i th:class="${row2.is_app == 'Y' ? 'fa fa-times' : 'fa fa-check'}"></i>
-								</button>
-							</form>
-						</td>
-					</tr>
-				</tbody>
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="table-light">
+            <tr>
+                <th>신청ID</th>
+                <th>유저ID</th>
+                <th>유저명</th>
+                <th>프로그램명</th>
+                <th>시작일</th>
+                <th>신청일</th>
+                <th>참여자수</th>
+                <th>관계</th>
+                <th>기관명</th>
+                <th>승인여부</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="row : ${subsList}" th:attr="data-opinion=${row['opinion']}">
+                <td th:text="${row.subs_id}"></td>
+                <td th:text="${row.user_id}"></td>
+                <td th:text="${row.user_name}"></td>
+                <td th:text="${row.title}"></td>
+                <td th:text="${row.start_date}"></td>
+                <td th:text="${row.subs_on}"></td>
+                <td th:text="${row.part_count}"></td>
+                <td th:text="${row.relation}"></td>
+                <td th:text="${row.org_name}"></td>
+                <td>
+                    <span th:text="${row.is_app == 'Y' ? '승인' : '반려'}"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-			</table>
-		</div>
+    <br><br>
 
+    <!-- 비회원 신청 내역 -->
+    <h2 class="mb-3">비회원의 신청 내역</h2>
 
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-hover align-middle mb-0">
+            <thead class="table-light">
+            <tr>
+                <th>신청ID</th>
+                <th>유저명</th>
+                <th>핸드폰번호</th>
+                <th>프로그램명</th>
+                <th>시작일</th>
+                <th>신청일</th>
+                <th>참여자수</th>
+                <th>관계</th>
+                <th>기관명</th>
+                <th>승인여부</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="row2 : ${subsListNoJoin}" th:attr="data-opinion=${row2['opinion']}">
+                <td th:text="${row2.subs_id}"></td>
+                <td th:text="${row2.user_name}"></td>
+                <td th:text="${row2.phone}"></td>
+                <td th:text="${row2.title}"></td>
+                <td th:text="${row2.start_date}"></td>
+                <td th:text="${row2.subs_on}"></td>
+                <td th:text="${row2.part_count}"></td>
+                <td th:text="${row2.relation}"></td>
+                <td th:text="${row2.org_name}"></td>
+                <td>
+                    <span th:text="${row2.is_app == 'Y' ? '승인' : '반려'}"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
-	</div>
+</div>
 
-	<!-- Bootstrap Tooltip 초기화 (HTML 안의 <script>에 bootstrap 객체 있음) -->
-	<script>
-		document
-			.querySelectorAll('[data-bs-toggle="tooltip"]')
-			.forEach((el) => new bootstrap.Tooltip(el, {html: true}));
+<script>
+    document.querySelectorAll('[data-bs-toggle="tooltip"]')
+        .forEach(el => new bootstrap.Tooltip(el, {html: true}));
+</script>
 
-
-		document.addEventListener("DOMContentLoaded", function () {
-			const tooltip = document.createElement("div");
-			tooltip.className = "tooltip-opinion";
-			document.body.appendChild(tooltip);
-
-			document.querySelectorAll("tbody tr").forEach(row => {
-				row.addEventListener("mouseenter", function (e) {
-					const opinion = this.getAttribute("data-opinion");
-					if (opinion) {
-						tooltip.textContent = opinion;
-						tooltip.style.display = "block";
-						const rect = this.getBoundingClientRect();
-						tooltip.style.top = (rect.top + window.scrollY + rect.height) + "px";
-						tooltip.style.left = (rect.left + window.scrollX) + "px";
-					}
-				});
-				row.addEventListener("mouseleave", function () {
-					tooltip.style.display = "none";
-				});
-			});
-		});
-
-	</script>
 </body>
-
 </html>

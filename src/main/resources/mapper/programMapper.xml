@@ -336,8 +336,9 @@
         COALESCE(ps.reason, '-')         AS reason,
         COALESCE(ps.opinion, '-')        AS opinion,
         p.title,
-        p.start_date,
-        p.end_date,
+        COALESCE(p.start_date, '-')		AS start_date,
+        COALESCE(p.end_date, '-')		AS end_date,
+        
         p.location,
         p.target
     FROM hapumdb.program_subs ps
@@ -345,7 +346,10 @@
       ON ps.program_id = p.id
     JOIN hapumdb.user u
       ON ps.user_id = u.id
-    WHERE p.start_date > NOW()
+    
+    
+     WHERE (p.start_date IS NULL OR p.start_date > NOW())
+    
     ORDER BY p.start_date ASC, ps.subs_on ASC
 </select>
 
@@ -419,14 +423,17 @@
         COALESCE(psnj.parish, '-')       AS parish,
         COALESCE(psnj.phone, '-')        AS phone,
         p.title,
-        p.start_date,
-        p.end_date,
+        COALESCE(p.start_date, '-')		AS start_date,
+        COALESCE(p.end_date, '-')		AS end_date,
         p.location,
         p.target
     FROM hapumdb.program_subs_no_join psnj
     JOIN hapumdb.program p
       ON psnj.program_id = p.id
-    WHERE p.start_date > NOW()
+    
+     WHERE (p.start_date IS NULL OR p.start_date > NOW())
+    
+    
     ORDER BY p.start_date ASC, psnj.subs_on ASC
 </select>
 
