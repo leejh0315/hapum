@@ -88,6 +88,7 @@ public class AdminProgramController {
 		if(program.getNeedJoin() ==null) {
 			program.setNeedJoin("N");
 		}
+	
 		System.out.println(program);
 
 		programService.insertProgram(program, imageFile);

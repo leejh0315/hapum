@@ -96,11 +96,14 @@
 				<label><input type="checkbox" id="needReason" name="needReason" value="Y" /> 신청동기 수집</label>
 				<label><input type="checkbox" id="needOpinion" name="needOpinion" value="Y" /> 협의사항 수집</label>
 				<label><input type="checkbox" id="need_join" name="needJoin" value="Y" /> 회원가입 필요유무(필요하면 체크)</label>
+				<label><input type="checkbox" id="dateString_checkBox" name="isDateString" value="Y" /> 일시 상시</label>
 			</div>
 
-
-
-
+			<div class="program-form-group" style="display: none;" id="stringDateStringBox">
+				<label for="startDate">매주 날짜</label>
+				<input type="text" name="dateString" placeholder="매주 몇번 째 선택" />
+			</div>
+			
 			<div class="program-form-group">
 				<label for="startDate">시작일시</label>
 				<input type="text" id="startDate" name="startDate" placeholder="날짜/시간 선택" />
@@ -174,6 +177,22 @@
 				]
 			});
 		});
+
+			document.addEventListener("DOMContentLoaded", function () {
+
+		const alwaysCheckBox = document.getElementById("dateString_checkBox");
+		const stringDateBox = document.getElementById("stringDateStringBox");
+
+		alwaysCheckBox.addEventListener("change", function () {
+			if (this.checked) {
+				stringDateBox.style.display = "block";   // 체크하면 보이기
+			} else {
+				stringDateBox.style.display = "none";    // 체크 해제하면 숨기기
+			}
+		});
+
+	});
+
 	</script>
 </body>
 

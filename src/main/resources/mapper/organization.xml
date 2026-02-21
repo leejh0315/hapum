@@ -6,19 +6,19 @@
 
 	<select id="selectAllOrganization"
 		resultType="hapum.hapum.domain.Organization">
-		SELECT * FROM hapumdb.organization where open_status='Y' order by seq
+		SELECT * FROM hapumdb_test.organization where open_status='Y' order by seq
 
 	</select>
 
 	<select id="selectAllOrganizationAdmin"
 		resultType="hapum.hapum.domain.Organization">
-		SELECT * FROM hapumdb.organization
+		SELECT * FROM hapumdb_test.organization
 
 	</select>
 
 	<insert id="insertOrganization"
 		parameterType="hapum.hapum.domain.Organization">
-		INSERT INTO hapumdb.organization(name, introduce, profileSrc,
+		INSERT INTO hapumdb_test.organization(name, introduce, profileSrc,
 		open_status, seq)
 		VALUES(#{name}, #{introduce}, #{profileSrc}, 'Y', 99999);
 
@@ -26,7 +26,7 @@
 
 	<insert id="insertOrganizationWrite"
 		parameterType="hapum.hapum.domain.OrganizationPost">
-		INSERT INTO hapumdb.organization_post(org_id, title,
+		INSERT INTO hapumdb_test.organization_post(org_id, title,
 		content,thumbnailSrc, open_status)
 		VALUES(#{orgId}, #{title}, #{content},#{thumbnailSrc}, 'Y');
 
@@ -34,38 +34,38 @@
 
 
 	<select id="selectByOrgId" resultType="hapum.hapum.domain.OrganizationPost">
-		SELECT * FROM hapumdb.organization_post WHERE org_id=#{orgId}
+		SELECT * FROM hapumdb_test.organization_post WHERE org_id=#{orgId}
 		ORDER BY created_at DESC
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
 
 	<select id="countOrgPost" resultType="int">
-		SELECT COUNT(*) FROM hapumdb.organization_post WHERE org_id=#{orgId}
+		SELECT COUNT(*) FROM hapumdb_test.organization_post WHERE org_id=#{orgId}
 	</select>
 
 	<select id="selectOrgPostById"
 		resultType="hapum.hapum.domain.OrganizationPost">
-		SELECT * FROM hapumdb.organization_post WHERE id=#{id}
+		SELECT * FROM hapumdb_test.organization_post WHERE id=#{id}
 	</select>
 
 	<update id="deleteOrganization">
-		UPDATE hapumdb.organization
+		UPDATE hapumdb_test.organization
 		SET open_status = #{code}
 		WHERE id=#{orgId}
 	</update>
 
 
 	<delete id="deleteOrganizationPost">
-		DELETE FROM hapumdb.organization_post WHERE id=#{orgPostId}
+		DELETE FROM hapumdb_test.organization_post WHERE id=#{orgPostId}
 	</delete>
 
 
 	<select id="selectOrganizationById">
-		SELECT * FROM hapumdb.organization WHERE id=#{id}
+		SELECT * FROM hapumdb_test.organization WHERE id=#{id}
 	</select>
 
 	<update id="updateOrganization">
-		UPDATE hapumdb.organization
+		UPDATE hapumdb_test.organization
 		SET
 		name = #{name},
 		introduce = #{introduce},
@@ -75,16 +75,16 @@
 	</update>
 
 	<delete id="deletePosts">
-		DELETE FROM hapumdb.organization_post WHERE org_id=#{orgId};
+		DELETE FROM hapumdb_test.organization_post WHERE org_id=#{orgId};
 	</delete>
 
 	<delete id="deleteOrganizationAndPosts">
-		DELETE FROM hapumdb.organization WHERE id=#{orgId};
+		DELETE FROM hapumdb_test.organization WHERE id=#{orgId};
 	</delete>
 
 	<update id="updateOrganizationPost"
 		parameterType="hapum.hapum.domain.OrganizationPost">
-		UPDATE hapumdb.organization_post
+		UPDATE hapumdb_test.organization_post
 		SET
 		title = #{title},
 		content = #{content},
@@ -97,7 +97,7 @@
 
 
 	<update id="updateSeq" parameterType="hapum.hapum.domain.OrganizationOrderDto">
-		UPDATE hapumdb.organization
+		UPDATE hapumdb_test.organization
 		SET seq = #{seq}
 		WHERE id = #{id}
 	</update>

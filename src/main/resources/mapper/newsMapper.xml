@@ -5,12 +5,12 @@
 
 	<!-- 1) insertNews -->
 	<insert id="insertNews" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO hapumdb.news (title, content, thumbnailSrc, open_status)
+		INSERT INTO hapumdb_test.news (title, content, thumbnailSrc, open_status)
 		VALUES (#{title}, #{content}, #{thumbnailSrc}, 'Y')
 	</insert>
 
 	<select id="selectAllNews" resultType="hapum.hapum.domain.News">
-		SELECT * FROM hapumdb.news
+		SELECT * FROM hapumdb_test.news
 		WHERE open_status = 'Y'
 		ORDER BY update_on DESC
 		LIMIT #{limit} OFFSET #{offset}
@@ -19,20 +19,20 @@
 
 
 	<select id="countNews" resultType="int">
-		SELECT COUNT(*) FROM hapumdb.news WHERE open_status='Y'
+		SELECT COUNT(*) FROM hapumdb_test.news WHERE open_status='Y'
 	</select>
 
 	<select id="selectById" resultType="hapum.hapum.domain.News">
-		SELECT * FROM hapumdb.news WHERE id=#{id}
+		SELECT * FROM hapumdb_test.news WHERE id=#{id}
 	</select>
 
 
 	<delete id="deleteNews">
-		DELETE FROM hapumdb.news WHERE id=#{newsId}
+		DELETE FROM hapumdb_test.news WHERE id=#{newsId}
 	</delete>
 
 	<update id="updateNewsDetail" parameterType="hapum.hapum.domain.News">
-		UPDATE hapumdb.news
+		UPDATE hapumdb_test.news
 		SET
 		title = #{title},
 		content = #{content},
@@ -43,7 +43,7 @@
 	</update>
 	
 	<select id="select20news" resultType="hapum.hapum.domain.News">
-		SELECT * FROM hapumdb.news ORDER BY id DESC LIMIT 20;
+		SELECT * FROM hapumdb_test.news ORDER BY id DESC LIMIT 20;
 	</select>
 
 

@@ -5,20 +5,20 @@
 
 	<select id="selectAllFixedReservations"
 		resultType="hapum.hapum.domain.FixedReservation">
-		SELECT * FROM hapumdb.fixed_reservation
+		SELECT * FROM hapumdb_test.fixed_reservation
 	</select>
 
 	<select id="selectBlockedDays" resultType="hapum.hapum.domain.BlockedDay">
-		SELECT * FROM hapumdb.blocked_day
+		SELECT * FROM hapumdb_test.blocked_day
 	</select>
 
 	<select id="selectRentals" resultType="hapum.hapum.domain.Rental">
-		SELECT * FROM hapumdb.rental_reservation
+		SELECT * FROM hapumdb_test.rental_reservation
 	</select>
 
 	<insert id="insertFixedReservation"
 		parameterType="hapum.hapum.domain.FixedReservation">
-		INSERT INTO hapumdb.fixed_reservation
+		INSERT INTO hapumdb_test.fixed_reservation
 		(type, weekday, week_of_month, day_of_week, start_time, end_time,
 		description)
 		VALUES
@@ -28,7 +28,7 @@
 
 	<update id="updateFixedReservation"
 		parameterType="hapum.hapum.domain.FixedReservation">
-		UPDATE hapumdb.fixed_reservation
+		UPDATE hapumdb_test.fixed_reservation
 		SET type = #{type},
 		weekday = #{weekday},
 		week_of_month = #{weekOfMonth},
@@ -40,38 +40,38 @@
 	</update>
 
 	<delete id="deleteFixedReservation">
-		DELETE FROM hapumdb.fixed_reservation
+		DELETE FROM hapumdb_test.fixed_reservation
 		WHERE id=#{id}
 	</delete>
 
 
 	<insert id="insertBlockedDay" parameterType="hapum.hapum.domain.BlockedDay">
-		INSERT INTO hapumdb.blocked_day
+		INSERT INTO hapumdb_test.blocked_day
 		(week_of_month, day_of_week, reason)
 		VALUES
 		(#{weekOfMonth}, #{dayOfWeek}, #{reason})
 	</insert>
 	<update id="updateBlockedDay" parameterType="hapum.hapum.domain.BlockedDay">
-		UPDATE hapumdb.blocked_day
+		UPDATE hapumdb_test.blocked_day
 		SET week_of_month = #{weekOfMonth},
 		day_of_week = #{dayOfWeek},
 		reason = #{reason}
 		WHERE id = #{id}
 	</update>
 	<delete id="deleteBlockedDay">
-		DELETE FROM hapumdb.blocked_day
+		DELETE FROM hapumdb_test.blocked_day
 		WHERE id=#{id}
 	</delete>
 
 	<select id="selectByUserId" resultType="hapum.hapum.domain.Rental">
-		SELECT * FROM hapumdb.rental_reservation WHERE user_id = #{userId} ORDER
+		SELECT * FROM hapumdb_test.rental_reservation WHERE user_id = #{userId} ORDER
 		BY created_on;
 	</select>
 
 
 	<insert id="insertRental" parameterType="hapum.hapum.domain.Rental" useGeneratedKeys="true" keyProperty="id"> 
 		INSERT INTO
-		hapumdb.rental_reservation ( 
+		hapumdb_test.rental_reservation ( 
 			location, 
 			reservation_date, 
 			start_time,
@@ -97,27 +97,27 @@
 
 
 	<delete id="deleteRental">
-		DELETE FROM hapumdb.rental_reservation
+		DELETE FROM hapumdb_test.rental_reservation
 		WHERE id=#{id}
 	</delete>
 
 	<select id="selectAllRentals" resultType="hapum.hapum.domain.Rental">
-		select * from hapumdb.rental_reservation
+		select * from hapumdb_test.rental_reservation
 	</select>
 
 	<update id="approve">
-		UPDATE hapumdb.rental_reservation SET is_app = '1'
+		UPDATE hapumdb_test.rental_reservation SET is_app = '1'
 		WHERE id=#{id}
 	</update>
 
 	<delete id="delete">
-		DELETE FROM hapumdb.rental_reservation
+		DELETE FROM hapumdb_test.rental_reservation
 		WHERE id=#{id}
 	</delete>
 
 
 	<update id="disapprove">
-		UPDATE hapumdb.rental_reservation SET is_app = '0'
+		UPDATE hapumdb_test.rental_reservation SET is_app = '0'
 		WHERE id=#{id}
 	</update>
 	
@@ -177,8 +177,8 @@
       u.baptism_name       AS u_baptism_name,
       u.statusCode       AS u_status_code
 
-    FROM hapumdb.rental_reservation rr
-    JOIN hapumdb.user u
+    FROM hapumdb_test.rental_reservation rr
+    JOIN hapumdb_test.user u
       ON rr.user_id = u.id
     WHERE rr.reservation_date BETWEEN #{start} AND #{end}
     ORDER BY rr.reservation_date, rr.start_time
@@ -186,7 +186,7 @@
   
   
   <delete id="deleteByUserId">
-	  DELETE FROM hapumdb.rental_reservation WHERE id=#{id};
+	  DELETE FROM hapumdb_test.rental_reservation WHERE id=#{id};
   </delete>
 </mapper>
 	

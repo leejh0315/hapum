@@ -24,6 +24,9 @@ public class Program {
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime endDate;
+     
+    private String dateString; //일시 상시
+      
     
     private String location;    // 장소
     private String target;      // 대상
@@ -52,5 +55,6 @@ public class Program {
  
     private String isPopup;
     private String isImageSlide;
+    private String isDateString;
     
 }
