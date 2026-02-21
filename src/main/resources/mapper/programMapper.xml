@@ -6,7 +6,7 @@
 
 	<insert id="insertProgram" parameterType="hapum.hapum.domain.Program"
 		useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO hapumdb_test.program (
+		INSERT INTO hapumdb.program (
 		title,
 		content,
 		start_date,
@@ -62,35 +62,35 @@
 
 
 	<select id="selectAllPrograms" resultType="hapum.hapum.domain.Program">
-		SELECT * FROM hapumdb_test.program
+		SELECT * FROM hapumdb.program
 		ORDER BY id DESC
 	</select>
 
 
 	<select id="selectAllProgramsMain"
 		resultType="hapum.hapum.domain.ProgramAdd">
-		SELECT * FROM hapumdb_test.program_add WHERE open_status='Y'
+		SELECT * FROM hapumdb.program_add WHERE open_status='Y'
 	</select>
 
 
 	<select id="selectAllProgramsByOpenStatus"
 		resultType="hapum.hapum.domain.Program">
-		SELECT * FROM hapumdb_test.program WHERE open_status='Y'
+		SELECT * FROM hapumdb.program WHERE open_status='Y'
 	</select>
 
 
 	<select id="selectProgramById" resultType="hapum.hapum.domain.Program">
-		SELECT * FROM hapumdb_test.program WHERE id = #{id}
+		SELECT * FROM hapumdb.program WHERE id = #{id}
 	</select>
 	<!-- 신청자 수-->
 	<select id="getApplyCount" resultType="Integer">
-		SELECT SUM(part_count) FROM hapumdb_test.program_subs WHERE
+		SELECT SUM(part_count) FROM hapumdb.program_subs WHERE
 		program_id
 		=#{programId}
 	</select>
 
 	<insert id="programSub" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO hapumdb_test.program_subs (user_id, program_id, subs_on,
+		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on,
 		is_app,
 		part_count, relation, org_name, reason, opinion)
 		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation},
@@ -98,7 +98,7 @@
 	</insert>
 
 	<select id="selectPrograSubmById" resultType="hapum.hapum.domain.ProgramSub">
-		SELECT * FROM hapumdb_test.program_subs WHERE program_id =
+		SELECT * FROM hapumdb.program_subs WHERE program_id =
 		#{programId}
 	</select>
 
@@ -128,32 +128,32 @@
 		u.name,
 		u.phone,
 		u.email
-		FROM hapumdb_test.program_subs ps
-		JOIN hapumdb_test.user u ON ps.user_id = u.id
+		FROM hapumdb.program_subs ps
+		JOIN hapumdb.user u ON ps.user_id = u.id
 		WHERE ps.program_id = #{programId}
 	</select>
 
 	<update id="approve">
-		UPDATE hapumdb_test.program_subs
+		UPDATE hapumdb.program_subs
 		SET is_app = 'Y'
 		WHERE id=#{psId}
 	</update>
 
 	<update id="cancel">
-		UPDATE hapumdb_test.program_subs
+		UPDATE hapumdb.program_subs
 		SET is_app = 'N'
 		WHERE id=#{psId}
 	</update>
 	
 	
 		<update id="approve2">
-		UPDATE hapumdb_test.program_subs_no_join
+		UPDATE hapumdb.program_subs_no_join
 		SET is_app = 'Y'
 		WHERE id=#{psId}
 	</update>
 
 	<update id="cancel2">
-		UPDATE hapumdb_test.program_subs_no_join
+		UPDATE hapumdb.program_subs_no_join
 		SET is_app = 'N'
 		WHERE id=#{psId}
 	</update>
@@ -198,40 +198,40 @@
 		ps.id AS subsId,
 		ps.subs_on AS subsOn,
 		ps.is_app AS isApp
-		FROM hapumdb_test.program p
-		INNER JOIN hapumdb_test.program_subs ps ON p.id = ps.program_id
+		FROM hapumdb.program p
+		INNER JOIN hapumdb.program_subs ps ON p.id = ps.program_id
 		WHERE ps.user_id = #{userId}
 	</select>
 
 	<delete id="deleteByProgramSubsId">
-		DELETE FROM hapumdb_test.program_subs WHERE id=#{id}
+		DELETE FROM hapumdb.program_subs WHERE id=#{id}
 	</delete>
 
 
 	<update id="updateCode">
-		UPDATE hapumdb_test.program SET open_status=#{code} where
+		UPDATE hapumdb.program SET open_status=#{code} where
 		id=#{programId}
 	</update>
 
 
 	<insert id="insertProgramAdd" parameterType="hapum.hapum.domain.ProgramAdd">
-		INSERT INTO hapumdb_test.program_add
+		INSERT INTO hapumdb.program_add
 		(name, content, thumbnail_src ) VALUES
 		(#{name}, #{content}, #{thumbnailSrc})
 	</insert>
 
 	<select id="selectAllProgramAdd">
-		SELECT * FROM hapumdb_test.program_add
+		SELECT * FROM hapumdb.program_add
 	</select>
 
 	<select id="selectProgramByAddId">
-		select * from hapumdb_test.program where add_id =#{id} order by
+		select * from hapumdb.program where add_id =#{id} order by
 		open_status
 		desc, start_date
 	</select>
 
 	<select id="selectThisMonthProgram" resultType="hapum.hapum.domain.Program">
-		SELECT * FROM hapumdb_test.program
+		SELECT * FROM hapumdb.program
 		WHERE start_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30
 		DAY)
 
@@ -239,21 +239,21 @@
 	<select id="selectProgramsByDateRange" parameterType="map"
 		resultType="hapum.hapum.domain.Program">
 		SELECT *
-		FROM hapumdb_test.program
+		FROM hapumdb.program
 		WHERE start_date BETWEEN #{start} AND #{end}
 		ORDER BY start_date
 	</select>
 
 
 	<update id="updateProgramAddStatus">
-		UPDATE hapumdb_test.program_add SET
+		UPDATE hapumdb.program_add SET
 		open_status=#{code}
 		WHERE id=#{addId}
 	</update>
 
 
 	<update id="updateProgram" parameterType="hapum.hapum.domain.Program">
-		UPDATE hapumdb_test.program
+		UPDATE hapumdb.program
 		SET
 		add_id = #{addId},
 		title = #{title},
@@ -274,11 +274,11 @@
 	</update>
 
 	<select id="selectProgramAddById" resultType="hapum.hapum.domain.ProgramAdd">
-		SELECT * FROM hapumdb_test.program_add WHERE id=#{addId}
+		SELECT * FROM hapumdb.program_add WHERE id=#{addId}
 	</select>
 
 	<update id="updateProgramAdd" parameterType="hapum.hapum.domain.ProgramAdd">
-		UPDATE hapumdb_test.program_add
+		UPDATE hapumdb.program_add
 		SET
 		name = #{name},
 		content = #{content},
@@ -288,38 +288,38 @@
 	</update>
 
 	<delete id="deleteProgramSubs">
-		DELETE from hapumdb_test.program_subs WHERE id=#{id}
+		DELETE from hapumdb.program_subs WHERE id=#{id}
 	</delete>
 
 	<delete id="deleteProgram">
-		DELETE from hapumdb_test.program WHERE id=#{id}
+		DELETE from hapumdb.program WHERE id=#{id}
 	</delete>
 
 	<delete id="deleteProgramAdd">
-		DELETE from hapumdb_test.program_add WHERE id=#{id}
+		DELETE from hapumdb.program_add WHERE id=#{id}
 	</delete>
 
 	<update id="changePopup">
-		UPDATE hapumdb_test.program SET is_popup=#{code}
+		UPDATE hapumdb.program SET is_popup=#{code}
 		WHERE id=#{id}
 	</update>
 
 	<update id="changeImageSlide">
-		UPDATE hapumdb_test.program SET is_image_Slide=#{code}
+		UPDATE hapumdb.program SET is_image_Slide=#{code}
 		WHERE id=#{id}
 	</update>
 	<select id="selectPopupProgram" resultType="hapum.hapum.domain.Program">
-		SELECT * FROM hapumdb_test.program WHERE is_popup='Y'
+		SELECT * FROM hapumdb.program WHERE is_popup='Y'
 	</select>
 
 	<select id="selectHomeProgram" resultType="hapum.hapum.domain.Program">
-		SELECT * FROM hapumdb_test.program WHERE is_image_slide='Y'
+		SELECT * FROM hapumdb.program WHERE is_image_slide='Y'
 
 
 	</select>
 
 	<delete id="deleteByUserId">
-		DELETE FROM hapumdb_test.program_subs WHERE id=#{id}
+		DELETE FROM hapumdb.program_subs WHERE id=#{id}
 	</delete>
 
 	<select id="selectFutureProgramSubs" resultType="map">
@@ -340,10 +340,10 @@
         p.end_date,
         p.location,
         p.target
-    FROM hapumdb_test.program_subs ps
-    JOIN hapumdb_test.program p
+    FROM hapumdb.program_subs ps
+    JOIN hapumdb.program p
       ON ps.program_id = p.id
-    JOIN hapumdb_test.user u
+    JOIN hapumdb.user u
       ON ps.user_id = u.id
     WHERE p.start_date > NOW()
     ORDER BY p.start_date ASC, ps.subs_on ASC
@@ -351,7 +351,7 @@
 
 	<insert id="insertProgramSubWithAdmin"
 		parameterType="hapum.hapum.domain.ProgramSub">
-		INSERT INTO hapumdb_test.program_subs (user_id, program_id, subs_on,
+		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on,
 		is_app,
 		part_count, relation, org_name, reason, opinion)
 		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation},
@@ -361,7 +361,7 @@
 
 	<insert id="programSubWithNoJoin"
 		parameterType="hapum.hapum.domain.ProgramSub">
-		INSERT INTO hapumdb_test.program_subs_no_join
+		INSERT INTO hapumdb.program_subs_no_join
 		(
 		program_id,
 		subs_on,
@@ -396,7 +396,7 @@
 	
 	
 	<select id="getApplyCountNoJoin" resultType="Integer">
-		SELECT SUM(part_count) FROM hapumdb_test.program_subs_no_join WHERE
+		SELECT SUM(part_count) FROM hapumdb.program_subs_no_join WHERE
 		program_id
 		=#{programId}
 	</select>
@@ -423,8 +423,8 @@
         p.end_date,
         p.location,
         p.target
-    FROM hapumdb_test.program_subs_no_join psnj
-    JOIN hapumdb_test.program p
+    FROM hapumdb.program_subs_no_join psnj
+    JOIN hapumdb.program p
       ON psnj.program_id = p.id
     WHERE p.start_date > NOW()
     ORDER BY p.start_date ASC, psnj.subs_on ASC

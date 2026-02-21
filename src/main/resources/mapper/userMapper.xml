@@ -4,11 +4,11 @@
 <mapper namespace="hapum.hapum.mapper.UserMapper">
 
 	<select id="loginIdCheck" parameterType="string" resultType="int">
-		SELECT COUNT(*) FROM hapumdb_test.user WHERE email = #{param1}
+		SELECT COUNT(*) FROM hapumdb.user WHERE email = #{param1}
 	</select>
 
 	<insert id="userSignin" parameterType="hapum.hapum.domain.SigninForm">
-		INSERT INTO hapumdb_test.user (
+		INSERT INTO hapumdb.user (
 		email,
 		password,
 		name,
@@ -33,22 +33,22 @@
 	<select id="selectByEmail" parameterType="String"
 		resultType="hapum.hapum.domain.User">
 		SELECT *
-		FROM hapumdb_test.user
+		FROM hapumdb.user
 		WHERE email = #{param1}
 	</select>
 
 	<select id="selectAllUser" resultType="hapum.hapum.domain.User">
 		SELECT *
-		FROM hapumdb_test.user
+		FROM hapumdb.user
 	</select>
 
 	<select id="selectById" resultType="hapum.hapum.domain.User">
 		SELECT *
-		FROM hapumdb_test.user WHERE id=#{id}
+		FROM hapumdb.user WHERE id=#{id}
 	</select>
 
 	<update id="updateUserById" parameterType="hapum.hapum.domain.UpdateForm">
-		UPDATE hapumdb_test.user
+		UPDATE hapumdb.user
 		SET
 		name = #{name},
 		birth = #{birth},
@@ -59,26 +59,26 @@
 	</update>
 
 	<update id="updatePasswordByEmail">
-		UPDATE hapumdb_test.user
+		UPDATE hapumdb.user
 		SET
 		password = #{password}
 		WHERE email = #{email};
 	</update>
 
 	<update id="updatePasswordByUserId">
-		UPDATE hapumdb_test.user
+		UPDATE hapumdb.user
 		SET password = #{password}
 		WHERE id = #{userId}
 	</update>
 	
 	<update id="changeStatusToInactive">
-		UPDATE hapumdb_test.user
+		UPDATE hapumdb.user
 		SET statusCode = #{code}
 		WHERE id = #{userId}
 	</update>
 	
 	<delete id="deleteUserById">
-		DELETE FROM hapumdb_test.user 
+		DELETE FROM hapumdb.user 
 		WHERE id=#{userId}
 	</delete>
 	
