@@ -147,8 +147,8 @@
 			<form id="additionalInfoForm">
 				<div id="dynamicFields">
 					<div th:if="${program.needOrgName == 'Y'}" class="program-form-group">
-						<label>소속 단체명</label>
-						<input type="text" class="info-modal-input" name="orgName" placeholder="ex) ○○성당 청년회"
+						<label>개인 or 소속 단체/본당명</label>
+						<input type="text" class="info-modal-input" name="orgName" placeholder="ex)○○청년회/□□본당"
 							required />
 					</div>
 					<div th:if="${program.needPartCount == 'Y'}" class="program-form-group">
@@ -189,24 +189,27 @@
 			<form id="userInfoForm">
 				<div class="form-group">
 					<label for="userName">이름</label>
-					<input type="text" id="userName" name="name" class="modal-input" placeholder="성명을 입력하세요" required />
+					<input type="text" id="userName" name="userName" class="modal-input" placeholder="이름 입력" required
+						minlength="2" maxlength="20" />
+
 				</div>
 
 				<div class="form-group">
 					<label for="baptismName">세례명</label>
-					<input type="text" id="baptismName" name="baptism_name" class="modal-input"
-						placeholder="세례명을 입력하세요" />
+					<input type="text" id="baptismName" name="baptismName" class="modal-input" placeholder="세례명 입력"
+						required minlength="2" maxlength="20" />
 				</div>
 
 				<div class="form-group">
 					<label for="parish">본당</label>
-					<input type="text" id="parish" name="parish" class="modal-input" placeholder="본당명을 입력하세요" />
+					<input type="text" id="parish" name="parish" class="modal-input" placeholder="본당 입력" required
+						minlength="2" maxlength="30" />
 				</div>
 
 				<div class="form-group">
 					<label for="phone">핸드폰 번호</label>
-					<input type="tel" id="phone" name="phone" class="modal-input" placeholder="010-0000-0000"
-						required />
+					<input type="tel" id="phone" name="phone" class="modal-input" placeholder="숫자만 입력 (8~11자리)" required
+						minlength="8" maxlength="11" pattern="[0-9]{8,11}" />
 				</div>
 
 				<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
@@ -301,6 +304,40 @@
 
 						$('#confirmUserInfoBtn').off('click').on('click', function (e) {
 							e.preventDefault();
+							const phoneVal = $('#phone').val().trim();
+							const phoneRegex = /^[0-9]{8,11}$/;
+							const name = $('#userName').val().trim();
+							const baptismName = $('#baptismName').val().trim();
+							const parish = $('#parish').val().trim();
+
+
+							if (name.length < 2) {
+								alert("이름을 2자 이상 입력해주세요.");
+								$('#userName').focus();
+								return;
+							}
+
+							// 2️⃣ 세례명 체크
+							if (baptismName.length < 2) {
+								alert("세례명을 2자 이상 입력해주세요.");
+								$('#baptismName').focus();
+								return;
+							}
+
+							// 3️⃣ 본당 체크
+							if (parish.length < 2) {
+								alert("본당을 2자 이상 입력해주세요.");
+								$('#parish').focus();
+								return;
+							}
+
+							if (!phoneRegex.test(phoneVal)) {
+								alert("핸드폰 번호는 숫자만 8자 이상 11자 이하로 입력해주세요.");
+								$('#phone').focus();
+								return;
+							}
+
+
 							program.name = $('#userName').val();
 							program.baptismName = $('#baptismName').val();
 							program.parish = $('#parish').val();

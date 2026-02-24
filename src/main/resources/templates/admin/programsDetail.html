@@ -8,7 +8,7 @@
     <title>Program Detail</title>
     <link rel="stylesheet" th:href="@{/css/admin/header.css}" />
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
     <style>
         .program-detail-container {
             max-width: 1000px;
@@ -183,10 +183,79 @@
                 <li th:if="${#lists.isEmpty(psN)}"
                     style="text-align: center; color: #aaa;">없음</li>
             </ul>
+            
+            <button onclick="downloadExcel()">엑셀 다운로드</button>
         </div>
 
     </div>
 </div>
+<script th:inline="javascript">
+    const programData = [[${program}]];
+    const approvedUsers = [[${psY}]];
+    const pendingUsers = [[${psN}]];
+</script>
+
+<script>
+function downloadExcel() {
+
+    const wb = XLSX.utils.book_new();
+    const data = [];
+
+    // ======================
+    // 프로그램 정보
+    // ======================
+
+    data.push(["프로그램명", programData.title]);
+    data.push(["프로그램ID", programData.id]);
+    data.push(["일시", programData.startDate + " ~ " + programData.endDate]);
+    data.push(["장소", programData.location]);
+    data.push(["대상", programData.target]);
+    data.push(["참가비", programData.expense + "원"]);
+    data.push(["주제", programData.subject]);
+    data.push(["정원", programData.capacity + "명"]);
+
+    data.push([]);
+
+    // ======================
+    // 승인된 신청자
+    // ======================
+
+    data.push(["승인된 신청자"]);
+    data.push(["이름", "세례명", "이메일", "전화번호"]);
+
+    approvedUsers.forEach(u => {
+        data.push([
+            u.user ? u.user.name : u.name,
+            u.user ? u.user.baptismName : u.baptismName,
+            u.user ? u.user.email : "-",
+            u.user ? u.user.phone : u.phone
+        ]);
+    });
+
+    data.push([]);
+
+    // ======================
+    // 승인 대기 신청자
+    // ======================
+
+    data.push(["승인대기 신청자"]);
+    data.push(["이름", "세례명", "이메일", "전화번호"]);
+
+    pendingUsers.forEach(u => {
+        data.push([
+            u.user ? u.user.name : u.name,
+            u.user ? u.user.baptismName : u.baptismName,
+            u.user ? u.user.email : "-",
+            u.user ? u.user.phone : u.phone
+        ]);
+    });
+
+    const ws = XLSX.utils.aoa_to_sheet(data);
+    XLSX.utils.book_append_sheet(wb, ws, "Program");
+
+    XLSX.writeFile(wb, programData.title + ".xlsx");
+}
+</script>
 
 </body>
 </html>
