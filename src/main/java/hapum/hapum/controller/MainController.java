@@ -163,6 +163,7 @@ public class MainController {
 	@PostMapping("/program/subs/{id}")
 	@ResponseBody
 	public int postProgramSubs(@RequestBody Map<String, Object> payload, HttpServletRequest req) throws Exception {
+
 	    Long programId = Long.valueOf(payload.get("id").toString());
 	    String needJoin = (String) payload.get("needJoin");
 
@@ -195,12 +196,15 @@ public class MainController {
 	    int temp;
 	    User user;
 
+	    /* =========================================================
+	       1️⃣ needJoin == Y  → 반드시 로그인 상태
+	    ========================================================= */
 	    if ("Y".equals(needJoin)) {
-	        // Case 1 & 2
+
 	        if (sessionUser == null) {
-	            // 로그인 필요 → 실패 코드 반환 or 예외 처리
-	            return -1; // 예: -1은 로그인 필요
+	            return -1; // 로그인 필요
 	        }
+
 	        user = sessionUser;
 	        ps.setUserId(user.getId());
 
@@ -212,24 +216,37 @@ public class MainController {
 	        String result = convertService.generateProgramWordFromTemplate(ps, program, user);
 	        emailService.sendEmailProgram("hapum7179@gmail.com", result);
 
+	        return temp;
+	    }
+
+	    /* =========================================================
+	       2️⃣ needJoin == N
+	    ========================================================= */
+
+	    if (sessionUser != null) {
+	        // 🔹 로그인 상태 → programSub()만 실행
+
+	        user = sessionUser;
+	        ps.setUserId(user.getId());
+
+	        temp = programService.programSub(ps);
+
+	        Program program = buildProgramFromPayload(payload, programId);
+	        emailService.sendProgramMessage(user.getEmail(), program);
+
+	        String result = convertService.generateProgramWordFromTemplate(ps, program, user);
+	        emailService.sendEmailProgram("hapum7179@gmail.com", result);
+
+	        return temp;
+
 	    } else {
-	        // needJoin == "N"
-	        if (sessionUser != null) {
-	            // Case 3: 로그인된 상태에서 비회원 신청
-	            user = sessionUser;
-	            ps.setUserId(user.getId());
-	            temp = programService.programSub(ps);
-	            Program program = buildProgramFromPayload(payload, programId);
-	            emailService.sendProgramMessage(user.getEmail(), program);
-	            return temp;
-	        } else {
-	            // Case 4: 로그인 안 된 상태에서 비회원 신청
-	            user = new User();
-	            user.setName((String) payload.get("name"));
-	            user.setBaptismName((String) payload.get("baptismName"));
-	            user.setCathedral((String) payload.get("parish"));
-	            user.setPhone((String) payload.get("phone"));
-	        }
+	        // 🔹 비로그인 상태 → programSubWithNoJoin()만 실행
+
+	        user = new User();
+	        user.setName((String) payload.get("name"));
+	        user.setBaptismName((String) payload.get("baptismName"));
+	        user.setCathedral((String) payload.get("parish"));
+	        user.setPhone((String) payload.get("phone"));
 
 	        ProgramSubNoJoin psNoJoin = new ProgramSubNoJoin();
 	        psNoJoin.setProgramId(programId);
@@ -237,9 +254,11 @@ public class MainController {
 	        psNoJoin.setReason((String) payload.get("needReason"));
 	        psNoJoin.setOpinion((String) payload.get("needOpinion"));
 	        psNoJoin.setRelation((String) payload.get("needRelation"));
+
 	        if (partCountStr != null && !"N".equals(partCountStr)) {
 	            psNoJoin.setPartCount(Integer.parseInt(partCountStr));
 	        }
+
 	        psNoJoin.setName(user.getName());
 	        psNoJoin.setBaptismName(user.getBaptismName());
 	        psNoJoin.setParish(user.getCathedral());
@@ -250,10 +269,105 @@ public class MainController {
 	        Program program = buildProgramFromPayload(payload, programId);
 	        String result = convertService.generateProgramWordFromTemplate(ps, program, user);
 	        emailService.sendEmailProgram("hapum7179@gmail.com", result);
-	    }
 
-	    return temp;
+	        return temp;
+	    }
 	}
+	
+//	@PostMapping("/program/subs/{id}")
+//	@ResponseBody
+//	public int postProgramSubs(@RequestBody Map<String, Object> payload, HttpServletRequest req) throws Exception {
+//	    Long programId = Long.valueOf(payload.get("id").toString());
+//	    String needJoin = (String) payload.get("needJoin");
+//
+//	    HttpSession session = req.getSession();
+//	    User sessionUser = (User) session.getAttribute("loginMember");
+//
+//	    int applyCount = "Y".equals(needJoin)
+//	            ? programService.getApplyCount(programId)
+//	            : programService.getApplyCountNoJoin(programId);
+//
+//	    // 공통 ProgramSub 생성
+//	    ProgramSub ps = new ProgramSub();
+//	    ps.setProgramId(programId);
+//	    ps.setOrgName((String) payload.get("needOrgName"));
+//	    ps.setReason((String) payload.get("needReason"));
+//	    ps.setOpinion((String) payload.get("needOpinion"));
+//	    ps.setRelation((String) payload.get("needRelation"));
+//
+//	    // partCount 처리
+//	    String partCountStr = (String) payload.get("needPartCount");
+//	    if (partCountStr != null && !"N".equals(partCountStr)) {
+//	        int partCount = Integer.parseInt(partCountStr);
+//	        ps.setPartCount(partCount);
+//	        if ((payload.get("needCapacity") == null || !"Y".equals(payload.get("needCapacity")))
+//	                && ((Integer) payload.get("capacity") - applyCount < partCount)) {
+//	            return 2;
+//	        }
+//	    }
+//
+//	    int temp;
+//	    User user;
+//
+//	    if ("Y".equals(needJoin)) {
+//	        // Case 1 & 2
+//	        if (sessionUser == null) {
+//	            // 로그인 필요 → 실패 코드 반환 or 예외 처리
+//	            return -1; // 예: -1은 로그인 필요
+//	        }
+//	        user = sessionUser;
+//	        ps.setUserId(user.getId());
+//
+//	        temp = programService.programSub(ps);
+//
+//	        Program program = buildProgramFromPayload(payload, programId);
+//	        emailService.sendProgramMessage(user.getEmail(), program);
+//
+//	        String result = convertService.generateProgramWordFromTemplate(ps, program, user);
+//	        emailService.sendEmailProgram("hapum7179@gmail.com", result);
+//
+//	    } else {
+//	        // needJoin == "N"
+//	        if (sessionUser != null) {
+//	            // Case 3: 로그인된 상태에서 비회원 신청
+//	            user = sessionUser;
+//	            ps.setUserId(user.getId());
+//	            temp = programService.programSub(ps);
+//	            Program program = buildProgramFromPayload(payload, programId);
+//	            emailService.sendProgramMessage(user.getEmail(), program);
+//	            
+//	        } else {
+//	            // Case 4: 로그인 안 된 상태에서 비회원 신청
+//	            user = new User();
+//	            user.setName((String) payload.get("name"));
+//	            user.setBaptismName((String) payload.get("baptismName"));
+//	            user.setCathedral((String) payload.get("parish"));
+//	            user.setPhone((String) payload.get("phone"));
+//	        }
+//
+//	        ProgramSubNoJoin psNoJoin = new ProgramSubNoJoin();
+//	        psNoJoin.setProgramId(programId);
+//	        psNoJoin.setOrgName((String) payload.get("needOrgName"));
+//	        psNoJoin.setReason((String) payload.get("needReason"));
+//	        psNoJoin.setOpinion((String) payload.get("needOpinion"));
+//	        psNoJoin.setRelation((String) payload.get("needRelation"));
+//	        if (partCountStr != null && !"N".equals(partCountStr)) {
+//	            psNoJoin.setPartCount(Integer.parseInt(partCountStr));
+//	        }
+//	        psNoJoin.setName(user.getName());
+//	        psNoJoin.setBaptismName(user.getBaptismName());
+//	        psNoJoin.setParish(user.getCathedral());
+//	        psNoJoin.setPhone(user.getPhone());
+//
+//	        temp = programService.programSubWithNoJoin(psNoJoin);
+//
+//	        Program program = buildProgramFromPayload(payload, programId);
+//	        String result = convertService.generateProgramWordFromTemplate(ps, program, user);
+//	        emailService.sendEmailProgram("hapum7179@gmail.com", result);
+//	    }
+//
+//	    return temp;
+//	}
 
 	// ✅ Program 객체 생성 보조 메소드
 	private Program buildProgramFromPayload(Map<String, Object> payload, Long programId) {
