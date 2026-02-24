@@ -104,8 +104,6 @@ public class AdminController {
 	    List<Map<String, Object>> subsList = programService.getFutureProgramSubs();
 	    List<Map<String, Object>> subsListNoJoin = programService.selectFutureProgramSubsNoJoin();
 	    
-	    System.out.println("subsList :" + subsList);
-	    System.out.println("subsListNoJoin : "+ subsListNoJoin  );
 	    
 //	    for (Map<String, Object> row : subsList) {
 //	        if (row.get("part_count") == null) {

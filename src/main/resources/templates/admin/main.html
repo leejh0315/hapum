@@ -36,6 +36,7 @@
 		.table-responsive{
 			margin-bottom: 10%;
 		}
+
 	</style>
 
 </head>
@@ -44,7 +45,7 @@
 	<!-- 공통 헤더 삽입 -->
 	<div th:replace="~{admin/admin-header :: admin-header}"></div>
 
-	<div class="container my-5">
+	<div class="container" style="max-width: 90vw !important;">
 		<div class="visit-count" th:text="'오늘의 방문자 수 ' + ${todayVisitCount} + ' | 총 방문자 수 ' + ${totalVisitCount}">
 		</div>
 		<p class="text-muted">
@@ -146,6 +147,7 @@
 						<th>신청ID</th>
 						<th>유저ID</th>
 						<th>유저명</th>
+						<th>세례명</th>
 						<th>프로그램명</th>
 						<th>시작일</th>
 						<th>신청일</th>
@@ -161,6 +163,7 @@
 						<td th:text="${row.subs_id}"></td>
 						<td th:text="${row.user_id}"></td>
 						<td th:text="${row.user_name}"></td>
+						<td th:text="${row.baptism_name}"></td>
 						<td th:text="${row.title}"></td>
 						<td th:text="${row.start_date}"></td>
 						<td th:text="${row.subs_on}"></td>
@@ -196,6 +199,7 @@
 					<tr>
 						<th>신청ID</th>
 						<th>유저명</th>
+						<th>세례명</th>
 						<th>핸드폰번호</th>
 						<th>프로그램명</th>
 						<th>시작일</th>
@@ -211,6 +215,7 @@
 
 						<td th:text="${row2.subs_id}"></td>
 						<td th:text="${row2.user_name}"></td>
+						<td th:text="${row2.baptism_name}"></td>
 						<td th:text="${row2.phone}"></td>
 						<td th:text="${row2.title}"></td>
 						<td th:text="${row2.start_date}"></td>

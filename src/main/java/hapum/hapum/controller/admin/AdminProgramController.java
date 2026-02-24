@@ -152,6 +152,10 @@ public class AdminProgramController {
 		List<ProgramSub> psY = ps.stream().filter(p -> "Y".equals(p.getIsApp())).toList();
 		List<ProgramSub> psN = ps.stream().filter(p -> "N".equals(p.getIsApp())).toList();
 
+		System.out.println(psY);
+		System.out.println(psN);
+		
+		
 		model.addAttribute("ps", ps);
 		model.addAttribute("psY", psY);
 		model.addAttribute("psN", psN);

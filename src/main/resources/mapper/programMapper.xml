@@ -56,7 +56,7 @@
 		#{needJoin},
 		#{dateString},
 		#{isDateString}
-		
+
 		)
 	</insert>
 
@@ -84,13 +84,13 @@
 	</select>
 	<!-- 신청자 수-->
 	<select id="getApplyCount" resultType="Integer">
-		SELECT SUM(part_count) FROM hapumdb.program_subs WHERE
+		SELECT SUM(part_count) FROM hapumdb.program_subscriptions WHERE
 		program_id
 		=#{programId}
 	</select>
 
 	<insert id="programSub" useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on,
+		INSERT INTO hapumdb.program_subscriptions (user_id, program_id, subs_on,
 		is_app,
 		part_count, relation, org_name, reason, opinion)
 		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation},
@@ -98,24 +98,26 @@
 	</insert>
 
 	<select id="selectPrograSubmById" resultType="hapum.hapum.domain.ProgramSub">
-		SELECT * FROM hapumdb.program_subs WHERE program_id =
+		SELECT * FROM hapumdb.program_subscriptions WHERE program_id =
 		#{programId}
 	</select>
 
 
-	<resultMap id="ProgramSubWithUserMap" type="hapum.hapum.domain.ProgramSub">
+	<resultMap id="ProgramSubWithUserMap" type="ProgramSub">
+
 		<id property="id" column="program_sub_id" />
 		<result property="programId" column="program_id" />
 		<result property="userId" column="user_id" />
 		<result property="isApp" column="is_app" />
 
-		<association property="user" javaType="hapum.hapum.domain.User">
+		<association property="user" javaType="User">
 			<id property="id" column="user_id" />
 			<result property="name" column="name" />
-			<result property="email" column="email" />
 			<result property="phone" column="phone" />
-			<!-- 필요한 필드 추가 -->
+			<result property="email" column="email" />
+			<result property="baptismName" column="baptism_name" />
 		</association>
+
 	</resultMap>
 
 	<select id="selectByProgramIdWithUser" resultMap="ProgramSubWithUserMap">
@@ -124,36 +126,45 @@
 		ps.program_id,
 		ps.user_id,
 		ps.is_app,
-		u.id AS user_id,
-		u.name,
-		u.phone,
-		u.email
-		FROM hapumdb.program_subs ps
-		JOIN hapumdb.user u ON ps.user_id = u.id
+
+		-- 이름
+		COALESCE(u.name, ps.name) AS name,
+
+		-- 전화번호
+		COALESCE(u.phone, ps.phone) AS phone,
+
+		-- 이메일
+		u.email,
+
+		-- 세례명
+		COALESCE(u.baptism_name, ps.baptism_name) AS baptism_name
+
+		FROM hapumdb.program_subscriptions ps
+		LEFT JOIN hapumdb.user u ON ps.user_id = u.id
 		WHERE ps.program_id = #{programId}
 	</select>
 
 	<update id="approve">
-		UPDATE hapumdb.program_subs
+		UPDATE hapumdb.program_subscriptions
 		SET is_app = 'Y'
 		WHERE id=#{psId}
 	</update>
 
 	<update id="cancel">
-		UPDATE hapumdb.program_subs
+		UPDATE hapumdb.program_subscriptions
 		SET is_app = 'N'
 		WHERE id=#{psId}
 	</update>
-	
-	
-		<update id="approve2">
-		UPDATE hapumdb.program_subs_no_join
+
+
+	<update id="approve2">
+		UPDATE hapumdb.program_subscriptions
 		SET is_app = 'Y'
 		WHERE id=#{psId}
 	</update>
 
 	<update id="cancel2">
-		UPDATE hapumdb.program_subs_no_join
+		UPDATE hapumdb.program_subscriptions
 		SET is_app = 'N'
 		WHERE id=#{psId}
 	</update>
@@ -199,12 +210,12 @@
 		ps.subs_on AS subsOn,
 		ps.is_app AS isApp
 		FROM hapumdb.program p
-		INNER JOIN hapumdb.program_subs ps ON p.id = ps.program_id
+		INNER JOIN hapumdb.program_subscriptions ps ON p.id = ps.program_id
 		WHERE ps.user_id = #{userId}
 	</select>
 
 	<delete id="deleteByProgramSubsId">
-		DELETE FROM hapumdb.program_subs WHERE id=#{id}
+		DELETE FROM hapumdb.program_subscriptions WHERE id=#{id}
 	</delete>
 
 
@@ -288,7 +299,7 @@
 	</update>
 
 	<delete id="deleteProgramSubs">
-		DELETE from hapumdb.program_subs WHERE id=#{id}
+		DELETE from hapumdb.program_subscriptions WHERE id=#{id}
 	</delete>
 
 	<delete id="deleteProgram">
@@ -319,43 +330,43 @@
 	</select>
 
 	<delete id="deleteByUserId">
-		DELETE FROM hapumdb.program_subs WHERE id=#{id}
+		DELETE FROM hapumdb.program_subscriptions WHERE id=#{id}
 	</delete>
 
 	<select id="selectFutureProgramSubs" resultType="map">
-    SELECT
+		    SELECT
         ps.id AS subs_id,
-        COALESCE(ps.user_id, '-')        AS user_id,
-        COALESCE(u.name, '-')            AS user_name,
+        ps.user_id,
+        u.name AS user_name,
+        u.phone AS phone,
+        u.baptism_name AS baptism_name,
         ps.program_id,
         ps.subs_on,
         ps.is_app,
-        COALESCE(ps.part_count, '-')     AS part_count,
-        COALESCE(ps.relation, '-')       AS relation,
-        COALESCE(ps.org_name, '-')       AS org_name,
-        COALESCE(ps.reason, '-')         AS reason,
-        COALESCE(ps.opinion, '-')        AS opinion,
+        ps.part_count,
+        COALESCE(ps.relation, '-') AS relation,
+        COALESCE(ps.org_name, '-') AS org_name,
+        COALESCE(ps.reason, '-') AS reason,
+        COALESCE(ps.opinion, '-') AS opinion,
         p.title,
-        COALESCE(p.start_date, '-')		AS start_date,
-        COALESCE(p.end_date, '-')		AS end_date,
-        
+        COALESCE(p.start_date, '-') AS start_date,
+        COALESCE(p.end_date, '-') AS end_date,
         p.location,
         p.target
-    FROM hapumdb.program_subs ps
-    JOIN hapumdb.program p
-      ON ps.program_id = p.id
+    FROM hapumdb.program_subscriptions ps
     JOIN hapumdb.user u
-      ON ps.user_id = u.id
-    
-    
-     WHERE (p.start_date IS NULL OR p.start_date > NOW())
-    
+        ON ps.user_id = u.id
+    JOIN hapumdb.program p
+        ON ps.program_id = p.id
+    WHERE ps.user_id IS NOT NULL
+      AND p.open_status = 'Y'
+      AND (p.start_date IS NULL OR p.start_date > NOW())
     ORDER BY p.start_date ASC, ps.subs_on ASC
-</select>
+	</select>
 
 	<insert id="insertProgramSubWithAdmin"
 		parameterType="hapum.hapum.domain.ProgramSub">
-		INSERT INTO hapumdb.program_subs (user_id, program_id, subs_on,
+		INSERT INTO hapumdb.program_subscriptions (user_id, program_id, subs_on,
 		is_app,
 		part_count, relation, org_name, reason, opinion)
 		VALUES (#{userId}, #{programId}, NOW(), 'N', #{partCount}, #{relation},
@@ -365,7 +376,7 @@
 
 	<insert id="programSubWithNoJoin"
 		parameterType="hapum.hapum.domain.ProgramSub">
-		INSERT INTO hapumdb.program_subs_no_join
+		INSERT INTO hapumdb.program_subscriptions
 		(
 		program_id,
 		subs_on,
@@ -397,45 +408,42 @@
 		);
 
 	</insert>
-	
-	
+
+
 	<select id="getApplyCountNoJoin" resultType="Integer">
-		SELECT SUM(part_count) FROM hapumdb.program_subs_no_join WHERE
+		SELECT SUM(part_count) FROM hapumdb.program_subscriptions WHERE
 		program_id
 		=#{programId}
 	</select>
-	
+
 	<select id="selectFutureProgramSubsNoJoin" resultType="map">
-    SELECT
-        psnj.id AS subs_id,
-        '-' AS user_id,  -- no_join 테이블에는 user_id 없음
-        psnj.program_id,
-        psnj.subs_on,
-        psnj.is_app,
-        COALESCE(psnj.part_count, '-')   AS part_count,
-        COALESCE(psnj.relation, '-')     AS relation,
-        COALESCE(psnj.org_name, '-')     AS org_name,
-        COALESCE(psnj.reason, '-')       AS reason,
-        COALESCE(psnj.opinion, '-')      AS opinion,
-        COALESCE(psnj.name, '-')         AS user_name,
-        COALESCE(psnj.phone, '-')         AS phone,
-        COALESCE(psnj.baptism_name, '-') AS baptism_name,
-        COALESCE(psnj.parish, '-')       AS parish,
-        COALESCE(psnj.phone, '-')        AS phone,
+		SELECT
+        ps.id AS subs_id,
+        '-' AS user_id,
+        ps.name AS user_name,
+        ps.phone AS phone,
+        ps.baptism_name AS baptism_name,
+        ps.program_id,
+        ps.subs_on,
+        ps.is_app,
+        ps.part_count,
+        COALESCE(ps.relation, '-') AS relation,
+        COALESCE(ps.org_name, '-') AS org_name,
+        COALESCE(ps.reason, '-') AS reason,
+        COALESCE(ps.opinion, '-') AS opinion,
         p.title,
-        COALESCE(p.start_date, '-')		AS start_date,
-        COALESCE(p.end_date, '-')		AS end_date,
+        COALESCE(p.start_date, '-') AS start_date,
+        COALESCE(p.end_date, '-') AS end_date,
         p.location,
         p.target
-    FROM hapumdb.program_subs_no_join psnj
+    FROM hapumdb.program_subscriptions ps
     JOIN hapumdb.program p
-      ON psnj.program_id = p.id
-    
-     WHERE (p.start_date IS NULL OR p.start_date > NOW())
-    
-    
-    ORDER BY p.start_date ASC, psnj.subs_on ASC
-</select>
+        ON ps.program_id = p.id
+    WHERE ps.user_id IS NULL
+      AND p.open_status = 'Y'
+      AND (p.start_date IS NULL OR p.start_date > NOW())
+    ORDER BY p.start_date ASC, ps.subs_on ASC
+	</select>
 
 
 </mapper>
