@@ -129,6 +129,10 @@ public class MainController {
 
 	    Program program = programService.selectProgramById(id);
 
+	    if(program == null) {
+	    	return "redirect:/main/program";
+	    }
+	    
 	    int applyCount;
 	    List<ProgramSub> ps = programService.selectPrograSubmById(id);
 	    List<ProgramSubNoJoin> psNoJoin = null;
