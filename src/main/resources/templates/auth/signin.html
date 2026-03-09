@@ -98,8 +98,7 @@
 			<!-- 세례명 -->
 			<label>
 				세례명
-				<input th:field="*{baptismName}"
-					th:classappend="${#fields.hasErrors('baptismName')} ? 'input-error' : ''" />
+				<input th:field="*{baptismName}" th:classappend="${#fields.hasErrors('baptismName')} ? 'input-error' : ''" />
 			</label>
 			<div th:if="${#fields.hasErrors('baptismName')}" th:errors="*{baptismName}" class="field-error"></div>
 

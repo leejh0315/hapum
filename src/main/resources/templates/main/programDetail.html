@@ -202,8 +202,20 @@
 
 				<div class="form-group">
 					<label for="parish">본당</label>
-					<input type="text" id="parish" name="parish" class="modal-input" placeholder="본당 입력" required
-						minlength="2" maxlength="30" />
+					
+					<div class="church-selector" id="churchSelector">
+				        <input type="text" id="parish" name="parish" class="modal-input"placeholder="본당을 선택하세요" readonly>
+				        
+				        <div class="dropdown-container" id="dropdownContainer" style="display: none;">
+				            <div class="region-list" id="regionList">
+				                </div>
+				            <div class="parish-list" id="parishList">
+				                <div class="placeholder-text">지구를 먼저 선택해주세요.</div>
+				                </div>
+				        </div>
+				    </div>
+					
+			
 				</div>
 
 				<div class="form-group">
@@ -271,13 +283,77 @@
 	</div>
 	<div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
+	<script th:src="@{/js/main/church.js}"></script>
 
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		var program = /*[[${program}]]*/ {};
 		var user = /*[[${user}]]*/ null;   // ✅ 로그인 유저 내려받기
 		/*]]>*/
+		
+		console.log(churchData)
+const churchInput = document.getElementById('parish');
+        const dropdownContainer = document.getElementById('dropdownContainer');
+        const regionList = document.getElementById('regionList');
+        const parishList = document.getElementById('parishList');
 
+        // 1. 지구 리스트 렌더링
+        function renderRegions() {
+            Object.keys(churchData).forEach(region => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                div.textContent = region;
+                
+                // 마우스 호버 시 이벤트
+                div.addEventListener('mouseenter', () => {
+                    // 활성화된 스타일 적용
+                    document.querySelectorAll('.region-list .list-item').forEach(el => el.classList.remove('active'));
+                    div.classList.add('active');
+                    
+                    // 본당 리스트 업데이트
+                    renderParishes(region);
+                });
+
+                regionList.appendChild(div);
+            });
+        }
+
+        // 2. 본당 리스트 렌더링 (호버 시 호출됨)
+        function renderParishes(region) {
+            parishList.innerHTML = ''; // 기존 리스트 초기화
+            const parishes = churchData[region];
+            
+            parishes.forEach(parish => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                div.textContent = parish;
+                
+                // 본당 클릭 시 이벤트
+                div.addEventListener('click', () => {
+                    churchInput.value = parish; // 인풋창에 값 입력
+                    dropdownContainer.style.display = 'none'; // 드롭다운 닫기
+                });
+
+                parishList.appendChild(div);
+            });
+        }
+
+        // 입력창 클릭 시 드롭다운 열고 닫기
+        churchInput.addEventListener('click', (e) => {
+            e.stopPropagation(); // 클릭 이벤트 전파 방지
+            const isVisible = dropdownContainer.style.display === 'flex';
+            dropdownContainer.style.display = isVisible ? 'none' : 'flex';
+        });
+
+        // 외부 화면 클릭 시 드롭다운 닫기
+        document.addEventListener('click', (e) => {
+            if (!document.getElementById('churchSelector').contains(e.target)) {
+                dropdownContainer.style.display = 'none';
+            }
+        });
+
+        // 초기화 실행
+        renderRegions();
 
 		$(function () {
 			const needOrg = program.needOrgName === 'Y';
