@@ -32,10 +32,11 @@ body {
 
 
 body {
-	display: flex;
-	flex-direction: column;
-	background-color: #fffefa;
-	font-family: sans-serif;
+    display: flex;
+    flex-direction: column;
+    background-color: #fffefa;
+    font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
+    color: #333;
 }
 
 .program-title{
@@ -45,323 +46,330 @@ body {
 	font-family: 'GyeonggiBatang' !important
 }
 
-.sidebar {
-	width: 180px;
-	background-color: #D6CCC2;
-	border-right: 1px solid #D5BDAF;
-	border-left: 1px solid #D5BDAF;
-	display: flex;
-	flex-direction: column;
-	/* 좌우와 하단 패딩은 유지하고, 상단 패딩은 0으로 설정 */
-	padding: 0 10px 10px;
+.container {
+    display: flex;
+    flex: 1;
+    padding: 0 7%;
+    gap: 20px;
 }
 
-/* 기존 sidebar-title 스타일 그대로 사용 */
+/* =========================================
+   2. 사이드바 (Sidebar)
+   ========================================= */
+.sidebar {
+    width: 180px;
+    background-color: #D6CCC2;
+    border-right: 1px solid #D5BDAF;
+    border-left: 1px solid #D5BDAF;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px 10px;
+}
+
 .sidebar-title {
-	margin: 0 -10px 10px;
-	width: calc(100% + 20px);
-	box-sizing: border-box;
-	cursor: pointer;
-	padding: 12px 10px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border-bottom: 1px solid #D5BDAF;
-	font-size: 18px;
-	font-weight: bold;
-	color: #333;
+    margin: 0 -10px 10px;
+    width: calc(100% + 20px);
+    box-sizing: border-box;
+    cursor: pointer;
+    padding: 12px 10px;
+    text-align: center;
+    background-color: #F5EBE0;
+    border-bottom: 1px solid #D5BDAF;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 .menu-button {
-	margin: 0 -10px;
-	width: calc(100% + 20px);
-	padding: 12px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border: none;
-	border-bottom: 1px solid #D5BDAF;
-	font-size: 16px;
-	cursor: pointer;
-	color: #333;
-	transition: background-color 0.3s;
-	 word-break: keep-all;
-
+    margin: 0 -10px;
+    width: calc(100% + 20px);
+    padding: 12px;
+    text-align: center;
+    background-color: #F5EBE0;
+    border: none;
+    border-bottom: 1px solid #D5BDAF;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-/* 본문 영역 */
-
-.container {
-	display: flex;
-	flex: 1;
-	
-	padding-left: 7%;
-	padding-right: 7%;
-	gap: 20px;
-}
-
-.info-modal-content {
-	background: white;
-	border-radius: 10px;
-	width: 90%;
-	max-width: 700px;
-	max-height: 520px;
-	padding: 20px;
-	box-sizing: border-box;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-	overflow: hidden;
-}
-
-.info-modal-input {
-	width: 60%;
-	padding: 12px;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	font-size: 15px;
-	font-family: 'Pretendard', 'Arial', sans-serif;
-	box-sizing: border-box;
-	color: #333;
-	display: block;
-}
-
-.infoModalButton {
-	display: block;
-	width: 10%;
-	padding: 12px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border: none;
-
-	font-size: 16px;
-	cursor: pointer;
-	color: #333;
-	border-radius: 10%;
-	margin-bottom: 5px;
-}
-
-/* 프로그램 이미지 (정사각형) */
-.program-image {
-	flex: 1 1 100%;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	margin-bottom: 20px;
+/* =========================================
+   3. 콘텐츠 영역 (Program Detail)
+   ========================================= */
+.content {
+    flex: 1;
+    padding: 3%;
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .program-image img {
-	width: 600px;
-	object-fit: cover;
-	border-radius: 10%;
+    width: 600px;
+    max-width: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+    margin-bottom: 20px;
 }
 
-/* 프로그램 정보 */
 .program-info {
-	display: flex;
-	width: 600px;
-	flex-direction: column;
-	justify-content: center;
+    width: 600px;
+    max-width: 100%;
 }
 
-.program-info h2 {
-	margin-bottom: 16px;
-	color: #333;
+.text {
+    overflow-x: auto;
+    word-break: break-word;
+    white-space: pre-wrap;
+    max-width: 100%;
+    line-height: 1.6;
+    margin-bottom: 20px;
 }
 
-.program-info ul {
-	list-style: none;
-	padding: 0;
-	margin-bottom: 20px;
-}
-
-.program-info li {
-	margin-bottom: 10px;
-	font-size: 15px;
-	line-height: 1.4;
-}
-
-.program-info li::before {
-	content: '– ';
-	color: #555;
-}
-
-/* 신청 정보 및 버튼 영역 */
+/* ✅ 프로그램 하단 신청 버튼 영역 (복구) */
 .program-bottom {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	border-top: 1px solid #ddd;
-	padding-top: 15px;
-	margin-top: auto;
-}
-
-.content {
-	flex: 1;
-	padding: 3%;
-	background-color: #FFFFFF;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid #ddd;
+    padding-top: 20px;
+    margin-top: 20px;
+    width: 100%;
 }
 
 .capacity {
-	font-size: 14px;
-	color: #888;
+    font-size: 14px;
+    color: #888;
 }
 
 .apply-btn {
-	background-color: #F5EBE0;
-	color: #333;
-	padding: 10px 20px;
-	border: none;
-	border-radius: 8px;
-	font-weight: bold;
-	cursor: pointer;
+    background-color: #F5EBE0;
+    color: #333;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .apply-btn:disabled {
-	background-color: #ddd;
-	color: #aaa;
-	cursor: not-allowed;
+    background-color: #ddd;
+    color: #aaa;
+    cursor: not-allowed;
 }
 
-/* 개인정보 동의 모달 */
+/* =========================================
+   4. 공통 모달 오버레이 (Modal Overlay)
+   ========================================= */
 .modal-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	justify-content: center;
-	align-items: center;
-	z-index: 9999;
-	display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    display: none;
 }
 
 .modal-overlay.show {
-	display: flex;
+    display: flex !important;
 }
 
-.modal-content {
-	background: white;
-	border-radius: 10px;
-	width: 90%;
-	max-width: 700px;
-	height: 600px;
-	padding: 20px;
-	box-sizing: border-box;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-	overflow: hidden;
+.modal-content, .info-modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 95%;
+    max-width: 650px;
+    padding: 30px;
+    box-sizing: border-box;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    position: relative;
 }
 
-/* 스크롤 가능한 영역 */
+/* ★ 중요: 드롭다운이 위로 올라가도 잘리지 않게 설정 */
+#userInfoModalOverlay .modal-content {
+    overflow: visible !important; 
+    height: auto;
+    margin-top: 50px; /* 위쪽 공간 확보 */
+}
+
+/* =========================================
+   5. 본당 선택기 (인풋 위로 생기도록 설정)
+   ========================================= */
+.church-selector {
+    position: relative;
+    width: 100%;
+}
+
+#parish {
+    cursor: pointer;
+    background-color: #fff;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+}
+
+/* ✅ 드롭다운 본체: bottom 속성을 사용하여 위로 띄움 */
+.dropdown-container {
+    display: none; 
+    position: absolute;
+    bottom: calc(100% + 10px); /* 인풋창 바로 위로 배치 */
+    left: 0;
+    width: 400px;
+    height: 320px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 -10px 25px rgba(0,0,0,0.15); /* 그림자 방향도 위쪽으로 */
+    z-index: 10005;
+    overflow: hidden;
+}
+
+.region-list {
+    width: 160px;
+    background-color: #f8f9fa;
+    border-right: 1px solid #eee;
+    overflow-y: auto;
+}
+
+.parish-list {
+    flex: 1;
+    background-color: #fff;
+    overflow-y: auto;
+}
+
+.list-item {
+    padding: 12px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.list-item:hover, .region-list .list-item.active {
+    background-color: #F5EBE0;
+    color: #333;
+    font-weight: bold;
+}
+
+/* =========================================
+   6. 폼 요소 및 모달 내 버튼
+   ========================================= */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.modal-input, .info-modal-input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.modal-btn, .infoModalButton {
+    padding: 12px 20px;
+    background-color: #F5EBE0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    min-width: 80px;
+}
+
+/* =========================================
+   7. 기타 (Spinner, Footer, Scrollbox)
+   ========================================= */
 .scroll-box {
-	height: calc(100% - 150px);
-	overflow-y: auto;
-	border: 1px solid #ccc;
-	padding: 10px;
-	margin: 10px 0;
-	font-size: 14px;
-	background: #fafafa;
-
+    height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin: 15px 0;
+    background: #fafafa;
 }
 
-/* 버튼 */
-#confirmApplyBtn,
-#cancelApplyBtn {
-	padding: 12px;
-	font-size: 16px;
-	cursor: pointer;
-	background-color: #F5EBE0;
-	color: #333;
-	border: none;
-	border-radius: 8px;
-	width: 100px;
-}
-
-/* 스피너 오버레이 */
 .spinner-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 10000;
-	display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 10000;
+    display: none;
 }
 
 .spinner {
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	width: 60px;
-	height: 60px;
-	border: 6px solid #f3f3f3;
-	border-top: 6px solid #f5cc00;
-	border-radius: 50%;
-	animation: spin 1s linear infinite;
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px; height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #D5BDAF;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
-@keyframes spin {
-	0% {
-		transform: rotate(0deg);
-	}
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-	100% {
-		transform: rotate(360deg);
-	}
+/* =========================================
+   6-1. 개인정보 동의 모달 전용 버튼 (#confirmApplyBtn, #cancelApplyBtn)
+   ========================================= */
+/* 버튼들을 감싸는 컨테이너 (오른쪽 정렬) */
+#programApplyModalOverlay .modal-content div[style*="justify-content: flex-end"] {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
 }
 
-/* 반응형 대응 */
-@media (max-width: 768px) {
-	.program-detail-container {
-		flex-direction: column;
-	}
+/* 확인/취소 버튼 공통 */
+#confirmApplyBtn, 
+#cancelApplyBtn {
+    padding: 12px 25px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #F5EBE0; /* 하품센터 메인 테마색 */
+    color: #333;
+    border: 1px solid #D5BDAF;
+    border-radius: 8px;
+    min-width: 100px;
+    transition: all 0.2s ease;
 }
 
-/* 푸터 하단 고정 */
-footer,
-.footer {
-	flex-shrink: 0;
-	margin-top: auto;
+/* 확인 버튼 강조 (약간 더 진하게) */
+#confirmApplyBtn {
+    background-color: #ede0d4;
+    border-color: #d5bdaf;
 }
 
-
-#userInfoModalOverlay .modal-content {
-  background: white;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 700px;
-  height: auto; /* 내용에 맞게 높이 자동 */
-  padding: 20px;
-  box-sizing: border-box;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
+/* 호버 효과 */
+#confirmApplyBtn:hover, 
+#cancelApplyBtn:hover {
+    background-color: #d5bdaf;
+    color: #fff;
 }
 
-/* 입력 필드 스타일 */
-#userInfoModalOverlay .modal-input {
-  width: 60%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 15px;
-  font-family: 'Pretendard', 'Arial', sans-serif;
-  box-sizing: border-box;
-  color: #333;
-  display: block;
-  margin-bottom: 15px;
+/* 체크박스 영역 스타일 */
+#programApplyModalOverlay label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 15px;
+    cursor: pointer;
 }
 
-/* 버튼 스타일 */
-#userInfoModalOverlay .modal-btn {
-  padding: 12px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #F5EBE0;
-  color: #333;
-  border: none;
-  border-radius: 8px;
-  width: 100px;
+#privacyConsentCheckbox {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
 }
+
+footer { flex-shrink: 0; margin-top: auto; }

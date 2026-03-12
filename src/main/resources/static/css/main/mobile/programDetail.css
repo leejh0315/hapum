@@ -1,4 +1,11 @@
 @media screen and (max-width: 768px) {
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        height: 100%;
+    }
 
 	/* 1. 웹폰트 불러오기 (최상단 유지) */
 	@font-face {
@@ -45,227 +52,282 @@
 		border: none;
 	}
 
-	.sidebar-title {
-		text-align: center;
-		background-color: #D6CCC2;
-		color: white;
-		font-size: 14px;
-		font-weight: bold;
-		cursor: default;
-		width: 33.3%;
-		border: none;
-		padding-top: 10px;
-	}
 
-	/* active 상태인 메뉴 버튼 (필요에 따라 수정) */
-	.menu-button.active {
-		background-color: #D5BDAF;
-		color: white;
-		font-weight: bold;
-	}
+    .sidebar-title {
+        text-align: center;
+        background-color: #D6CCC2;
+        color: white;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: default;
+        width: 33.3%;
+        border: none;
+        padding-top: 10px;
+    }
 
-	.menu-button {
-		width: 33.333%;
-		/* 3개씩 배치 (gap 고려) */
-		box-sizing: border-box;
-		padding: 10px 0;
-		font-size: 14px;
-		background-color: #F5EBE0;
-		border: none;
-		color: #333;
-		cursor: pointer;
-		transition: background-color 0.2s ease;
-		text-align: center;
-	}
+    .menu-button.active {
+        background-color: #D5BDAF;
+        color: white;
+        font-weight: bold;
+    }
 
-	.menu-button.current {
-		background-color: #D5BDAF;
-		color: white;
-		font-weight: bold;
-	}
+    .menu-button {
+        width: 33.333%;
+        box-sizing: border-box;
+        padding: 10px 0;
+        font-size: 14px;
+        background-color: #F5EBE0;
+        border: none;
+        color: #333;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        text-align: center;
+    }
 
-	.content {
-		width: 90%;
-		padding: 5%;
-		overflow-wrap: break-word;
-		word-break: break-word;
-		white-space: normal;
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-	}
+    .menu-button.current {
+        background-color: #D5BDAF;
+        color: white;
+        font-weight: bold;
+    }
 
+    .content {
+        width: 90%;
+        padding: 5%;
+        overflow-wrap: break-word;
+        word-break: break-word;
+        white-space: normal;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
 
+    .container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
 
+    /* --- 모달 공통 --- */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        display: none;
+    }
 
-	.container {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-	}
+    .modal-overlay.show {
+        display: flex !important;
+    }
 
+    /* ★ 중요: 드롭다운이 위로 솟아야 하므로 overflow visible */
+    .info-modal-content,
+    .modal-content {
+        background: white;
+        border-radius: 10px;
+        width: 95%;
+        max-width: 700px;
+        max-height: 90vh; /* 모바일 대응 높이 */
+        padding: 20px;
+        box-sizing: border-box;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        display: flex;
+        flex-direction: column;
+        overflow: visible !important; 
+        position: relative;
+    }
 
-	.info-modal-content {
-		background: white;
-		border-radius: 10px;
-		width: 90%;
-		max-width: 700px;
-		max-height: 600px;
-		padding: 20px;
-		box-sizing: border-box;
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-		overflow: hidden;
-	}
+    /* --- 입력 필드 및 폼 --- */
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
 
-	.info-modal-input {
-		width: 70%;
-		padding: 12px;
-		border: 1px solid #ccc;
-		border-radius: 8px;
-		font-size: 15px;
-		font-family: 'Pretendard', 'Arial', sans-serif;
-		box-sizing: border-box;
-		color: #333;
-		display: block;
-	}
+    .form-group label {
+        font-size: 14px;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 6px;
+    }
 
-	.infoModalButton {
-		display: block;
-		width: 20%;
-		padding: 12px;
-		text-align: center;
-		background-color: #F5EBE0;
-		border: none;
+    .modal-input,
+    .info-modal-input {
+        width: 100%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 15px;
+        font-family: 'Pretendard', 'Arial', sans-serif;
+        box-sizing: border-box;
+        color: #333;
+    }
 
-		font-size: 16px;
-		cursor: pointer;
-		color: #333;
-		border-radius: 10%;
-		margin-bottom: 5px;
-	}
+    /* --- ★ 본당 선택 드롭다운 (모바일 최적화: 위로 열림) --- */
+    .church-selector {
+        position: relative;
+        width: 100%;
+    }
 
-	/* 프로그램 이미지 (정사각형) */
-	.program-image {
-		flex: 1 1 100%;
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		margin-bottom: 20px;
-		width: 90%;
-		height: 90%;
-	}
+    .dropdown-container {
+        display: none; /* JS에서 flex로 제어 */
+        position: absolute;
+        bottom: calc(100% + 5px); /* 인풋창 위로 */
+        left: 0;
+        width: 100%; /* 모바일은 가로를 꽉 채우는게 터치하기 편함 */
+        height: 250px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+        z-index: 10001;
+        overflow: hidden;
+        flex-direction: row; /* 좌우 배치 */
+    }
 
-	.program-image img {
-		width: 100%;
-		height: 100%;
+    .region-list {
+        width: 40%;
+        border-right: 1px solid #eee;
+        background-color: #f9f9f9;
+        overflow-y: auto;
+    }
 
-		object-fit: cover;
-		border-radius: 10%;
-	}
+    .parish-list {
+        width: 60%;
+        background-color: #fff;
+        overflow-y: auto;
+    }
 
-	/* 프로그램 정보 */
-	.program-info {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-	}
+    .list-item {
+        padding: 12px 10px;
+        font-size: 13px;
+        border-bottom: 1px solid #f1f1f1;
+        cursor: pointer;
+    }
 
-	.program-info h2 {
-		margin-bottom: 16px;
-		color: #333;
-	}
+    .list-item:active {
+        background-color: #F5EBE0;
+    }
 
-	.program-info ul {
-		list-style: none;
-		padding: 0;
-		margin-bottom: 20px;
-	}
+    .region-list .list-item.active {
+        background-color: #F5EBE0;
+        font-weight: bold;
+    }
 
-	.program-info li {
-		margin-bottom: 10px;
-		font-size: 15px;
-		line-height: 1.4;
-	}
+    /* --- 프로그램 상세 UI --- */
+    .program-image {
+        margin-bottom: 20px;
+        width: 100%;
+    }
 
-	.program-info li::before {
-		content: '– ';
-		color: #555;
-	}
+    .program-image img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+        border-radius: 10%;
+    }
 
-	/* 신청 정보 및 버튼 영역 */
-	.program-bottom {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		border-top: 1px solid #ddd;
-		padding-top: 15px;
-		margin-top: auto;
-	}
+    .program-info h2 {
+        margin-bottom: 16px;
+        color: #333;
+        font-size: 1.2rem;
+    }
 
+    .program-info ul {
+        list-style: none;
+        padding: 0;
+        margin-bottom: 20px;
+    }
 
-	.capacity {
-		font-size: 14px;
-		color: #888;
-	}
+    .program-info li {
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
 
-	.apply-btn {
-		background-color: #F5EBE0;
-		color: #333;
-		padding: 10px 20px;
-		border: none;
-		border-radius: 8px;
-		font-weight: bold;
-		cursor: pointer;
-	}
+    .program-bottom {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #ddd;
+        padding-top: 15px;
+        width: 100%;
+        margin-top: 10px;
+    }
 
-	.apply-btn:disabled {
-		background-color: #ddd;
-		color: #aaa;
-		cursor: not-allowed;
-	}
+    /* --- 버튼들 --- */
+    .apply-btn {
+        background-color: #F5EBE0;
+        color: #333;
+        padding: 10px 18px;
+        border: none;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 14px;
+    }
 
-	/* 개인정보 동의 모달 */
-	.modal-overlay {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, 0.5);
-		justify-content: center;
-		align-items: center;
-		z-index: 9999;
-		display: none;
-	}
+    .modal-btn, .infoModalButton, #confirmApplyBtn, #cancelApplyBtn {
+        padding: 12px;
+        text-align: center;
+        background-color: #F5EBE0;
+        border: none;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #333;
+        border-radius: 8px;
+        min-width: 80px;
+    }
 
-	.modal-overlay.show {
-		display: flex;
-	}
+    #confirmApplyBtn, #cancelApplyBtn {
+        width: 48%; /* 모바일에서는 하단에 나란히 배치 */
+    }
 
-	.modal-content {
-		background: white;
-		border-radius: 10px;
-		width: 90%;
-		display: flex;
-		flex-direction: column;
-		max-width: 700px;
-		height: 600px;
-		padding: 20px;
-		box-sizing: border-box;
-		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-		overflow: hidden;
-	}
+    .apply-btn:disabled, .modal-btn:disabled {
+        background-color: #ddd;
+        color: #aaa;
+    }
 
-	/* 스크롤 가능한 영역 */
-	.scroll-box {
-		height: calc(100% - 150px);
-		overflow-y: auto;
-		border: 1px solid #ccc;
-		padding: 10px;
-		margin: 10px 0;
-		font-size: 14px;
-		background: #fafafa;
+    /* --- 개인정보 동의함 --- */
+    .scroll-box {
+        height: 250px;
+        overflow-y: auto;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 13px;
+        background: #fafafa;
+    }
+
+    /* --- 스피너 --- */
+    .spinner-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 10000;
+        display: none;
+    }
+
+    .spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 50px;
+        height: 50px;
+        border: 5px solid #f3f3f3;
+        border-top: 5px solid #f5cc00;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+    }
 
 	}
 
@@ -375,4 +437,3 @@
 			transform: rotate(360deg);
 		}
 	}
-}
