@@ -55,36 +55,37 @@
 			</div>
 
 			<div class="program-info">
-				<h2 th:text="${program.title}">프로그램 제목</h2>
-				<ul>
-					<li>
-						<strong>일시:</strong>
+				<div class="program-texts">
+					<h2 class="program-title" th:text="${program.title}">프로그램 제목</h2>
+					<ul>
+						<li>
+							<strong>일시:</strong>
 
-						<span th:if="${program.isDateString == 'Y'}" th:text="${program.dateString}">
-						</span>
+							<span th:if="${program.isDateString == 'Y'}" th:text="${program.dateString}">
+							</span>
 
-						<span
-							th:if="${program.isDateString != 'Y' and program.startDate != null and program.endDate != null}"
-							th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">
-						</span>
+							<span
+								th:if="${program.isDateString != 'Y' and program.startDate != null and program.endDate != null}"
+								th:text="${#temporals.format(program.startDate, 'yyyy년 M월 d일 (E) HH:mm')} + ' ~ ' + ${#temporals.format(program.endDate, 'HH:mm')}">
+							</span>
 
-						<span
-							th:if="${program.isDateString != 'Y' and (program.startDate == null or program.endDate == null)}">
-							[상시] - 문의전화 바람
-						</span>
+							<span
+								th:if="${program.isDateString != 'Y' and (program.startDate == null or program.endDate == null)}">
+								[상시] - 문의전화 바람
+							</span>
 
-					</li>
+						</li>
 
 
-					<li><strong>장소:</strong> <span th:text="${program.location}"></span></li>
-					<li><strong>대상:</strong> <span th:text="${program.target}"></span></li>
-					<li><strong>참가비:</strong> <span th:text="${program.expense} + '원'"></span></li>
-					<li><strong>주제:</strong> <span th:text="${program.subject}"></span></li>
-					<li><strong>정원:</strong> <span th:text="${program.capacity} + '명'"></span></li>
-				</ul>
+						<li><strong>장소:</strong> <span th:text="${program.location}"></span></li>
+						<li><strong>대상:</strong> <span th:text="${program.target}"></span></li>
+						<li><strong>참가비:</strong> <span th:text="${program.expense} + '원'"></span></li>
+						<li><strong>주제:</strong> <span th:text="${program.subject}"></span></li>
+						<li><strong>정원:</strong> <span th:text="${program.capacity} + '명'"></span></li>
+					</ul>
 
-				<div class="text" th:utext="${program.content}"></div>
-
+					<div class="text" th:utext="${program.content}"></div>
+				</div>
 				<div class="program-bottom">
 					<div class="capacity" th:if="${program.needCapacity == null or program.needCapacity != 'Y'}">
 						신청인원: <span th:text="${applyCount}"></span>/<span th:text="${program.capacity}"></span>명
@@ -137,6 +138,7 @@
 					</th:block>
 				</div>
 			</div>
+
 		</div>
 	</div>
 	<!-- 추가 정보 입력 모달 -->

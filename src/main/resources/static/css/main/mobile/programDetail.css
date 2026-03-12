@@ -1,5 +1,32 @@
 @media screen and (max-width: 768px) {
 
+	/* 1. 웹폰트 불러오기 (최상단 유지) */
+	@font-face {
+		font-family: 'GyeonggiBatang';
+		src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff') format('woff');
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	/* 2. 구체적인 선택자를 사용하여 우선순위 높이기 */
+	.program-info .program-texts,
+	.program-info .program-texts *,
+	/* 내부의 모든 태그(h2, li, span 등) 포함 */
+	.program-info .text {
+		font-family: 'GyeonggiBatang', serif !important;
+	}
+
+	/* 3. 추가로 th:utext가 들어가는 .text 영역에 대해 강제 적용 */
+	.text {
+		font-family: 'GyeonggiBatang', serif !important;
+		overflow-x: auto;
+		word-break: break-word;
+		white-space: pre-wrap;
+		max-width: 100%;
+		box-sizing: border-box;
+	}
+
+
 	html,
 	body {
 		margin: 0;
@@ -7,6 +34,8 @@
 		overflow-x: hidden;
 		height: 100%;
 	}
+
+
 
 	.sidebar {
 		display: flex;
@@ -277,65 +306,65 @@
 		border-radius: 50%;
 		animation: spin 1s linear infinite;
 	}
-	
+
 	.modal-content {
-	background: white;
-	border-radius: 10px;
-	width: 90%;
-	max-width: 700px;
-	height: 600px;
-	padding: 20px;
-	box-sizing: border-box;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-}
+		background: white;
+		border-radius: 10px;
+		width: 90%;
+		max-width: 700px;
+		height: 600px;
+		padding: 20px;
+		box-sizing: border-box;
+		box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+	}
 
-/* 입력 그룹 */
-.form-group {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 15px;
-}
+	/* 입력 그룹 */
+	.form-group {
+		display: flex;
+		flex-direction: column;
+		margin-bottom: 15px;
+	}
 
-.form-group label {
-	font-size: 14px;
-	font-weight: bold;
-	color: #333;
-	margin-bottom: 6px;
-}
+	.form-group label {
+		font-size: 14px;
+		font-weight: bold;
+		color: #333;
+		margin-bottom: 6px;
+	}
 
-/* 입력 필드 (info-modal-input과 통일) */
-.modal-input {
-	width: 100%;
-	padding: 12px;
-	border: 1px solid #ccc;
-	border-radius: 8px;
-	font-size: 15px;
-	font-family: 'Pretendard', 'Arial', sans-serif;
-	box-sizing: border-box;
-	color: #333;
-}
+	/* 입력 필드 (info-modal-input과 통일) */
+	.modal-input {
+		width: 100%;
+		padding: 12px;
+		border: 1px solid #ccc;
+		border-radius: 8px;
+		font-size: 15px;
+		font-family: 'Pretendard', 'Arial', sans-serif;
+		box-sizing: border-box;
+		color: #333;
+	}
 
-/* 버튼 (infoModalButton과 통일) */
-.modal-btn {
-	width: 100px;
-	padding: 12px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border: none;
-	font-size: 16px;
-	cursor: pointer;
-	color: #333;
-	border-radius: 8px;
-}
+	/* 버튼 (infoModalButton과 통일) */
+	.modal-btn {
+		width: 100px;
+		padding: 12px;
+		text-align: center;
+		background-color: #F5EBE0;
+		border: none;
+		font-size: 16px;
+		cursor: pointer;
+		color: #333;
+		border-radius: 8px;
+	}
 
-.modal-btn:disabled {
-	background-color: #ddd;
-	color: #aaa;
-	cursor: not-allowed;
-}
+	.modal-btn:disabled {
+		background-color: #ddd;
+		color: #aaa;
+		cursor: not-allowed;
+	}
 
 	@keyframes spin {
 		0% {
