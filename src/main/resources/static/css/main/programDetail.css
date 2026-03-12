@@ -13,6 +13,25 @@
     font-family: 'GyeonggiBatang', serif !important;
 }
 
+.program-info ul li {
+    margin-bottom: 5px; /* 위아래 간격을 10px에서 18px로 확대 */
+    font-size: 16px;     /* 가독성을 위해 폰트 크기 살짝 조정 */
+    line-height: 1.6;    /* 줄 간격 확보 */
+    display: flex;       /* 항목 이름과 내용을 정렬하기 쉽게 설정 */
+    align-items: flex-start;
+}
+
+.program-info li strong {
+    min-width: 80px;     /* '일시:', '장소:' 등의 너비를 고정하여 정렬 */
+    display: inline-block;
+    color: #555;
+}
+
+/* 마지막 항목은 아래 여백 제거 */
+/*.program-info ul li:last-child {*/
+/*    margin-bottom: 0;*/
+/*}*/
+
 /* 3. 추가로 th:utext가 들어가는 .text 영역에 대해 강제 적용 */
 .text {
     font-family: 'GyeonggiBatang', serif !important;
