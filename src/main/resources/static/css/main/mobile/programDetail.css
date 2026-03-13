@@ -15,17 +15,17 @@
 		font-style: normal;
 	}
 
-	/* 2. 구체적인 선택자를 사용하여 우선순위 높이기 */
-	.program-info .program-texts,
-	.program-info .program-texts *,
-	/* 내부의 모든 태그(h2, li, span 등) 포함 */
-	.program-info .text {
-		font-family: 'GyeonggiBatang', serif !important;
-	}
+/*	 2. 구체적인 선택자를 사용하여 우선순위 높이기 */
+/*	.program-info .program-texts,*/
+/*	.program-info .program-texts *,*/
+/*	 내부의 모든 태그(h2, li, span 등) 포함 */
+/*	.program-info .text {*/
+/*		font-family: 'GyeonggiBatang', serif !important;*/
+/*	}*/
 
 	/* 3. 추가로 th:utext가 들어가는 .text 영역에 대해 강제 적용 */
 	.text {
-		font-family: 'GyeonggiBatang', serif !important;
+/*		font-family: 'GyeonggiBatang', serif !important;*/
 		overflow-x: auto;
 		word-break: break-word;
 		white-space: pre-wrap;
