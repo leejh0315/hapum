@@ -261,8 +261,8 @@
 
 /* ===== 수정된 부분 ===== */
 .popup-image {
-	width: 600px;
-	height: 600px; /* 고정 크기 추가 */
+	width: 500px;
+	height: 500px; /* 고정 크기 추가 */
 	max-height: 80vh;
 	object-fit: contain; /* 이미지가 잘리지 않게 조정 */
 	background-color: #ffffff; /* 이미지 비율에 따른 빈 공간 배경색 지정 */
