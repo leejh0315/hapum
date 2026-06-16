@@ -2,20 +2,25 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/img/logohp.png">
-    <title>회원가입 성공</title>
+    <title>하품센터-회원가입 완료</title>
     <link rel="stylesheet" th:href="@{/css/style.css}" />
+    
     <style>
+      @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
       /* ──────────────────────────────────────────────────────────
-         컬러 팔레트
+         디자인 시스템 변수 선언 (Black & White Concept)
          ────────────────────────────────────────────────────────── */
       :root {
-        --c-bg:   #EDEDE9;
-        --c-border:#D6CCC2;
-        --c-card: #F5EBE0;
-        --c-btn:  #D6CCC2;
-        --c-btn-h:#E3D5CA;
-        --c-text: #333;
+        --c-bg:       #FFFFFF;
+        --c-border:   #EAEAEA;
+        --c-card-brd: #111111; /* 카드 테두리를 시그니처 블랙 라인으로 고정 */
+        --c-text:     #000000;
+        --c-subtext:  #666666;
+        --c-btn-bg:   #000000;
+        --c-btn-hvr:  #333333;
       }
 
       /* ──────────────────────────────────────────────────────────
@@ -23,15 +28,20 @@
          ────────────────────────────────────────────────────────── */
       body {
         margin: 0;
-        padding: 50px;
-        font-family: Arial, sans-serif;
+        padding: 0;
+        font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
         background-color: var(--c-bg);
-        text-align: center;
-        position: relative;
+        color: var(--c-text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh; /* 화면 전체 높이에서 정중앙 배치 */
+        box-sizing: border-box;
         overflow: hidden;
+        -webkit-font-smoothing: antialiased;
       }
 
-      /* 캔버스는 항상 화면을 덮고, 클릭 이벤트를 막습니다 */
+      /* 폭죽용 캔버스 (클릭 차단 및 최상단 고정) */
       #confetti-canvas {
         position: fixed;
         top: 0; left: 0;
@@ -41,84 +51,121 @@
       }
 
       /* ──────────────────────────────────────────────────────────
-         성공 박스 스타일
+         성공 안내 스퀘어 카드 (모던 라인 디자인)
          ────────────────────────────────────────────────────────── */
       .success-box {
-        display: inline-block;
-        padding: 30px 40px;
-        border: 2px solid var(--c-border);
-        background-color: var(--c-card);
+        width: 100%;
+        max-width: 440px; /* 회원가입 폼 너비와 완벽 대칭 구조 */
+        padding: 60px 40px;
+        border: 1px solid var(--c-card-brd); /* 단호한 블랙 스퀘어 라인 */
+        background-color: #FFFFFF;
+        box-sizing: border-box;
+        text-align: left; /* 왼쪽 정렬 컨셉 유지 */
+      }
+
+      /* 상단 타이틀 바 데코레이션 (다른 뷰들과 싱크) */
+      .success-box .prefix {
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 2px;
         color: var(--c-text);
-        border-radius: 8px;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        display: block;
+        margin-bottom: 16px;
       }
+
       .success-box h2 {
-        margin: 0 0 15px;
-        font-size: 1.6rem;
+        margin: 0 0 12px 0;
+        font-size: 26px;
+        font-weight: 700;
+        line-height: 1.3;
+        letter-spacing: -0.5px;
       }
+
       .success-box p {
-        margin: 0 0 20px;
-        font-size: 1rem;
+        margin: 0 0 40px 0;
+        font-size: 15px;
+        color: var(--c-subtext);
+        line-height: 1.6;
       }
 
       /* ──────────────────────────────────────────────────────────
-         로그인 버튼 스타일
+         규격화된 가로 가득 채움 버튼 (Square Full Button)
          ────────────────────────────────────────────────────────── */
       .btn-login {
-        display: inline-block;
-        margin-top: 10px;
-        padding: 10px 20px;
-        background-color: var(--c-btn);
-        color: white;
+        display: block;
+        width: 100%;
+        padding: 16px 0;
+        background-color: var(--c-btn-bg);
+        color: #FFFFFF;
         text-decoration: none;
-        border-radius: 5px;
-        transition: background-color .3s;
+        text-align: center;
+        font-size: 15px;
+        font-weight: 700;
+        border-radius: 0; /* 라운드 전면 제거 */
+        box-sizing: border-box;
+        transition: background-color 0.2s ease;
       }
+
       .btn-login:hover {
-        background-color: var(--c-btn-h);
+        background-color: var(--c-btn-hvr);
+      }
+
+      /* 모바일 최적화 브레이크포인트 */
+      @media screen and (max-width: 768px) {
+        body {
+          padding: 0 20px;
+        }
+        .success-box {
+          padding: 45px 24px;
+        }
+        .success-box h2 {
+          font-size: 22px;
+        }
+        .success-box p {
+          font-size: 14px;
+          margin-bottom: 30px;
+        }
       }
     </style>
 </head>
 <body>
 
-  <!-- 캔버스 (폭죽/꽃가루) -->
   <canvas id="confetti-canvas"></canvas>
 
   <div class="success-box">
-    <h2>회원가입이 완료되었습니다!</h2>
-    <p>이제 로그인하여 서비스를 이용하실 수 있습니다.</p>
+    <span class="prefix">WELCOME</span>
+    <h2>회원가입이<br>완료되었습니다!</h2>
+    <p>하품센터의 회원이 되신 것을 축하합니다.<br>이제 로그인 후 모든 서비스를 이용하실 수 있습니다.</p>
+    
     <a class="btn-login" th:href="@{/auth/login}">로그인 하러 가기</a>
   </div>
 
-  <!-- canvas-confetti 라이브러리 -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
   <script>
-    // 캔버스 인스턴스 생성 (리사이즈 자동)
     const myConfetti = confetti.create(
       document.getElementById('confetti-canvas'),
       { resize: true, useWorker: true }
     );
 
-    // 랜덤 폭발 효과 함수
     function fireBurst(particleRatio, opts) {
       myConfetti(Object.assign({
-        origin: { x: Math.random(), y: Math.random() * 0.5 },
-        ticks: 200,
-        gravity: 0.6,
-        decay: 0.9,
-        scalar: 1.2,
-        drift: 0.3,
-        shapes: ['circle','square'],
-        colors: ['#D6CCC2', '#F5EBE0', '#E3D5CA', '#D5BDAF']
+        origin: { x: Math.random(), y: Math.random() * 0.4 },
+        ticks: 240,
+        gravity: 0.7,
+        decay: 0.92,
+        scalar: 1.1,
+        drift: 0.1,
+        shapes: ['circle', 'square'],
+        /* [컬러셋 변경] 기존 브라운을 빼고 모노크롬 인프라(Black, Gray, Silver, Slate)로 변경 */
+        colors: ['#000000', '#4A5568', '#CBD5E0', '#1A202C', '#E2E8F0']
       }, opts, {
-        particleCount: Math.floor(200 * particleRatio)
+        particleCount: Math.floor(180 * particleRatio)
       }));
     }
 
-    // 페이지 로드 시 여러 번 버스트 호출
     window.addEventListener('load', () => {
       [0.25, 0.2, 0.35, 0.15].forEach((ratio, i) => {
-        setTimeout(() => fireBurst(ratio, { spread: 60 + i*10 }), i * 400);
+        setTimeout(() => fireBurst(ratio, { spread: 60 + i * 15 }), i * 350);
       });
     });
   </script>

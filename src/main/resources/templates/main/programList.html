@@ -6,64 +6,158 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="/img/logohp.png">
 	<title>하품센터-프로그램</title>
+	
 	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
 	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
-
-	<link rel="stylesheet" th:href="@{/css/footer.css}">
-
-	<link rel="stylesheet" th:href="@{/css/main/program.css}" media="only screen and (min-width: 769px)">
-	<link rel="stylesheet" th:href="@{/css/main/mobile/program.css}" media="only screen and (max-width: 768px)">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	
+	<link rel="stylesheet" th:href="@{/css/main/program_list.css}">
+	
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<style>
 
+	<style>
+	
 	</style>
 </head>
 
 <body>
 	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-	<div class="container">
-		<!-- 좌측 사이드바 -->
-		<div class="sidebar">
-    <div class="sidebar-title" onclick="location.href='/main/program'">프로그램</div>
-    <div class="menu-group">
-        <button th:each="programAdd : ${programAdds}"
-                th:if="${programAdd.openStatus == 'Y'}"
-                th:text="${programAdd.name}"
-                th:onclick="|location.href='/main/programList/${programAdd.id}'|"
-                class="menu-button"
-                th:classappend="${activeTab == programAdd.id} ? ' active' : ''">
-        </button>
-    </div>
-</div>
-
-		<!-- 오른쪽 콘텐츠 영역 -->
-		<div class="content">
-
-			<div class="program-intro">
-				<img class="pi-img" th:src="@{${pa.thumbnailSrc}}">
-				<div class="pi-ex" th:utext="${pa.content}"></div>
-
+	<div class="fixed-header-wrapper">
+		<div class="fixed-header-inner">
+			<div class="info-top-bar" >
+				<span class="info-prefix" style="cursor: pointer;" onclick="location.href='/main/program'">PROGRAM</span>
+				<h2 class="info-title" style="cursor: pointer;" onclick="location.href='/main/program'"> 프로그램</h2>
 			</div>
-			<hr>
-<!--th:if="${program.openStatus == 'Y'}"-->
+			
+			<div class="menu-scroll-wrapper">
+				<div class="top-menu-bar" id="topMenuBar">
+					<button th:each="programAdd : ${programAdds}" th:if="${programAdd.openStatus == 'Y'}" th:text="${programAdd.name}"
+						th:onclick="|if(!isDragging) location.href='/main/programList/${programAdd.id}'|" 
+						th:classappend="${programAdd.id == activeTab} ? 'current' : ''" class="menu-button">
+					</button>
+				</div>
+				
+				<div class="menu-progress-container" id="progressContainer">
+					<div class="menu-progress-thumb" id="progressThumb"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="container">
+		<div class="content">
+			
+			<div class="program-intro">
+				<div class="pi-img-wrapper">
+					<img class="pi-img" th:src="@{${pa.thumbnailSrc}}" alt="카테고리 대표 이미지">
+				</div>
+				<div class="pi-ex-box">
+					<div class="pi-badge">CATEGORY INFO</div>
+					<div class="pi-ex-scroll">
+						<div class="pi-ex" th:utext="${pa.content}">프로그램 카테고리 설명 글</div>
+					</div>
+				</div>
+			</div>
+
 			<div class="program-list">
 				<a th:each="program : ${programs}" 
-					th:href="@{/main/program/detail/{id}(id=${program.id})}" class="program-card">
-							<th:block th:if="${program.openStatus == 'N'}">
-								<div class="badge-ended">종료</div>
-							</th:block>
-					<img th:src="@{${program.thumbnailSrc}}" alt="썸네일 이미지" />
-					<div class="program-title" th:text="${program.title}"></div>
+				   th:href="@{/main/program/detail/{id}(id=${program.id})}" class="program-card">
+					
+					<div class="card-image-wrapper">
+						<th:block th:if="${program.openStatus == 'N'}">
+							<div class="badge-ended">종료</div>
+						</th:block>
+						<img th:src="@{${program.thumbnailSrc}}" alt="프로그램 썸네일" />
+					</div>
+					<div class="program-title" th:text="${program.title}">세부 프로그램 타이틀</div>
 				</a>
 			</div>
+			
 		</div>
 	</div>
 
 	<div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
-</body>
 
+	<script>
+		const menuBar = document.getElementById('topMenuBar');
+		const progressContainer = document.getElementById('progressContainer');
+		const progressThumb = document.getElementById('progressThumb');
+
+		function updateProgress() {
+			if (!menuBar || !progressThumb) return;
+			const scrollWidth = menuBar.scrollWidth;
+			const clientWidth = menuBar.clientWidth;
+			const scrollLeft = menuBar.scrollLeft;
+
+			if (scrollWidth > clientWidth) {
+				progressContainer.style.display = 'block';
+				const thumbWidthRatio = clientWidth / scrollWidth;
+				progressThumb.style.width = `${thumbWidthRatio * 100}%`;
+				const scrollRatio = scrollLeft / (scrollWidth - clientWidth);
+				const maxLeft = 100 - (thumbWidthRatio * 100);
+				progressThumb.style.left = `${scrollRatio * maxLeft}%`;
+			} else {
+				progressContainer.style.display = 'none';
+			}
+		}
+
+		let isDown = false;
+		let startX, scrollLeft;
+		let isDragging = false;
+		let velocity = 0;      
+		let rafId = null;      
+		let lastEventTime = 0, lastEventX = 0;    
+
+		function momentumLoop() {
+			if (Math.abs(velocity) > 0.1) {
+				menuBar.scrollLeft += velocity;
+				velocity *= 0.92; 
+				updateProgress();
+				rafId = requestAnimationFrame(momentumLoop);
+			} else {
+				cancelAnimationFrame(rafId);
+				rafId = null;
+			}
+		}
+
+		if (menuBar) {
+			menuBar.addEventListener('mousedown', (e) => {
+				isDown = true; isDragging = false; menuBar.classList.add('grabbing');
+				if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+				startX = e.pageX - menuBar.offsetLeft; scrollLeft = menuBar.scrollLeft;
+				lastEventTime = performance.now(); lastEventX = e.pageX; velocity = 0;
+			});
+			menuBar.addEventListener('mouseleave', () => {
+				if (!isDown) return; isDown = false; menuBar.classList.remove('grabbing');
+				rafId = requestAnimationFrame(momentumLoop);
+			});
+			menuBar.addEventListener('mouseup', () => {
+				if (!isDown) return; isDown = false; menuBar.classList.remove('grabbing');
+				rafId = requestAnimationFrame(momentumLoop);
+				setTimeout(() => { isDragging = false; }, 50);
+			});
+			menuBar.addEventListener('mousemove', (e) => {
+				if (!isDown) return; e.preventDefault();
+				const x = e.pageX - menuBar.offsetLeft; const walk = (x - startX) * 1.2; 
+				if (Math.abs(walk) > 5) isDragging = true; 
+				const now = performance.now(); const timeElapsed = now - lastEventTime;
+				if (timeElapsed > 0) { const distance = e.pageX - lastEventX; velocity = -(distance / timeElapsed) * 15; }
+				menuBar.scrollLeft = scrollLeft - walk; updateProgress();
+				lastEventTime = now; lastEventX = e.pageX;
+			});
+			menuBar.addEventListener('scroll', updateProgress);
+			window.addEventListener('resize', updateProgress);
+			window.addEventListener('DOMContentLoaded', () => {
+				setTimeout(() => {
+					updateProgress();
+					const currentMenu = menuBar.querySelector('.menu-button.current');
+					if (currentMenu) currentMenu.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+				}, 100);
+			});
+		}
+	</script>
+</body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/img/logohp.png">
+
+  <link rel="stylesheet" th:href="@{/css/header.css}"
+        media="only screen and (min-width: 769px)"/>
+  <link rel="stylesheet" th:href="@{/css/main/mobile/header.css}"
+        media="only screen and (max-width: 768px)"/>
+  <link rel="stylesheet" th:href="@{/css/footer.css}"/>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <th:block layout:fragment="pageCss"></th:block>
+
+  <title layout:title-pattern="$CONTENT_TITLE - 하품센터">하품센터</title>
+
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+</head>
+
+<body>
+
+  <th:block th:replace="~{main/header :: headFrag(${user})}"></th:block>
+
+  <th:block layout:fragment="content" ></th:block>
+
+  <th:block th:replace="~{main/footer :: footer}"></th:block>
+
+  <script th:src="@{/js/header.js}"></script>
+
+  <th:block layout:fragment="pageJs"></th:block>
+
+</body>
+</html>

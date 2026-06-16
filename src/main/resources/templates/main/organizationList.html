@@ -6,53 +6,188 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="shortcut icon" href="/img/logohp.png">
 	<title>하품센터-단체소식</title>
+	
 	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
 	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
-
-
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	
 	<link rel="stylesheet" th:href="@{/css/main/organization.css}" media="only screen and (min-width: 769px)">
 	<link rel="stylesheet" th:href="@{/css/main/mobile/organization.css}" media="only screen and (max-width: 768px)">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-	<link rel="stylesheet" th:href="@{/css/footer.css}">
+	
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
 </head>
 
 <body>
 	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-	<div class="container">
-		<!-- 사이드바: organizationList 반복 -->
-		<div class="sidebar">
-			<div class="sidebar-title" onclick="location.href='/main/organization'">단체소식</div>
-			<div class="menu-group">
-				<button th:each="org : ${organizationList}" class="menu-button" th:text="${org.name}"
-					th:onclick="'location.href=\'/main/organization/'+ ${org.id} +'\''">
-					<!-- 이 텍스트는 th:text로 대체됩니다. -->
-				</button>
+	<div class="fixed-header-wrapper">
+		<div class="fixed-header-inner">
+			<div class="info-top-bar">
+				<span class="info-prefix">ORGANIZATION</span>
+				<h2 class="info-title">단체소식</h2>
 			</div>
-		</div>
-
-		<!-- 메인 콘텐츠 영역 -->
-		<div class="content">
-			<div th:if="${#lists.isEmpty(organizationList)}">
-				등록된 단체가 없습니다.
-			</div>
-			<div th:if="${!#lists.isEmpty(organizationList)}" class="organization-grid">
-				<div style="cursor: pointer;" th:each="org : ${organizationList}" class="organization-card"
-					th:onclick="'location.href=\'/main/organization/'+ ${org.id} +'\''">
-
-					<img th:src="@{${org.profileSrc}}" alt="프로필 이미지" class="organization-img" />
-					<div class="org-title" th:text="${org.name}">단체 이름</div>
-					<!--					<p th:text="${org.introduce}">단체 소개</p>-->
+			
+			<div class="menu-scroll-wrapper">
+				<div class="top-menu-bar" id="topMenuBar">
+					<button onclick="location.href='/main/organization'" 
+							class="menu-button" 
+							th:classappend="${currentOrgId == null} ? 'current' : ''">전체보기</button>
+					
+					<button th:each="org : ${organizationList}" th:text="${org.name}"
+						th:onclick="|if(!isDragging) location.href='/main/organization/${org.id}'|" 
+						th:classappend="${org.id == currentOrgId} ? 'current' : ''" class="menu-button">
+					</button>
+				</div>
+				
+				<div class="menu-progress-container" id="progressContainer">
+					<div class="menu-progress-thumb" id="progressThumb"></div>
 				</div>
 			</div>
 		</div>
 	</div>
-		<div th:replace="~{main/footer :: footer}"></div>
 
+	<div class="container">
+		<div class="content">
+			<div th:if="${#lists.isEmpty(organizationList)}" class="empty-msg">
+				등록된 단체가 없습니다.
+			</div>
+			
+			<div th:if="${!#lists.isEmpty(organizationList)}" class="organization-list">
+				<a th:each="org : ${organizationList}" 
+				   th:href="@{/main/organization/{id}(id=${org.id})}" class="organization-card">
+					<div class="card-image-wrapper">
+						<img th:src="@{${org.profileSrc}}" alt="프로필 이미지" />
+					</div>
+					<div class="org-title" th:text="${org.name}">단체 이름</div>
+				</a>
+			</div>
+		</div>
+	</div>
+
+	<div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
-</body>
 
+	<script>
+		const menuBar = document.getElementById('topMenuBar');
+		const progressContainer = document.getElementById('progressContainer');
+		const progressThumb = document.getElementById('progressThumb');
+
+		function updateProgress() {
+			if (!menuBar || !progressThumb) return;
+			
+			const scrollWidth = menuBar.scrollWidth;
+			const clientWidth = menuBar.clientWidth;
+			const scrollLeft = menuBar.scrollLeft;
+
+			if (scrollWidth > clientWidth) {
+				progressContainer.style.display = 'block';
+				const thumbWidthRatio = clientWidth / scrollWidth;
+				progressThumb.style.width = `${thumbWidthRatio * 100}%`;
+				
+				const scrollRatio = scrollLeft / (scrollWidth - clientWidth);
+				const maxLeft = 100 - (thumbWidthRatio * 100);
+				progressThumb.style.left = `${scrollRatio * maxLeft}%`;
+			} else {
+				progressContainer.style.display = 'none';
+			}
+		}
+
+		let isDown = false;
+		let startX;
+		let scrollLeft;
+		let isDragging = false;
+
+		let velocity = 0;      
+		let rafId = null;      
+		let lastEventTime = 0; 
+		let lastEventX = 0;    
+
+		function momentumLoop() {
+			if (Math.abs(velocity) > 0.1) {
+				menuBar.scrollLeft += velocity;
+				velocity *= 0.92; 
+				updateProgress();
+				rafId = requestAnimationFrame(momentumLoop);
+			} else {
+				cancelAnimationFrame(rafId);
+				rafId = null;
+			}
+		}
+
+		if (menuBar) {
+			menuBar.addEventListener('mousedown', (e) => {
+				isDown = true;
+				isDragging = false;
+				menuBar.classList.add('grabbing');
+				
+				if (rafId) {
+					cancelAnimationFrame(rafId);
+					rafId = null;
+				}
+
+				startX = e.pageX - menuBar.offsetLeft;
+				scrollLeft = menuBar.scrollLeft;
+				
+				lastEventTime = performance.now();
+				lastEventX = e.pageX;
+				velocity = 0;
+			});
+
+			menuBar.addEventListener('mouseleave', () => {
+				if (!isDown) return;
+				isDown = false;
+				menuBar.classList.remove('grabbing');
+				rafId = requestAnimationFrame(momentumLoop);
+			});
+
+			menuBar.addEventListener('mouseup', () => {
+				if (!isDown) return;
+				isDown = false;
+				menuBar.classList.remove('grabbing');
+				
+				rafId = requestAnimationFrame(momentumLoop);
+				setTimeout(() => { isDragging = false; }, 50);
+			});
+
+			menuBar.addEventListener('mousemove', (e) => {
+				if (!isDown) return;
+				e.preventDefault();
+				
+				const x = e.pageX - menuBar.offsetLeft;
+				const walk = (x - startX) * 1.2; 
+				
+				if (Math.abs(walk) > 5) {
+					isDragging = true; 
+				}
+
+				const now = performance.now();
+				const timeElapsed = now - lastEventTime;
+				if (timeElapsed > 0) {
+					const distance = e.pageX - lastEventX;
+					velocity = -(distance / timeElapsed) * 15; 
+				}
+
+				menuBar.scrollLeft = scrollLeft - walk;
+				updateProgress();
+
+				lastEventTime = now;
+				lastEventX = e.pageX;
+			});
+
+			menuBar.addEventListener('scroll', updateProgress);
+			window.addEventListener('resize', updateProgress);
+
+			window.addEventListener('DOMContentLoaded', () => {
+				setTimeout(() => {
+					updateProgress();
+					const currentMenu = menuBar.querySelector('.menu-button.current');
+					if (currentMenu) {
+						currentMenu.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+					}
+				}, 100);
+			});
+		}
+	</script>
+</body>
 </html>

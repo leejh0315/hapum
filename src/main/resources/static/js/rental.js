@@ -34,7 +34,7 @@ function formatDate(d) {
 dateRangeText.textContent = `${formatDate(startDate)} ~ ${formatDate(endDate)}`;
 datePicker.min = formatDate(startDate);
 datePicker.max = formatDate(endDate);
-datePicker.value = formatDate(today);  // 오늘 날짜 기본 선택
+datePicker.value = formatDate(today);
 
 // 요일/주차 계산 유틸
 function getWeekOfMonth(date) {
@@ -45,7 +45,7 @@ function getWeekOfMonth(date) {
 // fixedReservations로부터 차단 시간 가져오기
 function getFixedReservationTimesForDate(dateStr) {
 	const date = new Date(dateStr);
-	const weekday = date.getDay(); // 0=Sun ~ 6=Sat
+	const weekday = date.getDay();
 	const weekOfMonth = getWeekOfMonth(date);
 	const blocked = [];
 
@@ -79,7 +79,10 @@ function getFixedReservationTimesForDate(dateStr) {
 
 // room 버튼 클릭
 document.querySelectorAll('.room-btn').forEach(btn => {
-	btn.addEventListener('click', () => {
+	btn.addEventListener('click', (e) => {
+		document.querySelectorAll('.room-btn').forEach(b => b.classList.remove('active'));
+		e.currentTarget.classList.add('active');
+
 		selectedRoom = btn.getAttribute('data-room');
 		selectedDate = null;
 		selectedSlots = [];
@@ -91,11 +94,13 @@ document.querySelectorAll('.room-btn').forEach(btn => {
 		if (!roomInfo) return;
 
 		document.getElementById('room-title').textContent = selectedRoom;
-		document.getElementById('floor-title').textContent = `${roomInfo.floor}층`;
+		document.getElementById('floor-title').textContent = `${roomInfo.floor} + F`;
 
 		const contentDiv = document.getElementById('room-content');
+		
+		// ★ 불필요한 인라인 스타일(style="...") 제거, CSS에 전적으로 위임
 		contentDiv.innerHTML = `
-			<img src="${roomInfo.img}" style="max-width: 350px; max-height: 350px; border-radius: 10px;" />
+			<img src="${roomInfo.img}" alt="${selectedRoom} 이미지" />
 			<div>${roomInfo.html}</div>
 		`;
 
@@ -127,7 +132,6 @@ document.querySelectorAll('.room-btn').forEach(btn => {
 				timeSlotsRow.appendChild(slotDiv);
 			}
 
-			// 오늘 날짜로 초기값 설정 및 선택 초기화
 			selectedDate = datePicker.value || formatDate(today);
 			selectedSlots = [];
 			selectedTimeDisplay.textContent = '';
@@ -151,7 +155,6 @@ datePicker.addEventListener('change', () => {
 	submitBtn.disabled = true;
 	selectedTimeDisplay.textContent = '';
 
-	// 초기화 및 기존 툴팁 삭제 + 이벤트 초기화
 	const slots = document.querySelectorAll('#time-slots-row .slot');
 	slots.forEach(slot => {
 		slot.classList.remove('selected', 'blocked-slot');
@@ -160,7 +163,6 @@ datePicker.addEventListener('change', () => {
 		const oldTooltip = slot.querySelector('.tooltip');
 		if (oldTooltip) oldTooltip.remove();
 
-		// 이벤트 리스너 중복 방지 위해 클론 노드로 교체
 		const newSlot = slot.cloneNode(true);
 		slot.parentNode.replaceChild(newSlot, slot);
 	});
@@ -179,7 +181,6 @@ datePicker.addEventListener('change', () => {
 	blockedTimesWithReason.forEach(({ time, reason }) => blockedMap.set(time, reason));
 	fixedTimesWithReason.forEach(({ time, reason }) => blockedMap.set(time, reason));
 
-	// 툴팁 다시 생성 + 이벤트 연결
 	document.querySelectorAll('#time-slots-row .slot').forEach(slot => {
 		const reason = blockedMap.get(slot.dataset.time);
 		if (reason) {
@@ -197,7 +198,7 @@ datePicker.addEventListener('change', () => {
 	});
 });
 
-// 시간 슬롯 클릭 - 2시간 연속 (총 4 슬롯 선택)
+// 시간 슬롯 클릭
 document.getElementById('time-slots-row').addEventListener('click', (e) => {
 	if (!selectedDate || !selectedRoom) {
 		alert('시설과 날짜를 먼저 선택해주세요.');
@@ -212,7 +213,6 @@ document.getElementById('time-slots-row').addEventListener('click', (e) => {
 		return;
 	}
 
-	// 연속 4개 슬롯 예약 가능한지 확인
 	for (let i = idx; i <= idx + 3; i++) {
 		const t = timeSlots[i];
 		const s = document.querySelector(`#time-slots-row .slot[data-time="${t}"]`);
@@ -222,7 +222,6 @@ document.getElementById('time-slots-row').addEventListener('click', (e) => {
 		}
 	}
 
-	// 초기화 후 선택
 	document.querySelectorAll('#time-slots-row .slot.selected').forEach(s => s.classList.remove('selected'));
 
 	selectedSlots = [];
@@ -240,19 +239,14 @@ document.getElementById('time-slots-row').addEventListener('click', (e) => {
 	const end = timeSlots[startIdx + 4];
 	if (!end) {
 		alert('선택한 시작 시간은 2시간 예약이 불가능한 시간입니다.');
-
-		// 선택된 슬롯 초기화
 		document.querySelectorAll('#time-slots-row .slot.selected').forEach(s => s.classList.remove('selected'));
 		selectedSlots = [];
 		selectedTimeDisplay.textContent = '';
 		submitBtn.disabled = true;
-
 		return;
 	}
 
-	// 시설, 날짜, 시간 표시
 	selectedTimeDisplay.textContent = `시설: ${selectedRoom} / 날짜: ${selectedDate} / 시간: ${start} ~ ${end}`;
-
 	submitBtn.disabled = false;
 });
 
@@ -263,12 +257,11 @@ function submitRental() {
 		return;
 	}
 	const date = document.querySelector('#datePicker').value;
-      const times = document.querySelector('#selected-time-display').innerText;
-      const room = document.querySelector('.room-btn.active').dataset.room;
-      document.getElementById('modalDate').innerText = date;
-      document.getElementById('modalTime').innerText = times;
-      document.getElementById('modalRoom').innerText = room;
-	 document.getElementById('rentalModalOverlay').classList.add('show');
-
-	//alert(`대관 신청 완료되었습니다!\n시설: ${selectedRoom}\n날짜: ${selectedDate}\n시간: ${selectedSlots[0]} ~ ${selectedSlots[3]}`);
+	const times = document.querySelector('#selected-time-display').innerText;
+	const room = document.querySelector('.room-btn.active').dataset.room;
+	
+	document.getElementById('modalDate').innerText = date;
+	document.getElementById('modalTime').innerText = times;
+	document.getElementById('modalRoom').innerText = room;
+	document.getElementById('rentalModalOverlay').classList.add('show');
 }

@@ -1,5 +1,6 @@
 package hapum.hapum.controller.user;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
@@ -17,9 +18,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import hapum.hapum.domain.LoginForm;
+import hapum.hapum.domain.Organization;
+import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.SigninForm;
 import hapum.hapum.domain.User;
 import hapum.hapum.service.EmailService;
+import hapum.hapum.service.OrganizationService;
+import hapum.hapum.service.ProgramService;
+import hapum.hapum.service.ReservationService;
 import hapum.hapum.service.SessionService;
 import hapum.hapum.service.UserAuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -38,7 +44,8 @@ public class UserAuthController {
 	private final UserAuthService userAuthService;
 	private final SessionService sessionService;
 	private final EmailService emailService;
-
+	private final ProgramService programService;
+	private final OrganizationService organizationService;
 	@GetMapping("/login")
 	public String getLogin(Model model) {
 		model.addAttribute("loginForm", new LoginForm()); // 모델에 객체 추가
@@ -106,18 +113,20 @@ public class UserAuthController {
 	}
 
 	@GetMapping("/signin")
-	public String getSignin(Model model) {
+	public String getSignin(HttpServletRequest req, Model model) {
+		addUserToModel(req, model);
 		model.addAttribute("signinForm", new SigninForm()); // 모델에 객체 추가
 		return "auth/signin";
 	}
 
 	@PostMapping("/doSignin")
 	public String processSignup(@Valid @ModelAttribute SigninForm signinForm, BindingResult bindingResult,
-			RedirectAttributes redirectAttributes, Model model) {
+			RedirectAttributes redirectAttributes, Model model,HttpServletRequest req) {
 
 		boolean success = userAuthService.processSignup(signinForm, bindingResult);
 
 		if (!success) {
+			addUserToModel(req, model);
 			model.addAttribute("signinForm", signinForm);
 			return "auth/signin";
 		}
@@ -154,5 +163,16 @@ public class UserAuthController {
 		userAuthService.updatePasswordByEmail(email, newPw);
 		return count;
 	}
-
+	private void addUserToModel(HttpServletRequest req, Model model) {
+		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("loginMember");
+		model.addAttribute("user", user);
+		
+		// [추가] 이제 모든 페이지의 header 조각이 프로그램 sub-menu 데이터를 참조할 수 있습니다.
+		List<ProgramAdd> headerProgramAdds = programService.selectAllProgramAdd();
+		model.addAttribute("headerProgramAdds", headerProgramAdds);
+		
+		List<Organization> organizationList = organizationService.selectAllOrganization();
+		model.addAttribute("organizationList", organizationList);
+	}
 }

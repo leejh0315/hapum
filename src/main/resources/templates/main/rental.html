@@ -8,65 +8,83 @@
 	<title>하품센터-대관신청</title>
 	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
 	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
-
 	<link rel="stylesheet" th:href="@{/css/main/rental.css}" media="only screen and (min-width: 769px)">
 	<link rel="stylesheet" th:href="@{/css/main/mobile/rental.css}" media="only screen and (max-width: 768px)">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-
 	<link rel="stylesheet" th:href="@{/css/footer.css}" />
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<style>
-
-	</style>
 </head>
 
 <body>
 	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+
 	<div id="spinnerOverlay" class="spinner-overlay">
 		<div class="spinner"></div>
 	</div>
-	<div class="container">
-		<div class="sidebar">
-			<div class="sidebar-title">대관신청</div>
-			<div class="room-grid">
-				<!--<button class="menu-button room-btn active" data-room="강의실1">강의실1</button>-->
+
+	<!-- ── Sticky 헤더 (information과 동일 구조) ── -->
+	<div class="fixed-header-wrapper">
+		<div class="fixed-header-inner">
+			<div class="info-top-bar">
+				<span class="info-prefix">RENTAL</span>
+				<h2 class="info-title">대관신청</h2>
+			</div>
+			<div class="top-menu-bar" id="topMenuBar">
+				<span class="floor-prefix">1F</span>
 				<button class="menu-button room-btn active" data-room="강의실">강의실</button>
+				<span class="menu-space-divider"></span>
+				<span class="floor-prefix">2F</span>
 				<button class="menu-button room-btn" data-room="강당">강당</button>
 				<button class="menu-button room-btn" data-room="연습실">연습실</button>
 			</div>
 		</div>
+	</div>
 
+	<!-- ── 메인 콘텐츠 ── -->
+	<div class="container">
 		<div class="content">
-			<!-- 시설 정보 및 타임테이블 -->
 			<div id="room-info" style="display: none;">
-				<h3 id="room-title"></h3>
-				<h4 id="floor-title" style="color: #666;"></h4>
-				<div class="room-flex-container">
-					<!-- 사진 + 설명 -->
-					<div id="room-content"></div>
-					<!-- 타임테이블 -->
-					<div class="timetable-wrapper">
-						<div id="timetable-container" class="timetable" style="display: none;">
-							<div class="slot-row-container">
-								<div class="slot-row" id="time-slots-row">
-									<div class="label-cell">예약</div>
-								</div>
-							</div>
-							<div style="margin: 20px 0;">
-								<span>예약 가능 날짜 : <span id="date-range-text"></span></span><br />
-								<input type="date" id="datePicker" />
-							</div>
-							<div class="selected-time-display" id="selected-time-display"></div>
-							<button id="submit-btn" disabled onclick="submitRental()">대관 신청하기</button>
+
+				<!-- 타이틀 -->
+				<div class="title-area">
+					<div id="floor-title"></div>
+					<div id="room-title"></div>
+				</div>
+
+				<!--
+					1행: 사진(좌) + 설명(우) — JS가 #room-content 에 innerHTML 주입
+					JS rental.js: contentDiv.innerHTML = `<img ...><div>...</div>`
+					              + contentDiv.appendChild(timeButton)
+				-->
+				<div id="room-content"></div>
+				<!-- JS가 appendChild한 버튼은 #room-content 바로 다음에 위치함 → 2행 -->
+
+				<!--
+					3행: 타임테이블
+					JS: timetableContainer.style.display = 'block'
+				-->
+				<div id="timetable-container" class="timetable" style="display: none;">
+					<div class="date-picker-section">
+						<span>예약 가능 날짜 : <span id="date-range-text"></span></span><br />
+						<input type="date" id="datePicker" class="modern-date-input" />
+					</div>
+					<div class="slot-row-container">
+						<div class="slot-row" id="time-slots-row">
+							<div class="label-cell">예약</div>
 						</div>
 					</div>
+					<div class="booking-summary-section">
+						<div class="selected-time-display" id="selected-time-display"></div>
+						<button id="submit-btn" disabled onclick="submitRental()">대관 신청하기</button>
+					</div>
 				</div>
+
 			</div>
 		</div>
 	</div>
 
-	<div id="rentalUseGuide" class="use-guide-modal" style="margin-bottom: 20px;">
+	<!-- ── 모달들 (id/구조 변경 없음) ── -->
+	<div id="rentalUseGuide" class="use-guide-modal">
 		<div class="modal-content">
 			<h3>대관 이용 안내</h3>
 			<ol style="padding-left: 1.2em; line-height: 1.6; margin-top:40px">
@@ -81,7 +99,8 @@
 				※ 위 안내사항이 지켜지지 않을 시 추후 대관이 제한될 수 있습니다.
 			</p>
 			<div class="useGuideCheckBox">
-				<p>이용 안내를 확인하였습니다.</p><input id="useGuideCheckBox" type="checkbox">
+				<p>이용 안내를 확인하였습니다.</p>
+				<input id="useGuideCheckBox" type="checkbox">
 			</div>
 			<div class="useGuideBtn-wrapper">
 				<button id="useGuideBtn" class="useGuideBtn">다음</button>
@@ -89,46 +108,33 @@
 		</div>
 	</div>
 
-	<div id="rentalDetailModal" class="rental-detail-modal" style="margin-bottom: 20px;">
+	<div id="rentalDetailModal" class="rental-detail-modal">
 		<div class="modal-content">
 			<h3>대관 상세 정보 입력</h3>
-
 			<div class="modal-input-group" style="margin-top: 30px;">
 				<label for="purpose"><strong>대관 목적</strong></label>
 				<input type="text" id="purpose" placeholder="예: 청년 모임, 회의 등" />
-
 				<label for="groupName"><strong>단체명</strong></label>
 				<input type="text" id="groupName" placeholder="예: 청년부" />
-
 				<label for="headCount"><strong>사용 인원</strong></label>
 				<input type="number" id="headCount" placeholder="예: 10" />
 			</div>
-
 			<div class="modal-checkbox-group" style="margin-top: 15px;">
 				<p><strong>장비 사용 여부</strong></p>
-				<label style="margin-right: 15px;">
-					<input type="checkbox" id="needBeam" /> 빔프로젝터
-				</label>
-				<label>
-					<input type="checkbox" id="needSound" /> 음향 장비
-				</label>
+				<label style="margin-right: 15px;"><input type="checkbox" id="needBeam" /> 빔프로젝터</label>
+				<label><input type="checkbox" id="needSound" /> 음향 장비</label>
 			</div>
-
 			<div class="useGuideBtn-wrapper" style="margin-top: 30px;">
 				<button id="detailConfirmBtn" class="useGuideBtn">다음</button>
 			</div>
 		</div>
 	</div>
 
-
-
-
-
 	<div id="rentalModalOverlay" class="modal-overlay">
 		<div class="modal-content">
 			<h3>대관 신청 확인</h3>
 			<div class="modal-scroll">
-				<p>아래 내용을 확인하신 후 ‘확인’ 버튼을 눌러주세요.</p>
+				<p>아래 내용을 확인하신 후 '확인' 버튼을 눌러주세요.</p>
 				<ul>
 					<li>선택하신 날짜: <span id="modalDate"></span></li>
 					<li>선택하신 시간: <span id="modalTime"></span></li>
@@ -141,39 +147,31 @@
 						<li>대관 신청자(단체) 및 대관 인원 확인</li>
 						<li>대관 허위 신청 방지</li>
 					</ul>
-
 					<p><strong>□ 수집, 이용할 개인정보의 내용</strong></p>
 					<ul>
 						<li>필수개인정보: 성명, 휴대폰번호</li>
-						<li> 조건부 필수개인정보 : 소속단체 (단체 대관 신청시)</li>
+						<li>조건부 필수개인정보 : 소속단체 (단체 대관 신청시)</li>
 						<li>선택개인정보: 본당, 세례명</li>
 					</ul>
-
 					<p><strong>□ 개인정보의 보유, 이용 기간</strong></p>
 					<ul>
 						<li>보유기간 : 대관 신청시부터 대관 종료까지</li>
-						<li>이용기간 : 대관 신청, 진행 기간</li>
 					</ul>
-
 					<p><strong>□ 개인 정보의 제3자 제공 안내</strong></p>
 					<ul>
 						<li>개인정보를 제공 받는 자 : 본 기관의 종사자 및 관계자</li>
-						<li>이용 목적 : 본 기관 종사자 및 관계자의 대관 정보 파악</li>
 						<li>제공하는 개인정보 항목 : 성명, 휴대폰번호, 소속단체(조건부), 본당(선택), 세례명(선택)</li>
 					</ul>
-
 					<p><strong>□ 동의를 거부할 권리 및 처리</strong></p>
 					<ul>
-						<li>귀하는 개인정보 제공 이용을 거부할 수 있습니다. 다만, 이에 대한 동의를 하지 않을 경우에는 대관 신청, 프로그램 신청 및 증빙자료 발급 등에 불이익을 받을 수
-							있습니다.</li>
+						<li>동의를 하지 않을 경우 대관 신청에 불이익을 받을 수 있습니다.</li>
 					</ul>
 				</div>
 			</div>
-			<label>
+			<label style="margin-top: 15px; display: block;">
 				<input type="checkbox" id="privacyConsentCheckbox" />
 				개인정보 수집·이용·제공에 동의합니다.
 			</label>
-
 			<div style="margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px;">
 				<button id="confirmApplyBtn">확인</button>
 				<button id="cancelApplyBtn">취소</button>
@@ -182,9 +180,9 @@
 	</div>
 
 	<div th:replace="~{main/footer :: footer}"></div>
+
 	<script th:src="@{/js/header.js}"></script>
 	<script th:src="@{/js/roomData.js}"></script>
-
 	<script th:inline="javascript">
 		const blockedDays = [[${blockedDays}]];
 		const fixedReservations = [[${fixedReservations}]];
@@ -193,15 +191,17 @@
 		const user = /*[[${user}]]*/ null;
 	</script>
 	<script th:src="@{/js/main/rental.js}"></script>
-<script th:inline="javascript">
-  window.addEventListener('load', () => {
-    // 자동으로 '강의실2' 버튼 클릭
-    const roomBtn = document.querySelector('.room-btn[data-room="강의실"]');
-    if (roomBtn) {
-      roomBtn.click();
-    }
-  });
-</script>
-</body>
 
+	<script th:inline="javascript">
+		document.addEventListener('DOMContentLoaded', () => {
+			setTimeout(() => {
+				const params    = new URLSearchParams(window.location.search);
+				const roomParam = params.get('room');
+				const targetRoom = roomParam || '강의실';
+				const roomBtn   = document.querySelector(`.room-btn[data-room="${targetRoom}"]`);
+				if (roomBtn) roomBtn.click();
+			}, 0);
+		});
+	</script>
+</body>
 </html>

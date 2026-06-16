@@ -1,46 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/mainLayout}">
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta name="view-transition" content="same-origin" />
-	<link rel="shortcut icon" href="/img/logohp.png">
-
 	<title>하품센터</title>
-
 	<meta name="description" content="천주교 대전교구 천안지역 청소년사목 하품센터는 청소년과 청년들을 위한 신앙, 문화, 교육 프로그램을 운영하는 천안지역 복합 사목 공간입니다." />
 	<meta name="keywords" content="하품센터, 천주교, 대전교구, 천안 청소년, 청년 사목, 천안 하품, 청년센터, 청소년센터, 가톨릭 청년, 가톨릭" />
-	<meta name="author" content="하품센터" />
-	<meta name="naver-site-verification" content="0e08634f0478bf532ff0f28a2dbfa176ce2fa473" />
-	<!-- Open Graph (SNS 공유용) -->
-
-	<meta property="og:title" content="하품센터" />
-	<meta property="og:type" content="website" />
-	<meta property="og:description" content="천주교 대전교구 천안지역 청소년 사목 하품센터" />
-	<meta property="og:image" content="/img/main.png" />
-	<meta property="og:url" content="https://hapum.org" />
-
-	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
-	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
-
-	<link rel="stylesheet" th:href="@{/css/footer.css}" />
-
-	<link rel="stylesheet" th:href="@{/css/main/main.css}" media="only screen and (min-width: 769px)" />
-	<link rel="stylesheet" th:href="@{/css/main/mobile/main.css}" media="only screen and (max-width: 768px)" />
-
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<style>
-
-	</style>
+	<th:block layout:fragment="head-content">
+		<meta property="og:title" content="하품센터" />
+		<meta property="og:image" content="/img/main.png" />
+		<link rel="stylesheet" th:href="@{/css/main/main.css}" media="only screen and (min-width: 769px)" />
+		<link rel="stylesheet" th:href="@{/css/main/mobile/main.css}" media="only screen and (max-width: 768px)" />
+	</th:block>
 </head>
-
 <body>
-	<div th:replace="~{main/header :: headFrag(${user})}"></div>
-	<main>
+	<main layout:fragment="content">
 		<section id="top-section">
-
 			<div class="mobile-box">
 				<div class="mobile-img">
 					<div class="mobile-text">
@@ -186,17 +161,12 @@
 				</div>
 			</div>
 		</div>
-
 	</main>
-	<div th:replace="~{main/footer :: footer}"></div>
 
-	<!-- header & slide 스크립트 -->
-	<script th:src="@{/js/header.js}"></script>
-	<script th:src="@{/js/main/imageSlide.js}"></script>
-	<script th:src="@{/js/main/main.js}"></script>
-
-	<!-- 공지사항 순서 수정 스크립트 -->
-	<script>
+	<th:block layout:fragment="scripts">
+		<script th:src="@{/js/main/imageSlide.js}"></script>
+		<script th:src="@{/js/main/main.js}"></script>
+		<script>
 		document.addEventListener('DOMContentLoaded', function () {
 			const modals = document.querySelectorAll('.popup-modal');
 
@@ -235,258 +205,6 @@
 				});
 			});
 		});
-	</script>
+		</script>
+	</th:block>
 </body>
-
-</html>
-<!--<!DOCTYPE html>-->
-<!--<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">-->
-
-<!--<head>-->
-<!--	<meta charset="UTF-8" />-->
-<!--	<meta name="viewport" content="width=device-width, initial-scale=1.0" />-->
-<!--	<meta name="view-transition" content="same-origin" />-->
-<!--	<link rel="shortcut icon" href="/img/logohp.png">-->
-
-<!--	<title>하품센터</title>-->
-
-
-<!--	<meta name="description" content="천주교 대전교구 천안지역 청소년사목 하품센터는 청소년과 청년들을 위한 신앙, 문화, 교육 프로그램을 운영하는 천안지역 복합 사목 공간입니다." />-->
-<!--	<meta name="keywords" content="하품센터, 천주교, 대전교구, 천안 청소년, 청년 사목, 천안 하품, 청년센터, 청소년센터, 가톨릭 청년, 가톨릭" />-->
-<!--	<meta name="author" content="하품센터" />-->
-<!--	<meta name="naver-site-verification" content="0e08634f0478bf532ff0f28a2dbfa176ce2fa473" />-->
-<!--	 Open Graph (SNS 공유용) -->
-
-
-<!--	<meta property="og:title" content="하품센터" />-->
-<!--	<meta property="og:type" content="website" />-->
-<!--	<meta property="og:description" content="천주교 대전교구 천안지역 청소년 사목 하품센터" />-->
-<!--	<meta property="og:image" content="/img/main.png" />-->
-<!--	<meta property="og:url" content="https://hapum.org" />-->
-
-<!--	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />-->
-<!--	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />-->
-
-
-<!--	<link rel="stylesheet" th:href="@{/css/footer.css}" />-->
-
-
-<!--	<link rel="stylesheet" th:href="@{/css/main/main.css}" media="only screen and (min-width: 769px)" />-->
-<!--	<link rel="stylesheet" th:href="@{/css/main/mobile/main.css}" media="only screen and (max-width: 768px)" />-->
-
-
-<!--	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />-->
-<!--	<script src="https://code.jquery.com/jquery-latest.min.js"></script>-->
-<!--	<style>-->
-
-<!--	</style>-->
-<!--</head>-->
-
-<!--<body>-->
-<!--	<div th:replace="~{main/header :: headFrag(${user})}"></div>-->
-<!--	<main>-->
-<!--		<section id="top-section">-->
-
-<!--			<div class="mobile-box">-->
-<!--				<div class="mobile-img">-->
-<!--					<div class="mobile-text">-->
-<!--						<div>-->
-<!--							<span class="highlight">하품센터</span>는 함께 성장하며-->
-<!--						</div>-->
-<!--						<div>-->
-<!--							서로 행복을 나누는 <span class="highlight">하느님 품</span>입니다-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					<div class="mobile-btn">-->
-<!--						<button class="btn btn1" onclick="location.href='/main/introduce'">센터소개</button>-->
-<!--						<button class="btn btn2" onclick="location.href='/main/information'">시설안내</button>-->
-<!--						<button class="btn btn3" onclick="location.href='/main/program'">프로그램</button>-->
-<!--						<button class="btn btn4" onclick="location.href='/main/rental'">대관신청</button>-->
-<!--						<button class="btn btn5" onclick="location.href='/main/news'">갤러리</button>-->
-<!--						<button class="btn btn6" onclick="location.href='/main/organization'">단체소식</button>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
-
-
-<!--			<div class="left-section">-->
-<!--				<h3 style="margin-bottom: 10px;">프로그램 안내</h3>-->
-<!--				<div id="slideshow-wrapper">-->
-<!--					<div id="slideshow-container">-->
-<!--						<div id="slideshow">-->
-<!--							 Thymeleaf 반복문: programs 리스트의 각 thumbnailSrc -->
-<!--							<div th:each="program : ${programs}">-->
-<!--								<div class="slide-wrapper">-->
-<!--									<img th:src="${program.thumbnailSrc}" th:attr="data-program-id=${program.id},-->
-<!--                      style='view-transition-name: program-thumbnail-' + ${program.id}" alt="슬라이드 이미지"-->
-<!--										style="position: absolute;" />-->
-<!--								</div>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--					</div>-->
-<!--					 슬라이드 좌우 전환 버튼 -->
-<!--					<div id="slideshow-controls">-->
-<!--						<button id="prev-btn">&lt;</button>-->
-<!--						<button id="next-btn">&gt;</button>-->
-<!--					</div>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--			 생략: 슬라이드 영역 -->
-<!--			<div class="right-section">-->
-				
-
-<!--				<div id="notification-list">-->
-<!--					 admin only: 수정/수정완료 버튼 -->
-<!--					<div class="admin-controls" th:if="${user != null and user.email == 'admin'}">-->
-<!--						<button id="edit-order-btn" type="button">-->
-<!--							<i class="fa-solid fa-pen-to-square"></i>-->
-<!--							<span>수정</span>-->
-<!--						</button>-->
-<!--					</div>-->
-
-<!--					<div th:if="${#lists.isEmpty(notifications)}">-->
-<!--						등록된 공지사항이 없습니다.-->
-<!--					</div>-->
-<!--					<div th:if="${!#lists.isEmpty(notifications)}">-->
-<!--						<h3 style="margin-bottom: 10px;">공지사항</h3>-->
-<!--						<table>-->
-<!--							<thead>-->
-<!--								<tr>-->
-<!--									<th>제목</th>-->
-<!--									<th>작성일자</th>-->
-<!--									<th class="order-col">순서</th>-->
-<!--								</tr>-->
-<!--							</thead>-->
-<!--							<tbody>-->
-<!--								<tr th:each="notif, iterStat : ${notifications}" th:if="${iterStat.index < 6}">-->
-<!--									<td>-->
-<!--										<a th:href="@{/main/notification/detail/{id}(id=${notif.id})}">-->
-<!--											<span th:text="${notif.title}" class="notice-title"-->
-<!--												th:classappend="${notif.isTop=='1'} ? ' top-bold' : ''">-->
-<!--												공지제목-->
-<!--											</span>-->
-<!--											<i th:if="${notif.isTop=='1'}" class="fa-solid fa-thumbtack pin-icon"-->
-<!--												aria-hidden="true"></i>-->
-<!--										</a>-->
-<!--										<button type="button" class="toggle-top-btn"-->
-<!--											th:if="${user != null and user.email=='admin'}"-->
-<!--											th:attr="data-id=${notif.id},data-istro=${notif.isTop}">-->
-<!--											<i class="fa-solid"-->
-<!--												th:classappend="${notif.isTop=='1'} ? ' fa-arrow-turn-down' : ' fa-arrow-turn-up'">-->
-<!--											</i>-->
-<!--										</button>-->
-<!--									</td>-->
-<!--									<td>-->
-<!--										<span class="datetime-full"-->
-<!--											th:text="${#temporals.format(notif.createOn, 'yyyy-MM-dd HH:mm')}"></span>-->
-
-<!--										 모바일용 (날짜만) -->
-<!--										<span class="datetime-dateonly"-->
-<!--											th:text="${#temporals.format(notif.createOn, 'yyyy-MM-dd')}"></span>-->
-<!--									</td>-->
-<!--									 isTop=1인 것만 input 활성화 -->
-<!--									<td class="order-col" th:if="${notif.isTop=='1'}">-->
-<!--										<input type="number" name="orderNum" th:value="${notif.orderNum}" min="1"-->
-<!--											th:attr="data-id=${notif.id}" />-->
-<!--									</td>-->
-<!--									 isTop!=1 or non-admin view: 빈 td -->
-<!--									<td class="order-col" th:if="${notif.isTop!='1'}"></td>-->
-<!--								</tr>-->
-<!--							</tbody>-->
-<!--						</table>-->
-<!--					</div>-->
-<!--				</div> /#notification-list -->
-<!--				<section class="gallery">-->
-<!--					<h3>갤러리</h3>-->
-<!--					<div class="gallery-wrapper">-->
-<!--						<button id="gallery-prev" type="button">&lt;</button>-->
-<!--						<div class="gallery-container">-->
-<!--							<div class="gallery-track">-->
-<!--								 fileNames 리스트의 모든 이미지를 렌더 -->
-<!--								<div class="gallery-item" th:each="n : ${news}">-->
-<!--									<a th:href="@{/main/news/detail/{id}(id=${n.id})}">-->
-<!--										<img th:src="${n.thumbnailSrc}" alt="gallery image" />-->
-<!--									</a>-->
-<!--								</div>-->
-<!--							</div>-->
-<!--						</div>-->
-<!--						<button id="gallery-next" type="button">&gt;</button>-->
-<!--					</div>-->
-<!--				</section>-->
-
-<!--			</div>-->
-<!--			</div>-->
-<!--		</section>-->
-
-<!--		<div th:each="popup, iterStat : ${popupProgram}" th:if="${popup.thumbnailSrc != null}"-->
-<!--			th:id="'popup-modal-' + ${popup.id}" class="popup-modal" th:style="'display: none;'">-->
-<!--			<div class="popup-content">-->
-<!--				<a th:href="${popup.id == 76} ? @{/auth/signin} : @{/main/program/detail/{id}(id=${popup.id})}">-->
-
-<!--					<img th:src="${popup.thumbnailSrc}" alt="팝업 이미지" class="popup-image" />-->
-<!--				</a>-->
-<!--				<div class="popup-footer">-->
-<!--					<label>-->
-<!--						<input type="checkbox" th:id="'dont-show-' + ${popup.id}" />-->
-<!--						오늘 하루 보지 않기-->
-<!--					</label>-->
-<!--					<button th:id="'close-popup-btn-' + ${popup.id}" th:attr="data-id=${popup.id}">-->
-<!--						닫기-->
-<!--					</button>-->
-<!--				</div>-->
-<!--			</div>-->
-<!--		</div>-->
-
-
-<!--	</main>-->
-<!--	<div th:replace="~{main/footer :: footer}"></div>-->
-
-<!--	 header & slide 스크립트 -->
-<!--	<script th:src="@{/js/header.js}"></script>-->
-<!--	<script th:src="@{/js/main/imageSlide.js}"></script>-->
-<!--	<script th:src="@{/js/main/main.js}"></script>-->
-
-<!--	 공지사항 순서 수정 스크립트 -->
-<!--	<script>-->
-<!--		document.addEventListener('DOMContentLoaded', function () {-->
-<!--			const modals = document.querySelectorAll('.popup-modal');-->
-
-<!--			modals.forEach(modal => {-->
-<!--				const id = modal.id.replace('popup-modal-', '');-->
-
-<!--				// localStorage 확인-->
-<!--				const hideKey = 'popupHideUntil_' + id;-->
-<!--				const hideUntil = localStorage.getItem(hideKey);-->
-<!--				const now = new Date();-->
-
-<!--				if (!hideUntil || new Date(hideUntil) <= now) {-->
-<!--					modal.style.display = 'flex'; // 모달 띄우기-->
-<!--				}-->
-
-<!--				// 닫기 버튼-->
-<!--				const closeBtn = document.getElementById('close-popup-btn-' + id);-->
-<!--				const checkbox = document.getElementById('dont-show-' + id);-->
-
-<!--				if (closeBtn) {-->
-<!--					closeBtn.addEventListener('click', function () {-->
-<!--						if (checkbox && checkbox.checked) {-->
-<!--							const tomorrow = new Date();-->
-<!--							tomorrow.setDate(tomorrow.getDate() + 1);-->
-<!--							localStorage.setItem(hideKey, tomorrow.toISOString());-->
-<!--						}-->
-<!--						modal.style.display = 'none';-->
-<!--					});-->
-<!--				}-->
-
-<!--				// 바깥 클릭 시 닫기-->
-<!--				modal.addEventListener('click', function (e) {-->
-<!--					if (e.target === modal) {-->
-<!--						modal.style.display = 'none';-->
-<!--					}-->
-<!--				});-->
-<!--			});-->
-<!--		});-->
-<!--	</script>-->
-<!--</body>-->
-
-<!--</html>-->

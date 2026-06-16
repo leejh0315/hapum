@@ -11,43 +11,34 @@
 
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
 
-	<link rel="stylesheet" th:href="@{/css/main/programDetail.css}" media="only screen and (min-width: 769px)">
-	<link rel="stylesheet" th:href="@{/css/main/mobile/programDetail.css}" media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" th:href="@{/css/main/programDetail.css}">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
 	<meta name="view-transition" content="same-origin" />
 	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-	<style>
-		.text {
-			overflow-x: auto;
-			/* 필요 시 가로 스크롤 */
-			word-break: break-word;
-			/* 단어 중간에도 줄바꿈 허용 */
-			white-space: pre-wrap;
-			/* 줄바꿈 보존 + 자동 줄바꿈 */
-			max-width: 100%;
-			/* 부모의 최대 너비를 넘지 않도록 */
-			box-sizing: border-box;
-		}
-	</style>
 </head>
 
 <body>
 	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-	<!-- ✅ Spinner 오버레이 추가 -->
 	<div id="spinnerOverlay" class="spinner-overlay">
 		<div class="spinner"></div>
 	</div>
 
+	<div class="fixed-header-wrapper">
+		<div class="fixed-header-inner">
+			<div class="info-top-bar">
+				<span class="info-prefix">PROGRAM</span>
+				<h2 class="info-title" onclick="location.href='/main/program'">프로그램</h2>
+			</div>
+		</div>
+	</div>
+
 	<div class="container">
-		<!-- 좌측 사이드바 -->
 		<div class="sidebar">
-			<div class="sidebar-title" onclick="location.href='/main/program'">프로그램</div>
 			<button onclick="history.back()" class="menu-button">돌아가기</button>
 		</div>
 
-		<!-- 콘텐츠 영역 -->
 		<div class="content">
 			<div class="program-image">
 				<img th:src="@{${program.thumbnailSrc}}" alt="프로그램 썸네일"
@@ -76,7 +67,6 @@
 
 						</li>
 
-
 						<li><strong>장소:</strong> <span th:text="${program.location}"></span></li>
 						<li><strong>대상:</strong> <span th:text="${program.target}"></span></li>
 						<li><strong>참가비:</strong> <span th:text="${program.expense} + '원'"></span></li>
@@ -91,12 +81,10 @@
 						신청인원: <span th:text="${applyCount}"></span>/<span th:text="${program.capacity}"></span>명
 					</div>
 
-					<!-- 프로그램 종료 상태 -->
 					<th:block th:if="${program.openStatus == 'N'}">
 						<button class="apply-btn" disabled title="종료된 프로그램입니다">종료된 프로그램</button>
 					</th:block>
 
-					<!-- needJoin == 'N' → 로그인 여부 무시, flag 기준으로만 처리 -->
 					<th:block th:if="${program.needJoin == 'N' and program.openStatus == 'Y'}">
 						<th:block th:if="${flag == 'Y'}">
 							<button class="apply-btn" disabled>신청완료</button>
@@ -112,7 +100,6 @@
 						</th:block>
 					</th:block>
 
-					<!-- needJoin == 'Y' → 로그인 여부 체크 -->
 					<th:block th:if="${program.needJoin == 'Y'}">
 						<th:block th:if="${user == null}">
 							<th:block th:if="${program.openStatus == 'Y'}">
@@ -141,7 +128,7 @@
 
 		</div>
 	</div>
-	<!-- 추가 정보 입력 모달 -->
+
 	<div id="additionalInfoModalOverlay" class="modal-overlay">
 		<div class="info-modal-content">
 			<h3>프로그램 신청을 위한 추가 정보 입력</h3>
@@ -163,13 +150,11 @@
 							required />
 					</div>
 				</div>
-				<!-- 신청동기 -->
 				<div th:if="${program.needReason == 'Y'}" class="program-form-group">
 					<label>신청 동기</label>
 					<textarea class="info-modal-input" name="reason" placeholder="신청 동기를 입력하세요" required></textarea>
 				</div>
 
-				<!-- 협의사항 -->
 				<div th:if="${program.needOpinion == 'Y'}" class="program-form-group">
 					<label>협의 사항</label>
 					<textarea class="info-modal-input" name="opinion" placeholder="협의 사항을 입력하세요" required></textarea>
@@ -183,8 +168,6 @@
 		</div>
 	</div>
 
-
-
 	<div id="userInfoModalOverlay" class="modal-overlay">
 		<div class="modal-content">
 			<h3>[신청자 정보 입력]</h3>
@@ -193,7 +176,6 @@
 					<label for="userName">이름</label>
 					<input type="text" id="userName" name="userName" class="modal-input" placeholder="이름 입력" required
 						minlength="2" maxlength="20" />
-
 				</div>
 
 				<div class="form-group">
@@ -204,20 +186,15 @@
 
 				<div class="form-group">
 					<label for="parish">본당</label>
-					
 					<div class="church-selector" id="churchSelector">
-				        <input type="text" id="parish" name="parish" class="modal-input"placeholder="본당을 선택하세요" readonly>
-				        
+				        <input type="text" id="parish" name="parish" class="modal-input" placeholder="본당을 선택하세요" readonly>
 				        <div class="dropdown-container" id="dropdownContainer" style="display: none;">
-				            <div class="region-list" id="regionList">
-				                </div>
+				            <div class="region-list" id="regionList"></div>
 				            <div class="parish-list" id="parishList">
 				                <div class="placeholder-text">지구를 먼저 선택해주세요.</div>
-				                </div>
+				            </div>
 				        </div>
 				    </div>
-					
-			
 				</div>
 
 				<div class="form-group">
@@ -233,7 +210,6 @@
 			</form>
 		</div>
 	</div>
-
 
 	<div id="programApplyModalOverlay" class="modal-overlay">
 		<div class="modal-content">
@@ -283,6 +259,7 @@
 			</div>
 		</div>
 	</div>
+
 	<div th:replace="~{main/footer :: footer}"></div>
 	<script th:src="@{/js/header.js}"></script>
 	<script th:src="@{/js/main/church.js}"></script>
@@ -290,39 +267,31 @@
 	<script th:inline="javascript">
 		/*<![CDATA[*/
 		var program = /*[[${program}]]*/ {};
-		var user = /*[[${user}]]*/ null;   // ✅ 로그인 유저 내려받기
+		var user = /*[[${user}]]*/ null;
 		/*]]>*/
 		
-		console.log(churchData)
-const churchInput = document.getElementById('parish');
+		const churchInput = document.getElementById('parish');
         const dropdownContainer = document.getElementById('dropdownContainer');
         const regionList = document.getElementById('regionList');
         const parishList = document.getElementById('parishList');
 
-        // 1. 지구 리스트 렌더링
         function renderRegions() {
             Object.keys(churchData).forEach(region => {
                 const div = document.createElement('div');
                 div.className = 'list-item';
                 div.textContent = region;
                 
-                // 마우스 호버 시 이벤트
                 div.addEventListener('mouseenter', () => {
-                    // 활성화된 스타일 적용
                     document.querySelectorAll('.region-list .list-item').forEach(el => el.classList.remove('active'));
                     div.classList.add('active');
-                    
-                    // 본당 리스트 업데이트
                     renderParishes(region);
                 });
-
                 regionList.appendChild(div);
             });
         }
 
-        // 2. 본당 리스트 렌더링 (호버 시 호출됨)
         function renderParishes(region) {
-            parishList.innerHTML = ''; // 기존 리스트 초기화
+            parishList.innerHTML = '';
             const parishes = churchData[region];
             
             parishes.forEach(parish => {
@@ -330,31 +299,26 @@ const churchInput = document.getElementById('parish');
                 div.className = 'list-item';
                 div.textContent = parish;
                 
-                // 본당 클릭 시 이벤트
                 div.addEventListener('click', () => {
-                    churchInput.value = parish; // 인풋창에 값 입력
-                    dropdownContainer.style.display = 'none'; // 드롭다운 닫기
+                    churchInput.value = parish;
+                    dropdownContainer.style.display = 'none';
                 });
-
                 parishList.appendChild(div);
             });
         }
 
-        // 입력창 클릭 시 드롭다운 열고 닫기
         churchInput.addEventListener('click', (e) => {
-            e.stopPropagation(); // 클릭 이벤트 전파 방지
+            e.stopPropagation();
             const isVisible = dropdownContainer.style.display === 'flex';
             dropdownContainer.style.display = isVisible ? 'none' : 'flex';
         });
 
-        // 외부 화면 클릭 시 드롭다운 닫기
         document.addEventListener('click', (e) => {
             if (!document.getElementById('churchSelector').contains(e.target)) {
                 dropdownContainer.style.display = 'none';
             }
         });
 
-        // 초기화 실행
         renderRegions();
 
 		$(function () {
@@ -365,19 +329,15 @@ const churchInput = document.getElementById('parish');
 			const needOpinion = program.needOpinion === 'Y';
 			const needJoin = program.needJoin === 'Y';
 
-			// 신청하기 버튼 클릭
 			$('#openPrivacyModalBtn').on('click', function () {
 				if (!needJoin) {
-					// 비회원 신청 프로그램
 					if (user != null) {
-						// 로그인된 경우 → 신청자 정보 모달 건너뛰기
 						if (!needOrg && !needPart && !needRel && !needReason && !needOpinion) {
 							$('#programApplyModalOverlay').addClass('show');
 						} else {
 							$('#additionalInfoModalOverlay').addClass('show');
 						}
 					} else {
-						// 로그인 안 된 경우 → 신청자 정보 입력 모달 띄우기
 						$('#userInfoModalOverlay').addClass('show');
 
 						$('#confirmUserInfoBtn').off('click').on('click', function (e) {
@@ -388,33 +348,26 @@ const churchInput = document.getElementById('parish');
 							const baptismName = $('#baptismName').val().trim();
 							const parish = $('#parish').val().trim();
 
-
 							if (name.length < 2) {
 								alert("이름을 2자 이상 입력해주세요.");
 								$('#userName').focus();
 								return;
 							}
-
-							// 2️⃣ 세례명 체크
 							if (baptismName.length < 2) {
 								alert("세례명을 2자 이상 입력해주세요.");
 								$('#baptismName').focus();
 								return;
 							}
-
-							// 3️⃣ 본당 체크
 							if (parish.length < 2) {
 								alert("본당을 2자 이상 입력해주세요.");
 								$('#parish').focus();
 								return;
 							}
-
 							if (!phoneRegex.test(phoneVal)) {
 								alert("핸드폰 번호는 숫자만 8자 이상 11자 이하로 입력해주세요.");
 								$('#phone').focus();
 								return;
 							}
-
 
 							program.name = $('#userName').val();
 							program.baptismName = $('#baptismName').val();
@@ -434,24 +387,19 @@ const churchInput = document.getElementById('parish');
 						});
 					}
 				} else {
-					// 회원가입 필요 프로그램
 					if (user != null) {
-						// 로그인된 경우 → 바로 추가정보/개인정보 모달
 						if (!needOrg && !needPart && !needRel && !needReason && !needOpinion) {
 							$('#programApplyModalOverlay').addClass('show');
 						} else {
 							$('#additionalInfoModalOverlay').addClass('show');
 						}
 					} else {
-						// 로그인 안 된 경우 → 신청 불가
 						alert("로그인 후 신청 가능합니다.");
 						window.location.href = '/login';
 					}
 				}
 			});
 
-
-			// 추가 정보 입력 → 개인정보 동의 모달
 			$('#additionalInfoForm').off('submit').on('submit', function (e) {
 				e.preventDefault();
 				const orgName = $(this).find('input[name="orgName"]').val();
@@ -470,7 +418,6 @@ const churchInput = document.getElementById('parish');
 				$('#programApplyModalOverlay').addClass('show');
 			});
 
-			// 개인정보 동의 후 → 신청 AJAX
 			$('#confirmApplyBtn').off('click').on('click', function () {
 				if (!$('#privacyConsentCheckbox').is(':checked')) {
 					alert('개인정보 수집·이용·제공에 동의하셔야 신청이 가능합니다.');
@@ -481,13 +428,8 @@ const churchInput = document.getElementById('parish');
 				if (program.needPartCount != "N") {
 					if (isNaN(partCount) || partCount <= 0 || partCount > program.capacity) {
 						alert("참여 인원 수를 다시 입력해주세요.");
-
-						// 개인정보 모달 닫기
 						$('#programApplyModalOverlay').removeClass('show');
-
-						// 추가정보 모달 다시 열기
 						$('#additionalInfoModalOverlay').removeClass('show').addClass('show');
-
 						return;
 					}
 				}
@@ -508,16 +450,13 @@ const churchInput = document.getElementById('parish');
 								} else {
 									alert("신청에 성공하였습니다! 신청하신 번호로 연락드리겠습니다.");
 								}
-								// 회원가입 필요 프로그램
 							} else {
-								// 비회원 신청 프로그램
 								if (user != null) {
 									alert("신청에 성공하였습니다! 이메일을 확인해주세요.");
 								} else {
 									alert("신청에 성공하였습니다! 신청하신 번호로 연락드리겠습니다.");
 								}
 							}
-
 							window.location.href = '/main/program';
 						} else if (data == 2) {
 							alert("신청에 실패하였습니다. 인원이 초과되었습니다.");
@@ -531,7 +470,6 @@ const churchInput = document.getElementById('parish');
 				});
 			});
 
-			// 취소 버튼 및 바깥쪽 클릭 이벤트 항상 유지
 			$('#cancelApplyBtn').off('click').on('click', function () {
 				$('#programApplyModalOverlay').removeClass('show');
 			});
@@ -547,9 +485,6 @@ const churchInput = document.getElementById('parish');
 			});
 		});
 	</script>
-
-
-
 </body>
 
 </html>

@@ -1,103 +1,307 @@
-@media screen and (max-width: 768px) {
-	.container {
-		flex-direction: column;
-		height: 100vh;
-	}
-
-	html,
-	body {
-		margin: 0;
-		padding: 0;
-		overflow-x: hidden;
-		height: 100%;
-	}
-
-	.sidebar {
-		display: flex;
-		flex-direction: column;
-		background-color: #D6CCC2;
-
-	}
-
-.greetings{
-	display: none;
+body {
+  margin: 0;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #FFFFFF;
+  color: #000000;
+  -webkit-font-smoothing: antialiased;
 }
-	/* 1행: 제목 */
-	.sidebar-title {
-		width: 100%;
-		/* 전체 행 차지 */
-		text-align: center;
-		background-color: #D6CCC2;
-		color: white;
-		font-size: 14px;
-		font-weight: bold;
-		cursor: default;
-		padding: 10px 0;
-		border: none;
-	}
 
-	/* 2행: 버튼 4개 정렬 */
-	.menu-group {
-		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		/* 4개로 나눔 */
-		width: 100%;
-	}
+html,
+body {
+  overflow-x: hidden;
+}
 
-	.menu-button {
-		width: 100%;
-		box-sizing: border-box;
-		padding: 10px 0;
-		font-size: 14px;
-		background-color: #F5EBE0;
-		border: none;
-		color: #333;
-		cursor: pointer;
-		transition: background-color 0.2s ease;
-		border: 1px solid #D6CCC2;
-	}
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 28px 20px 80px;
+  gap: 28px;
+}
 
+.info-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #EAEAEA;
+  padding-bottom: 14px;
+}
 
-	.main-content {
-		flex-direction: column;
-		width: 100%;
-		font-size: small;
-	}
+.info-prefix {
+  font-size: 13px;
+  font-weight: 900;
+  color: #111111;
+  letter-spacing: 2px;
+  padding-right: 12px;
+  border-right: 1px solid #DDDDDD;
+  flex-shrink: 0;
+}
 
-	.content-placeholder {
-		font-size: 22px;
-		text-align: center;
-	}
+.info-title {
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+  color: #111111;
+}
 
+.top-menu-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 24px;
+  padding: 0 0 12px;
+  overflow-x: auto;
+  white-space: nowrap;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
+.top-menu-bar::-webkit-scrollbar {
+  display: none;
+}
 
-	/*#EDEDE9*/
-	/*#D6CCC2*/
-	/*#F5EBE0*/
-	/*#E3D5CA*/
-	/*#D5BDAF*/
+.menu-button {
+  flex: 0 0 auto;
+  background: none;
+  border: none;
+  padding: 6px 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #CCCCCC;
+  cursor: pointer;
+  letter-spacing: 0;
+}
 
-	.main-content {
-		width: 90%;
-		padding: 5%;
-		overflow-wrap: break-word;
-		word-break: break-word;
-		white-space: normal;
-		flex: 1;
-	}
+.menu-button.current {
+  color: #000000;
+  font-weight: 700;
+  border-bottom: 3px solid #000000;
+}
 
-	.container {
-		flex: 1;
-		/* 본문 영역(사이드+메인)이 빈 공간을 전부 차지 */
-		display: flex;
-		height: 5000px;
-	}
+.main-content,
+.text-area {
+  width: 100%;
+  box-sizing: border-box;
+}
 
-	.menu-button.active {
-		background-color: #D5BDAF;
-		/* 활성화 버튼 배경 */
-		color: white;
-		font-weight: bold;
-	}
+.unified-card {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: #FAFAFA;
+  border: 1px solid #EEEEEE;
+  padding: 24px 20px;
+  margin-bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
 
+.card-header-module {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  border-bottom: 1px solid #EAEAEA;
+  padding-bottom: 14px;
+}
+
+.card-title-text {
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 700;
+  color: #111111;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-badge-num {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 800;
+  color: #DDDDDD;
+  letter-spacing: 1px;
+  line-height: 1.45;
+}
+
+.greetings-layout {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 20px;
+}
+
+.greetings-main-text {
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: #444444;
+}
+
+.greetings-main-text p {
+  margin: 0 0 16px;
+}
+
+.greetings-quote-box {
+  font-size: 15.5px;
+  font-style: italic;
+  color: #222222;
+  font-weight: 600;
+}
+
+.greetings-highlight-block {
+  background-color: #F5F5F5;
+  padding: 16px;
+  border-left: 3px solid #000000;
+  margin: 20px 0;
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.greetings-signature {
+  margin-top: 24px;
+  font-weight: 600;
+  color: #111111;
+  text-align: right;
+}
+
+.greetings-img-container {
+  width: 100%;
+}
+
+.greetings-img-container img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  height: auto;
+  object-fit: cover;
+  border: 1px solid #EEEEEE;
+}
+
+.timeline-year-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.timeline-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 0;
+  border-bottom: 1px dashed #EAEAEA;
+}
+
+.timeline-row:last-child {
+  border-bottom: none;
+}
+
+.timeline-date-col {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #666666;
+}
+
+.timeline-desc-col {
+  min-width: 0;
+  font-size: 14.5px;
+  color: #222222;
+}
+
+.timeline-toggle-btn {
+  display: inline-block;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #000000;
+  cursor: pointer;
+  user-select: none;
+}
+
+.timeline-sub-list {
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 14px;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  background: #F5F5F5;
+}
+
+.timeline-sub-list li {
+  position: relative;
+  padding-left: 12px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #555555;
+}
+
+.timeline-sub-list li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+  color: #999999;
+}
+
+.location-text-detail {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #444444;
+  margin: 0;
+}
+
+.bus-custom-list {
+  list-style: none;
+  padding: 0;
+  margin: 4px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.bus-custom-list li {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 5px 8px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.bus-badge-pill {
+  display: inline-block;
+  min-width: 68px;
+  padding: 3px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #FFFFFF;
+  border-radius: 3px;
+  text-align: center;
+}
+
+.bus-badge-pill.green {
+  background-color: #2B9E4B;
+}
+
+.bus-badge-pill.blue {
+  background-color: #2A62CC;
+}
+
+.bus-custom-list small {
+  color: #777777;
+}
+
+.map-highlight-span {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 5px 10px;
+  max-width: 100%;
+  box-sizing: border-box;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #111111;
+  background-color: #EDEDED;
 }

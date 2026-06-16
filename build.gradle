@@ -29,7 +29,7 @@ dependencies {
 
   implementation 'org.apache.poi:poi-ooxml:5.2.3'
 
-
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	implementation 'com.google.code.gson:gson:2.8.9'
 	implementation 'commons-io:commons-io:2.11.0'
 	
@@ -43,7 +43,7 @@ dependencies {
 	
 	//사진크기 압축
 	implementation 'net.coobird:thumbnailator:0.4.20'
-	
+	implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect:3.3.0'
 	//지우기
 	//runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 		implementation 'org.jsoup:jsoup:1.17.2'

@@ -1,20 +1,563 @@
-/* 기본 페이지 스타일 */
-body {
-	margin: 0;
-	font-family: Arial, sans-serif;
-	background-color: #FFFFFF;
-	overflow-x: hidden;
-	/* 전체 페이지 좌우 스크롤 방지 */
+/* =========================================
+   전역 스크롤바 흔들림 방지
+========================================= */
+html {
+ scrollbar-gutter: stable;
 }
 
-/* 전체 컨테이너: 사이드바와 메인 콘텐츠를 가로로 배치 */
+body {
+	margin: 0;
+	font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+	background-color: #FFFFFF;
+	color: #000000;
+	-webkit-font-smoothing: antialiased;
+	overflow-x: hidden;
+}
+
+/* =========================================
+   STICKY HEADER — information.css와 동일
+========================================= */
+.fixed-header-wrapper {
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.98);
+	backdrop-filter: blur(10px);
+	border-bottom: 1px solid #EAEAEA;
+}
+
+.fixed-header-inner {
+	max-width: 1250px;
+	margin: 0 auto;
+	padding: 40px 4% 0 4%;
+}
+
+.info-top-bar {
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	padding-bottom: 15px;
+}
+
+.info-prefix {
+	font-size: 16px;
+	font-weight: 900;
+	color: #111111;
+	letter-spacing: 2px;
+	padding-right: 20px;
+	border-right: 1px solid #DDDDDD;
+}
+
+.info-title {
+	font-size: 24px;
+	font-weight: 700;
+	margin: 0;
+	color: #111111;
+}
+
+.top-menu-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 36px;
+    padding: 12px 0;
+/*    overflow-x: auto;*/
+    white-space: nowrap;
+    height: 60px; 
+}
+
+.top-menu-bar::-webkit-scrollbar {
+	display: none;
+}
+
+.floor-prefix {
+	font-size: 17px;
+	font-weight: 800;
+	color: #000000;
+	letter-spacing: 4px;
+	user-select: none;
+}
+
+.menu-space-divider {
+	display: inline-block;
+	width: 60px;
+}
+
+/* 메뉴 밀림 현상 방지 CSS */
+.menu-button.room-btn {
+    background: none;
+    border: none;
+    padding: 4px 0;
+    display: inline-block;
+    text-align: center;
+    font-size: 20px;
+    font-weight: 500;
+    color: #CCCCCC;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    position: relative;
+    border-bottom: 3px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.menu-button.room-btn::after {
+    content: attr(data-room);
+    display: block; 
+    font-weight: 700; 
+    height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    pointer-events: none;
+    user-select: none;
+}
+
+.menu-button.room-btn.active {
+    color: #000000 !important;
+    font-weight: 700 !important;
+    border-bottom: 3px solid #000000 !important;
+}
+
+
+/* =========================================
+   CONTAINER ~ 하단 전체 유지
+========================================= */
 .container {
-  display: flex;
-  flex-direction: row;
-  padding: 0 7%;
-  gap: 10px;
-  box-sizing: border-box;
-  flex:1;
+/*	max-width: 1250px;*/
+/*	margin: 0 auto;*/
+	padding: 0 4% 120px 20%;
+	box-sizing: border-box;
+}
+
+.content {
+	padding-top: 50px;
+}
+
+/* ─────────────────────────────────────────
+   [수정] title-area: 고정 높이 확보
+   방 전환 시 타이틀 영역이 커졌다 줄었다 하지 않도록
+   floor-title(1줄) + room-title(1줄) + margin-bottom 합산
+───────────────────────────────────────── */
+.title-area {
+	margin-bottom: 60px;
+	min-height: 80px; /* floor-title + room-title 합산 최소 높이 고정 */
+}
+
+#floor-title {
+	font-size: 13px;
+	font-weight: 700;
+	color: #888888;
+	letter-spacing: 3px;
+	margin-bottom: 12px;
+	/* [수정] 빈 상태에서도 줄 높이를 점유하게 하여 레이아웃 고정 */
+	min-height: 16px;
+}
+
+#room-title {
+	font-size: 40px;
+	font-weight: 700;
+	color: #000000;
+	margin: 0;
+	letter-spacing: -1px;
+	/* [수정] 빈 상태에서도 줄 높이를 점유하게 하여 레이아웃 고정 */
+	min-height: 48px;
+}
+
+/* ─────────────────────────────────────────
+   [수정] #room-info: 항상 공간을 점유
+   display: none → block 전환으로 인한 reflow 제거
+   초기 로드 시에도 동일한 위치를 잡고 있음
+───────────────────────────────────────── */
+#room-info {
+	/* JS가 display:none → block으로 토글했던 것을 제거하고
+	   visibility로 대체하여 공간은 항상 유지 */
+	display: block !important;
+}
+
+#room-content {
+	display: block;
+	/* [수정] 이미지 + 설명 텍스트 영역 최소 높이 확보
+	   가장 큰 방 콘텐츠 기준으로 레이아웃이 튀지 않도록 */
+	min-height: 340px;
+}
+
+#room-content::after {
+	content: '';
+	display: table;
+	clear: both;
+}
+
+/* ★ 이미지 스타일 수정 (요청하신 크기 및 스타일 적용) */
+#room-content img {
+	float: left !important;
+	max-width: 540px !important;
+	width: 100% !important;
+	height: auto !important;
+	border-radius: 0px !important;
+	display: block !important;
+	margin-right: 60px !important;
+	margin-bottom: 0 !important;
+	margin-top: 0 !important;
+	object-fit: cover;
+	filter: grayscale(10%);
+	box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+	transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+#room-content img:hover {
+	filter: grayscale(0%);
+	transform: scale(1.02);
+}
+
+#room-content>div {
+	overflow: hidden;
+}
+
+#room-content ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+#room-content li {
+	display: flex;
+	align-items: flex-start;
+	font-size: 15.5px;
+	line-height: 1.85;
+	color: #444444;
+	padding: 20px 0;
+	border-bottom: 1px solid #EEEEEE;
+	word-break: keep-all;
+}
+
+#room-content li:first-child {
+	padding-top: 0;
+}
+
+#room-content li:last-child {
+	border-bottom: none;
+}
+
+#room-content strong {
+	display: inline-block;
+	color: #000000;
+	font-weight: 600;
+	width: 90px;
+	min-width: 90px;
+	flex-shrink: 0;
+}
+
+#room-content>button {
+	clear: both !important;
+	display: block !important;
+	float: none !important;
+	margin-top: 36px !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+	padding: 14px 36px !important;
+	width: auto !important;
+	background-color: #111111 !important;
+	color: #FFFFFF !important;
+	border: none !important;
+	border-radius: 0 !important;
+	font-size: 15px !important;
+	font-weight: 600 !important;
+	font-family: inherit !important;
+	cursor: pointer !important;
+	letter-spacing: 0.3px;
+	transition: background-color 0.2s;
+}
+
+#room-content>button:hover {
+	background-color: #444444 !important;
+}
+
+/* 타임테이블 */
+#timetable-container {
+	margin-top: 50px;
+	width: 100%;
+}
+
+.timetable {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid #EAEAEA;
+}
+
+.date-picker-section {
+	font-size: 14px;
+	color: #666666;
+	padding: 22px 28px;
+	background-color: #FAFAFA;
+	border-bottom: 1px solid #EAEAEA;
+}
+
+.modern-date-input {
+	display: block;
+	margin-top: 10px;
+	padding: 8px 12px;
+	border: 1px solid #CCCCCC;
+	font-size: 14px;
+	font-family: inherit;
+}
+
+.slot-row-container {
+	overflow-x: auto;
+	width: 100%;
+	padding: 20px 28px;
+	background-color: #FAFAFA;
+	border-bottom: 1px solid #EAEAEA;
+	box-sizing: border-box;
+}
+
+.slot-row {
+	display: flex;
+	gap: 4px;
+	min-width: max-content;
+	padding: 4px 0;
+}
+
+.label-cell {
+	min-width: 52px;
+	font-size: 13px;
+	font-weight: 700;
+	color: #111111;
+	display: flex;
+	align-items: center;
+	flex-shrink: 0;
+}
+
+.slot {
+	width: 58px;
+	height: 40px;
+	border: 1px solid #E0E0E0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	background-color: #FFFFFF;
+	font-size: 13px;
+	user-select: none;
+	flex-shrink: 0;
+	position: relative;
+	transition: background-color 0.12s;
+}
+
+.slot:hover {
+	background-color: #F5F5F5;
+}
+
+.slot.selected {
+	background-color: #000000 !important;
+	color: #FFFFFF !important;
+	border-color: #000000 !important;
+	font-weight: 700;
+}
+
+.blocked-slot {
+	background-color: #EAEAEA !important;
+	color: #A0A0A0 !important;
+	cursor: not-allowed !important;
+	pointer-events: none;
+}
+
+.slot.past-slot {
+	background-color: #EAEAEA !important;
+	color: #999999 !important;
+	cursor: not-allowed !important;
+}
+
+.tooltip {
+	display: none;
+	position: absolute;
+	bottom: calc(100% + 6px);
+	left: 50%;
+	transform: translateX(-50%);
+	background: #222;
+	color: #fff;
+	font-size: 11px;
+	white-space: nowrap;
+	padding: 4px 8px;
+	border-radius: 3px;
+	pointer-events: none;
+	z-index: 10;
+}
+
+.tooltip.visible {
+	display: block;
+}
+
+.booking-summary-section {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	gap: 20px;
+	padding: 22px 28px;
+	background-color: #FAFAFA;
+}
+
+.selected-time-display {
+	font-size: 14px;
+	font-weight: 700;
+	color: #000000;
+}
+
+#submit-btn {
+	padding: 13px 36px;
+	background-color: #000000;
+	color: #FFFFFF;
+	border: none;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+	border-radius: 0;
+	white-space: nowrap;
+	transition: background-color 0.2s;
+}
+
+#submit-btn:hover:not(:disabled) {
+	background-color: #333333;
+}
+
+#submit-btn:disabled {
+	background-color: #EAEAEA;
+	color: #999999;
+	cursor: not-allowed;
+}
+
+/* 모달 & 스피너 */
+.use-guide-modal,
+.rental-detail-modal,
+.modal-overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+	display: none;
+	align-items: center;
+	justify-content: center;
+	z-index: 2000;
+}
+
+.use-guide-modal.show,
+.rental-detail-modal.show,
+.modal-overlay.show {
+	display: flex;
+}
+
+.modal-content {
+	background: #FFFFFF;
+	width: 600px;
+	max-width: 92%;
+	max-height: 85vh;
+	padding: 40px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	border-radius: 0;
+}
+
+.modal-content h3 {
+	margin: 0 0 10px;
+	font-size: 18px;
+	font-weight: 700;
+}
+
+.modal-scroll {
+	overflow-y: auto;
+	flex: 1;
+	margin-bottom: 15px;
+}
+
+.scroll-box {
+	border: 1px solid #EAEAEA;
+	padding: 15px;
+	height: 180px;
+	overflow-y: auto;
+	background: #FAFAFA;
+	font-size: 13px;
+	line-height: 1.6;
+	margin-top: 15px;
+}
+
+.modal-input-group {
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-input-group label {
+	display: block;
+	margin-top: 14px;
+	font-size: 14px;
+}
+
+.modal-input-group input[type="text"],
+.modal-input-group input[type="number"] {
+	width: 100%;
+	height: 40px;
+	padding: 8px 12px;
+	border: 1px solid #CCCCCC;
+	margin-top: 6px;
+	box-sizing: border-box;
+	border-radius: 0;
+	font-size: 14px;
+}
+
+.useGuideCheckBox {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 20px;
+}
+
+.useGuideCheckBox p {
+	margin: 0;
+	font-size: 14px;
+}
+
+.useGuideBtn-wrapper {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 15px;
+}
+
+.useGuideBtn,
+#confirmApplyBtn {
+	padding: 12px 30px;
+	background: #000000;
+	color: #FFFFFF;
+	border: none;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 14px;
+	border-radius: 0;
+	transition: background 0.2s;
+}
+
+.useGuideBtn:hover,
+#confirmApplyBtn:hover {
+	background: #444444;
+}
+
+#cancelApplyBtn {
+	padding: 12px 30px;
+	background: #EAEAEA;
+	color: #333333;
+	border: none;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 14px;
+	border-radius: 0;
+	transition: background 0.2s;
+}
+
+#cancelApplyBtn:hover {
+	background: #DDDDDD;
 }
 
 .spinner-overlay {
@@ -36,465 +579,49 @@ body {
 	width: 60px;
 	height: 60px;
 	border: 6px solid #f3f3f3;
-	border-top: 6px solid #f5cc00;
+	border-top: 6px solid #000000;
 	border-radius: 50%;
 	animation: spin 1s linear infinite;
 }
 
 @keyframes spin {
 	0% {
-		transform: rotate(0deg);
+		transform: translate(-50%, -50%) rotate(0deg);
 	}
 
 	100% {
-		transform: rotate(360deg);
+		transform: translate(-50%, -50%) rotate(360deg);
 	}
 }
 
-.content {
-  flex: 1;
-  min-width: 0; /* flex-item에서 overflow-x 처리 위해 필요 */
-  padding-left: 5%;
-  padding-top: 5%;
-  display: flex;
-  flex-direction: column;
-}
+/* 모바일 */
+@media screen and (max-width: 768px) {
+	.fixed-header-inner {
+		padding-top: 20px;
+	}
 
-ul ul li {
-	margin-left: 2.0rem;
-}
+	.top-menu-bar {
+		justify-content: flex-start;
+		gap: 20px;
+	}
 
-.slot.past-slot {
-	background-color: #EDEDE9 !important;
-	color: #999;
-	cursor: not-allowed;
-}
+	.menu-space-divider {
+		width: 20px;
+	}
 
-/* 좌측 사이드바 (고정 폭 180px) */
-.sidebar {
-  width: 180px;
-  flex-shrink: 0; /* 절대 줄어들지 않게 */
-  background-color: #D6CCC2;
-  border: 1px solid #D5BDAF;
-  display: flex;
-  flex-direction: column;
-  padding: 0 10px 10px;
-}
+	#room-title {
+		font-size: 28px;
+	}
 
-.sidebar-title {
-	margin: 0 -10px 10px;
-	width: calc(100% + 20px);
-	padding: 12px 10px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border-bottom: 1px solid #D5BDAF;
-	font-size: 18px;
-	font-weight: bold;
-	color: #333;
-}
+	#room-content img {
+		float: none !important;
+		width: 100% !important;
+		max-width: 100% !important;
+		margin-right: 0 !important;
+		margin-bottom: 30px !important;
+	}
 
-
-/* 메인 콘텐츠 영역 (#room-info) - 사이드바 오른쪽 */
-#room-info {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-}
-
-/* 제목 요소가 있다면 전체 폭 사용 */
-#room-title,
-#floor-title {
-	margin: 0;
-	padding: 10px 0;
-}
-
-/* room-flex-container: 시설정보와 타임테이블을 가로로 균등 배치 */
-.room-flex-container {
-  
-  display: flex !important;
-  flex-direction: column !important;
-  
-  width: 100%;
-  gap: 0;
-  overflow: hidden;
-}
-
-
-/* 양쪽 모두 동일한 비율, 여백 제거 */
-#room-content {
-	display: grid;
-  grid-template-columns: auto 1fr;
-  grid-template-rows: auto auto auto;
-  grid-template-areas:
-    "img    text"
-    "choice text"
-    "btn    text"
-    "warn   text";
-  column-gap: 20px;
-}
-.room-content .roomInfoImg {
-  grid-area: img;
-}
-.room-content .roomInfoText {
-  grid-area: text;
-}
-
-.room-content .booking-choice {
-  grid-area: choice;
-}
-.booking-choice {
-	margin-top:10px;
-}
-.roomInfoText{
-	margin-left: 10%;
-	
-}
-.room-content #show-timetable-btn {
-  order: 2;
-  margin: 8px 0;
-}
-
-.room-content #login-wraning {
-  order: 3;
-  margin-bottom: 10px;
- }
-#room-content img {
-	min-width: 400px;
-	height: auto;
-}
-#show-timetable-btn {
-  grid-area: btn;
-  justify-self: start; /* 왼쪽 정렬 */
-}
-
-#login-warning {
-  grid-area: warn;
-  justify-self: start;
-  margin-bottom: 10px;
-}
-
-/* 타임테이블 영역 - 고정 폭 제거하고 유동 폭으로 변경 */
-/* timetable-wrapper는 내부가 넘칠 경우 스크롤 */
-.timetable-wrapper {
-  flex: 1;
-  overflow-x: auto;
-  margin-top: 5%;
-}
-
-#timetable-container{
-	width: 100%;
-}
-/* 타임테이블 내부 스타일 */
-.timetable {
-	display: flex;
-	flex-direction: column;
-}
-
-.slot-row-container {
-  overflow-x: auto;
-  width: 100%;
-  padding-bottom: 10px;
-}
-
-.slot-row {
-	display: flex;
-	gap: 0;
-	border-top: 1px solid #D5BDAF;
-	border-bottom: 1px solid #D5BDAF;
-	padding: 10px 0;
-	min-width: max-content;
-}
-
-.label-cell {
-	min-width: 100px;
-	text-align: center;
-	font-weight: bold;
-}
-
-.slot {
-	width: 60px;
-	height: 40px;
-	border: 1px solid #D5BDAF;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	position: relative;
-	border-radius: 4px;
-	background-color: #fff;
-	user-select: none;
-}
-
-.slot:hover {
-	background-color: #E3D5CA;
-}
-
-.blocked-slot {
-	background-color: #EDEDE9 !important;
-	pointer-events: none;
-	cursor: not-allowed;
-	color: #666;
-}
-
-.slot.selected {
-	background-color: #D5BDAF;
-	color: white;
-	font-weight: bold;
-}
-
-.selected-time-display {
-	margin: 15px 0;
-	font-weight: bold;
-}
-
-#submit-btn {
-	padding: 10px 20px;
-	background-color: #D5BDAF;
-	color: white;
-	border: none;
-	border-radius: 5px;
-	cursor: pointer;
-	margin-bottom:5%;
-}
-
-#submit-btn:disabled {
-	background-color: #EDEDE9;
-	cursor: not-allowed;
-}
-
-/* 공통 버튼 스타일 (room 버튼 및 메뉴 버튼) */
-.room-btn,
-.menu-button {
-	display: block;
-	width: calc(100% + 20px);
-	/* 좌우 여백 포함한 전체 폭 확보 */
-	margin-left: -10px;
-	/* 왼쪽 여백 제거 */
-	padding: 12px 10px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border: none;
-	border-bottom: 1px solid #D5BDAF;
-	font-size: 16px;
-	cursor: pointer;
-	color: #333;
-	transition: background-color 0.3s;
-	 word-break: keep-all;
-
-}
-
-.room-btn:hover,
-.menu-button:hover {
-	background-color: #E3D5CA;
-}
-
-.room-btn.active,
-.menu-button.active {
-	background-color: #D5BDAF;
-	color: white;
-	font-weight: bold;
-}
-
-.modal-overlay {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	display: none;
-	align-items: center;
-	justify-content: center;
-	z-index: 2000;
-}
-
-.useGuideCheckBox {
-	display: flex;
-	align-items: center;
-	/* 수직 중앙 정렬 */
-	justify-content: flex-end;
-	/* 부모 안에서 오른쪽 정렬 */
-	gap: 8px;
-	/* p와 input 사이 간격 */
-	margin-top: 20px;
-	/* 필요 시 여백 조절 */
-}
-
-.useGuideBtn-wrapper {
-	display: flex;
-	justify-content: flex-end;
-	margin-top: 10px;
-}
-
-.useGuideBtn {
-	width: 10%;
-	padding: 12px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border: none;
-	font-size: 16px;
-	cursor: pointer;
-	color: #333;
-	cursor: pointer;
-	border-radius: 10%;
-	margin-bottom: 5px;
-	display: flex;
-	align-items: center;
-	/* 수직 중앙 정렬 */
-	justify-content: flex-end;
-}
-
-.use-guide-modal {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	display: none;
-	align-items: center;
-	justify-content: center;
-	z-index: 2000;
-}
-
-
-.rental-detail-modal {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: rgba(0, 0, 0, 0.5);
-	display: none;
-	align-items: center;
-	justify-content: center;
-	z-index: 2000;
-}
-
-.modal-input-group {
-	display: flex;
-	flex-direction: column;
-}
-
-.modal-input-group input {
-	width: 80%;
-	height: 40px;
-	border-radius: 6px;
-	border: 1px solid #D6CCC2;
-	padding: 10px 14px;
-}
-
-.modal-input-group label {
-	margin-top: 10px;
-}
-
-.rental-detail-modal.show {
-	display: flex;
-}
-
-.use-guide-modal.show {
-	display: flex;
-}
-
-.modal-overlay.show {
-	display: flex;
-}
-
-.modal-content {
-	background: #fff;
-	border-radius: 6px;
-	width: 600px;
-	max-width: 90%;
-	max-height: 80%;
-	padding: 20px;
-	box-sizing: border-box;
-	overflow: hidden;
-	display: flex;
-	flex-direction: column;
-}
-
-.modal-content h3 {
-	margin-top: 0;
-}
-
-.modal-scroll {
-	flex: 1;
-	overflow-y: auto;
-	margin-bottom: 20px;
-	padding-right: 10px;
-}
-
-.modal-scroll ul {
-	padding-left: 1.2em;
-}
-
-.modal-buttons {
-	text-align: right;
-}
-
-.modal-buttons button {
-	margin-left: 10px;
-	padding: 8px 16px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	background: #F5EBE0;
-	color: #333;
-	transition: background 0.2s;
-}
-
-.modal-buttons button.cancel {
-	background: #EDEDE9;
-	color: #555;
-}
-
-.modal-buttons button:hover {
-	background: #E3D5CA;
-}
-
-.scroll-box {
-	height: calc(100% - 150px);
-	overflow-y: auto;
-	border: 1px solid #ccc;
-	padding: 10px;
-	margin: 10px 0;
-	font-size: 14px;
-
-}
-
-.scroll-box li {
-	word-break: break-word;
-}
-
-
-
-#confirmApplyBtn {
-	display: block;
-	width: 10%;
-	padding: 12px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border: none;
-
-	font-size: 16px;
-	cursor: pointer;
-	color: #333;
-	border-radius: 10%;
-	margin-bottom: 5px;
-}
-
-#cancelApplyBtn {
-	display: block;
-	width: 10%;
-	padding: 12px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border: none;
-	border-radius: 10%;
-	font-size: 16px;
-	cursor: pointer;
-	color: #333;
-
-	margin-bottom: 5px;
+	#room-content>div {
+		overflow: visible;
+	}
 }

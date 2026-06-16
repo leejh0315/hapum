@@ -1,109 +1,196 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{main/layout/mainLayout}">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="shortcut icon" href="/img/logohp.png">
-	<title>하품센터-단체소식</title>
-	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
-	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
-
-	<link rel="stylesheet" th:href="@{/css/main/organizationDetail.css}" media="only screen and (min-width: 769px)">
-	<link rel="stylesheet" th:href="@{/css/main/mobile/organizationDetail.css}"
-		media="only screen and (max-width: 768px)">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-	<link rel="stylesheet" th:href="@{/css/footer.css}" />
-	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/img/logohp.png">
+    <title>하품센터-단체소식</title>
+    
+    <th:block layout:fragment="head-content">
+        <link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+        <link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+        <link rel="stylesheet" th:href="@{/css/main/organizationDetail.css}">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <link th:href="@{/css/footer.css}" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    </th:block>
 </head>
 
 <body>
-	<div th:replace="~{main/header :: headFrag(${user})}"></div>
-	<div class="container">
-		<!-- SIDEBAR -->
-		<div class="sidebar">
-			<div class="sidebar-title" onclick="location.href='/main/organization'">단체소식</div>
-			<div class="menu-group">
-				<button th:each="org : ${organizationList}" class="menu-button"
-					th:classappend="${org.id == id} ? ' active' : ''" th:text="${org.name}"
-					th:onclick="'location.href=\'/main/organization/'+${org.id}+'\''">
-				</button>
-			</div>
-		</div>
+    <div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-		<!-- CONTENT -->
-		<div class="content">
-			<div class="program-intro">
-				<img class="pi-img" th:src="@{${org.profileSrc}}">
-				<div class="pi-ex" th:utext="${org.introduce}"></div>
+    <main layout:fragment="content">
+        <div class="fixed-header-wrapper">
+            <div class="fixed-header-inner">
+                <div class="info-top-bar">
+                    <span class="info-prefix" onclick="location.href='/main/organization'">ORGANIZATION</span>
+                    <h2 class="info-title" onclick="location.href='/main/organization'">단체소식</h2>
+                </div>
 
-			</div>
-			
-			<hr>
-			<div th:if="${#lists.isEmpty(organizationPost)}">
-				게시글이 없습니다.
-			</div>
+                <div class="menu-scroll-wrapper">
+                    <div class="top-menu-bar" id="topMenuBar">
+                        <button th:each="org : ${organizationList}" 
+                            th:text="${org.name}"
+                            th:onclick="'if(!isDragging) location.href=\'/main/organization/'+${org.id}+'\''"
+                            th:classappend="${org.id == id} ? 'current' : ''" 
+                            class="menu-button">
+                        </button>
+                    </div>
+                    <div class="menu-progress-container" id="progressContainer">
+                        <div class="menu-progress-thumb" id="progressThumb"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-			<div th:if="${!#lists.isEmpty(organizationPost)}" class="post-list">
+        <div class="container">
+            <div class="content">
+                
+                <div class="program-intro">
+                    <div class="pi-img-wrapper">
+                        <img class="pi-img" th:src="@{${org.profileSrc}}" alt="단체 프로필">
+                    </div>
+                    <div class="pi-ex-box">
+                        <div class="pi-badge">ORGANIZATION INFO</div>
+                        <div class="pi-ex-scroll">
+                            <div class="pi-ex" th:utext="${org.introduce}">단체 소개 글</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <hr class="section-divider">
+                
+                <div th:if="${#lists.isEmpty(organizationPost)}" class="empty-msg">
+                    <i class="fa-regular fa-folder-open"></i>
+                    <p>등록된 게시글이 없습니다.</p>
+                </div>
 
+                <div th:if="${!#lists.isEmpty(organizationPost)}" class="post-list">
+                    <a th:each="post : ${organizationPost}" 
+                       th:href="@{/main/organization/{orgId}/post/{pid}(pid=${post.id},orgId=${id})}" class="post-card">
+                        <div class="card-image-wrapper">
+                            <img th:src="@{${post.thumbnailSrc}}" alt="썸네일" />
+                        </div>
+                        <div class="post-title" th:text="${post.title}">제목</div>
+                    </a>
+                </div>
 
+                <div class="pagination-wrapper" th:if="${totalPages > 1}" 
+                     th:with="blockSize=5, cp=${currentPage}, tp=${totalPages}, 
+                              sp=${((cp - 1) / blockSize) * blockSize + 1}, 
+                              ep=${(sp + blockSize - 1) <= tp ? (sp + blockSize - 1) : tp}">
+                    <ul class="pagination">
+                        <li class="page-item" th:classappend="${sp == 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/main/organization/{id}(id=${id}, page=${sp == 1 ? 1 : sp - blockSize})}">
+                                <i class="fa-solid fa-angles-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${cp == 1} ? 'disabled'">
+                            <a class="page-link" th:href="@{/main/organization/{id}(id=${id}, page=${cp == 1 ? 1 : cp - 1})}">
+                                <i class="fa-solid fa-angle-left"></i>
+                            </a>
+                        </li>
+                        <li class="page-item" th:each="pageNum : ${#numbers.sequence(sp, ep)}"
+                            th:classappend="${pageNum == cp} ? 'active'">
+                            <a class="page-link" th:href="@{/main/organization/{id}(id=${id}, page=${pageNum})}" th:text="${pageNum}">1</a>
+                        </li>
+                        <li class="page-item" th:classappend="${cp == tp} ? 'disabled'">
+                            <a class="page-link" th:href="@{/main/organization/{id}(id=${id}, page=${cp == tp ? tp : cp + 1})}">
+                                <i class="fa-solid fa-angle-right"></i>
+                            </a>
+                        </li>
+                        <li class="page-item" th:classappend="${ep == tp} ? 'disabled'">
+                            <a class="page-link" th:href="@{/main/organization/{id}(id=${id}, page=${ep == tp ? tp : ep + blockSize})}">
+                                <i class="fa-solid fa-angles-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div th:replace="~{main/footer :: footer}"></div>
+    </main>
 
+    <th:block layout:fragment="scripts">
+        <script>
+            const menuBar = document.getElementById('topMenuBar');
+            const progressContainer = document.getElementById('progressContainer');
+            const progressThumb = document.getElementById('progressThumb');
 
+            function updateProgress() {
+                if (!menuBar || !progressThumb) return;
+                const scrollWidth = menuBar.scrollWidth;
+                const clientWidth = menuBar.clientWidth;
+                const scrollLeft = menuBar.scrollLeft;
 
-				<div th:each="post : ${organizationPost}" class="post-card">
-					<a th:href="@{/main/organization/{orgId}/post/{pid}(pid=${post.id},orgId=${id})}" class="org-link">
-						<img th:src="@{${post.thumbnailSrc}}" alt="썸네일" class="post-thumb" />
-						<div class="post-title" th:text="${post.title}">제목</div>
-					</a>
-				</div>
-			</div>
-			<div class="pagination-wrapper" th:if="${totalPages > 1}" th:with="blockSize=5,
-              cp=${currentPage},
-              tp=${totalPages},
-              sp=${((cp - 1) / blockSize) * blockSize + 1},
-              ep=${(sp + blockSize - 1) <= tp ? (sp + blockSize - 1) : tp}">
-				<ul class="pagination">
-					<!-- << : 앞 블록으로 -->
-					<li class="page-item" th:classappend="${sp == 1} ? 'disabled'">
-						<a class="page-link"
-							th:href="@{/main/organization/{id}(id=${id},page=${sp == 1 ? 1 : sp - blockSize})}">
-							&laquo;&laquo;
-						</a>
-					</li>
-					<!-- < : 이전 페이지 -->
-					<li class="page-item" th:classappend="${cp == 1} ? 'disabled'">
-						<a class="page-link"
-							th:href="@{/main/organization/{id}(id=${id},page=${cp == 1 ? 1 : cp - 1})}">
-							&laquo;
-						</a>
-					</li>
-					<!-- 페이지 번호들 -->
-					<li class="page-item" th:each="pageNum : ${#numbers.sequence(sp, ep)}"
-						th:classappend="${pageNum == cp} ? 'active'">
-						<a class="page-link" th:href="@{/main/organization/{id}(id=${id},page=${pageNum})}"
-							th:text="${pageNum}">1</a>
-					</li>
-					<!-- > : 다음 페이지 -->
-					<li class="page-item" th:classappend="${cp == tp} ? 'disabled'">
-						<a class="page-link"
-							th:href="@{/main/organization/{id}(id=${id},page=${cp == tp ? tp : cp + 1})}">
-							&raquo;
-						</a>
-					</li>
-					<!-- >> : 다음 블록으로 -->
-					<li class="page-item" th:classappend="${ep == tp} ? 'disabled'">
-						<a class="page-link"
-							th:href="@{/main/organization/{id}(id=${id},page=${ep == tp ? tp : ep + blockSize})}">
-							&raquo;&raquo;
-						</a>
-					</li>
-				</ul>
-			</div>
-		</div>
-	</div>
-	<div th:replace="~{main/footer :: footer}"></div>
-	<script th:src="@{/js/header.js}"></script>
+                if (scrollWidth > clientWidth) {
+                    progressContainer.style.display = 'block';
+                    const thumbWidthRatio = clientWidth / scrollWidth;
+                    progressThumb.style.width = `${thumbWidthRatio * 100}%`;
+                    const scrollRatio = scrollLeft / (scrollWidth - clientWidth);
+                    const maxLeft = 100 - (thumbWidthRatio * 100);
+                    progressThumb.style.left = `${scrollRatio * maxLeft}%`;
+                } else {
+                    progressContainer.style.display = 'none';
+                }
+            }
+
+            let isDown = false;
+            let startX, scrollLeft;
+            let isDragging = false;
+            let velocity = 0;      
+            let rafId = null;      
+            let lastEventTime = 0, lastEventX = 0;    
+
+            function momentumLoop() {
+                if (Math.abs(velocity) > 0.1) {
+                    menuBar.scrollLeft += velocity;
+                    velocity *= 0.92; 
+                    updateProgress();
+                    rafId = requestAnimationFrame(momentumLoop);
+                } else {
+                    cancelAnimationFrame(rafId);
+                    rafId = null;
+                }
+            }
+
+            if (menuBar) {
+                menuBar.addEventListener('mousedown', (e) => {
+                    isDown = true; isDragging = false; menuBar.classList.add('grabbing');
+                    if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+                    startX = e.pageX - menuBar.offsetLeft; scrollLeft = menuBar.scrollLeft;
+                    lastEventTime = performance.now(); lastEventX = e.pageX; velocity = 0;
+                });
+                menuBar.addEventListener('mouseleave', () => {
+                    if (!isDown) return; isDown = false; menuBar.classList.remove('grabbing');
+                    rafId = requestAnimationFrame(momentumLoop);
+                });
+                menuBar.addEventListener('mouseup', () => {
+                    if (!isDown) return; isDown = false; menuBar.classList.remove('grabbing');
+                    rafId = requestAnimationFrame(momentumLoop);
+                    setTimeout(() => { isDragging = false; }, 50);
+                });
+                menuBar.addEventListener('mousemove', (e) => {
+                    if (!isDown) return; e.preventDefault();
+                    const x = e.pageX - menuBar.offsetLeft; const walk = (x - startX) * 1.2; 
+                    if (Math.abs(walk) > 5) isDragging = true; 
+                    const now = performance.now(); const timeElapsed = now - lastEventTime;
+                    if (timeElapsed > 0) { const distance = e.pageX - lastEventX; velocity = -(distance / timeElapsed) * 15; }
+                    menuBar.scrollLeft = scrollLeft - walk; updateProgress();
+                    lastEventTime = now; lastEventX = e.pageX;
+                });
+                menuBar.addEventListener('scroll', updateProgress);
+                window.addEventListener('resize', updateProgress);
+                window.addEventListener('DOMContentLoaded', () => {
+                    setTimeout(() => {
+                        updateProgress();
+                        const currentMenu = menuBar.querySelector('.menu-button.current');
+                        if (currentMenu) currentMenu.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }, 100);
+                });
+            }
+        </script>
+    </th:block>
 </body>
-
 </html>

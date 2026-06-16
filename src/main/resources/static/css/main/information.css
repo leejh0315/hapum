@@ -1,143 +1,231 @@
-/* 페이지 기본 설정 */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
   background-color: #FFFFFF;
+  color: #000000;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 컨테이너 */
-.container {
-  display: flex;
-    flex: 1;
-    height: 100vh;/* introduce 페이지와 동일 높이 */
-  padding-left: 7%;
-  padding-right: 7%;
-  gap: 20px; /* 사이드바와 콘텐츠 사이 간격 */
-}
-
-/* 사이드바 */
-.sidebar {
-  width: 180px;
-  background-color: #D6CCC2;
-  border-right: 1px solid #D5BDAF;
-  border-left: 1px solid #D5BDAF;
-  display: flex;
-  flex-direction: column;
-}
- .sidebar-title {
-    	padding: 12px;
-    	text-align: center;
-    	background-color: #F5EBE0;
-    	color: black;
-    	font-size: 18px;
-    	font-weight: bold;
-    	cursor: default;
-
-    	/* 아래 두 줄 추가 또는 수정 */
-    	border: none;
-    	/* 모든 테두리 제거 */
-    	margin-bottom: 5px;
-    	/* 필요할 경우 아래만 살짝 */
-    }
-/* 각 층(section) 내부를 세로 정렬 */
-.floor-section {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
-
-/* 층 레이블 */
-.floor-label {
-  padding: 12px;
-  text-align: center;
-  background-color: #F5EBE0;
-  border-bottom: 1px solid #D5BDAF;
-  font-size: 16px;
-  color: #333;
-  transition: background-color 0.3s;
-}
-
-.floor-label.active {
-  background-color: #D5BDAF;
-  color: white;
-  font-weight: bold;
-}
-
-/* 메뉴 버튼 */
-.menu-button {
-  display: block;
+/* =========================================
+   📦 [신설] 상단 고정 헤더 독립 전체 래퍼
+========================================= */
+.fixed-header-wrapper {
+  position: sticky;
+  top: 0;                     /* 메인 GNB 네비바가 있다면 해당 높이로 수정 (예: 60px) */
+  z-index: 100;
   width: 100%;
-  padding: 12px;
-  text-align: center;
-  background-color: #F5EBE0;
-  border: none;
-  border-bottom: 1px solid #D5BDAF;
-  font-size: 16px;
-  cursor: pointer;
-  color: #333;
-   word-break: keep-all;
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #EAEAEA;
+}
 
-  transition: background-color 0.3s;
+/* 가로폭 정렬을 container와 일치시킴 */
+.fixed-header-inner {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 40px 4% 0 4%;
+}
+
+/* =========================================
+   상단 타이틀 바
+========================================= */
+.info-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 15px;
+  margin-bottom: 0;
+}
+
+.info-prefix {
+  font-size: 16px;
+  font-weight: 900;
+  color: #111111;
+  letter-spacing: 2px;
+  padding-right: 20px;
+  border-right: 1px solid #DDDDDD;
+}
+
+.info-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: #111111;
+}
+
+/* =========================================
+   럭셔리 인라인 1행 메뉴바
+========================================= */
+.top-menu-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
+  width: auto;
+  margin: 0 auto;
+  padding: 12px 10px 12px;
+  gap: 36px;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.top-menu-bar::-webkit-scrollbar { display: none; }
+.top-menu-bar { -ms-overflow-style: none; scrollbar-width: none; }
+
+.floor-prefix {
+  font-size: 17px;
+  font-weight: 800;
+  color: #000000;
+  letter-spacing: 4px;
+  padding-right: 8px;
+  user-select: none;
+}
+
+.menu-space-divider {
+  display: inline-block;
+  width: 60px;
+}
+
+.menu-button {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #CCCCCC;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  transition: color 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
 .menu-button:hover {
-  background-color: #E3D5CA;
+  color: #666666;
 }
 
-/* 기존 active 클래스 (필요시 사용) */
-.menu-button.active {
-  background-color: #D5BDAF;
-  color: white;
-  font-weight: bold;
-}
-
-/* 현재 선택된 메뉴 버튼: 기존 active보다 조금 더 연한 색상으로 */
 .menu-button.current {
-  background-color: #F1E6E1;
-  color: #333;
-  font-weight: bold;
+  color: #000000;
+  font-weight: 700;
+  border-bottom: 3px solid #000000;
 }
 
-/* 메인 콘텐츠 영역 */
+/* =========================================
+   메인 콘텐츠 구조 (독립 영역)
+========================================= */
+.container {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 0 4% 120px 4%;
+}
+
 .content {
-  flex: 1;
-  padding: 5%;
-  background-color: #FFFFFF;
+  padding-top: 50px;
 }
 
-/* 콘텐츠 내부 제목 */
+.title-area {
+  margin-bottom: 60px;
+}
+
 #floor-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #888888;
+  letter-spacing: 3px;
+  margin-bottom: 12px;
 }
 
 #room-title {
-  font-size: 22px;
-  margin-bottom: 15px;
+  font-size: 40px;
+  font-weight: 700;
+  color: #000000;
+  margin: 0;
+  letter-spacing: -1px;
 }
 
 #room-content {
   display: flex;
-  align-items: flex-start; /* 이미지와 설명을 상단 정렬 */
-  gap: 30px; /* 이미지와 텍스트 사이 간격 */
-  flex-wrap: wrap; /* 화면이 작아지면 아래로 줄바꿈 */
-  border-radius:10%;
-
-
-.room-desc {
-  flex: 1;
-  font-size: 16px;
-  line-height: 1.6;
-  max-width: 600px;
-  margin-left: 5%;
+  align-items: flex-start;
+  gap: 60px;
+  flex-wrap: wrap;
 }
 
-/* 방 이미지 */
+/* 이미지 아트웍 */
 .room-image {
-  max-width: 500px;
+  max-width: 540px;
   width: 100%;
   height: auto;
-  border-radius: 6px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0px;
+  filter: grayscale(10%);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+  transition: filter 0.5s ease, transform 0.5s ease;
+}
+
+.room-image:hover {
+  filter: grayscale(0%);
+  transform: scale(1.01);
+}
+
+/* 설명 영역 리스트 스타일 */
+.room-desc {
+  flex: 1;
+  min-width: 340px;
+}
+
+.room-desc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.room-desc li {
+  display: flex;
+  align-items: flex-start;
+  font-size: 15.5px;
+  line-height: 1.85;
+  color: #444444;
+  margin-bottom: 0;
+  padding: 20px 0 20px 0;
+  border-bottom: 1px solid #EEEEEE;
+  word-break: keep-all;
+}
+
+.room-desc li:first-child {
+  padding-top: 0;
+}
+
+.room-desc li:last-child {
+  border-bottom: none;
+}
+
+.room-desc strong {
+  display: inline-block;
+  color: #000000;
+  font-weight: 600;
+  width: 110px;
+  min-width: 110px;
+  letter-spacing: -0.3px;
+  position: relative;
+}
+
+/* =========================================
+   모바일 반응형
+========================================= */
+@media screen and (max-width: 768px) {
+  .fixed-header-inner {
+    padding-top: 20px;
+  }
+  .info-top-bar {
+    gap: 12px;
+    margin-bottom: 5px;
+  }
+  .info-title {
+    font-size: 20px;
+  }
+  .top-menu-bar {
+    justify-content: flex-start;
+    gap: 20px;
+  }
+  .menu-space-divider {
+    width: 20px;
+  }
 }

@@ -124,6 +124,7 @@ public class MainController {
 
 	@GetMapping("/program/detail/{id}")
 	public String getProgramDetail(@PathVariable("id") Long id, HttpServletRequest req, Model model) {
+		addUserToModel(req, model);
 	    HttpSession session = req.getSession();
 	    User user = (User) session.getAttribute("loginMember");
 
@@ -428,7 +429,7 @@ public class MainController {
 
 	@GetMapping("/news")
 	public String getNews(@RequestParam(name = "page", defaultValue = "1") int page,
-			@RequestParam(name = "size", defaultValue = "10") int size, HttpServletRequest req, Model model) {
+			@RequestParam(name = "size", defaultValue = "8") int size, HttpServletRequest req, Model model) {
 		addUserToModel(req, model);
 		List<News> newsList = newsService.selectAllNews(page, size);
 		int totalNews = newsService.getTotalNews();
@@ -459,7 +460,7 @@ public class MainController {
 
 	@GetMapping("/organization/{id}")
 	public String getOrganizationDetail(@RequestParam(name = "page", defaultValue = "1") int page,
-			@RequestParam(name = "size", defaultValue = "5") int size, Model model, HttpServletRequest req,
+			@RequestParam(name = "size", defaultValue = "4") int size, Model model, HttpServletRequest req,
 			@PathVariable("id") Long id) {
 		addUserToModel(req, model);
 		List<Organization> organizationList = organizationService.selectAllOrganization();
@@ -482,10 +483,12 @@ public class MainController {
 			@PathVariable("orgId") Long orgId) {
 		addUserToModel(req, model);
 		OrganizationPost organizationPost = organizationService.selectOrgPostById(id);
+		Organization organization = organizationService.selectOrganizationById(orgId);
 		List<Organization> organizationList = organizationService.selectAllOrganization();
 		model.addAttribute("organizationList", organizationList);
 		model.addAttribute("organizationPost", organizationPost);
 		model.addAttribute("id", orgId);
+		model.addAttribute("organization", organization);
 		return "main/organizationView";
 	}
 
@@ -502,5 +505,12 @@ public class MainController {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
 		model.addAttribute("user", user);
+		
+		// [추가] 이제 모든 페이지의 header 조각이 프로그램 sub-menu 데이터를 참조할 수 있습니다.
+		List<ProgramAdd> headerProgramAdds = programService.selectAllProgramAdd();
+		model.addAttribute("headerProgramAdds", headerProgramAdds);
+		
+		List<Organization> organizationList = organizationService.selectAllOrganization();
+		model.addAttribute("organizationList", organizationList);
 	}
 }

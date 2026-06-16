@@ -1,394 +1,436 @@
-/* 1. 웹폰트 불러오기 (최상단 유지) */
-@font-face {
-    font-family: 'GyeonggiBatang';
-    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/GyeonggiBatang.woff') format('woff');
-    font-weight: normal;
-    font-style: normal;
-}
-
-/* 2. 구체적인 선택자를 사용하여 우선순위 높이기 */
-/*.program-info .program-texts, */
-/*.program-info .program-texts *,  내부의 모든 태그(h2, li, span 등) 포함 */
-/*.program-info .text {*/
-/*    font-family: 'GyeonggiBatang', serif !important;*/
-/*}*/
-
-.program-info ul li {
-    margin-bottom: 5px; /* 위아래 간격을 10px에서 18px로 확대 */
-    font-size: 16px;     /* 가독성을 위해 폰트 크기 살짝 조정 */
-    line-height: 1.6;    /* 줄 간격 확보 */
-    display: flex;       /* 항목 이름과 내용을 정렬하기 쉽게 설정 */
-    align-items: flex-start;
-}
-
-.program-info li strong {
-    min-width: 80px;     /* '일시:', '장소:' 등의 너비를 고정하여 정렬 */
-    display: inline-block;
-    color: #555;
-}
-
-/* 마지막 항목은 아래 여백 제거 */
-/*.program-info ul li:last-child {*/
-/*    margin-bottom: 0;*/
-/*}*/
-
-/* 3. 추가로 th:utext가 들어가는 .text 영역에 대해 강제 적용 */
-.text {
-/*    font-family: 'GyeonggiBatang', serif !important;*/
-    overflow-x: auto;
-    word-break: break-word;
-    white-space: pre-wrap;
-    max-width: 100%;
-    box-sizing: border-box;
-}
-
-/* 화면 전체 높이를 위한 설정 */
-html,
+/* =========================================
+   1. 기본 레이아웃 및 폰트 세팅
+========================================= */
 body {
-	margin: 0;
-	padding: 0;
-}
-
-
-body {
-    display: flex;
-    flex-direction: column;
-    background-color: #fffefa;
-    font-family: 'Pretendard', 'Malgun Gothic', sans-serif;
-    color: #333;
-}
-
-.program-title{
-	margin-bottom:15px;
-}
-/*.program-texts{*/
-/*	font-family: 'GyeonggiBatang' !important*/
-/*}*/
-
-.container {
-    display: flex;
-    flex: 1;
-    padding: 0 7%;
-    gap: 20px;
+  margin: 0;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #FFFFFF;
+  color: #000000;
+  -webkit-font-smoothing: antialiased;
+  display: flex;
+  flex-direction: column;
 }
 
 /* =========================================
-   2. 사이드바 (Sidebar)
-   ========================================= */
-.sidebar {
-    width: 180px;
-    background-color: #D6CCC2;
-    border-right: 1px solid #D5BDAF;
-    border-left: 1px solid #D5BDAF;
-    display: flex;
-    flex-direction: column;
-    padding: 0 10px 10px;
+   2. 상단 고정 헤더 영역 (목록 페이지와 1:1 매칭)
+========================================= */
+.fixed-header-wrapper {
+  position: sticky;
+  top: 0;                     
+  z-index: 100;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #EAEAEA;
 }
 
-.sidebar-title {
-    margin: 0 -10px 10px;
-    width: calc(100% + 20px);
-    box-sizing: border-box;
-    cursor: pointer;
-    padding: 12px 10px;
-    text-align: center;
-    background-color: #F5EBE0;
-    border-bottom: 1px solid #D5BDAF;
-    font-size: 18px;
-    font-weight: bold;
+.fixed-header-inner {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 40px 4% 15px 4%;
+}
+
+.info-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.info-prefix {
+  font-size: 16px;
+  font-weight: 900;
+  color: #111111;
+  letter-spacing: 2px;
+  padding-right: 20px;
+  border-right: 1px solid #DDDDDD;
+}
+
+.info-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: #111111;
+  cursor: pointer;
+}
+
+/* =========================================
+   3. 메인 컨테이너 및 사이드바
+========================================= */
+.container {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 50px 4% 120px 4%; 
+  display: flex;
+  gap: 60px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 200px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
 }
 
 .menu-button {
-    margin: 0 -10px;
-    width: calc(100% + 20px);
-    padding: 12px;
-    text-align: center;
-    background-color: #F5EBE0;
-    border: none;
-    border-bottom: 1px solid #D5BDAF;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  width: 100%;
+  padding: 12px;
+  text-align: center;
+  background-color: #FAFAFA;
+  border: 1px solid #EAEAEA;
+  font-size: 15px;
+  font-weight: 600;
+  color: #444444;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.menu-button:hover {
+  background-color: #EEEEEE;
 }
 
 /* =========================================
-   3. 콘텐츠 영역 (Program Detail)
-   ========================================= */
+   4. 우측 상세 콘텐츠 영역
+========================================= */
 .content {
-    flex: 1;
-    padding: 3%;
-    background-color: #FFFFFF;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.program-image {
+  width: 100%;
+  max-width: 680px;
+  margin-bottom: 35px;
 }
 
 .program-image img {
-    width: 600px;
-    max-width: 100%;
-    object-fit: cover;
-    border-radius: 20px;
-    margin-bottom: 20px;
+  width: 100%;
+  height: auto;
+  display: block;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.04);
 }
 
 .program-info {
-    width: 600px;
-    max-width: 100%;
+  width: 100%;
+  max-width: 680px;
+}
+
+.program-title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111111;
+  margin: 0 0 25px 0;
+  letter-spacing: -1px;
+  line-height: 1.3;
+}
+
+.program-texts ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px 0;
+  border-top: 2px solid #111111;
+}
+
+.program-info ul li {
+  display: flex;
+  align-items: flex-start;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #444444;
+  padding: 16px 0;
+  border-bottom: 1px solid #EAEAEA;
+  word-break: keep-all;
+}
+
+.program-info li strong {
+  display: inline-block;
+  color: #000000;
+  font-weight: 600;
+  width: 110px;
+  min-width: 110px;
 }
 
 .text {
-    overflow-x: auto;
-    word-break: break-word;
-    white-space: pre-wrap;
-    max-width: 100%;
-    line-height: 1.6;
-    margin-bottom: 20px;
+  font-size: 15.5px;
+  line-height: 1.8;
+  color: #333333;
+  margin-bottom: 40px;
+  overflow-x: auto;
+  word-break: break-word;
+  white-space: pre-wrap;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
-/* ✅ 프로그램 하단 신청 버튼 영역 (복구) */
+/* =========================================
+   5. 하단 신청 상태 바
+========================================= */
 .program-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-top: 1px solid #ddd;
-    padding-top: 20px;
-    margin-top: 20px;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #EAEAEA;
+  padding-top: 25px;
+  margin-top: 25px;
+  width: 100%;
 }
 
 .capacity {
-    font-size: 14px;
-    color: #888;
+  font-size: 16px;
+  font-weight: 700;
+  color: #000000;
 }
 
 .apply-btn {
-    background-color: #F5EBE0;
-    color: #333;
-    padding: 12px 25px;
-    border: none;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 16px;
+  padding: 14px 40px;
+  background-color: #000000;
+  color: #FFFFFF;
+  border: none;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.apply-btn:hover {
+  background-color: #333333;
 }
 
 .apply-btn:disabled {
-    background-color: #ddd;
-    color: #aaa;
-    cursor: not-allowed;
+  background-color: #EAEAEA;
+  color: #999999;
+  cursor: not-allowed;
 }
 
 /* =========================================
-   4. 공통 모달 오버레이 (Modal Overlay)
-   ========================================= */
+   6. 모달 팝업 패키지 (스퀘어 모던 스타일)
+========================================= */
 .modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    display: none;
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
 }
 
 .modal-overlay.show {
-    display: flex !important;
+  display: flex !important;
 }
 
 .modal-content, .info-modal-content {
-    background: white;
-    border-radius: 12px;
-    width: 95%;
-    max-width: 650px;
-    padding: 30px;
-    box-sizing: border-box;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-    position: relative;
+  background: #FFFFFF;
+  width: 580px;
+  max-width: 92%;
+  max-height: 85vh;
+  padding: 40px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
-/* ★ 중요: 드롭다운이 위로 올라가도 잘리지 않게 설정 */
 #userInfoModalOverlay .modal-content {
-    overflow: visible !important; 
-    height: auto;
-    margin-top: 50px; /* 위쪽 공간 확보 */
+  overflow: visible !important;
+  height: auto;
 }
 
-/* =========================================
-   5. 본당 선택기 (인풋 위로 생기도록 설정)
-   ========================================= */
-.church-selector {
-    position: relative;
-    width: 100%;
+.scroll-box {
+  border: 1px solid #EAEAEA;
+  padding: 15px;
+  height: 200px;
+  overflow-y: auto;
+  background: #FAFAFA;
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 15px 0;
 }
 
-#parish {
-    cursor: pointer;
-    background-color: #fff;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
-    background-repeat: no-repeat;
-    background-position: right 15px center;
+/* 폼 요소 레이아웃 */
+.form-group, .program-form-group {
+  margin-bottom: 16px;
 }
 
-/* ✅ 드롭다운 본체: bottom 속성을 사용하여 위로 띄움 */
-.dropdown-container {
-    display: none; 
-    position: absolute;
-    bottom: calc(100% + 10px); /* 인풋창 바로 위로 배치 */
-    left: 0;
-    width: 400px;
-    height: 320px;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 -10px 25px rgba(0,0,0,0.15); /* 그림자 방향도 위쪽으로 */
-    z-index: 10005;
-    overflow: hidden;
-}
-
-.region-list {
-    width: 160px;
-    background-color: #f8f9fa;
-    border-right: 1px solid #eee;
-    overflow-y: auto;
-}
-
-.parish-list {
-    flex: 1;
-    background-color: #fff;
-    overflow-y: auto;
-}
-
-.list-item {
-    padding: 12px 15px;
-    font-size: 14px;
-    cursor: pointer;
-    border-bottom: 1px solid #f1f1f1;
-}
-
-.list-item:hover, .region-list .list-item.active {
-    background-color: #F5EBE0;
-    color: #333;
-    font-weight: bold;
-}
-
-/* =========================================
-   6. 폼 요소 및 모달 내 버튼
-   ========================================= */
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+.form-group label, .program-form-group label {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #111111;
 }
 
 .modal-input, .info-modal-input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #CCCCCC;
+  box-sizing: border-box;
+  font-size: 14px;
 }
 
-.modal-btn, .infoModalButton {
-    padding: 12px 20px;
-    background-color: #F5EBE0;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: bold;
-    min-width: 80px;
+textarea.info-modal-input {
+  height: 80px;
+  resize: none;
 }
 
-/* =========================================
-   7. 기타 (Spinner, Footer, Scrollbox)
-   ========================================= */
-.scroll-box {
-    height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    padding: 15px;
-    margin: 15px 0;
-    background: #fafafa;
+/* 모달 내부 버튼 구성 */
+.modal-btn, .infoModalButton, #confirmApplyBtn, #cancelApplyBtn {
+  padding: 12px 28px;
+  background: #000000;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 14px;
 }
 
-.spinner-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.5);
-    z-index: 10000;
-    display: none;
+#cancelUserInfoBtn, #cancelAdditionalInfoBtn, #cancelApplyBtn {
+  background: #EAEAEA;
+  color: #333333;
 }
 
-.spinner {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 50px; height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #D5BDAF;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
+#cancelUserInfoBtn:hover, #cancelAdditionalInfoBtn:hover, #cancelApplyBtn:hover {
+  background-color: #CCCCCC;
 }
 
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-/* =========================================
-   6-1. 개인정보 동의 모달 전용 버튼 (#confirmApplyBtn, #cancelApplyBtn)
-   ========================================= */
-/* 버튼들을 감싸는 컨테이너 (오른쪽 정렬) */
-#programApplyModalOverlay .modal-content div[style*="justify-content: flex-end"] {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-/* 확인/취소 버튼 공통 */
-#confirmApplyBtn, 
-#cancelApplyBtn {
-    padding: 12px 25px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    background-color: #F5EBE0; /* 하품센터 메인 테마색 */
-    color: #333;
-    border: 1px solid #D5BDAF;
-    border-radius: 8px;
-    min-width: 100px;
-    transition: all 0.2s ease;
-}
-
-/* 확인 버튼 강조 (약간 더 진하게) */
-#confirmApplyBtn {
-    background-color: #ede0d4;
-    border-color: #d5bdaf;
-}
-
-/* 호버 효과 */
-#confirmApplyBtn:hover, 
-#cancelApplyBtn:hover {
-    background-color: #d5bdaf;
-    color: #fff;
-}
-
-/* 체크박스 영역 스타일 */
 #programApplyModalOverlay label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 15px;
-    font-weight: bold;
-    margin-top: 15px;
-    cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 15px;
+  font-size: 14.5px;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 #privacyConsentCheckbox {
-    width: 18px;
-    height: 18px;
-    cursor: pointer;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
 }
 
-footer { flex-shrink: 0; margin-top: auto; }
+/* =========================================
+   7. 본당 선택기 컴포넌트
+========================================= */
+.church-selector {
+  position: relative;
+  width: 100%;
+}
+
+#parish {
+  cursor: pointer;
+  background-color: #FFFFFF;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23111" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+}
+
+.dropdown-container {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 0;
+  width: 100%;
+  max-width: 400px;
+  height: 280px;
+  background: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  box-shadow: 0 -10px 30px rgba(0,0,0,0.06);
+  z-index: 2100;
+  overflow: hidden;
+}
+
+.region-list {
+  width: 130px;
+  background-color: #FAFAFA;
+  border-right: 1px solid #EEEEEE;
+  overflow-y: auto;
+}
+
+.parish-list {
+  flex: 1;
+  background-color: #FFFFFF;
+  overflow-y: auto;
+}
+
+.list-item {
+  padding: 10px 14px;
+  font-size: 13.5px;
+  cursor: pointer;
+  border-bottom: 1px solid #FAFAFA;
+  color: #444444;
+}
+
+.list-item:hover, .region-list .list-item.active {
+  background-color: #111111;
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.placeholder-text {
+  padding: 20px;
+  font-size: 13px;
+  color: #999999;
+  text-align: center;
+}
+
+/* =========================================
+   8. 로딩 프로세스 (Spinner)
+========================================= */
+.spinner-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 10000;
+  display: none;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px; height: 50px;
+  border: 5px solid #F3F3F3;
+  border-top: 5px solid #000000;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+/* =========================================
+   9. 반응형 브레이크포인트
+========================================= */
+@media screen and (max-width: 768px) {
+  .fixed-header-inner {
+    padding-top: 20px;
+  }
+  .info-title {
+    font-size: 20px;
+  }
+  .container {
+    flex-direction: column;
+    gap: 30px;
+    padding-top: 30px;
+  }
+  .sidebar {
+    width: 100%;
+    min-width: 100%;
+  }
+  .program-image, .program-info {
+    max-width: 100%;
+  }
+  .program-title {
+    font-size: 24px;
+  }
+}

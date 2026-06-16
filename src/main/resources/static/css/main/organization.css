@@ -1,245 +1,246 @@
-/* 페이지 기본 설정 */
+/* =========================================
+   기본 레이아웃 및 폰트 세팅
+========================================= */
 body {
-	margin: 0;
-	font-family: Arial, sans-serif;
-	background-color: #FFFFFF;
+  margin: 0;
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: #FFFFFF;
+  color: #000000;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* 컨테이너 */
-.container {
-	display: flex;
-	flex: 1;
-	height: 100vh;
-	/* introduce 페이지와 동일 높이 */
-	padding-left: 7%;
-	padding-right: 7%;
-	gap: 20px;
-	/* 사이드바와 콘텐츠 사이 간격 */
+/* =========================================
+   상단 고정 헤더 독립 전체 래퍼 (프로그램 스타일 이식)
+========================================= */
+.fixed-header-wrapper {
+  position: sticky;
+  top: 0;                     
+  z-index: 100;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid #EAEAEA;
 }
 
-.sidebar-title {
-	/* 기존 설정 제거 → margin: 0 -10px 10px; width: calc(100% + 20px); */
-	margin: 0 0 10px;
-	/* 좌우 마진 0 */
-	width: 100%;
-	/* 부모(.sidebar) 너비 100% */
-	box-sizing: border-box;
-	cursor: pointer;
-	padding: 12px 10px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border-bottom: 1px solid #D5BDAF;
-	font-size: 18px;
-	font-weight: bold;
-	color: #333;
+.fixed-header-inner {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 40px 4% 0 4%;
 }
 
-.organization-grid {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 20px;
+/* =========================================
+   상단 타이틀 바 시스템
+========================================= */
+.info-top-bar {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding-bottom: 15px;
+  margin-bottom: 0;
 }
 
-.organization-card {
-	width: 200px;
-	height: 220px;
-	max-width: 300px;
-	border: 1px solid #ddd;
-	border-radius: 8px;
-	text-align: center;
+.info-prefix {
+  font-size: 16px;
+  font-weight: 900;
+  color: #111111;
+  letter-spacing: 2px;
+  padding-right: 20px;
+  border-right: 1px solid #DDDDDD;
 }
 
-.organization-img {
-	width: 160px;
-	height: 160px;
-	border-radius: 10%;
-	margin-bottom: 0.5rem;
-	margin-top:5px;
-	
+.info-title {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  color: #111111;
 }
 
-/* 사이드바 */
-.sidebar {
-	width: 180px;
-	background-color: #D6CCC2;
-	border-right: 1px solid #D5BDAF;
-	border-left: 1px solid #D5BDAF;
-	display: flex;
-	flex-direction: column;
+/* =========================================
+   상단 메뉴 & 프로그레스 바 스크롤 본체
+========================================= */
+.menu-scroll-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;                  
+  padding-bottom: 12px;
 }
 
-/* 각 층(section) 내부를 세로 정렬 */
-.floor-section {
-	display: flex;
-	flex-direction: column;
-	margin-bottom: 10px;
+.top-menu-bar {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start; 
+  flex-wrap: nowrap;
+  width: 100%;
+  padding: 10px 0 4px 0;
+  gap: 36px;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
 }
 
-/* 층 레이블 */
-.floor-label {
-	padding: 12px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border-bottom: 1px solid #D5BDAF;
-	font-size: 16px;
-	color: #333;
-	transition: background-color 0.3s;
+.top-menu-bar.grabbing {
+  cursor: grabbing;
+  user-select: none;
 }
 
-.floor-label.active {
-	background-color: #D5BDAF;
-	color: white;
-	font-weight: bold;
-}
+.top-menu-bar::-webkit-scrollbar { display: none; }
+.top-menu-bar { -ms-overflow-style: none; scrollbar-width: none; }
 
-/* 메뉴 버튼 */
 .menu-button {
-	display: block;
-	width: 100%;
-	padding: 12px;
-	text-align: center;
-	background-color: #F5EBE0;
-	border: none;
-	border-bottom: 1px solid #D5BDAF;
-	font-size: 16px;
-	cursor: pointer;
-	color: #333;
-	transition: background-color 0.3s;
-	 word-break: keep-all;
-
-  overflow: hidden;          /* 넘치는 부분 숨김 */
-  font-size: clamp(12px, 2vw, 16px); /* 뷰포트 크기에 따라 폰트 크기 유동 조절 */
-  letter-spacing: normal;
-	
+  background: none;
+  border: none;
+  padding: 4px 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #CCCCCC;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+  transition: color 0.3s ease;
 }
 
 .menu-button:hover {
-	background-color: #E3D5CA;
+  color: #666666;
 }
 
-/* 기존 active 클래스 (필요시 사용) */
-.menu-button.active {
-	background-color: #D5BDAF;
-	color: white;
-	font-weight: bold;
-}
-
-/* 현재 선택된 메뉴 버튼: 기존 active보다 조금 더 연한 색상으로 */
 .menu-button.current {
-	background-color: #F1E6E1;
-	color: #333;
-	font-weight: bold;
+  color: #000000;
+  font-weight: 700;
+  border-bottom: 3px solid #000000;
 }
 
-/* 메인 콘텐츠 영역 */
+.menu-progress-container {
+  width: 100%;
+  height: 2px;
+  background-color: #EEEEEE;
+  position: relative;
+  border-radius: 2px;
+  overflow: hidden;
+  display: none; 
+}
+
+.menu-progress-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #000000;
+  border-radius: 2px;
+  transition: left 0.1s linear; 
+}
+
+/* =========================================
+   📦 단체 소식 Grid 카드 본문 리스트 (1줄에 4개 배치)
+========================================= */
+.container {
+  max-width: 1250px;
+  margin: 0 auto;
+  padding: 60px 4% 120px 4%; 
+}
+
 .content {
-	flex: 1;
-	padding-left: 5%;
-	padding-top: 5%;
-	background-color: #FFFFFF;
-}
-
-.organization-card h3{
-	width: 100%;
-	overflow: hidden;
-
   width: 100%;
-  font-size: clamp(12px, 2vw, 16px); /* 뷰포트 크기에 따라 폰트 크기 유동 조절 */
-  letter-spacing: normal;
-  
-  
-  word-break: keep-all;
-  white-space: normal;
-  
-	
+  background-color: #FFFFFF;
 }
 
-/* 콘텐츠 내부 제목 */
-#floor-title {
-	font-size: 18px;
-	font-weight: bold;
-	margin-bottom: 10px;
-}
-
-#room-title {
-	font-size: 22px;
-	margin-bottom: 15px;
-}
-
-/* 방 이미지 */
-.room-image {
-	max-width: 500px;
-	width: 100%;
-	height: auto;
-	border-radius: 6px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-footer {
+.organization-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 40px 24px;                          /* 상하 간격 40px, 좌우 간격 24px */
   width: 100%;
-  background: #F5EBE0;
-  text-align: center;
-  padding: 20px 0;
 }
 
-
-.post-list {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: center;
-	gap: 20px;
-}
-
-.post-card {
-	width: 160px;
-	text-align: center;
-}
-
-.post-thumb {
-	width: 100%;
-	height: auto;
-	border-radius: 8px;
-}
-
-.post-title {
-	margin-top: 8px;
-	font-weight: 500;
-	color: #333;
-}
-.org-title{
-	font-weight: bold;
-}
-
-/* 페이지네이션 스타일 */
-.pagination {
-  list-style: none;
+.organization-card {
   display: flex;
-  justify-content: center;
-  padding: 0;
-  margin-top: 20px;
-}
-
-.pagination li {
-  margin: 0 5px;
-}
-
-.pagination li a {
-  display: block;
-  padding: 8px 12px;
-  background: #F5EBE0; /* 기본 버튼 색상으로 통일 */
-  color: #333;
+  flex-direction: column;
   text-decoration: none;
-  border: 1px solid #D5BDAF;
+  color: #000000;
+  transition: transform 0.4s ease;
 }
 
-.pagination li.active a {
-  background: #D5BDAF; /* 활성화된 페이지 */
-  color: #fff;
-  border-color: #D5BDAF;
+.card-image-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;                     /* 완전 정사각 비율 유지 */
+  overflow: hidden;
+  margin-bottom: 16px;
+  background-color: #F8F8F8;
+  position: relative;
 }
 
-.pagination li.disabled a {
-  color: #ccc;
-  pointer-events: none;
+.organization-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0px;                      /* 프로그램 화면처럼 세련된 플랫 정밀 마감 */
+  filter: grayscale(10%);
+  transition: filter 0.6s ease, transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
+.organization-card:hover {
+  transform: translateY(-4px);
+}
+
+.organization-card:hover img {
+  filter: grayscale(0%);
+  transform: scale(1.03);
+}
+
+.org-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #111111;
+  letter-spacing: -0.5px;
+  line-height: 1.4;
+  margin-top: 5px;
+  word-break: keep-all;
+  text-align: left;                        /* 자연스러운 디자인 텍스트 정렬 */
+}
+
+.empty-msg {
+  text-align: center;
+  padding: 80px 0;
+  color: #999999;
+  font-size: 16px;
+}
+
+/* =========================================
+   반응형 브레이크 포인트 분기점 설정
+========================================= */
+
+/* 태블릿 및 중형 브라우저 창: 한 줄에 3개 출력 */
+@media screen and (max-width: 1024px) {
+  .organization-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px 20px;
+  }
+}
+
+/* 모바일 환경: 한 줄에 2개 출력 */
+@media screen and (max-width: 768px) {
+  .fixed-header-inner {
+    padding-top: 20px;
+  }
+  .info-top-bar {
+    gap: 12px;
+    margin-bottom: 5px;
+  }
+  .info-title {
+    font-size: 20px;
+  }
+  .top-menu-bar {
+    gap: 20px;
+  }
+  .container {
+    padding-top: 30px;
+  }
+  .organization-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px 16px;
+  }
+  .org-title {
+    font-size: 14.5px;
+  }
+}

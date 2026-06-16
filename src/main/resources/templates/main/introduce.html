@@ -1,366 +1,299 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" href="/img/logohp.png">
-	<title>하품센터-센터 소개</title>
-
-
-	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
-	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
-
-	<link rel="stylesheet" th:href="@{/css/main/introduce.css}" media="only screen and (min-width: 769px)">
-	<link rel="stylesheet" th:href="@{/css/main/mobile/introduce.css}" media="only screen and (max-width: 768px)">
-
-
-
-	<link rel="stylesheet" th:href="@{/css/footer.css}">
-	<link rel="stylesheet" th:href="@{/css/main/timeline.css}">
-
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
-
-	<style>
-
-	</style>
+  <th:block th:replace="~{common/fragments :: commonHead}"></th:block>
+  <title>센터소개 - 하품센터</title>
+  <link rel="stylesheet" th:href="@{/css/main/introduce.css}" media="only screen and (min-width: 769px)"/>
+  <link rel="stylesheet" th:href="@{/css/main/mobile/introduce.css}" media="only screen and (max-width: 768px)"/>
 </head>
-
 <body>
-	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-	<div class="container">
-		<!-- 사이드 메뉴 -->
-		<div class="sidebar">
+  <th:block th:replace="~{main/header :: headFrag(${user})}"></th:block>
 
-			<button class="sidebar-title">센터소개</button>
-			<div class="menu-group">
-				<button class="menu-button active" onclick="changeContent('인사말')">인사말</button>
-				<button class="menu-button" onclick="changeContent('주요연혁')">주요연혁</button>
-				<button class="menu-button" onclick="changeContent('오시는길')">오시는길</button>
-			</div>
-		</div>
+  <div class="sticky-header">
+    <div class="sticky-header-inner">
+      <div class="info-top-bar">
+        <span class="info-prefix">ABOUT</span>
+        <h2 class="info-title">센터소개</h2>
+      </div>
+      <div class="top-menu-bar">
+        <button class="menu-button" onclick="changeContent('인사말')">인사말</button>
+        <button class="menu-button" onclick="changeContent('주요연혁')">주요연혁</button>
+        <button class="menu-button" onclick="changeContent('오시는길')">오시는길</button>
+      </div>
+    </div>
+  </div>
 
-		<!-- 메인 콘텐츠 -->
-		<div class="main-content">
-			<div class="text-area" id="content-area">
-				<div class="content-placeholder">[인사말]</div>
-			</div>
+  <div class="container">
+    <div class="content">
+      <div id="content-area"></div>
+    </div>
+  </div>
 
-		</div>
-	</div>
-	<div th:replace="~{main/footer :: footer}"></div>
-	<script th:src="@{/js/header.js}"></script>
-	<script>
-		const contents = {
-			'인사말': `
-			
-			    <h2>인사말</h2>
-			    <br>
-			    <p>
-			      <strong>하느님께서 보시니 손수 만드신 모든 것이 참 좋았다. (창세 1,31)</strong>
-			      <br><br>
-			      젊은이들을 바라보시는 <strong>아버지 하느님의 마음</strong>도 이와 같습니다.<br>
-			      이들이 꿈꾸는 세상, 자신을 만나는 삶의 여정, 때로 실패와 좌절 속에서도 포기하지 않는 <strong>열정</strong> 모두를<br>
-			      주님은 친히 <strong>아껴주시고 보살펴 주십니다</strong>.
-			      <br><br>
-			          <p>
-			      <span style="color: #5c9ccf;"><strong>하품</strong></span>은
-			      자기다움 · 성장 · 행복을 바탕으로<br>
-			      청소년 · 청년 · 학부모가
-			      고유한 자신의 모습을 만나<br>
-			      함께 성장하며
-			      서로 행복을 나누는<br>
-			      <span style="color: #5c9ccf;"><strong>하느님 품</strong></span>입니다.
-			    </p>
-			      <br><br>
-			      이 아름다운 여정에 <strong>여러분과 늘 함께 하겠습니다</strong>. 감사합니다.
-			      <br><br>
-			      - <strong>2025년 7월, 천안지역 청소년사목전담 오중석 프란치스코 신부 올림</strong> -
-			    </p>
-			 <img class="greetings" src="/img/intro.png">
-    		
-  `,
-			'설립목적': `
-    <h2>설립목적</h2>
-    <br>
+  <th:block th:replace="~{main/footer :: footer}"></th:block>
 
-  `,
-			'주요연혁': `
-    <h2 class="text-center">하품 주요 연혁</h2>
-    <ul class="timeline timeline-centered">
+  <script th:src="@{/js/header.js}"></script>
+  <script>
+    const contents = {
+      '인사말': {
+        html: `
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text">하느님 품, 하품센터 방문을 환영합니다.</h4>
+              <span class="card-badge-num">WELCOME</span>
+            </div>
+            <div class="greetings-layout">
+              <div class="greetings-main-text">
+                <p class="greetings-quote-box">"하느님께서 보시니 손수 만드신 모든 것이 참 좋았다." (창세 1,31)</p>
+                <p>
+                  젊은이들을 바라보시는 <strong>아버지 하느님의 마음</strong>도 이와 같습니다.<br>
+                  이들이 꿈꾸는 세상, 자신을 만나는 삶의 여정, 때로 실패와 좌절 속에서도 포기하지 않는 <strong>열정</strong> 모두를 주님은 친히 <strong>아껴주시고 보살펴 주십니다</strong>.
+                </p>
+                <div class="greetings-highlight-block">
+                  <strong>하품</strong>은 자기다움 · 성장 · 행복을 바탕으로<br>
+                  청소년 · 청년 · 학부모가 고유한 자신의 모습을 만나 함께 성장하며 서로 행복을 나누는 <strong>하느님 품</strong>입니다.
+                </div>
+                <p>이 아름다운 여정에 <strong>여러분과 늘 함께 하겠습니다</strong>. 감사합니다.</p>
+                <p class="greetings-signature">- 천안지역 청소년사목전담 오중석 프란치스코 신부 올림 -</p>
+              </div>
+              <div class="greetings-img-container">
+                <img src="/img/intro.png" alt="인사말 이미지">
+              </div>
+            </div>
+          </div>
+        `
+      },
+      '주요연혁': {
+        html: `
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text">2025년 연혁</h4>
+              <span class="card-badge-num">2025</span>
+            </div>
+            <div class="timeline-year-group">
+              <div class="timeline-row">
+                <div class="timeline-date-col">01.23 (금)</div>
+                <div class="timeline-desc-col"><strong>오중석 프란치스코 신부 부임</strong></div>
+              </div>
+              <div class="timeline-row" style="border-bottom:none;">
+                <div class="timeline-date-col">주요활동</div>
+                <div class="timeline-desc-col">
+                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2025', this)">▼ 주요 프로그램 닫기</span>
+                  <ul id="program-2025" class="timeline-sub-list" style="display:grid;">
+                    <li>주님께 찬양을</li><li>떼제기도</li><li>성주간 특강</li>
+                    <li>성시간</li><li>청년 성경 공부</li><li>수지에니어그램</li>
+                    <li>청소년 상담 및 면담</li><li>찾아가는 성장 프로젝트</li>
+                    <li>자녀들을 위한 월례미사</li><li>학부모 하루 피정</li>
+                    <li>홈페이지 리뉴얼</li><li>하품FC 창단</li>
+                    <li>센터 시설 보수</li><li>대가대협 대학 사목</li>
+                    <li>소년소녀합창단 지도</li><li>비아또르 지도</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- 2025 -->
-      <li class="timeline-item period">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h2 class="timeline-title">2025년</h2></div>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-info"><span>01.23 (금)</span></div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h3 class="timeline-title">오중석 프란치스코 신부 부임</h3></div>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3 class="timeline-title" onclick="toggleProgram('program-2025')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2025" style="display: block; margin-top: 10px;">
-            <li>주님께 찬양을</li>
-            <li>떼제기도</li>
-            <li>성주간 특강</li>
-            <li>성시간</li>
-            <li>청년 성경 공부</li>
-            <li>수지에니어그램</li>
-            <li>청소년 상담 및 면담(직업진로)<li/><li>찾아가는 성장 프로젝트</li>
-            <li>자녀들을 위한 월례미사&특강</li>
-            <li>수험생을 위해 기도하는 학부모 하루 피정</li>
-            <li>하품센터 홈페이지 리뉴얼</li>
-            <li>하품FC 창단</li>
-            <li>센터 시설 보수(3~12월 현재)</li>
-            <li>대가대협 천안지구 대학 사목</li>
-            <li>천안·아산지구 소년소녀합창단 지도신부</li>
-            <li>가톨릭찬양팀 비아또르 지도신부</li>
-          </ul>
-        </div>
-      </li>
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text">2024년 연혁</h4>
+              <span class="card-badge-num">2024</span>
+            </div>
+            <div class="timeline-year-group">
+              <div class="timeline-row" style="border-bottom:none;">
+                <div class="timeline-date-col">주요활동</div>
+                <div class="timeline-desc-col">
+                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2024', this)">▼ 주요 프로그램 닫기</span>
+                  <ul id="program-2024" class="timeline-sub-list" style="display:grid;">
+                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>청년 성시간</li>
+                    <li>청년 성경 공부</li><li>수지에니어그램</li><li>대가대협 대학 사목</li>
+                    <li>소년소녀합창단 지도</li><li>비아또르 지도</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- 2024 -->
-      <li class="timeline-item period">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h2 class="timeline-title">2024년</h2></div>
-      </li>
-      <li class="timeline-item"></li>
-      <li class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3 class="timeline-title" onclick="toggleProgram('program-2024')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2024" style="display: block; margin-top: 10px;">
-            <li>주님께 찬양을</li>
-            <li>청년 떼제기도</li>
-            <li>청년 성시간</li>
-            <li>청년 성경 공부</li>
-            <li>수지에니어그램</li>
-            <li>대가대협 천안지구 대학 사목</li>
-            <li>천안·아산지구 소년소녀합창단 지도신부</li>
-            <li>가톨릭찬양팀 비아또르 지도신부</li>
-          </ul>
-        </div>
-      </li>
-      
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text">2023년 연혁</h4>
+              <span class="card-badge-num">2023</span>
+            </div>
+            <div class="timeline-year-group">
+              <div class="timeline-row" style="border-bottom:none;">
+                <div class="timeline-date-col">주요활동</div>
+                <div class="timeline-desc-col">
+                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2023', this)">▼ 주요 프로그램 닫기</span>
+                  <ul id="program-2023" class="timeline-sub-list" style="display:grid;">
+                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>하품 특강-뭉클 클래스</li>
+                    <li>청년 성시간</li><li>청년 피정</li><li>청년 성경 공부</li>
+                    <li>수지에니어그램</li><li>대가대협 대학 사목</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- 2023 -->
-      <li class="timeline-item period">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h2 class="timeline-title">2023년</h2></div>
-      </li>
-     <li class="timeline-item"></li>
-      <li class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3 class="timeline-title" onclick="toggleProgram('program-2023')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2023" style="display: block; margin-top: 10px;">
-            <li>주님께 찬양을</li>
-            <li>청년 떼제기도</li>
-            <li>하품 특강-뭉클 클래스</li>
-            <li>청년 성시간</li>
-            <li>청년 피정</li>
-            <li>청년 성경 공부</li>
-            <li>수지에니어그램</li>
-            <li>대가대협 천안지구 대학 사목</li>
-          </ul>
-        </div>
-      </li>
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text">2022년 연혁</h4>
+              <span class="card-badge-num">2022</span>
+            </div>
+            <div class="timeline-year-group">
+              <div class="timeline-row" style="border-bottom:none;">
+                <div class="timeline-date-col">주요활동</div>
+                <div class="timeline-desc-col">
+                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2022', this)">▼ 주요 프로그램 닫기</span>
+                  <ul id="program-2022" class="timeline-sub-list" style="display:grid;">
+                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>묵주공방 특강</li>
+                    <li>샴푸바 만들기</li><li>트리/리스 만들기</li><li>청년 성시간</li>
+                    <li>몽골 아이들 묵주 보내기</li><li>수지에니어그램</li><li>대가대협 대학 사목</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- 2022 -->
-      <li class="timeline-item period">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h2 class="timeline-title">2022년</h2></div>
-      </li>
-      <li class="timeline-item"></li>
-      <li class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3 class="timeline-title" onclick="toggleProgram('program-2022')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2022" style="display: block; margin-top: 10px;">
-            <li>주님께 찬양을</li>
-            <li>청년 떼제기도</li>
-            <li>하품 특강-주신부의 묵주공방</li>
-            <li>하품 특강-샴푸바 만들기</li>
-            <li>하품 특강-트리만들기</li>
-            <li>하품 특강-리스만들기</li>
-            <li>청년 성시간</li>
-            <li>하품 묵주 공방 (몽골 항올성당 아이들을 위한 묵주 만들기)</li>
-            <li>수지에니어그램</li>
-            <li>대가대협 천안지구 대학 사목</li>
-          </ul>
-        </div>
-      </li>
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text">2021년 연혁</h4>
+              <span class="card-badge-num">2021</span>
+            </div>
+            <div class="timeline-year-group">
+              <div class="timeline-row">
+                <div class="timeline-date-col">06.23 (수)</div>
+                <div class="timeline-desc-col"><strong>한정현 스테파노 주교 사목 방문</strong></div>
+              </div>
+              <div class="timeline-row" style="border-bottom:none;">
+                <div class="timeline-date-col">주요활동</div>
+                <div class="timeline-desc-col">
+                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2021', this)">▼ 주요 프로그램 닫기</span>
+                  <ul id="program-2021" class="timeline-sub-list" style="display:grid;">
+                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>청년 교리</li>
+                    <li>청년 성시간</li><li>주일 복음 나눔</li><li>수지에니어그램</li>
+                    <li>대가대협 대학 사목</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- 2021 -->
-      <li class="timeline-item period">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h2 class="timeline-title">2021년</h2></div>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-info"><p>06.23 (수)</p></div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h3 class="timeline-title">한정현 스테파노 주교 사목 방문 </h3></div>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3 class="timeline-title" onclick="toggleProgram('program-2021')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2021" style="display: block; margin-top: 10px;">
-            <li>주님께 찬양을</li>
-            <li>청년 떼제기도</li>
-            <li>청년 교리</li>
-            <li>청년 성시간</li>
-            <li>주일 복음 나눔</li>
-            <li>수지에니어그램</li>
-            <li>대가대협 천안지구 대학 사목</li>
-          </ul>
-        </div>
-      </li>
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text">2020년 연혁</h4>
+              <span class="card-badge-num">2020</span>
+            </div>
+            <div class="timeline-year-group">
+              <div class="timeline-row">
+                <div class="timeline-date-col">01.17 (금)</div>
+                <div class="timeline-desc-col"><strong>남광근 프란치스코 드 살 신부 부임</strong></div>
+              </div>
+              <div class="timeline-row" style="border-bottom:none;">
+                <div class="timeline-date-col">주요활동</div>
+                <div class="timeline-desc-col">
+                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2020', this)">▼ 주요 프로그램 닫기</span>
+                  <ul id="program-2020" class="timeline-sub-list" style="display:grid;">
+                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>청년 교리</li>
+                    <li>청년 성시간</li><li>주일 복음 나눔</li><li>수지에니어그램</li>
+                    <li>성경학교</li><li>퍼스널 컬러</li><li>청년성서 특강</li>
+                    <li>대가대협 대학 사목</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
 
-      <!-- 2020 -->
-      <li class="timeline-item period">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h2 class="timeline-title">2020년</h2></div>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-info"><span>01.17 (금)</span></div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h3 class="timeline-title">남광근 프란치스코 드 살 신부 부임</h3></div>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3 class="timeline-title" onclick="toggleProgram('program-2020')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2020" style="display: block; margin-top: 10px;">
-            <li>주님께 찬양을</li>
-            <li>청년 떼제기도</li>
-            <li>청년들을 위한 교리</li>
-            <li>청년 성시간</li>
-            <li>주일 복음 나눔</li>
-            <li>수지에니어그램</li>
-            <li>성경학교</li>
-            <li>퍼스널 컬러</li>
-            <li>청년성서 특강</li>
-            <li>대가대협 천안지구 대학 사목</li>
-          </ul>
-        </div>
-      </li>
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text">2017년 ~ 2019년 연혁</h4>
+              <span class="card-badge-num">OPEN</span>
+            </div>
+            <div class="timeline-year-group">
+              <div class="timeline-row">
+                <div class="timeline-date-col">2019.02.24</div>
+                <div class="timeline-desc-col"><strong>개관 축복 미사 (유흥식 라자로 추기경 집전)</strong></div>
+              </div>
+              <div class="timeline-row">
+                <div class="timeline-date-col">2018년</div>
+                <div class="timeline-desc-col">센터 대규모 리모델링 진행</div>
+              </div>
+              <div class="timeline-row" style="border-bottom:none;">
+                <div class="timeline-date-col">2017.11.24</div>
+                <div class="timeline-desc-col"><strong>조수환 바오로 신부 부임</strong></div>
+              </div>
+            </div>
+          </div>
+        `
+      },
+      '오시는길': {
+        html: `
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text"><i class="fa-solid fa-train"></i> 기차 · 전철 이용시</h4>
+              <span class="card-badge-num">01</span>
+            </div>
+            <p class="location-text-detail">
+              <strong>천안역(1호선)</strong> 하차 후 아산/신창 방면 전철로 환승합니다.<br>
+              → <strong>쌍용역 2번 출구</strong>로 나와 하품센터까지 약 700m 직진 이동 (도보 10분 소요)
+            </p>
+          </div>
 
-      <!-- 2019 -->
-      <li class="timeline-item period">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h2 class="timeline-title">2019년</h2></div>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-info"><span>02.24 (일)</span></div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h3 class="timeline-title">개관 축복 미사 (유흥식 라자로 추기경 집전)</h3></div>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content">
-          <h3 class="timeline-title" onclick="toggleProgram('program-2019')" style="cursor: pointer;">▶ 주요 활동 및 프로그램</h3>
-          <ul id="program-2019" style="display: block; margin-top: 10px;">
-            <li>몸신학·성교육</li>
-            <li>청년 기도모임</li>
-            <li>주님께 찬양을</li>
-            <li>청년 주일 복음 나눔</li>
-            <li>수지에니어그램</li>
-            <li>청소년 상담</li>
-            <li>청년 성경 공부</li>
-            <li>선교사학교</li>
-            <li>자모회 교육</li>
-            <li>내 얼굴에 찰떡(퍼스널 컬러)</li>
-            <li>대가대협 천안지구 대학 사목</li>
-          </ul>
-        </div>
-      </li>
-      <li class="timeline-item period">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h2 class="timeline-title">2018년</h2></div>
-      </li>
-      <li class="timeline-item">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h3 class="timeline-title">리모델링</h3></div>
-      </li>
-       <li class="timeline-item period">
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h2 class="timeline-title">2017년</h2></div>
-      </li>
-      <li></li>
-      <li class="timeline-item">
-        <div class="timeline-info"><span>11.24 (금)</span></div>
-        <div class="timeline-marker"></div>
-        <div class="timeline-content"><h3 class="timeline-title">조수환 바오로 신부 부임</h3></div>
-      </li>
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text"><i class="fa-solid fa-bus"></i> 시내버스 이용시</h4>
+              <span class="card-badge-num">02</span>
+            </div>
+            <ul class="bus-custom-list">
+              <li><span class="bus-badge-pill green">시내 1번</span> <strong>쌍용고입구</strong> 정류장 하차 <small>→ 하품센터까지 도보 3분 (약 200m)</small></li>
+              <li><span class="bus-badge-pill green">시내 12번</span> <strong>방아다리공원</strong> 정류장 하차 <small>→ 하품센터까지 도보 5분 (약 300m)</small></li>
+              <li><span class="bus-badge-pill blue">간선 900번</span> <strong>삼일원앙아파트</strong> 정류장 하차 <small>→ 하품센터까지 도보 10분 (약 500m)</small></li>
+            </ul>
+          </div>
 
+          <div class="unified-card">
+            <div class="card-header-module">
+              <h4 class="card-title-text"><i class="fa-solid fa-car"></i> 자차 이용시</h4>
+              <span class="card-badge-num">03</span>
+            </div>
+            <p class="location-text-detail">
+              모바일 내비게이션 어플리케이션에 <strong>'하품센터'</strong> 또는 도로명 주소인 <strong>'천안시 서북구 월봉5길 23'</strong>을 검색하세요.<br>
+              <span class="map-highlight-span">📍 공식 명칭: 가톨릭천안청소년사목센터하품</span>
+            </p>
+          </div>
+        `
+      }
+    };
 
+    function toggleProgram(id, btnElement) {
+      const el = document.getElementById(id);
+      if (!el || !btnElement) return;
+      const currentDisplay = window.getComputedStyle(el).display;
+      if (currentDisplay === 'none') {
+        el.style.setProperty('display', 'grid', 'important');
+        btnElement.innerText = "▼ 주요 프로그램 닫기";
+      } else {
+        el.style.setProperty('display', 'none', 'important');
+        btnElement.innerText = "▶ 주요 프로그램 보기";
+      }
+    }
 
+    function changeContent(menu) {
+      document.querySelectorAll('.top-menu-bar .menu-button').forEach(btn => {
+        btn.classList.remove('current');
+        if (btn.innerText.trim() === menu) btn.classList.add('current');
+      });
 
-    </ul>
-  `,
-			'오시는길': `
-    <h2>오시는길</h2>
-    <br>
-    <ol>
-      <li>
-        <strong>기차·전철 이용시</strong><br>
-        천안역(1호선) → 쌍용역 2번 출구 → 하품센터까지 약 700m(도보 10분)
-      </li>
-      
-      <br>
-      
-      <li>
-        <strong>버스 이용시</strong>
-        <ol type="a" style="margin-top: .5em; margin-left:2%">
-			<li>시내버스 1번 승차 → 쌍용고입구 정류장 하차 → 하품센터까지 약 200m(도보 3분)</li>
-			<li>시내버스 12번 승차 → 방아디리공원 정류장 하차 → 하품센터까지 약300m(도보 5분)</li>
-			<li>간선버스 900번 승차 → 삼일원앙아파트 정류장 하차 →하품센터까지 약 500m(도보 10분)</li>
-		</ol>
-	</li>
-          <br>
-          <li>
-            <strong>자차 이용시</strong><br>
-            네비게이션에 ‘하품센터’ 또는 주소 ‘천안시 서북구 월봉5길 23’ 검색 후 ‘가톨릭천안청소년사목센터하품’을 목적지로 설정
-          </li>
-          <br>
-          
-        </ol>
-      </li>
-    </ol>
-  `
-		};
-		function toggleProgram(id) {
-			const el = document.getElementById(id);
-			if (el) {
-				el.style.display = (el.style.display === "none") ? "block" : "none";
-			}
-		}
+      const data = contents[menu];
+      if (!data) return;
 
-		function changeContent(menu) {
-			// 버튼 스타일 초기화 및 활성화
-			document.querySelectorAll('.menu-button').forEach(btn => {
-				btn.classList.remove('active');
-				if (btn.innerText === menu) {
-					btn.classList.add('active');
-				}
-			});
+      document.getElementById('content-area').innerHTML = data.html;
+    }
 
-			// 콘텐츠 변경
-			const contentArea = document.getElementById('content-area');
-			contentArea.innerHTML = contents[menu] || '<p>내용이 준비 중입니다.</p>';
-		}
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      const tab = params.get('tab') || '인사말';
+      changeContent(tab);
+    };
+  </script>
 
-		window.onload = () => changeContent('인사말');
-
-	</script>
 </body>
-
 </html>
