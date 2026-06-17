@@ -11,11 +11,12 @@ body {
 
 /* =========================================
    상단 고정 헤더 독립 전체 래퍼
+   [수정] z-index를 상대적으로 낮추어 사이드바/백드롭(99998~) 밑으로 깔리게 함
 ========================================= */
 .fixed-header-wrapper {
   position: sticky;
   top: 0;                     
-  z-index: 100;
+  z-index: 90; /* 사이드바와 겹치지 않도록 안전값으로 조정 */
   width: 100%;
   background-color: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(10px);
@@ -56,7 +57,7 @@ body {
 }
 
 /* =========================================
-   상단 메뉴 & 프로그레스 바 (원본 가로 스크롤 방식 복구)
+   상단 메뉴 & 프로그레스 바 (원래 가로 스크롤 방식)
 ========================================= */
 .menu-scroll-wrapper {
   width: 100%;
@@ -133,7 +134,7 @@ body {
 }
 
 /* =========================================
-   📦 [수정] 프로그램 카드 리스트 (3~4개씩 출력)
+   📦 프로그램 카드 리스트 (3~4개씩 출력)
 ========================================= */
 .container {
   max-width: 1250px;
@@ -146,13 +147,10 @@ body {
   background-color: #FFFFFF;
 }
 
-/* 기존의 유동적인 minmax 방식 대신, 
-  데스크톱 대화면(1024px 이상) 기준 무조건 한 줄에 4개씩 꽉 차게 고정 정렬합니다.
-*/
 .program-list {
   display: grid;
   grid-template-columns: repeat(4, 1fr); 
-  gap: 40px 24px;                          /* 카드 간의 상하 간격 40px, 좌우 간격 24px */
+  gap: 40px 24px;
   width: 100%;
 }
 
@@ -227,8 +225,18 @@ body {
   }
 }
 
-/* 모바일 환경: 한 줄에 2개 출력 (글씨가 깨지지 않는 최적의 크기) */
+/* 모바일 환경 */
 @media screen and (max-width: 768px) {
+  /* [추가] 모바일에서 헤더 내부의 햄버거 메뉴 강제 z-index 격리 인상 */
+  .header-row1 {
+    z-index: 99 !important;
+  }
+  
+  .mobile-menu {
+    z-index: 99999 !important; /* 백드롭을 뚫고 터치되도록 최상위 고정 */
+    pointer-events: auto !important;
+  }
+
   .fixed-header-inner {
     padding-top: 20px;
   }
@@ -246,7 +254,7 @@ body {
     padding-top: 30px;
   }
   .program-list {
-    grid-template-columns: repeat(2, 1fr); /* 모바일은 2개씩 노출 */
+    grid-template-columns: repeat(2, 1fr);
     gap: 30px 16px;
   }
   .program-title {

@@ -1,42 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <th:block th:replace="~{common/fragments :: commonHead}"></th:block>
-  <title>센터소개 - 하품센터</title>
-  <link rel="stylesheet" th:href="@{/css/main/introduce.css}" media="only screen and (min-width: 769px)"/>
-  <link rel="stylesheet" th:href="@{/css/main/mobile/introduce.css}" media="only screen and (max-width: 768px)"/>
+	<th:block th:replace="~{common/fragments :: commonHead}"></th:block>
+	<title>센터소개 - 하품센터</title>
+	<link rel="stylesheet" th:href="@{/css/main/introduce.css}" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!--  <link rel="stylesheet" th:href="@{/css/main/mobile/introduce.css}" media="only screen and (max-width: 768px)"/>-->
+
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/footer.css}" />
 </head>
+
 <body>
 
-  <th:block th:replace="~{main/header :: headFrag(${user})}"></th:block>
+	<th:block th:replace="~{main/header :: headFrag(${user})}"></th:block>
 
-  <div class="sticky-header">
-    <div class="sticky-header-inner">
-      <div class="info-top-bar">
-        <span class="info-prefix">ABOUT</span>
-        <h2 class="info-title">센터소개</h2>
-      </div>
-      <div class="top-menu-bar">
-        <button class="menu-button" onclick="changeContent('인사말')">인사말</button>
-        <button class="menu-button" onclick="changeContent('주요연혁')">주요연혁</button>
-        <button class="menu-button" onclick="changeContent('오시는길')">오시는길</button>
-      </div>
-    </div>
-  </div>
+	<div class="sticky-header">
+		<div class="sticky-header-inner">
+			<div class="info-top-bar">
+				<span class="info-prefix">ABOUT</span>
+				<h2 class="info-title">센터소개</h2>
+			</div>
+			<div class="top-menu-bar">
+				<button class="menu-button" onclick="changeContent('인사말')">인사말</button>
+				<button class="menu-button" onclick="changeContent('주요연혁')">주요연혁</button>
+				<button class="menu-button" onclick="changeContent('오시는길')">오시는길</button>
+			</div>
+		</div>
+	</div>
 
-  <div class="container">
-    <div class="content">
-      <div id="content-area"></div>
-    </div>
-  </div>
+	<div class="container">
+		<div class="content">
+			<div id="content-area"></div>
+		</div>
+	</div>
 
-  <th:block th:replace="~{main/footer :: footer}"></th:block>
+	<th:block th:replace="~{main/footer :: footer}"></th:block>
 
-  <script th:src="@{/js/header.js}"></script>
-  <script>
-    const contents = {
-      '인사말': {
-        html: `
+	<script th:src="@{/js/header.js}"></script>
+	<script>
+		const contents = {
+			'인사말': {
+				html: `
           <div class="unified-card">
             <div class="card-header-module">
               <h4 class="card-title-text">하느님 품, 하품센터 방문을 환영합니다.</h4>
@@ -62,9 +68,9 @@
             </div>
           </div>
         `
-      },
-      '주요연혁': {
-        html: `
+			},
+			'주요연혁': {
+				html: `
           <div class="unified-card">
             <div class="card-header-module">
               <h4 class="card-title-text">2025년 연혁</h4>
@@ -223,9 +229,9 @@
             </div>
           </div>
         `
-      },
-      '오시는길': {
-        html: `
+			},
+			'오시는길': {
+				html: `
           <div class="unified-card">
             <div class="card-header-module">
               <h4 class="card-title-text"><i class="fa-solid fa-train"></i> 기차 · 전철 이용시</h4>
@@ -260,40 +266,41 @@
             </p>
           </div>
         `
-      }
-    };
+			}
+		};
 
-    function toggleProgram(id, btnElement) {
-      const el = document.getElementById(id);
-      if (!el || !btnElement) return;
-      const currentDisplay = window.getComputedStyle(el).display;
-      if (currentDisplay === 'none') {
-        el.style.setProperty('display', 'grid', 'important');
-        btnElement.innerText = "▼ 주요 프로그램 닫기";
-      } else {
-        el.style.setProperty('display', 'none', 'important');
-        btnElement.innerText = "▶ 주요 프로그램 보기";
-      }
-    }
+		function toggleProgram(id, btnElement) {
+			const el = document.getElementById(id);
+			if (!el || !btnElement) return;
+			const currentDisplay = window.getComputedStyle(el).display;
+			if (currentDisplay === 'none') {
+				el.style.setProperty('display', 'grid', 'important');
+				btnElement.innerText = "▼ 주요 프로그램 닫기";
+			} else {
+				el.style.setProperty('display', 'none', 'important');
+				btnElement.innerText = "▶ 주요 프로그램 보기";
+			}
+		}
 
-    function changeContent(menu) {
-      document.querySelectorAll('.top-menu-bar .menu-button').forEach(btn => {
-        btn.classList.remove('current');
-        if (btn.innerText.trim() === menu) btn.classList.add('current');
-      });
+		function changeContent(menu) {
+			document.querySelectorAll('.top-menu-bar .menu-button').forEach(btn => {
+				btn.classList.remove('current');
+				if (btn.innerText.trim() === menu) btn.classList.add('current');
+			});
 
-      const data = contents[menu];
-      if (!data) return;
+			const data = contents[menu];
+			if (!data) return;
 
-      document.getElementById('content-area').innerHTML = data.html;
-    }
+			document.getElementById('content-area').innerHTML = data.html;
+		}
 
-    window.onload = () => {
-      const params = new URLSearchParams(window.location.search);
-      const tab = params.get('tab') || '인사말';
-      changeContent(tab);
-    };
-  </script>
+		window.onload = () => {
+			const params = new URLSearchParams(window.location.search);
+			const tab = params.get('tab') || '인사말';
+			changeContent(tab);
+		};
+	</script>
 
 </body>
+
 </html>

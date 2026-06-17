@@ -1,50 +1,66 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8" />
-    <title>Footer Fragment</title>
+	<meta charset="UTF-8" />
+	<title>Footer Fragment</title>
 </head>
+
 <body>
 
-    <th:block th:fragment="footer">
-      <footer class="modern-footer" style="margin-top: 50px;">
-        <div class="footer-container" >
-          
-          <div class="footer-col footer-links">
-            <h4>Family Sites</h4>
-            <ul>
-              <li><a href="http://agnus.or.kr/home/" target="_blank">대전교구 청소년국 <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-              <li><a href="http://www.agnusbible.or.kr/" target="_blank">청년성서 모임 <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-              <li><a href="https://www.djcatholic.or.kr/home/" target="_blank">천주교 대전교구 <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
-            </ul>
-          </div>
+	<th:block th:fragment="footer">
+		<footer class="modern-footer" style="margin-top: 50px;">
 
-          <div class="footer-col footer-info">
-            <div class="footer-logo">하품센터</div>
-            <p class="address">(31174) 충남 천안시 서북구 월봉5길 23</p>
-            <div class="contact-details">
-              <p><span>Tel.</span> 041-572-7179</p>
-              <span class="divider">|</span>
-              <p><span>Fax.</span> 041-572-7180</p>
-            </div>
-            <p class="email"><span>E-mail.</span> hapum7179@gmail.com</p>
-          </div>
+		<button class="scroll-top-btn" 
+        onclick="window.scrollTo({top: 0, behavior: 'smooth'}); 
+                 document.documentElement.scrollTo({top: 0, behavior: 'smooth'}); 
+                 document.body.scrollTo({top: 0, behavior: 'smooth'}); 
+                 return false;" 
+        title="맨 위로 이동">
+  <i class="fa-solid fa-arrow-up"></i>
+  <span>TOP</span>
+</button>
+			<div class="footer-container">
 
-          <div class="footer-col footer-social">
-            <h4>Follow Us</h4>
-            <a href="https://www.instagram.com/hapum_center/" target="_blank" class="social-btn">
-              <img src="/img/insta_logo.png" alt="Instagram" class="insta-icon" />
-              <span>@hapum_center</span>
-            </a>
-          </div>
+				<div class="footer-col footer-links">
+					<h4>Family Sites</h4>
+					<ul>
+						<li><a href="http://agnus.or.kr/home/" target="_blank">대전교구 청소년국 <i
+									class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+						<li><a href="https://djyouthbible.kr/" target="_blank">청년성서 모임 <i
+									class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+						<li><a href="https://www.djcatholic.or.kr/home/" target="_blank">천주교 대전교구 <i
+									class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+					</ul>
+				</div>
 
-        </div>
+				<div class="footer-col footer-info">
+					<div class="footer-logo">하품센터</div>
+					<p class="address">(31174) 충남 천안시 서북구 월봉5길 23</p>
+					<div class="contact-details">
+						<p><span>Tel.</span> 041-572-7179</p>
+						<span class="divider">|</span>
+						<p><span>Fax.</span> 041-572-7180</p>
+					</div>
+					<p class="email"><span>E-mail.</span> hapum7179@gmail.com</p>
+				</div>
 
-        <div class="footer-bottom">
-          <p>&copy; 2026 Hapum Center. All rights reserved.</p>
-        </div>
-      </footer>
-    </th:block>
+				<div class="footer-col footer-social">
+					<h4>Follow Us</h4>
+					<a href="https://www.instagram.com/hapum_center/" target="_blank" class="social-btn">
+						<img src="/img/insta_logo.png" alt="Instagram" class="insta-icon" />
+						<span>@hapum_center</span>
+					</a>
+				</div>
+
+			</div>
+
+			<div class="footer-bottom">
+				<p>&copy; 2026 Hapum Center. All rights reserved.</p>
+			</div>
+		</footer>
+	</th:block>
 
 </body>
+
 </html>

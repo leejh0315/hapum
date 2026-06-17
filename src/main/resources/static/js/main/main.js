@@ -1,45 +1,46 @@
 document.addEventListener('DOMContentLoaded', function () {
 
     /* ═══════════════════════════════════════════
-       0. 히어로 슬라이드 동적 빌드 (1~4번 순서대로 매핑)
+       유틸: 모바일 여부 판단
+    ═══════════════════════════════════════════ */
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
+
+    /* ═══════════════════════════════════════════
+       0. 히어로 슬라이드 동적 빌드
     ═══════════════════════════════════════════ */
     const heroSlider = document.getElementById('heroSlider');
-    
+
+    const slideData = [
+        {
+            img: '/img/main/main1.jpg',
+            h2: "함께 성장하며 서로 행복을 나누는",
+            h1: "하느님 품, <span>하품센터</span>"
+        },
+        {
+            img: '/img/main/main2.jpg',
+            h2: "청소년과 청년들을 위한",
+            h1: "신앙과 문화의 <span>복합 사목 공간</span>"
+        },
+        {
+            img: '/img/main/main3.jpg',
+            h2: "주님 안에서 꿈을 꾸고 기쁨을 가꾸는",
+            h1: "우리들의 <span>따뜻한 보금자리</span>"
+        },
+        {
+            img: '/img/main/main4.jpg',
+            h2: "함께 기도하고 기쁘게 찬미하는",
+            h1: "젊은 신앙인들의 <span>아름다운 쉼터</span>"
+        }
+    ];
+
     if (heroSlider) {
-        // 1. 이미지와 문구를 1:1로 매칭한 순차 데이터셋 (총 4개)
-        const slideData = [
-            { 
-                img: '/img/main/main1.jpg', 
-                h2: "함께 성장하며 서로 행복을 나누는", 
-                h1: "하느님 품, <span>하품센터</span>" 
-            },
-            { 
-                img: '/img/main/main2.jpg', 
-                h2: "청소년과 청년들을 위한", 
-                h1: "신앙과 문화의 <span>복합 사목 공간</span>" 
-            },
-            { 
-                img: '/img/main/main3.jpg', 
-                h2: "주님 안에서 꿈을 꾸고 기쁨을 가꾸는", 
-                h1: "우리들의 <span>따뜻한 보금자리</span>" 
-            },
-            { 
-                img: '/img/main/main4.jpg', 
-                h2: "함께 기도하고 기쁘게 찬미하는", 
-                h1: "젊은 신앙인들의 <span>아름다운 쉼터</span>" 
-            }
-        ];
-
-        // 기존 HTML에 하드코딩된 임시 슬라이드 비우기
         heroSlider.innerHTML = '';
-
-        // 배열 순서대로(1번~4번) 슬라이드 DOM 생성 및 주입
         slideData.forEach((slide, index) => {
             const slideDiv = document.createElement('div');
-            // 첫 번째 슬라이드에만 active 클래스를 부여하여 시작 시 노출시킴
             slideDiv.className = `slide${index === 0 ? ' active' : ''}`;
             slideDiv.style.backgroundImage = `url('${slide.img}')`;
-            
             slideDiv.innerHTML = `
                 <div class="slide-content">
                     <h2>${slide.h2}</h2>
@@ -51,7 +52,34 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     /* ═══════════════════════════════════════════
-       0-1. 스크롤 진행 바 — 동적 삽입
+       0-1. 슬라이드 인디케이터 빌드 (모바일용)
+    ═══════════════════════════════════════════ */
+    const indicatorsContainer = document.getElementById('heroIndicators');
+
+    function buildIndicators(count) {
+        if (!indicatorsContainer) return;
+        indicatorsContainer.innerHTML = '';
+        for (let i = 0; i < count; i++) {
+            const dot = document.createElement('span');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => {
+                goToSlide(i);
+                resetInterval();
+            });
+            indicatorsContainer.appendChild(dot);
+        }
+    }
+
+    function updateIndicators(index) {
+        if (!indicatorsContainer) return;
+        const dots = indicatorsContainer.querySelectorAll('.dot');
+        dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+    }
+
+    /* ═══════════════════════════════════════════
+       0-2. 스크롤 진행 바
     ═══════════════════════════════════════════ */
     const progressBar = document.createElement('div');
     progressBar.id = 'scroll-progress-bar';
@@ -66,22 +94,21 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* ═══════════════════════════════════════════
        1. 히어로 패럴랙스 + 텍스트 페이드아웃
+          (모바일에서는 패럴랙스 비활성화 — 성능 최적화)
     ═══════════════════════════════════════════ */
-    const heroSection = document.querySelector('.hero-section');
-    const heroSlides  = document.querySelectorAll('.hero-slider .slide');
+    const heroSection   = document.querySelector('.hero-section');
+    const heroSlides    = document.querySelectorAll('.hero-slider .slide');
     const slideContents = document.querySelectorAll('.slide-content');
 
     function updateHeroParallax() {
-        if (!heroSection) return;
+        if (!heroSection || isMobile()) return;
         const scrollY = window.scrollY;
         const heroH   = heroSection.offsetHeight;
 
-        // 배경 패럴랙스 — 스크롤의 40% 속도로 이동
         heroSlides.forEach(slide => {
             slide.style.backgroundPositionY = `calc(50% + ${scrollY * 0.4}px)`;
         });
 
-        // 텍스트 페이드아웃 — 히어로 높이 50% 지점에서 완전히 사라짐
         const fadeRatio = Math.min(scrollY / (heroH * 0.5), 1);
         slideContents.forEach(content => {
             content.style.opacity   = String(1 - fadeRatio);
@@ -156,10 +183,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     /* ═══════════════════════════════════════════
-       5. 스크롤 이벤트 — rAF로 묶어 성능 최적화
+       5. 스크롤 이벤트 — rAF
     ═══════════════════════════════════════════ */
     let ticking = false;
-
     window.addEventListener('scroll', () => {
         if (!ticking) {
             window.requestAnimationFrame(() => {
@@ -175,7 +201,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updateHeroParallax();
 
     /* ═══════════════════════════════════════════
-       6. 히어로 슬라이드 자동 롤링 (순차 주입된 노드로 추적)
+       6. 히어로 슬라이드 자동 롤링
     ═══════════════════════════════════════════ */
     const dynamicSlides = document.querySelectorAll('.hero-slider .slide');
     const heroPrev      = document.getElementById('hero-prev');
@@ -183,20 +209,18 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentSlide    = 0;
     let slideInterval;
 
-    function showSlide(index) {
+    // 인디케이터 생성
+    buildIndicators(dynamicSlides.length);
+
+    function goToSlide(index) {
         dynamicSlides.forEach(slide => slide.classList.remove('active'));
-        dynamicSlides[index].classList.add('active');
+        currentSlide = (index + dynamicSlides.length) % dynamicSlides.length;
+        dynamicSlides[currentSlide].classList.add('active');
+        updateIndicators(currentSlide);
     }
 
-    function nextSlide() {
-        currentSlide = (currentSlide + 1) % dynamicSlides.length;
-        showSlide(currentSlide);
-    }
-
-    function prevSlide() {
-        currentSlide = (currentSlide - 1 + dynamicSlides.length) % dynamicSlides.length;
-        showSlide(currentSlide);
-    }
+    function nextSlide() { goToSlide(currentSlide + 1); }
+    function prevSlide() { goToSlide(currentSlide - 1); }
 
     function resetInterval() {
         clearInterval(slideInterval);
@@ -209,20 +233,45 @@ document.addEventListener('DOMContentLoaded', function () {
         if (heroPrev) heroPrev.addEventListener('click', () => { prevSlide(); resetInterval(); });
     }
 
+    /* ── 히어로 슬라이더 스와이프 (모바일) ── */
+    let heroTouchStartX = 0;
+    let heroTouchEndX   = 0;
+    const SWIPE_THRESHOLD = 50; // px
+
+    heroSlider && heroSlider.addEventListener('touchstart', (e) => {
+        heroTouchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+
+    heroSlider && heroSlider.addEventListener('touchend', (e) => {
+        heroTouchEndX = e.changedTouches[0].clientX;
+        const delta = heroTouchStartX - heroTouchEndX;
+        if (Math.abs(delta) > SWIPE_THRESHOLD) {
+            if (delta > 0) { nextSlide(); } // 왼쪽으로 스와이프 → 다음
+            else           { prevSlide(); } // 오른쪽으로 스와이프 → 이전
+            resetInterval();
+        }
+    }, { passive: true });
+
     /* ═══════════════════════════════════════════
        7. 프로그램 가로 슬라이더
+          PC: 버튼 클릭 스크롤 / 모바일: 네이티브 스크롤 스냅
     ═══════════════════════════════════════════ */
     const programTrack = document.getElementById('programTrack');
     const progPrev     = document.getElementById('prog-prev');
     const progNext     = document.getElementById('prog-next');
-    const scrollStep   = 300;
 
     if (programTrack && progPrev && progNext) {
+        function getProgramScrollStep() {
+            // 카드 하나의 너비 + 갭(20px) 만큼 스크롤
+            const card = programTrack.querySelector('.program-card');
+            return card ? card.offsetWidth + 20 : 300;
+        }
+
         progNext.addEventListener('click', () => {
-            programTrack.scrollBy({ left: scrollStep, behavior: 'smooth' });
+            programTrack.scrollBy({ left: getProgramScrollStep(), behavior: 'smooth' });
         });
         progPrev.addEventListener('click', () => {
-            programTrack.scrollBy({ left: -scrollStep, behavior: 'smooth' });
+            programTrack.scrollBy({ left: -getProgramScrollStep(), behavior: 'smooth' });
         });
     }
 
@@ -232,10 +281,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const modals = document.querySelectorAll('.popup-modal');
 
     modals.forEach(modal => {
-        const id       = modal.id.replace('popup-modal-', '');
-        const hideKey  = 'popupHideUntil_' + id;
+        const id        = modal.id.replace('popup-modal-', '');
+        const hideKey   = 'popupHideUntil_' + id;
         const hideUntil = localStorage.getItem(hideKey);
-        const now      = new Date();
+        const now       = new Date();
 
         if (!hideUntil || new Date(hideUntil) <= now) {
             modal.style.display = 'flex';

@@ -2,177 +2,247 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
-	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
 
-	<th:block th:fragment="headFrag(user)">
-		<header style="margin-bottom: 50px;">
-			<div class="header-row1">
-				<div class="header-row1-left"></div>
+<th:block th:fragment="headFrag(user)">
+  <header style="margin-bottom: 50px;">
+    <div class="header-row1">
+      <div class="header-row1-left"></div>
 
-				<div class="header-center" onclick="location.href='/'" style="cursor:pointer">
-					<img src="/img/logohp.png" class="logodj">
-					<div class="center-name">
-						<h3>천주교 대전교구</h3>
-						<h3>천안지역 청소년사목 하품센터</h3>
-					</div>
-				</div>
+      <div class="header-center" onclick="location.href='/'" style="cursor:pointer">
+        <img src="/img/logodj.png" class="logodj header-logo-pc">
+        <div class="center-name">
+          <h3>천주교 대전교구</h3>
+          <h3>천안지역 청소년사목 하품센터</h3>
+        </div>
+      </div>
 
-				<div class="header-row1-right">
-					<span th:if="${user}">
-						<span th:text="${user.name} + '님, 안녕하세요'" class="auth-link"></span>
-						<a th:href="@{/main/mypage/{id}(id=${user.id})}" class="auth-link">마이페이지</a>
-						<div id="logoutBtn" onclick="doLogout()" class="auth-link">로그아웃</div>
-					</span>
-					<div class="guest-menu" th:unless="${user}">
-						<div onclick="goLogin()" class="auth-link">로그인</div>
-						<span class="separator">|</span>
-						<div onclick="goSignin()" class="auth-link">회원가입</div>
-					</div>
-				</div>
+      <div class="header-row1-right">
+        <span th:if="${user}">
+          <span th:text="${user.name} + '님, 안녕하세요'" class="auth-link"></span>
+          <a th:href="@{/main/mypage/{id}(id=${user.id})}" class="auth-link">마이페이지</a>
+          <div id="logoutBtn" onclick="doLogout()" class="auth-link">로그아웃</div>
+        </span>
+        <div class="guest-menu" th:unless="${user}">
+          <div onclick="goLogin()" class="auth-link">로그인</div>
+          <span class="separator">|</span>
+          <div onclick="goSignin()" class="auth-link">회원가입</div>
+        </div>
+      </div>
 
-				<div class="mobile-menu" onclick="toggleSidebar()"><i class="fa-solid fa-bars"></i></div>
-			</div>
+      <div class="mobile-menu" onclick="toggleSidebar()">
+        <div class="hamburger-icon" id="hamburgerIcon">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
 
+    <div class="nav-wrapper">
+      <nav id="nav-desktop">
+        <ul>
+          <li class="nav-item"><a href="/main/introduce">센터소개</a></li>
+          <li class="nav-item"><a href="/main/information">시설안내</a></li>
+          <li class="nav-item"><a href="/main/program">프로그램</a></li>
+          <li class="nav-item"><a href="/main/rental">대관신청</a></li>
+          <li class="nav-item"><a href="/main/news">갤러리</a></li>
+          <li class="nav-item"><a href="/main/organization">단체소식</a></li>
+        </ul>
+      </nav>
 
-			<div class="nav-wrapper">
-				<nav id="nav-desktop">
-					<ul>
-						<li class="nav-item"><a href="/main/introduce">센터소개</a></li>
-						<li class="nav-item"><a href="/main/information">시설안내</a></li>
-						<li class="nav-item"><a href="/main/program">프로그램</a></li>
-						<li class="nav-item"><a href="/main/rental">대관신청</a></li>
-						<li class="nav-item"><a href="/main/news">갤러리</a></li>
-						<li class="nav-item"><a href="/main/organization">단체소식</a></li>
-					</ul>
-				</nav>
+      <div class="dropdown-panel">
+        <div class="dropdown-inner">
+          <ul class="dropdown-col" data-nav="0">
+            <li><a href="/main/introduce?tab=인사말">인사말</a></li>
+            <li><a href="/main/introduce?tab=주요연혁">주요연혁</a></li>
+            <li><a href="/main/introduce?tab=오시는길">오시는길</a></li>
+          </ul>
+          <ul class="dropdown-col" data-nav="1">
+            <li><a href="/main/information?room=강의실">강의실</a></li>
+            <li><a href="/main/information?room=휴게실">휴게실</a></li>
+            <li><a href="/main/information?room=강당">강당</a></li>
+            <li><a href="/main/information?room=연습실">연습실</a></li>
+            <li><a href="/main/information?room=경당">경당</a></li>
+          </ul>
+          <ul class="dropdown-col" data-nav="2">
+            <li th:each="p : ${headerProgramAdds}" th:if="${p.openStatus == 'Y'}">
+              <a th:href="@{/main/programList/{id}(id=${p.id})}" th:text="${p.name}">프로그램명</a>
+            </li>
+          </ul>
+          <ul class="dropdown-col" data-nav="3">
+            <li><a href="/main/rental?room=강의실">강의실</a></li>
+            <li><a href="/main/rental?room=강당">강당</a></li>
+            <li><a href="/main/rental?room=연습실">연습실</a></li>
+          </ul>
+          <ul class="dropdown-col" data-nav="4"></ul>
+          <ul class="dropdown-col" data-nav="5">
+            <li th:each="o : ${organizationList}" th:if="${o.openStatus == 'Y'}">
+              <a th:href="@{/main/organization/{id}(id=${o.id})}" th:text="${o.name}">단체명</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
 
-				<div class="dropdown-panel">
-					<div class="dropdown-inner">
+    <hr class="hr-bottom">
+  </header>
 
-						<ul class="dropdown-col" data-nav="0">
-							<li><a href="/main/introduce?tab=인사말">인사말</a></li>
-							<li><a href="/main/introduce?tab=주요연혁">주요연혁</a></li>
-							<li><a href="/main/introduce?tab=오시는길">오시는길</a></li>
-						</ul>
+  <div id="sidebarBackdrop" class="sidebar-backdrop" onclick="closeSidebar()"></div>
 
-						<ul class="dropdown-col" data-nav="1">
-							<li><a href="/main/information?room=강의실">강의실</a></li>
-							<li><a href="/main/information?room=휴게실">휴게실</a></li>
-							<li><a href="/main/information?room=강당">강당</a></li>
-							<li><a href="/main/information?room=연습실">연습실</a></li>
-							<li><a href="/main/information?room=경당">경당</a></li>
-						</ul>
+  <div class="right-side-overlay" id="rightSidebar">
+    <div class="right-side-content">
 
-						<ul class="dropdown-col" data-nav="2">
-							<li th:each="p : ${headerProgramAdds}" th:if="${p.openStatus == 'Y'}">
-								<a th:href="@{/main/programList/{id}(id=${p.id})}" th:text="${p.name}">프로그램명</a>
-							</li>
-						</ul>
+      <div class="sidebar-top-action">
+        <div class="sidebar-brand">
+          <img src="/img/logohpWHITE.png" class="sidebar-logo-img">
+          <div class="sidebar-brand-text">
+            <span>천주교 대전교구</span>
+            <strong>천안지역 청소년사목 하품센터</strong>
+          </div>
+        </div>
+        <button class="sidebar-close-btn" onclick="closeSidebar()" aria-label="메뉴 닫기">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <line x1="2" y1="2" x2="16" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="16" y1="2" x2="2" y2="16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
 
-						<ul class="dropdown-col" data-nav="3">
-							<li><a href="/main/rental?room=강의실">강의실</a></li>
-							<li><a href="/main/rental?room=강당">강당</a></li>
-							<li><a href="/main/rental?room=연습실">연습실</a></li>
-						</ul>
+      <div class="sidebar-auth">
+        <span th:if="${user}">
+          <div class="sidebar-user-row">
+            <div class="sidebar-avatar" th:text="${#strings.substring(user.name,0,1)}">U</div>
+            <div>
+              <p class="sidebar-user-name" th:text="${user.name} + '님, 반갑습니다.'">사용자님, 반갑습니다.</p>
+            </div>
+          </div>
+          <div class="mobile-auth-grid">
+            <a th:href="@{/main/mypage/{id}(id=${user.id})}" class="mobile-auth-btn">마이페이지</a>
+            <div onclick="doLogout()" class="mobile-auth-btn logout">로그아웃</div>
+          </div>
+        </span>
+        <div class="guest-menu-mobile" th:unless="${user}">
+          <div onclick="goLogin()" class="mobile-auth-btn">로그인</div>
+          <div onclick="goSignin()" class="mobile-auth-btn highlight">회원가입</div>
+        </div>
+      </div>
 
-						<ul class="dropdown-col" data-nav="4"></ul>
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-item" style="--item-delay: 0.04s">
+          <div class="sidebar-nav-link" onclick="toggleSubMenu(this)">
+            <div class="nav-link-inner">
+              <span class="nav-icon-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </span>
+              <span>센터소개</span>
+            </div>
+            <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <ul class="mobile-sub-menu">
+            <li><a href="/main/introduce?tab=인사말">인사말</a></li>
+            <li><a href="/main/introduce?tab=주요연혁">주요연혁</a></li>
+            <li><a href="/main/introduce?tab=오시는길">오시는길</a></li>
+          </ul>
+        </li>
 
-						<ul class="dropdown-col" data-nav="5">
-							<li th:each="o : ${organizationList}" th:if="${o.openStatus == 'Y'}">
-								<a th:href="@{/main/organization/{id}(id=${o.id})}" th:text="${o.name}">프로그램명</a>
-							</li>
-						</ul>
+        <li class="sidebar-nav-item" style="--item-delay: 0.08s">
+          <div class="sidebar-nav-link" onclick="toggleSubMenu(this)">
+            <div class="nav-link-inner">
+              <span class="nav-icon-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              </span>
+              <span>시설안내</span>
+            </div>
+            <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <ul class="mobile-sub-menu">
+            <li><a href="/main/information?room=강의실">강의실</a></li>
+            <li><a href="/main/information?room=휴게실">휴게실</a></li>
+            <li><a href="/main/information?room=강당">강당</a></li>
+            <li><a href="/main/information?room=연습실">연습실</a></li>
+            <li><a href="/main/information?room=경당">경당</a></li>
+          </ul>
+        </li>
 
-					</div>
-				</div>
-			</div>
+        <li class="sidebar-nav-item" style="--item-delay: 0.12s">
+          <div class="sidebar-nav-link" onclick="toggleSubMenu(this)">
+            <div class="nav-link-inner">
+              <span class="nav-icon-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </span>
+              <span>프로그램</span>
+            </div>
+            <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <ul class="mobile-sub-menu">
+            <li th:each="p : ${headerProgramAdds}" th:if="${p.openStatus == 'Y'}">
+              <a th:href="@{/main/programList/{id}(id=${p.id})}" th:text="${p.name}"></a>
+            </li>
+          </ul>
+        </li>
 
-			<hr class="hr-bottom">
-		</header>
+        <li class="sidebar-nav-item" style="--item-delay: 0.16s">
+          <div class="sidebar-nav-link" onclick="toggleSubMenu(this)">
+            <div class="nav-link-inner">
+              <span class="nav-icon-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </span>
+              <span>대관신청</span>
+            </div>
+            <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <ul class="mobile-sub-menu">
+            <li><a href="/main/rental?room=강의실">강의실</a></li>
+            <li><a href="/main/rental?room=강당">강당</a></li>
+            <li><a href="/main/rental?room=연습실">연습실</a></li>
+          </ul>
+        </li>
 
-		<div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+        <li class="sidebar-nav-item" style="--item-delay: 0.20s">
+          <a href="/main/news" class="sidebar-nav-link link-only">
+            <div class="nav-link-inner">
+              <span class="nav-icon-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </span>
+              <span>하품 갤러리</span>
+            </div>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </a>
+        </li>
 
-		<div class="right-side-overlay" id="rightSidebar">
-			<div class="right-side-content" onclick="event.stopPropagation()">
-				<div class="header-right-mobile">
-					<span th:if="${user}">
-						<span th:text="${user.name} + '님, 안녕하세요'" class="auth-link"></span>
-						<a th:href="@{/main/mypage/{id}(id=${user.id})}" class="auth-link"
-							style="margin-left: 10px;">마이페이지</a>
-						<div onclick="doLogout()" class="auth-link">로그아웃</div>
-					</span>
-					<div class="guest-menu" th:unless="${user}">
-						<div onclick="goLogin()" class="auth-link">로그인</div>
-						<span class="separator">|</span>
-						<div onclick="goSignin()" class="auth-link">회원가입</div>
-					</div>
-				</div>
-				<hr style="margin: 10px 0;">
-				<ul>
-					<li><a href="/main/introduce">센터소개</a></li>
-					<li><a href="/main/information">시설안내</a></li>
-					<li>
-						<a href="/main/program" style="font-weight: bold;">프로그램 ALL</a>
-						<ul class="mobile-sub-menu" style="padding-left: 15px; margin-top: 5px; font-size: 14px;">
-							<li th:each="p : ${headerProgramAdds}" th:if="${p.openStatus == 'Y'}"
-								style="margin-bottom: 8px;">
-								<a th:href="@{/main/programList/{id}(id=${p.id})}" th:text="${p.name}"
-									style="color: #666666;"></a>
-							</li>
-						</ul>
-					</li>
-					<li>
-						<a href="/main/rental" style="font-weight: bold;">대관신청 ALL</a>
-						<ul class="mobile-sub-menu" style="padding-left: 15px; margin-top: 5px; font-size: 14px;">
-							<li style="margin-bottom: 8px;"><a href="/main/rental?room=강의실"
-									style="color: #666666;">강의실</a></li>
-							<li style="margin-bottom: 8px;"><a href="/main/rental?room=강당"
-									style="color: #666666;">강당</a></li>
-							<li style="margin-bottom: 8px;"><a href="/main/rental?room=연습실"
-									style="color: #666666;">연습실</a></li>
-						</ul>
-					</li>
-					<li><a href="/main/news">갤러리</a></li>
-					<li><a href="/main/organization">단체소식</a></li>
-				</ul>
-			</div>
-		</div>
+        <li class="sidebar-nav-item" style="--item-delay: 0.24s">
+          <div class="sidebar-nav-link" onclick="toggleSubMenu(this)">
+            <div class="nav-link-inner">
+              <span class="nav-icon-wrap">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              </span>
+              <span>단체소식</span>
+            </div>
+            <svg class="arrow-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </div>
+          <ul class="mobile-sub-menu">
+            <li th:each="o : ${organizationList}" th:if="${o.openStatus == 'Y'}">
+              <a th:href="@{/main/organization/{id}(id=${o.id})}" th:text="${o.name}"></a>
+            </li>
+          </ul>
+        </li>
+      </ul>
 
-	<script>
-		const navItems = document.querySelectorAll('.nav-item');
-		const dropdownCols = document.querySelectorAll('.dropdown-col');
-		const dropdownPanel = document.querySelector('.dropdown-panel');
-		const navWrapper = document.querySelector('.nav-wrapper');
+      <div class="sidebar-footer">
+        <p>천주교 대전교구 하품센터</p>
+        <p>천안지역 청소년사목</p>
+      </div>
 
-		navItems.forEach((item, idx) => {
-			item.addEventListener('mouseenter', () => {
-				const col = document.querySelector(`.dropdown-col[data-nav="${idx}"]`);
-				// 자식 컴포넌트 Element가 동적으로 생성되었으므로 감지 조건 유지
-				const hasItems = col && col.children.length > 0;
+    </div>
+  </div>
+</th:block>
 
-				dropdownCols.forEach(c => c.classList.remove('active'));
-
-				if (hasItems) {
-					col.classList.add('active');
-					dropdownPanel.classList.add('active');
-				} else {
-					dropdownPanel.classList.remove('active');
-				}
-			});
-		});
-
-		navWrapper.addEventListener('mouseleave', () => {
-			dropdownPanel.classList.remove('active');
-			dropdownCols.forEach(c => c.classList.remove('active'));
-		});
-	</script>
-		</th:block>
 </body>
-
 </html>

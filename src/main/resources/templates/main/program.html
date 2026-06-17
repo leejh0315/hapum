@@ -5,13 +5,10 @@
 <head>
 	<title>프로그램</title>
 
-	<th:block layout:fragment="head-content">
-		<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
-		<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
-		<link rel="stylesheet" th:href="@{/css/main/program.css}" media="only screen and (min-width: 769px)">
-		<link rel="stylesheet" th:href="@{/css/main/mobile/program.css}" media="only screen and (max-width: 768px)">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	        <link rel="stylesheet" th:href="@{/css/header.css}" />
+		<link rel="stylesheet" th:href="@{/css/main/program.css}" >
 		<link rel="stylesheet" th:href="@{/css/footer.css}">
-	</th:block>
 </head>
 
 <body>
@@ -53,6 +50,7 @@
 			</div>
 		</div>
 		<div th:replace="~{main/footer :: footer}"></div>
+			<script th:src="@{/js/header.js}"></script>
 	</main>
 	<th:block layout:fragment="scripts">
 		<script>

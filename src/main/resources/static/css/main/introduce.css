@@ -8,8 +8,6 @@ body {
 
 /* =========================================
    STICKY HEADER
-   — container 바깥 독립 블록으로 선언하여
-     렌더링 변화 시에도 완전 고정 보장
 ========================================= */
 .sticky-header {
   position: sticky;
@@ -19,7 +17,6 @@ body {
   border-bottom: 1px solid #EAEAEA;
 }
 
-/* 내부 너비·패딩은 inner 래퍼로 제어 */
 .sticky-header-inner {
   max-width: 1250px;
   margin: 0 auto;
@@ -34,7 +31,6 @@ body {
   align-items: center;
   gap: 20px;
   padding-bottom: 15px;
-  border-bottom: none;
 }
 
 .info-prefix {
@@ -167,12 +163,12 @@ body {
 }
 
 /* =========================================
-   인사말 (GREETINGS ARTWORK)
+   인사말
 ========================================= */
 .greetings-layout {
   display: flex;
   gap: 40px;
-  align-items: center; /* 이미지와 텍스트가 중앙선을 기준으로 고르게 대칭 정렬 */
+  align-items: center;
 }
 
 .greetings-main-text {
@@ -206,7 +202,6 @@ body {
   text-align: right;
 }
 
-/* ✅ 투명 PNG 최적화 이미지 컨테이너 */
 .greetings-img-container {
   width: 280px;
   min-width: 280px;
@@ -215,15 +210,14 @@ body {
   align-items: center;
 }
 
-/* 테두리와 상자를 완전히 지워 투명 PNG 본연의 형태로 자연스럽게 녹아들게 설정 */
 .greetings-img-container img {
   display: block;
   width: 100%;
   height: auto;
-  max-height: 380px;       /* 본문 내용물 높이와 조화를 이루도록 제한 */
-  object-fit: contain;     /* 원본 비율 유지하며 경계 구역 안에 완벽히 피팅 */
-  background: transparent; /* 투명 배경 유지 */
-  border: none;            /* 어색한 고정 박스 선 제거 */
+  max-height: 380px;
+  object-fit: contain;
+  background: transparent;
+  border: none;
 }
 
 /* =========================================
@@ -351,31 +345,217 @@ body {
 }
 
 /* =========================================
-   모바일 반응형
+   모바일 반응형 (768px 이하)
 ========================================= */
 @media screen and (max-width: 768px) {
+
+  /* ──────────────────────────────────────
+     [핵심 수정] sticky-header z-index를
+     사이드바 백드롭(z-index: 900)보다 높게 설정
+     → 사이드바 열릴 때 헤더가 블러에 덮히는 문제 해결
+  ────────────────────────────────────── */
+/*  .sticky-header {*/
+/*    z-index: 999;*/
+/*  }*/
+
+  /* ──────────────────────────────────────
+     Sticky header 모바일 레이아웃
+  ────────────────────────────────────── */
   .sticky-header-inner {
-    padding: 20px 4% 0;
+    padding: 14px 16px 0;
   }
+
+  .info-top-bar {
+    gap: 10px;
+    padding-bottom: 10px;
+  }
+
+  .info-prefix {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    padding-right: 12px;
+  }
+
   .info-title {
-    font-size: 20px;
+    font-size: 17px;
   }
+
+  /* 탭 메뉴: 좌측 정렬 + 작은 폰트 */
   .top-menu-bar {
     justify-content: flex-start;
+    gap: 0;
+    padding: 0;
+  }
+
+  .menu-button {
+    font-size: 15px;
+    padding: 12px 18px;
+    flex-shrink: 0;
+  }
+
+  .menu-button.current {
+    border-bottom-width: 2px;
+  }
+
+  /* ──────────────────────────────────────
+     콘텐츠 영역
+  ────────────────────────────────────── */
+  .container {
+    padding: 20px 14px 80px;
+  }
+
+  /* ──────────────────────────────────────
+     Unified Card: 패딩 축소 + 호버 효과 제거
+     (모바일에서 hover는 의미 없음)
+  ────────────────────────────────────── */
+  .unified-card {
+    padding: 20px 16px;
+    margin-bottom: 16px;
+    gap: 14px;
+    border-radius: 10px;
+  }
+
+  .unified-card:hover {
+    transform: none;
+    box-shadow: none;
+    background-color: #FAFAFA;
+    border-color: #EEEEEE;
+  }
+
+  .card-header-module {
+    padding-bottom: 12px;
+    margin-bottom: 2px;
+    gap: 10px;
+  }
+
+  .card-title-text {
+    font-size: 15px;
+    gap: 8px;
+  }
+
+  .card-badge-num {
+    font-size: 13px;
+  }
+
+  /* ──────────────────────────────────────
+     인사말: 이미지 아래로 이동, 비율 조정
+  ────────────────────────────────────── */
+  .greetings-layout {
+    flex-direction: column-reverse; /* 이미지를 텍스트 위에 */
     gap: 20px;
   }
-  .greetings-layout {
-    flex-direction: column;
-    gap: 25px;
-  }
+
   .greetings-img-container {
     width: 100%;
     min-width: unset;
+    max-width: 240px;
+    margin: 0 auto;
   }
+
   .greetings-img-container img {
-    max-height: 300px; /* 모바일 가로폭 환경에 맞춰 최대 높이 보정 */
+    max-height: 220px;
   }
-  .unified-card {
-    padding: 24px;
+
+  .greetings-main-text {
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .greetings-quote-box {
+    font-size: 14.5px;
+    margin-bottom: 14px;
+  }
+
+  .greetings-highlight-block {
+    padding: 14px;
+    font-size: 13.5px;
+    margin: 18px 0;
+  }
+
+  .greetings-signature {
+    font-size: 13px;
+    margin-top: 20px;
+  }
+
+  /* ──────────────────────────────────────
+     연혁: 날짜/설명 레이아웃 좁은 화면 대응
+  ────────────────────────────────────── */
+  .timeline-row {
+    flex-direction: column;
+    gap: 4px;
+    padding: 10px 0;
+  }
+
+  .timeline-date-col {
+    width: auto;
+    min-width: unset;
+    font-size: 12px;
+    color: #888888;
+  }
+
+  .timeline-desc-col {
+    font-size: 14px;
+  }
+
+  .timeline-toggle-btn {
+    font-size: 13.5px;
+  }
+
+  .timeline-sub-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+    padding: 12px;
+    margin-top: 10px;
+  }
+
+  .timeline-sub-list li {
+    font-size: 12.5px;
+  }
+
+  /* ──────────────────────────────────────
+     오시는길: 폰트 축소, 뱃지 정렬
+  ────────────────────────────────────── */
+  .location-text-detail {
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .bus-custom-list {
+    gap: 14px;
+  }
+
+  .bus-custom-list li {
+    font-size: 13.5px;
+    gap: 4px 6px;
+  }
+
+  .bus-badge-pill {
+    font-size: 10px;
+    min-width: 56px;
+    padding: 3px 8px;
+  }
+
+  .map-highlight-span {
+    font-size: 13px;
+    padding: 6px 10px;
+    display: block;
+    margin-top: 14px;
+  }
+}
+
+/* 480px 이하 소형 기기 */
+@media screen and (max-width: 480px) {
+
+  .menu-button {
+    font-size: 14px;
+    padding: 11px 14px;
+  }
+
+  .timeline-sub-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .greetings-img-container {
+    max-width: 180px;
   }
 }

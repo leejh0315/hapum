@@ -7,10 +7,8 @@
 	<link rel="shortcut icon" href="/img/logohp.png">
 	<title>하품센터-갤러리</title>
 	
-	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
-	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
-	<link rel="stylesheet" th:href="@{/css/main/news.css}" media="only screen and (min-width: 769px)">
-	<link rel="stylesheet" th:href="@{/css/main/mobile/news.css}" media="only screen and (max-width: 768px)">
+	<link rel="stylesheet" th:href="@{/css/header.css}" />
+	<link rel="stylesheet" th:href="@{/css/main/news.css}" >
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 	<link rel="stylesheet" th:href="@{/css/footer.css}">
 	
@@ -20,12 +18,18 @@
 <body>
 	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-	<div class="container">
-		<div class="gallery-top-bar">
-			<span class="gallery-prefix">GALLERY</span>
-			<h2 class="gallery-title">갤러리</h2>
+	<!-- 센터소개와 동일한 Sticky Header 구조 적용 -->
+	<div class="sticky-header">
+		<div class="sticky-header-inner">
+			<div class="gallery-top-bar">
+				<span class="gallery-prefix">GALLERY</span>
+				<h2 class="gallery-title">갤러리</h2>
+			</div>
 		</div>
+	</div>
 
+	<!-- 컨테이너에서는 갤러리 그리드만 남김 -->
+	<div class="container">
 		<main class="main-content">
 			<div class="news-grid">
 				<div class="news-card" th:each="news : ${newsList}">

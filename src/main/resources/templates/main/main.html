@@ -7,10 +7,11 @@
     <title>하품센터 - 메인</title>
     <meta name="description" content="천주교 대전교구 천안지역 청소년사목 하품센터는 청소년과 청년들을 위한 신앙, 문화, 교육 프로그램을 운영하는 천안지역 복합 사목 공간입니다." />
     <meta name="keywords" content="하품센터, 천주교, 대전교구, 천안 청소년, 청년 사목, 천안 하품, 청년센터, 청소년센터, 가톨릭 청년, 가톨릭" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <th:block layout:fragment="head-content">
         <meta property="og:title" content="하품센터" />
         <meta property="og:image" content="/img/main.png" />
-        <link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+        <link rel="stylesheet" th:href="@{/css/header.css}" />
         <link rel="stylesheet" th:href="@{/css/main/main.css}" />
         <link rel="stylesheet" th:href="@{/css/footer.css}" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -18,10 +19,10 @@
     </th:block>
 </head>
 
-<body>
+<th:block layout:fragment="content">
     <div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-    <main layout:fragment="content" class="main-container">
+    <main class="main-container">
 
         <section class="hero-section">
             <div class="hero-slider" id="heroSlider">
@@ -32,10 +33,17 @@
                     </div>
                 </div>
             </div>
+            <!-- 히어로 좌우 버튼: 모바일에서는 하단 중앙 배치, PC에서는 양 사이드 -->
             <div class="hero-controls">
-                <button id="hero-prev"><i class="fa-solid fa-chevron-left"></i></button>
-                <button id="hero-next"><i class="fa-solid fa-chevron-right"></i></button>
+                <button id="hero-prev" aria-label="이전 슬라이드">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <button id="hero-next" aria-label="다음 슬라이드">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
             </div>
+            <!-- 슬라이드 인디케이터 (모바일에서 현재 위치 표시) -->
+            <div class="hero-indicators" id="heroIndicators"></div>
         </section>
 
         <section class="quick-links-section reveal">
@@ -72,9 +80,11 @@
                         <a href="/main/program" class="more-btn">더보기 <i class="fa-solid fa-plus"></i></a>
                     </div>
                     <div class="program-slider-container">
-                        <button class="slider-btn prev" id="prog-prev">
+                        <!-- 모바일에서는 숨김, PC에서는 표시 -->
+                        <button class="slider-btn prev" id="prog-prev" aria-label="이전 프로그램">
                             <i class="fa-solid fa-angle-left"></i>
                         </button>
+                        <!-- 스와이프 가능한 트랙 -->
                         <div class="program-track" id="programTrack">
                             <div class="program-card" th:each="program : ${programs}">
                                 <img th:src="${program.thumbnailSrc}"
@@ -83,10 +93,12 @@
                                      alt="프로그램 썸네일" />
                             </div>
                         </div>
-                        <button class="slider-btn next" id="prog-next">
+                        <button class="slider-btn next" id="prog-next" aria-label="다음 프로그램">
                             <i class="fa-solid fa-angle-right"></i>
                         </button>
                     </div>
+                    <!-- 모바일 스와이프 힌트 -->
+                    <p class="swipe-hint mobile-only">← 스와이프하여 더 보기 →</p>
                 </div>
 
                 <div class="notice-wrapper">
@@ -178,9 +190,10 @@
     </main>
 
     <div th:replace="~{main/footer :: footer}"></div>
+</th:block>
+
+<th:block layout:fragment="scripts">
     <script th:src="@{/js/header.js}"></script>
-    <th:block layout:fragment="scripts">
-        <script th:src="@{/js/main/main.js}"></script>
-    </th:block>
-</body>
+    <script th:src="@{/js/main/main.js}"></script>
+</th:block>
 </html>

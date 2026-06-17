@@ -11,27 +11,31 @@ body {
   min-height: 100vh;
 }
 
-.container {
+/* =========================================
+   STICKY HEADER (센터소개 컨셉 동일 적용)
+========================================= */
+.sticky-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: #FAFAFA; /* 갤러리 배경색에 자연스럽게 녹아들도록 설정 */
+  border-bottom: 1px solid #EAEAEA;
+}
+
+.sticky-header-inner {
   max-width: 1200px;
-  width: 100%;
   margin: 0 auto;
-  padding: 40px 20px 100px 20px;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  flex: 1;
+  padding: 40px 20px 0;
 }
 
 /* =========================================
-   상단 타이틀 바 시스템 (대관 UI 매칭)
+   TITLE BAR
 ========================================= */
 .gallery-top-bar {
   display: flex;
   align-items: center;
   gap: 20px;
-  border-bottom: 1px solid #EAEAEA;
-  padding-bottom: 15px;
-  margin-bottom: 30px;
+  padding-bottom: 15px; /* bottom border는 sticky-header로 위임 */
 }
 
 .gallery-prefix {
@@ -51,6 +55,20 @@ body {
 }
 
 /* =========================================
+   CONTENT CONTAINER
+========================================= */
+.container {
+  max-width: 1200px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px 100px 20px; /* 타이틀이 분리되었으므로 적절한 상단 간격 부여 */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  flex: 1;
+}
+
+/* =========================================
    메인 콘텐츠 그리드 (유동형 자동 배치)
 ========================================= */
 .main-content {
@@ -60,13 +78,11 @@ body {
 
 .news-grid {
   display: grid;
-  /* 고정 개수 방식에서 화면 크기에 맞춰 반응하는 스마트 그리드로 전면 교체 */
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 24px;
   width: 100%;
 }
 
-/* 뉴스 카드 모던 패키징 */
 .news-card {
   background-color: #FFFFFF;
   border: 1px solid #EAEAEA;
@@ -89,10 +105,9 @@ body {
   height: 100%;
 }
 
-/* 썸네일 이미지 정밀 크기 제한 (Aspect-Ratio 활용) */
 .thumbnail-wrapper {
   width: 100%;
-  aspect-ratio: 1 / 1; /* 정사각형 비율 엄격 유지 */
+  aspect-ratio: 1 / 1;
   overflow: hidden;
   background-color: #F7FAFC;
   position: relative;
@@ -109,7 +124,6 @@ body {
   transform: scale(1.04);
 }
 
-/* 이미지가 없을 때 채워줄 플레이스홀더 */
 .no-image-placeholder {
   position: absolute;
   top: 0;
@@ -123,7 +137,6 @@ body {
   color: #CBD5E0;
 }
 
-/* 텍스트 컨테이너 */
 .news-text-box {
   padding: 16px;
   background: #FFFFFF;
@@ -136,7 +149,7 @@ body {
   line-height: 1.5;
   margin: 0;
   display: -webkit-box;
-  -webkit-line-clamp: 2; /* 두 줄 초과 시 말줄임 처리 */
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -144,7 +157,7 @@ body {
 }
 
 /* =========================================
-   페이지네이션 시스템 모던화
+   페이지네이션 시스템
 ========================================= */
 .pagination-wrapper {
   margin-top: 50px;
@@ -200,27 +213,78 @@ body {
 }
 
 /* =========================================
-   반응형 디바이스 최적화
+   반응형 디바이스 최적화 (센터소개 모바일 헤더 규격 완벽 일치)
 ========================================= */
 @media screen and (max-width: 768px) {
-  .container {
-    padding: 20px 16px 60px 16px;
+  
+  /* Sticky Header 모바일 레이아웃 */
+  .sticky-header-inner {
+    padding: 14px 16px 0;
   }
+
   .gallery-top-bar {
-    margin-bottom: 20px;
     gap: 12px;
+    margin-bottom: 5px;
   }
+
+  .gallery-prefix {
+    font-size: 16px;
+    letter-spacing: 1.5px;
+    padding-right: 12px;
+  }
+
   .gallery-title {
     font-size: 20px;
   }
-  .news-grid {
-    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); /* 모바일 전용 2열 배치 최적화 크기 */
-    gap: 14px;
+
+  .container {
+    padding: 20px 16px 60px 16px;
   }
+  
+  .news-grid {
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 12px;
+  }
+  
+  .news-card {
+    border-radius: 8px;
+  }
+  
   .news-text-box {
     padding: 10px;
   }
+  
   .news-title {
     font-size: 13px;
+    line-height: 1.4;
+    -webkit-line-clamp: 2;
+  }
+
+  /* 모바일 페이지네이션 터치 최적화 */
+  .pagination-wrapper {
+    margin-top: 40px;
+  }
+
+  .pagination {
+    gap: 4px;
+    width: 100%;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  .pagination li a {
+    min-width: 40px;
+    height: 40px;
+    padding: 0;
+    font-size: 13px;
+    border-radius: 6px;
+  }
+
+  .pagination li.disabled {
+    display: none;
+  }
+  
+  .pagination li.active a {
+    font-weight: 700;
   }
 }

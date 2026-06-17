@@ -110,8 +110,9 @@ body {
     opacity: 1;
     transform: translateX(0);
 }
+
 /* =========================================
-   1. 히어로 슬라이드 (가독성 개선 버전)
+   1. 히어로 슬라이드
 ========================================= */
 .hero-section {
     position: relative;
@@ -127,6 +128,8 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
+    /* 모바일 스와이프를 위한 touch-action 설정 */
+    touch-action: pan-y;
 }
 
 .hero-slider .slide {
@@ -143,12 +146,9 @@ body {
     align-items: center;
     justify-content: center;
     will-change: background-position;
-    
-    /* [개선] 글자 가독성을 위해 이미지 자체의 채도를 낮추고 대비를 살짝 조절 */
-    filter: saturate(-0.75) brightness(0.9); 
+    filter: saturate(-0.75) brightness(0.9);
 }
 
-/* [개선] 단순 단색 딤 처리가 아닌, 글자가 있는 중앙으로 갈수록 어두워지는 고급스러운 그라데이션 */
 .hero-slider .slide::before {
     content: '';
     position: absolute;
@@ -170,13 +170,16 @@ body {
     z-index: 2;
     text-align: center;
     color: #fff;
+    /* 모바일에서 버튼과 겹치지 않도록 좌우 패딩 확보 */
+    padding: 0 20px;
     transform: translateY(20px);
     opacity: 0;
     transition: opacity 1s ease 0.5s, transform 1s ease 0.5s;
     will-change: opacity, transform;
-    
-    /* [개선] 은은한 글자 그림자(Text Shadow)를 추가하여 어떤 배경에서도 글씨가 명확히 분리되도록 처리 */
     text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.3);
+    /* 줄바꿈 자연스럽게 */
+    word-break: keep-all;
+    line-height: 1.4;
 }
 
 .hero-slider .slide.active .slide-content {
@@ -200,10 +203,10 @@ body {
 
 .slide-content h1 span {
     color: #F3CA40;
-    /* 노란색 강조 텍스트가 묻히지 않도록 그림자 선명도 유지 */
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6); 
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
+/* ── PC 히어로 컨트롤 (768px 초과) ── */
 .hero-controls {
     position: absolute;
     top: 50%;
@@ -214,9 +217,11 @@ body {
     box-sizing: border-box;
     z-index: 10;
     transform: translateY(-50%);
+    pointer-events: none; /* 버튼만 클릭 가능, 영역 자체는 통과 */
 }
 
 .hero-controls button {
+    pointer-events: all;
     background: rgba(255, 255, 255, 0.2);
     border: none;
     color: white;
@@ -233,6 +238,32 @@ body {
     background: rgba(255, 255, 255, 0.5);
     color: #111;
 }
+
+/* ── 슬라이드 인디케이터 (모바일용 하단 점) ── */
+.hero-indicators {
+    position: absolute;
+    bottom: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none; /* 기본 숨김 → 모바일에서만 표시 */
+    gap: 8px;
+    z-index: 10;
+}
+
+.hero-indicators .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.hero-indicators .dot.active {
+    background: #fff;
+    transform: scale(1.3);
+}
+
 /* =========================================
    2. 퀵 메뉴
 ========================================= */
@@ -290,7 +321,6 @@ body {
     color: #fff;
 }
 
-/* stagger 상태일 때 hover transform 보정 */
 .link-card.stagger-child.active:hover {
     transform: translateY(-5px) scale(1);
 }
@@ -300,7 +330,6 @@ body {
 ========================================= */
 .board-section {
     padding: 60px 0;
-    /* reveal 대신 자식 요소 slide-in 사용하므로 기본 visible */
     opacity: 1 !important;
     transform: none !important;
 }
@@ -311,7 +340,7 @@ body {
     gap: 50px;
 }
 
-/* 프로그램 슬라이더 */
+/* ── 프로그램 슬라이더 ── */
 .program-slider-container {
     position: relative;
     width: 100%;
@@ -325,6 +354,8 @@ body {
     overflow-x: auto;
     scroll-behavior: smooth;
     scrollbar-width: none;
+    /* 스와이프 부드럽게 */
+    -webkit-overflow-scrolling: touch;
 }
 
 .program-track::-webkit-scrollbar {
@@ -337,6 +368,7 @@ body {
     overflow: hidden;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex-shrink: 0;
 }
 
 .program-card:hover {
@@ -351,6 +383,7 @@ body {
     display: block;
 }
 
+/* PC: 버튼 측면 배치 */
 .slider-btn {
     position: absolute;
     top: 40%;
@@ -379,7 +412,21 @@ body {
     right: -15px;
 }
 
-/* 공지사항 */
+/* 스와이프 힌트 문구 */
+.swipe-hint {
+    text-align: center;
+    font-size: 12px;
+    color: #aaa;
+    margin: 8px 0 0;
+    letter-spacing: 0.5px;
+}
+
+/* 모바일 전용 요소 — 기본 숨김 */
+.mobile-only {
+    display: none;
+}
+
+/* ── 공지사항 ── */
 .notice-list {
     list-style: none;
     padding: 0;
@@ -394,7 +441,6 @@ body {
     align-items: center;
 }
 
-/* stagger와 border 동시 적용 */
 .notice-item.stagger-child {
     border-bottom: 1px solid #EAEAEA;
 }
@@ -506,7 +552,6 @@ body {
     aspect-ratio: 1 / 1;
 }
 
-/* stagger + scale 동시 적용 */
 .gallery-item.stagger-child {
     transform: translateY(20px) scale(0.93);
     transition: opacity 0.45s ease, transform 0.45s ease;
@@ -641,52 +686,117 @@ body {
 }
 
 /* =========================================
-   반응형 모바일
+   반응형 모바일 (768px 이하)
 ========================================= */
 @media (max-width: 768px) {
+
+    /* ── 퀵 메뉴 ── */
     .link-grid {
         grid-template-columns: repeat(3, 1fr);
         padding: 20px;
     }
 
+    /* ── 보드 그리드 ── */
     .board-grid {
         grid-template-columns: 1fr;
         gap: 40px;
     }
 
+    /* ── 갤러리 ── */
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    /* ── 히어로 높이 및 텍스트 ── */
     .hero-section {
-        height: 50vh;
+        height: 55vh;
+        min-height: 340px;
     }
 
     .slide-content h1 {
-        font-size: 32px;
+        font-size: 28px;
+        letter-spacing: -0.5px;
     }
 
     .slide-content h2 {
-        font-size: 16px;
+        font-size: 14px;
+        margin-bottom: 8px;
     }
 
-    .quick-links-section {
-        margin-top: -30px;
-    }
-
-    .modern-popup .popup-image {
-        width: 320px;
-        height: 360px;
-    }
-
+    /* ── 히어로 컨트롤: 모바일에서는 하단 좌우 코너로 이동
+         슬라이드 텍스트와 겹치지 않도록 bottom 배치  ── */
     .hero-controls {
-        padding: 0 16px;
+        top: auto;
+        bottom: 40px;
+        transform: none;
+        padding: 0 20px;
+        /* 인디케이터와 겹치지 않도록 양쪽에 */
+        justify-content: space-between;
+        align-items: flex-end;
     }
 
     .hero-controls button {
-        width: 38px;
-        height: 38px;
-        font-size: 16px;
+        width: 36px;
+        height: 36px;
+        font-size: 14px;
+        /* 배경 더 불투명하게 → 식별 용이 */
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .hero-controls button:hover,
+    .hero-controls button:active {
+        background: rgba(0, 0, 0, 0.6);
+        color: #fff;
+    }
+
+    /* ── 인디케이터: 모바일에서만 표시 ── */
+    .hero-indicators {
+        display: flex;
+        bottom: 48px; /* 버튼 위쪽 */
+    }
+
+    /* ── 퀵 메뉴 오버랩 조정 ── */
+    .quick-links-section {
+        margin-top: -24px;
+    }
+
+    /* ── 프로그램 슬라이더: 모바일에서 버튼 숨기고 스와이프로 전환 ── */
+    .slider-btn {
+        display: none; /* 모바일: PC 버튼 숨김 */
+    }
+
+    .program-slider-container {
+        overflow: visible;
+        padding-bottom: 10px;
+    }
+
+    .program-track {
+        /* 모바일: 전체 너비 스크롤, 카드 하나씩 보이게 */
+        scroll-snap-type: x mandatory;
+        padding: 4px 2px 12px;
+        gap: 14px;
+    }
+
+    .program-card {
+        /* 모바일: 카드 하나가 화면 거의 꽉 차도록 */
+        min-width: 85%;
+        scroll-snap-align: start;
+    }
+
+    .program-card img {
+        height: 200px;
+    }
+
+    /* 스와이프 힌트 표시 */
+    .mobile-only {
+        display: block;
+    }
+
+    /* ── 팝업 크기 조정 ── */
+    .modern-popup .popup-image {
+        width: 320px;
+        height: 360px;
     }
 }
 
@@ -698,5 +808,20 @@ body {
 
     .section-header h3 {
         font-size: 20px;
+    }
+
+    .slide-content h1 {
+        font-size: 24px;
+    }
+
+    .slide-content h2 {
+        font-size: 13px;
+    }
+
+    /* 팝업 모바일 소형 대응 */
+    .modern-popup .popup-image {
+        width: 90vw;
+        height: auto;
+        max-height: 60vh;
     }
 }
