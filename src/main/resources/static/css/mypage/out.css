@@ -12,7 +12,7 @@ body {
 }
 
 /* =========================================
-   2. 상단 고정 헤더 (탭 메뉴 포함)
+   2. 상단 고정 헤더 (마이페이지 공통 탭 메뉴)
 ========================================= */
 .fixed-header-wrapper {
     position: sticky;
@@ -53,9 +53,7 @@ body {
     color: #111111;
 }
 
-/* =========================================
-   3. 탭 메뉴 (가로 네비게이션)
-========================================= */
+/* 탭 메뉴 가로 네비게이션 */
 .sidebar-nav {
     display: flex;
     flex-direction: row;
@@ -96,107 +94,107 @@ body {
 }
 
 /* =========================================
-   4. 본문 컨테이너 및 폼 정렬
+   3. 본문 컨테이너 및 회원탈퇴 경고 박스
 ========================================= */
 .container {
     max-width: 1250px;
     margin: 0 auto;
-    padding: 60px 4% 120px 4%;
+    padding: 80px 4% 120px 4%;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
     box-sizing: border-box;
 }
 
-.auth-wrapper {
+.content-wrapper {
     width: 100%;
-    max-width: 400px;
+    max-width: 500px;
     margin-top: 20px;
 }
 
-.form-intro {
-    margin-bottom: 30px;
-    text-align: left;
+.warning-box {
+    border: 1px solid #EAEAEA;
+    padding: 50px 40px;
+    text-align: center;
+    background-color: #FAFAFA;
+    box-sizing: border-box;
 }
 
-.form-intro p {
-    font-size: 15px;
-    color: #666666;
-    margin: 0;
+.warning-icon {
+    font-size: 40px;
+    color: #E53E3E;
+    margin-bottom: 20px;
 }
 
-/* 입력 필드 디자인 */
-.form-group {
-    margin-bottom: 24px;
-    display: flex;
-    flex-direction: column;
-}
-
-.form-group label {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
+.warning-box h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 20px 0;
     color: #111111;
 }
 
-.form-group input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #CCCCCC;
+.warning-box p {
     font-size: 15px;
-    font-family: inherit;
-    box-sizing: border-box;
-    border-radius: 0;
-    transition: border-color 0.2s ease;
+    line-height: 1.6;
+    color: #555555;
+    margin: 0 0 8px 0;
 }
 
-.form-group input:focus {
-    border-color: #111111;
-    outline: none;
-}
-
-/* 에러 메시지 */
-.field-error {
+.warning-box .text-red {
     color: #E53E3E;
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 6px;
-    text-align: left;
+    font-weight: 600;
 }
 
-/* 변경 버튼 */
-.form-full-btn {
+.warning-box .sub-text {
+    font-size: 14px;
+    color: #888888;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+/* =========================================
+   4. 탈퇴 버튼 (Square Style)
+========================================= */
+.btn-delete {
     width: 100%;
     padding: 14px 0;
     font-size: 15px;
     font-weight: 700;
+    background-color: #FFFFFF;
+    color: #E53E3E;
+    border: 1px solid #E53E3E;
     cursor: pointer;
-    border: none;
-    box-sizing: border-box;
     border-radius: 0;
-    transition: background-color 0.2s ease;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
 }
 
-.black-btn {
-    background-color: #000000;
-    color: #FFFFFF;
-}
-
-.black-btn:hover {
-    background-color: #333333;
+.btn-delete:hover {
+    background-color: #FFF5F5;
 }
 
 /* =========================================
-   5. 반응형 대응
+   5. 반응형 모바일 대응
 ========================================= */
 @media screen and (max-width: 768px) {
     .fixed-header-inner { padding-top: 20px; }
     .info-title { font-size: 20px; }
     .sidebar-nav { gap: 24px; }
     .sidebar-nav .menu-button { font-size: 15px; }
-    .container { padding-top: 30px; padding-bottom: 80px; }
     
-    .auth-wrapper {
-        max-width: 100%;
+    .container {
+        padding: 40px 5% 80px 5%;
+    }
+
+    .warning-box {
+        padding: 40px 20px;
+    }
+    
+    .warning-box h3 {
+        font-size: 20px;
+    }
+    
+    .warning-box p {
+        font-size: 14px;
     }
 }

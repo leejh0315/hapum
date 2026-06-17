@@ -1,191 +1,230 @@
-.sidebar {
-	width: 180px;
-	background-color: #D6CCC2;
-	border-right: 1px solid #D5BDAF;
-	border-left: 1px solid #D5BDAF;
-	display: flex;
-	flex-direction: column;
-	/* 좌우와 하단 패딩은 유지하고, 상단 패딩은 0으로 설정 */
-	padding: 0 10px 10px;
+/* =========================================
+   기본
+========================================= */
+body {
+    margin: 0;
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #FFFFFF;
+    color: #000000;
+    -webkit-font-smoothing: antialiased;
 }
 
+/* =========================================
+   상단 고정 헤더
+========================================= */
+.fixed-header-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #EAEAEA;
+}
+
+.fixed-header-inner {
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 40px 4% 0 4%;
+}
+
+.info-top-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-bottom: 15px;
+}
+
+.info-prefix {
+    font-size: 16px;
+    font-weight: 900;
+    color: #111111;
+    letter-spacing: 2px;
+    padding-right: 20px;
+    border-right: 1px solid #DDDDDD;
+}
+
+.info-title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0;
+    color: #111111;
+}
+
+/* =========================================
+   탭 메뉴
+========================================= */
+.sidebar-nav {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 36px;
+    padding: 10px 0 4px 0;
+    border-bottom: 1px solid #EAEAEA;
+    overflow-x: auto;
+    white-space: nowrap;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.sidebar-nav::-webkit-scrollbar { display: none; }
+
+.sidebar-nav .menu-button {
+    background: none;
+    border: none;
+    padding: 4px 0;
+    font-size: 18px;
+    font-weight: 500;
+    color: #CCCCCC;
+    cursor: pointer;
+    letter-spacing: 0.3px;
+    text-decoration: none;
+    flex-shrink: 0;
+    transition: color 0.3s ease;
+    display: inline-block;
+}
+
+.sidebar-nav .menu-button:hover { color: #666666; }
+
+.sidebar-nav .menu-button.active {
+    color: #000000;
+    font-weight: 700;
+    border-bottom: 3px solid #000000;
+    padding-bottom: 4px;
+}
+
+/* =========================================
+   본문 컨테이너
+========================================= */
 .container {
-  display: flex;
-    flex: 1;
-    height: 100vh;
-  	padding-left: 7%;
-  	padding-right: 7%;
-  gap: 20px;
-}
-.menu-button:hover{
-	color:#333;
-	transform: none;
+    max-width: 1250px;
+    margin: 0 auto;
+    padding: 60px 4% 120px 4%;
 }
 
-/* 기존 sidebar-title 스타일 그대로 사용 */
-.sidebar-title {
-	margin: 0 -10px 10px;
-	width: calc(100% + 20px);
-	box-sizing: border-box;
-
-	padding: 12px 10px;
-	text-align: center;
-	background-color: #D5BDAF;
-	border-bottom: 1px solid #D5BDAF;
-	font-size: 18px;
-	font-weight: bold;
-	color: white;
-}
-
-
-/* 메뉴 버튼 (세로 정렬) */
-/* 기존 .menu-button 안에 덮어쓰기 */
-.menu-button {
-  display: block;
-  /* 사이드바 패딩(10px)만큼 빼고 더해줘서 전체 폭 차지 */
-  width: calc(100% + 20px);
-  margin: 0 -10px 0px; 
-  padding: 12px;
-  text-align: center;
-  background-color: #F5EBE0;
-  border: none;
-  border-bottom: 1px solid #D5BDAF;
-  font-size: 16px;
-  cursor: pointer;
-  color: #333;
-  transition: background-color 0.3s;
-}
-
-
-.menu-button:hover {
-	background-color: #E3D5CA;
-}
-
-/* active 상태인 메뉴 버튼 (필요에 따라 수정) */
-.menu-button.active {
-	background-color: #D5BDAF;
-	color: white;
-	font-weight: bold;
-}
-
-/* /css/mypage/update.css */
-
-/* --------------------------------------------------------------------------------------------------
-   1. 컨텐츠 박스 전체 레이아웃
-   -------------------------------------------------------------------------------------------------- */
 .content {
-  flex: 1;                              /* 사이드바 옆에서 남은 공간 모두 차지 */
-  padding: 30px;                        /* 내부 여백 */
-  border-radius: 8px;                   /* 모서리 둥글게 */
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;                            /* 폼과 링크 사이 간격 */
-  overflow-y: auto;                     /* 내용이 길어지면 스크롤 */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
 }
 
-/* --------------------------------------------------------------------------------------------------
-   2. 폼 전체 스타일
-   -------------------------------------------------------------------------------------------------- */
-.content form {
-  width: 100%;
-  max-width: 600px;                     /* 너무 넓어지지 않게 제한 */
-  display: flex;
-  flex-direction: column;
-  gap: 15px;                            /* 각 입력 그룹 간격 */
+/* =========================================
+   정보 수정 폼
+========================================= */
+.mypage-form {
+    width: 100%;
+    max-width: 560px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
-/* 각 입력 블록 */
-.content form > div {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 24px;
 }
 
-/* 라벨 스타일 */
-.content form label {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
+.form-row label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #555555;
+    letter-spacing: 0.3px;
 }
 
-/* 인풋 필드 스타일 */
-.content form input {
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #D5BDAF;
-  border-radius: 4px;
-  box-sizing: border-box;
-  width: 300px;
+.form-row input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 11px 14px;
+    border: 1px solid #DDDDDD;
+    border-radius: 0;
+    font-size: 15px;
+    font-family: inherit;
+    color: #111111;
+    background-color: #FAFAFA;
+    transition: border-color 0.2s, background-color 0.2s;
+    outline: none;
 }
 
-.content form input:focus {
-  outline: none;
-  border-color: #A99A8E;
+.form-row input:focus {
+    border-color: #000000;
+    background-color: #FFFFFF;
 }
 
-form > .bottom{
-	display: flex;
-	flex-direction: row;
-}
-/* --------------------------------------------------------------------------------------------------
-   3. 버튼 스타일
-   -------------------------------------------------------------------------------------------------- */
-.content form button {
-  align-self: flex-start;              /* 왼쪽 정렬 */
-  padding: 10px 20px;
-  background-color: #D6CCC2;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color .2s;
+.error {
+    font-size: 12px;
+    color: #999999;
+    margin-top: 2px;
 }
 
-.content form button:hover {
-  background-color: #E3D5CA;
+/* =========================================
+   하단 버튼 / 링크
+========================================= */
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
 }
 
-/* --------------------------------------------------------------------------------------------------
-   4. 하단 링크 (비밀번호 수정) 스타일
-   -------------------------------------------------------------------------------------------------- */
-.content > a {
-  display: block;
-  text-align: center;
-  margin-top: 10px;
+.btn-primary {
+    padding: 12px 40px;
+    background-color: #000000;
+    color: #FFFFFF;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: background-color 0.2s;
+    border-radius: 0;
 }
 
-.content > a h6 {
-  font-size: 0.9rem;
-  color: #333;
-  text-decoration: underline;
-  cursor: pointer;
+.btn-primary:hover { background-color: #333333; }
+
+.form-links {
+    display: flex;
+    gap: 20px;
+    align-items: center;
 }
 
-
-.bottom > button{
-	align-self: flex-start;              /* 왼쪽 정렬 */
-  padding: 10px 20px;
-  background-color: #D6CCC2;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color .2s;
+.form-links a {
+    font-size: 14px;
+    color: #888888;
+    text-decoration: none;
+    border-bottom: 1px solid #CCCCCC;
+    padding-bottom: 1px;
+    transition: color 0.2s, border-color 0.2s;
 }
 
-.bottom{
-	width: 300px;
-	display: flex; justify-content: space-between;
+.form-links a:hover {
+    color: #333333;
+    border-color: #333333;
 }
 
-
-.error{
-	color:#D5BDAF;
+.form-links a.link-danger {
+    color: #AAAAAA;
+    border-color: #DDDDDD;
 }
 
+.form-links a.link-danger:hover {
+    color: #CC3333;
+    border-color: #CC3333;
+}
 
-
-
+/* =========================================
+   반응형
+========================================= */
+@media screen and (max-width: 768px) {
+    .fixed-header-inner { padding-top: 20px; }
+    .info-title { font-size: 20px; }
+    .sidebar-nav { gap: 24px; }
+    .sidebar-nav .menu-button { font-size: 15px; }
+    .container { padding-top: 30px; padding-bottom: 80px; }
+    .mypage-form { max-width: 100%; }
+    .btn-primary { width: 100%; text-align: center; }
+    .form-actions { flex-direction: column; align-items: flex-start; }
+}

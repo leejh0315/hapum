@@ -11,11 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import hapum.hapum.domain.Organization;
+import hapum.hapum.domain.ProgramAdd;
 import hapum.hapum.domain.ProgramWithSub;
 import hapum.hapum.domain.Rental;
 import hapum.hapum.domain.UpdateForm;
 import hapum.hapum.domain.UpdatePwForm;
 import hapum.hapum.domain.User;
+import hapum.hapum.service.OrganizationService;
 import hapum.hapum.service.ProgramService;
 import hapum.hapum.service.ReservationService;
 import hapum.hapum.service.UserAuthService;
@@ -35,6 +38,8 @@ public class MypageController {
 	private final UserAuthService userAuthService;
 	private final ReservationService reservationService;
 	private final ProgramService programService;	
+	private final OrganizationService organizationService;
+	// 공통 코드 중복 제거
 	
 	
 	@GetMapping("/{id}")
@@ -44,6 +49,7 @@ public class MypageController {
 		if(mypageValidator(id, user, model)) {
 			return "redirect:/main/main";
 		}
+		addUserToModel(req, model);
 		return "mypage/mypage";
 	}
 	
@@ -51,7 +57,7 @@ public class MypageController {
 	public String getOut(Model model ,  HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		User user = (User) session.getAttribute("loginMember");
-		
+		addUserToModel(req, model);
 		model.addAttribute("user",user);
 	    model.addAttribute("activeTab", "update");
 		return "mypage/out";
@@ -81,7 +87,7 @@ public class MypageController {
 		if(mypageValidator(id, user, model)) {
 			return "redirect:/main/main";
 		}
-    	
+		addUserToModel(req, model);
         // SigninForm 객체에 기존 사용자 정보를 채워 넣습니다.
         UpdateForm updateForm = new UpdateForm();
         updateForm.setName(user.getName());
@@ -135,7 +141,7 @@ public class MypageController {
 		if(mypageValidator(id, user, model)) {
 			return "redirect:/main/main";
 		}
-		
+		addUserToModel(req, model);
 		List<Rental> rentals = reservationService.selectByUserId(user.getId());
 		model.addAttribute("activeTab", "rental");
 		model.addAttribute("rentals", rentals);
@@ -165,6 +171,8 @@ public class MypageController {
 			return "redirect:/main/main";
 		}
 		List<ProgramWithSub> programs = programService.selectProgramByUserId(user.getId());
+		addUserToModel(req, model);
+		System.out.println(programs);
 		model.addAttribute("programs", programs);
 		model.addAttribute("activeTab", "program");
 		return "mypage/program";
@@ -190,9 +198,10 @@ public class MypageController {
 		if(mypageValidator(id, user, model)) {
 			return "redirect:/main/main";
 		}
+		addUserToModel(req, model);
 		UpdatePwForm updatePwForm = new UpdatePwForm();
 		model.addAttribute("updatePwForm", updatePwForm);
-	
+	    model.addAttribute("activeTab", "update");
 		
 		return "mypage/updatePw";
 	}
@@ -241,5 +250,18 @@ public class MypageController {
 		}else {
 			return true;
 		}
+	}
+	
+	private void addUserToModel(HttpServletRequest req, Model model) {
+		HttpSession session = req.getSession();
+		User user = (User) session.getAttribute("loginMember");
+		model.addAttribute("user", user);
+		
+		// [추가] 이제 모든 페이지의 header 조각이 프로그램 sub-menu 데이터를 참조할 수 있습니다.
+		List<ProgramAdd> headerProgramAdds = programService.selectAllProgramAdd();
+		model.addAttribute("headerProgramAdds", headerProgramAdds);
+		
+		List<Organization> organizationList = organizationService.selectAllOrganization();
+		model.addAttribute("organizationList", organizationList);
 	}
 }

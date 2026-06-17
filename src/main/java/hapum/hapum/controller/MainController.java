@@ -499,7 +499,6 @@ public class MainController {
 		model.addAttribute("notification", notification);
 		return "main/notification-detail";
 	}
-
 	// 공통 코드 중복 제거
 	private void addUserToModel(HttpServletRequest req, Model model) {
 		HttpSession session = req.getSession();

@@ -1,65 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="shortcut icon" href="/img/logohp.png">
-	<title>MyPage</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/img/logohp.png">
+    <title>MyPage</title>
 
-	<!-- 공통 헤더/사이드바/컨텐츠 레이아웃 -->
-	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
-	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
-
-
-	<link rel="stylesheet" th:href="@{/css/mypage/mypage.css}" media="only screen and (min-width: 769px)">
-	<link rel="stylesheet" th:href="@{/css/main/mobile/mypage.css}" media="only screen and (max-width: 768px)">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-
-	<link rel="stylesheet" th:href="@{/css/footer.css}" />
-	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link rel="stylesheet" th:href="@{/css/header.css}"             media="only screen and (min-width: 769px)" />
+    <link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+    <link rel="stylesheet" th:href="@{/css/mypage/mypage.css}"      media="only screen and (min-width: 769px)" />
+    <link rel="stylesheet" th:href="@{/css/main/mobile/mypage.css}" media="only screen and (max-width: 768px)" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}" />
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
-	<!-- 헤더 -->
-	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+    <!-- 헤더 -->
+    <div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-	<div class="container">
-		<!-- 좌측 사이드바 -->
-		<div class="sidebar">
-			<div class="sidebar-title">마이페이지</div>
+    <!-- ── 상단 고정 타이틀 + 탭 메뉴 ── -->
+    <div class="fixed-header-wrapper">
+        <div class="fixed-header-inner">
 
-			<div class="menu-group">
+            <!-- 타이틀 바 — program.css와 동일 구조 -->
+            <div class="info-top-bar">
+                <span class="info-prefix">MYPAGE</span>
+                <h2 class="info-title" th:text="${user.name} + '님의 마이페이지'">마이페이지</h2>
+            </div>
 
-				<a th:href="@{/main/mypage/update/{id}(id=${user.id})}" class="menu-button"
-					th:classappend="${activeTab=='update'} ? ' active' : ''">
-					내 정보 수정
-				</a>
-				<a th:href="@{/main/mypage/rental/{id}(id=${user.id})}" class="menu-button"
-					th:classappend="${activeTab=='rental'} ? ' active' : ''">
-					신청한 대관 예약
-				</a>
-				<a th:href="@{/main/mypage/program/{id}(id=${user.id})}" class="menu-button"
-					th:classappend="${activeTab=='program'} ? ' active' : ''">
-					신청한 프로그램
-				</a>
-			</div>
-		</div>
-		<!-- 오른쪽 컨텐츠 -->
+            <!-- 가로 탭 메뉴 — program.css .top-menu-bar 방식 -->
+            <nav class="sidebar-nav">
+                <a th:href="@{/main/mypage/update/{id}(id=${user.id})}"
+                   class="menu-button"
+                   th:classappend="${activeTab=='update'} ? ' active' : ''">
+                    내 정보 수정
+                </a>
+                <a th:href="@{/main/mypage/rental/{id}(id=${user.id})}"
+                   class="menu-button"
+                   th:classappend="${activeTab=='rental'} ? ' active' : ''">
+                    신청한 대관 예약
+                </a>
+                <a th:href="@{/main/mypage/program/{id}(id=${user.id})}"
+                   class="menu-button"
+                   th:classappend="${activeTab=='program'} ? ' active' : ''">
+                    신청한 프로그램
+                </a>
+            </nav>
 
-		<div class="content">
+        </div>
+    </div>
 
-			<h1 class="page-title center" th:text="${user.name} + '님의 마이페이지'">
-			</h1>
+    <!-- ── 본문 컨텐츠 ── -->
+    <div class="container">
+        <div class="content">
 
-		</div>
-	</div>
+            <!-- 기존 content 안의 내용은 그대로 유지 -->
+            <!-- 각 탭별 fragment 또는 직접 작성한 내용이 여기에 들어옵니다 -->
 
-	<!-- 푸터 -->
-	<div th:replace="~{main/footer :: footer}"></div>
+        </div>
+    </div>
 
-	<script th:src="@{/js/header.js}"></script>
+    <!-- 푸터 -->
+    <div th:replace="~{main/footer :: footer}"></div>
+
+    <script th:src="@{/js/header.js}"></script>
 </body>
 
 </html>

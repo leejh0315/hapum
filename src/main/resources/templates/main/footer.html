@@ -7,26 +7,41 @@
 <body>
 
     <th:block th:fragment="footer">
-      <footer style="width: 100%;">
-        <div class="footer-container">
-          <div class="footer-left">
+      <footer class="modern-footer" style="margin-top: 50px;">
+        <div class="footer-container" >
+          
+          <div class="footer-col footer-links">
+            <h4>Family Sites</h4>
             <ul>
-              <li><a href="http://agnus.or.kr/home/" target="_blank">청소년국</a></li>
-              <li><a href="http://www.agnusbible.or.kr/" target="_blank">청년성서</a></li>
-              <li><a href="https://www.djcatholic.or.kr/home/" target="_blank">대전교구</a></li>
+              <li><a href="http://agnus.or.kr/home/" target="_blank">대전교구 청소년국 <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+              <li><a href="http://www.agnusbible.or.kr/" target="_blank">청년성서 모임 <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
+              <li><a href="https://www.djcatholic.or.kr/home/" target="_blank">천주교 대전교구 <i class="fa-solid fa-arrow-up-right-from-square"></i></a></li>
             </ul>
           </div>
-          <div class="footer-center">
-            <p>(31174) 충남 천안시 서북구 월봉5길 23</p>
-            <p>Tel. 041-572-7179 | Fax. 041-572-7180</p>
-            <p>E-mail. hapum7179@gmail.com</p>
+
+          <div class="footer-col footer-info">
+            <div class="footer-logo">하품센터</div>
+            <p class="address">(31174) 충남 천안시 서북구 월봉5길 23</p>
+            <div class="contact-details">
+              <p><span>Tel.</span> 041-572-7179</p>
+              <span class="divider">|</span>
+              <p><span>Fax.</span> 041-572-7180</p>
+            </div>
+            <p class="email"><span>E-mail.</span> hapum7179@gmail.com</p>
           </div>
-          <div class="footer-right">
-            <a href="https://www.instagram.com/hapum_center/" target="_blank">
-              <img src="/img/insta_logo.png" alt="Instagram" />
-              <div>하품센터</div>
+
+          <div class="footer-col footer-social">
+            <h4>Follow Us</h4>
+            <a href="https://www.instagram.com/hapum_center/" target="_blank" class="social-btn">
+              <img src="/img/insta_logo.png" alt="Instagram" class="insta-icon" />
+              <span>@hapum_center</span>
             </a>
           </div>
+
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2026 Hapum Center. All rights reserved.</p>
         </div>
       </footer>
     </th:block>

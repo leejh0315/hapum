@@ -47,8 +47,9 @@ public class UserAuthController {
 	private final ProgramService programService;
 	private final OrganizationService organizationService;
 	@GetMapping("/login")
-	public String getLogin(Model model) {
+	public String getLogin(HttpServletRequest req,Model model) {
 		model.addAttribute("loginForm", new LoginForm()); // 모델에 객체 추가
+		addUserToModel(req, model);
 		return "auth/login";
 	}
 
@@ -148,7 +149,8 @@ public class UserAuthController {
 	}
 
 	@GetMapping("/findPw")
-	public String getFindPw() {
+	public String getFindPw(Model model,HttpServletRequest req) {
+		addUserToModel(req, model);
 		return "auth/findPw";
 	}
 

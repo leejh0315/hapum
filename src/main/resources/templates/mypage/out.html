@@ -2,79 +2,79 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="shortcut icon" href="/img/logohp.png">
-	<title>내 정보 수정</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="/img/logohp.png">
+    <title>내 정보 수정 - 회원 탈퇴</title>
 
-	<!-- 공통 헤더 스타일 -->
-	<link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
-	<link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+    <link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />
+    <link rel="stylesheet" th:href="@{/css/footer.css}">
+    
+    <link rel="stylesheet" th:href="@{/css/mypage/out.css}" media="only screen and (min-width: 769px)">
+    <link rel="stylesheet" th:href="@{/css/main/mobile/update.css}" media="only screen and (max-width: 768px)">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-	<!-- 기타 관리자/뉴스 관련 스타일 -->
-	<link rel="stylesheet" th:href="@{/css/footer.css}">
-	
-	 <link rel="stylesheet" th:href="@{/css/mypage/update.css}" media="only screen and (min-width: 769px)">
-	<link rel="stylesheet" th:href="@{/css/main/mobile/update.css}" media="only screen and (max-width: 768px)">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 
 <body>
-	<!-- 헤더 -->
-	<div th:replace="~{main/header :: headFrag(${user})}"></div>
+    <div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-	<div class="container">
-		<div class="sidebar">
-			<a th:href="@{/main/mypage/{id}(id=${user.id})}">
-				<div class="sidebar-title">
-					마이페이지
-				</div>
-			</a>
-			<div class="menu-group">
-				<a th:href="@{/main/mypage/update/{id}(id=${user.id})}" class="menu-button"
-					th:classappend="${activeTab=='update'} ? ' active' : ''">
-					내 정보 수정
-				</a>
-				<a th:href="@{/main/mypage/rental/{id}(id=${user.id})}" class="menu-button"
-					th:classappend="${activeTab=='rental'} ? ' active' : ''">
-					신청한 대관 예약
-				</a>
-				<a th:href="@{/main/mypage/program/{id}(id=${user.id})}" class="menu-button"
-					th:classappend="${activeTab=='program'} ? ' active' : ''">
-					신청한 프로그램
-				</a>
-			</div>
-		</div>
-		<div class="content">
-			<div>
-				회원 탈퇴할 시 <strong style="color:red">신청한 프로그램, 신청한 대관신청 내역이 삭제</strong>됩니다. <br>회원님의 정보 또한 <strong style="color:red">영구적으로 삭제</strong>됩니다.<br>
-				탈퇴하시려면 하단의 탈퇴하기 버튼을 눌러주세요.
+    <div class="fixed-header-wrapper">
+        <div class="fixed-header-inner">
+            <div class="info-top-bar">
+                <span class="info-prefix">MYPAGE</span>
+                <h2 class="info-title">내 정보 수정</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <a th:href="@{/main/mypage/update/{id}(id=${user.id})}"
+                   class="menu-button"
+                   th:classappend="${activeTab=='update'} ? ' active' : ''">
+                    내 정보 수정
+                </a>
+                <a th:href="@{/main/mypage/rental/{id}(id=${user.id})}"
+                   class="menu-button"
+                   th:classappend="${activeTab=='rental'} ? ' active' : ''">
+                    신청한 대관 예약
+                </a>
+                <a th:href="@{/main/mypage/program/{id}(id=${user.id})}"
+                   class="menu-button"
+                   th:classappend="${activeTab=='program'} ? ' active' : ''">
+                    신청한 프로그램
+                </a>
+            </nav>
+        </div>
+    </div>
 
-				<!-- 탈퇴 폼 -->
-				<form id="deleteForm" th:action="@{/main/mypage/out/{id}(id=${user.id})}" method="post">
-					<input type="hidden" name="id" th:value="${user.id}" />
-					<button style="margin-top: 5%;" type="button" onclick="confirmDelete()">회원 탈퇴하기</button>
-				</form>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="content-wrapper">
+            <div class="warning-box">
+                <i class="fa-solid fa-triangle-exclamation warning-icon"></i>
+                <h3>회원 탈퇴 안내</h3>
+                <p>회원 탈퇴할 시 <strong class="text-red">신청한 프로그램, 신청한 대관신청 내역이 삭제</strong>됩니다.</p>
+                <p>회원님의 정보 또한 <strong class="text-red">영구적으로 삭제</strong>되며 복구할 수 없습니다.</p>
+                <p class="sub-text">탈퇴하시려면 하단의 탈퇴하기 버튼을 눌러주세요.</p>
 
-	<!-- 푸터 -->
-	<div th:replace="~{main/footer :: footer}"></div>
+                <form id="deleteForm" th:action="@{/main/mypage/out/{id}(id=${user.id})}" method="post">
+                    <input type="hidden" name="id" th:value="${user.id}" />
+                    <button type="button" class="btn-delete" onclick="confirmDelete()">회원 탈퇴하기</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-	<!-- 탈퇴 확인 스크립트 -->
-	<script>
-		function confirmDelete() {
-			const confirmed = confirm("하품센터 회원 탈퇴 하시겠습니까?");
-			if (confirmed) {
-				alert("회원탈퇴처리 되었습니다."); // 먼저 알림
-				document.getElementById("deleteForm").submit();
-			}
-		}
-	</script>
-	<script th:src="@{/js/header.js}"></script>
+    <div th:replace="~{main/footer :: footer}"></div>
+
+    <script>
+        function confirmDelete() {
+            const confirmed = confirm("하품센터 회원 탈퇴 하시겠습니까?");
+            if (confirmed) {
+                alert("회원탈퇴처리 되었습니다.");
+                document.getElementById("deleteForm").submit();
+            }
+        }
+    </script>
+    <script th:src="@{/js/header.js}"></script>
 </body>
-
 </html>

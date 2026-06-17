@@ -1,210 +1,186 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" 
+<html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{layout/mainLayout}">
+      layout:decorate="~{main/layout/mainLayout}">
+
 <head>
-	<title>하품센터</title>
-	<meta name="description" content="천주교 대전교구 천안지역 청소년사목 하품센터는 청소년과 청년들을 위한 신앙, 문화, 교육 프로그램을 운영하는 천안지역 복합 사목 공간입니다." />
-	<meta name="keywords" content="하품센터, 천주교, 대전교구, 천안 청소년, 청년 사목, 천안 하품, 청년센터, 청소년센터, 가톨릭 청년, 가톨릭" />
-	<th:block layout:fragment="head-content">
-		<meta property="og:title" content="하품센터" />
-		<meta property="og:image" content="/img/main.png" />
-		<link rel="stylesheet" th:href="@{/css/main/main.css}" media="only screen and (min-width: 769px)" />
-		<link rel="stylesheet" th:href="@{/css/main/mobile/main.css}" media="only screen and (max-width: 768px)" />
-	</th:block>
+    <title>하품센터 - 메인</title>
+    <meta name="description" content="천주교 대전교구 천안지역 청소년사목 하품센터는 청소년과 청년들을 위한 신앙, 문화, 교육 프로그램을 운영하는 천안지역 복합 사목 공간입니다." />
+    <meta name="keywords" content="하품센터, 천주교, 대전교구, 천안 청소년, 청년 사목, 천안 하품, 청년센터, 청소년센터, 가톨릭 청년, 가톨릭" />
+    <th:block layout:fragment="head-content">
+        <meta property="og:title" content="하품센터" />
+        <meta property="og:image" content="/img/main.png" />
+        <link rel="stylesheet" th:href="@{/css/header.css}" media="only screen and (min-width: 769px)" />
+        <link rel="stylesheet" th:href="@{/css/main/main.css}" />
+        <link rel="stylesheet" th:href="@{/css/footer.css}" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    </th:block>
 </head>
+
 <body>
-	<main layout:fragment="content">
-		<section id="top-section">
-			<div class="mobile-box">
-				<div class="mobile-img">
-					<div class="mobile-text">
-						<div>
-							<span class="highlight">하품센터</span>는 함께 성장하며
-						</div>
-						<div>
-							서로 행복을 나누는 <span class="highlight">하느님 품</span>입니다
-						</div>
-					</div>
-					<div class="mobile-btn">
-						<button class="btn btn1" onclick="location.href='/main/introduce'">센터소개</button>
-						<button class="btn btn2" onclick="location.href='/main/information'">시설안내</button>
-						<button class="btn btn3" onclick="location.href='/main/program'">프로그램</button>
-						<button class="btn btn4" onclick="location.href='/main/rental'">대관신청</button>
-						<button class="btn btn5" onclick="location.href='/main/news'">갤러리</button>
-						<button class="btn btn6" onclick="location.href='/main/organization'">단체소식</button>
-					</div>
-				</div>
-			</div>
+    <div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-			<div class="left-section">
-				<h3 style="margin-bottom: 10px;">프로그램 안내</h3>
-				<div id="slideshow-wrapper">
-					<div id="slideshow-container">
-						<div id="slideshow">
-							<!-- Thymeleaf 반복문: programs 리스트의 각 thumbnailSrc -->
-							<div th:each="program : ${programs}">
-								<div class="slide-wrapper">
-									<img th:src="${program.thumbnailSrc}" th:attr="data-program-id=${program.id},
-                      style='view-transition-name: program-thumbnail-' + ${program.id}" alt="슬라이드 이미지"
-										style="position: absolute;" />
-								</div>
-							</div>
-						</div>
-					</div>
-					<!-- 슬라이드 좌우 전환 버튼 -->
-					<div id="slideshow-controls">
-						<button id="prev-btn">&lt;</button>
-						<button id="next-btn">&gt;</button>
-					</div>
-				</div>
-			</div>
-			<!-- 생략: 슬라이드 영역 -->
-			<div class="right-section">
-				
-				<div id="notification-list">
-					<!-- admin only: 수정/수정완료 버튼 -->
-					<div class="admin-controls" th:if="${user != null and user.email == 'admin'}">
-						<button id="edit-order-btn" type="button">
-							<i class="fa-solid fa-pen-to-square"></i>
-							<span>수정</span>
-						</button>
-					</div>
+    <main layout:fragment="content" class="main-container">
 
-					<div th:if="${#lists.isEmpty(notifications)}">
-						등록된 공지사항이 없습니다.
-					</div>
-					<div th:if="${!#lists.isEmpty(notifications)}">
-						<h3 style="margin-bottom: 10px;">공지사항</h3>
-						<table>
-							<thead>
-								<tr>
-									<th>제목</th>
-									<th>작성일자</th>
-									<th class="order-col">순서</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr th:each="notif, iterStat : ${notifications}" th:if="${iterStat.index < 6}">
-									<td>
-										<a th:href="@{/main/notification/detail/{id}(id=${notif.id})}">
-											<span th:text="${notif.title}" class="notice-title"
-												th:classappend="${notif.isTop=='1'} ? ' top-bold' : ''">
-												공지제목
-											</span>
-											<i th:if="${notif.isTop=='1'}" class="fa-solid fa-thumbtack pin-icon"
-												aria-hidden="true"></i>
-										</a>
-										<button type="button" class="toggle-top-btn"
-											th:if="${user != null and user.email=='admin'}"
-											th:attr="data-id=${notif.id},data-istro=${notif.isTop}">
-											<i class="fa-solid"
-												th:classappend="${notif.isTop=='1'} ? ' fa-arrow-turn-down' : ' fa-arrow-turn-up'">
-											</i>
-										</button>
-									</td>
-									<td>
-										<span class="datetime-full"
-											th:text="${#temporals.format(notif.createOn, 'yyyy-MM-dd HH:mm')}"></span>
+        <section class="hero-section">
+            <div class="hero-slider" id="heroSlider">
+                <div class="slide active" style="background-image: url('/img/main/main1.jpg');">
+                    <div class="slide-content">
+                        <h2>함께 성장하며 서로 행복을 나누는</h2>
+                        <h1>하느님 품, <span>하품센터</span></h1>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-controls">
+                <button id="hero-prev"><i class="fa-solid fa-chevron-left"></i></button>
+                <button id="hero-next"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+        </section>
 
-										<!-- 모바일용 (날짜만) -->
-										<span class="datetime-dateonly"
-											th:text="${#temporals.format(notif.createOn, 'yyyy-MM-dd')}"></span>
-									</td>
-									<!-- isTop=1인 것만 input 활성화 -->
-									<td class="order-col" th:if="${notif.isTop=='1'}">
-										<input type="number" name="orderNum" th:value="${notif.orderNum}" min="1"
-											th:attr="data-id=${notif.id}" />
-									</td>
-									<!-- isTop!=1 or non-admin view: 빈 td -->
-									<td class="order-col" th:if="${notif.isTop!='1'}"></td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div><!-- /#notification-list -->
-				<section class="gallery">
-					<h3>갤러리</h3>
-					<div class="gallery-wrapper">
-						<button id="gallery-prev" type="button">&lt;</button>
-						<div class="gallery-container">
-							<div class="gallery-track">
-								<!-- fileNames 리스트의 모든 이미지를 렌더 -->
-								<div class="gallery-item" th:each="n : ${news}">
-									<a th:href="@{/main/news/detail/{id}(id=${n.id})}">
-										<img th:src="${n.thumbnailSrc}" alt="gallery image" />
-									</a>
-								</div>
-							</div>
-						</div>
-						<button id="gallery-next" type="button">&gt;</button>
-					</div>
-				</section>
+        <section class="quick-links-section reveal">
+            <div class="inner-wrap">
+                <div class="link-grid">
+                    <div class="link-card" onclick="location.href='/main/introduce'">
+                        <i class="fa-solid fa-church"></i><span>센터소개</span>
+                    </div>
+                    <div class="link-card" onclick="location.href='/main/information'">
+                        <i class="fa-regular fa-building"></i><span>시설안내</span>
+                    </div>
+                    <div class="link-card" onclick="location.href='/main/program'">
+                        <i class="fa-solid fa-seedling"></i><span>프로그램</span>
+                    </div>
+                    <div class="link-card" onclick="location.href='/main/rental'">
+                        <i class="fa-regular fa-calendar-check"></i><span>대관신청</span>
+                    </div>
+                    <div class="link-card" onclick="location.href='/main/news'">
+                        <i class="fa-regular fa-images"></i><span>갤러리</span>
+                    </div>
+                    <div class="link-card" onclick="location.href='/main/organization'">
+                        <i class="fa-solid fa-users"></i><span>단체소식</span>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-			</div>
-		</section>
+        <section class="board-section reveal">
+            <div class="inner-wrap board-grid">
 
-		<div th:each="popup, iterStat : ${popupProgram}" th:if="${popup.thumbnailSrc != null}"
-			th:id="'popup-modal-' + ${popup.id}" class="popup-modal" th:style="'display: none;'">
-			<div class="popup-content">
-				<a th:href="${popup.id == 76} ? @{/auth/signin} : @{/main/program/detail/{id}(id=${popup.id})}">
-					<img th:src="${popup.thumbnailSrc}" alt="팝업 이미지" class="popup-image" />
-				</a>
-				<div class="popup-footer">
-					<label>
-						<input type="checkbox" th:id="'dont-show-' + ${popup.id}" />
-						오늘 하루 보지 않기
-					</label>
-					<button th:id="'close-popup-btn-' + ${popup.id}" th:attr="data-id=${popup.id}">
-						닫기
-					</button>
-				</div>
-			</div>
-		</div>
-	</main>
+                <div class="program-wrapper">
+                    <div class="section-header">
+                        <h3>진행중인 프로그램</h3>
+                        <a href="/main/program" class="more-btn">더보기 <i class="fa-solid fa-plus"></i></a>
+                    </div>
+                    <div class="program-slider-container">
+                        <button class="slider-btn prev" id="prog-prev">
+                            <i class="fa-solid fa-angle-left"></i>
+                        </button>
+                        <div class="program-track" id="programTrack">
+                            <div class="program-card" th:each="program : ${programs}">
+                                <img th:src="${program.thumbnailSrc}"
+                                     th:attr="data-program-id=${program.id},
+                                              style='view-transition-name: program-thumbnail-' + ${program.id}"
+                                     alt="프로그램 썸네일" />
+                            </div>
+                        </div>
+                        <button class="slider-btn next" id="prog-next">
+                            <i class="fa-solid fa-angle-right"></i>
+                        </button>
+                    </div>
+                </div>
 
-	<th:block layout:fragment="scripts">
-		<script th:src="@{/js/main/imageSlide.js}"></script>
-		<script th:src="@{/js/main/main.js}"></script>
-		<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			const modals = document.querySelectorAll('.popup-modal');
+                <div class="notice-wrapper">
+                    <div class="section-header">
+                        <h3>공지사항</h3>
+                        <div class="admin-controls" th:if="${user != null and user.email == 'admin'}">
+                            <button id="edit-order-btn" type="button">
+                                <i class="fa-solid fa-pen-to-square"></i> 수정
+                            </button>
+                        </div>
+                    </div>
 
-			modals.forEach(modal => {
-				const id = modal.id.replace('popup-modal-', '');
+                    <div class="notice-list-container">
+                        <div th:if="${#lists.isEmpty(notifications)}" class="empty-msg">
+                            등록된 공지사항이 없습니다.
+                        </div>
+                        <ul class="notice-list" th:if="${!#lists.isEmpty(notifications)}">
+                            <li th:each="notif, iterStat : ${notifications}"
+                                th:if="${iterStat.index < 5}"
+                                class="notice-item">
+                                <a th:href="@{/main/notification/detail/{id}(id=${notif.id})}">
+                                    <div class="notice-badge" th:if="${notif.isTop=='1'}">중요</div>
+                                    <div class="notice-title"
+                                         th:classappend="${notif.isTop=='1'} ? 'top-bold' : ''"
+                                         th:text="${notif.title}">공지제목</div>
+                                    <div class="notice-date"
+                                         th:text="${#temporals.format(notif.createOn, 'yyyy-MM-dd')}">2026-06-17</div>
+                                </a>
+                                <div class="admin-actions" th:if="${user != null and user.email=='admin'}">
+                                    <button type="button" class="toggle-top-btn"
+                                            th:attr="data-id=${notif.id}, data-istro=${notif.isTop}">
+                                        <i class="fa-solid"
+                                           th:classappend="${notif.isTop=='1'} ? ' fa-arrow-turn-down' : ' fa-arrow-turn-up'"></i>
+                                    </button>
+                                    <input type="number" class="order-input"
+                                           th:if="${notif.isTop=='1'}"
+                                           name="orderNum"
+                                           th:value="${notif.orderNum}"
+                                           min="1"
+                                           th:attr="data-id=${notif.id}" />
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
 
-				// localStorage 확인
-				const hideKey = 'popupHideUntil_' + id;
-				const hideUntil = localStorage.getItem(hideKey);
-				const now = new Date();
+            </div>
+        </section>
 
-				if (!hideUntil || new Date(hideUntil) <= now) {
-					modal.style.display = 'flex'; // 모달 띄우기
-				}
+        <section class="gallery-section reveal">
+            <div class="inner-wrap">
+                <div class="section-header">
+                    <h3>하품 갤러리</h3>
+                    <a href="/main/news" class="more-btn">더보기 <i class="fa-solid fa-plus"></i></a>
+                </div>
+                <div class="gallery-grid">
+                    <div class="gallery-item" th:each="n, iterStat : ${news}" th:if="${iterStat.index < 8}">
+                        <a th:href="@{/main/news/detail/{id}(id=${n.id})}">
+                            <img th:src="${n.thumbnailSrc}" alt="gallery image" />
+                            <div class="gallery-overlay">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-				// 닫기 버튼
-				const closeBtn = document.getElementById('close-popup-btn-' + id);
-				const checkbox = document.getElementById('dont-show-' + id);
+        <div th:each="popup, iterStat : ${popupProgram}"
+             th:if="${popup.thumbnailSrc != null}"
+             th:id="'popup-modal-' + ${popup.id}"
+             class="popup-modal modern-popup"
+             style="display: none;">
+            <div class="popup-content">
+                <a th:href="${popup.id == 76} ? @{/auth/signin} : @{/main/program/detail/{id}(id=${popup.id})}">
+                    <img th:src="${popup.thumbnailSrc}" alt="팝업 이미지" class="popup-image" />
+                </a>
+                <div class="popup-footer">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" th:id="'dont-show-' + ${popup.id}" />
+                        <span class="checkmark"></span>
+                        오늘 하루 보지 않기
+                    </label>
+                    <button th:id="'close-popup-btn-' + ${popup.id}" class="btn-close" th:attr="data-id=${popup.id}">닫기</button>
+                </div>
+            </div>
+        </div>
 
-				if (closeBtn) {
-					closeBtn.addEventListener('click', function () {
-						if (checkbox && checkbox.checked) {
-							const tomorrow = new Date();
-							tomorrow.setDate(tomorrow.getDate() + 1);
-							localStorage.setItem(hideKey, tomorrow.toISOString());
-						}
-						modal.style.display = 'none';
-					});
-				}
+    </main>
 
-				// 바깥 클릭 시 닫기
-				modal.addEventListener('click', function (e) {
-					if (e.target === modal) {
-						modal.style.display = 'none';
-					}
-				});
-			});
-		});
-		</script>
-	</th:block>
+    <div th:replace="~{main/footer :: footer}"></div>
+    <script th:src="@{/js/header.js}"></script>
+    <th:block layout:fragment="scripts">
+        <script th:src="@{/js/main/main.js}"></script>
+    </th:block>
 </body>
+</html>
