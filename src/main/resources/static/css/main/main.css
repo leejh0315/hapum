@@ -65,7 +65,6 @@ body {
 /* =========================================
    스크롤 애니메이션 — reveal
 ========================================= */
-/* 섹션 단위 페이드 + 블러 (v4 스타일) */
 .reveal-fade {
 	opacity: 0;
 	transform: translateY(30px);
@@ -82,7 +81,6 @@ body {
 	filter: blur(0);
 }
 
-/* 위로 슬라이드 인 */
 .reveal-up {
 	opacity: 0;
 	transform: translateY(40px);
@@ -94,7 +92,6 @@ body {
 	transform: translateY(0);
 }
 
-/* 카드 스케일 인 */
 .reveal-card {
 	opacity: 0;
 	transform: translateY(50px) scale(0.95);
@@ -106,7 +103,6 @@ body {
 	transform: translateY(0) scale(1);
 }
 
-/* 보드 섹션 좌우 슬라이드 */
 .slide-in-left {
 	opacity: 0;
 	transform: translateX(-50px);
@@ -125,7 +121,6 @@ body {
 	transform: translateX(0);
 }
 
-/* 갤러리/공지 stagger 자식 */
 .stagger-child {
 	opacity: 0;
 	transform: translateY(24px) scale(0.97);
@@ -231,7 +226,6 @@ body {
 	text-shadow: 0 0 20px rgba(243, 202, 64, 0.4);
 }
 
-/* 히어로 컨트롤 */
 .hero-controls {
 	position: absolute;
 	top: 50%;
@@ -265,7 +259,6 @@ body {
 	transform: scale(1.1);
 }
 
-/* 슬라이드 인디케이터 (모바일) */
 .hero-indicators {
 	position: absolute;
 	bottom: 24px;
@@ -336,7 +329,6 @@ body {
 	margin-top: 12px;
 }
 
-/* 4글자 메뉴 두 줄 처리 */
 .link-card span.two-line {
 	display: inline-block;
 	text-align: center;
@@ -354,7 +346,6 @@ body {
 	color: #fff;
 }
 
-/* ── SVG 드로우 아이콘 공통 ── */
 .draw-icon {
 	fill: none;
 	stroke: #8A7B66;
@@ -372,7 +363,6 @@ body {
 	visibility: visible;
 }
 
-/* 퀵링크 카드 내 아이콘: 크기 명시적 고정 */
 .link-card .draw-icon {
 	width: 32px;
 	height: 32px;
@@ -384,7 +374,6 @@ body {
 	stroke: #F3CA40;
 }
 
-/* 호버 시 아이콘 float 애니메이션 */
 @keyframes floatIcon {
 	0% {
 		transform: translateY(0);
@@ -461,7 +450,6 @@ body {
 	display: inline-block;
 }
 
-/* 하이라이트 바 애니메이션 */
 .intro-tagline h2 em::after {
 	content: '';
 	position: absolute;
@@ -488,7 +476,6 @@ body {
 	word-break: keep-all;
 }
 
-/* 숫자 통계 행 */
 .stat-row {
 	display: flex;
 	align-items: center;
@@ -581,6 +568,7 @@ body {
 	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
 	flex-shrink: 0;
+	background: #fff;
 }
 
 .program-card:hover {
@@ -588,13 +576,19 @@ body {
 	box-shadow: 0 16px 30px rgba(0, 0, 0, 0.13);
 }
 
-/* ★ 수정: 고정 height 제거 → aspect-ratio로 자연스러운 비율 유지 */
+/*
+ * ★ 핵심 수정:
+ *   - PC: 고정 높이 300px 컨테이너 안에서 이미지 전체가 잘림 없이 보이도록
+ *         object-fit: contain + 여백은 흰 배경으로 처리
+ *   - 이미지 종류(표 형태 등)에 상관없이 전체가 표시됨
+ */
 .program-card img {
 	width: 100%;
-	height: auto;
-	aspect-ratio: 4 / 3;
-	object-fit: cover;
+	height: 300px;
+	object-fit: contain;
+	object-position: center top;
 	display: block;
+	background: #fff;
 }
 
 /* PC: 좌우 버튼 */
@@ -766,7 +760,6 @@ body {
 	transform-style: preserve-3d;
 }
 
-/* 상단 컬러 바 */
 .feature-card::before {
 	content: '';
 	position: absolute;
@@ -781,7 +774,6 @@ body {
 	transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
 }
 
-/* 광택 스윕 효과 */
 .feature-card::after {
 	content: '';
 	position: absolute;
@@ -941,7 +933,7 @@ body {
 }
 
 /* =========================================
-   7. 위치/오시는 길 배너 (v4 신규)
+   7. 위치/오시는 길 배너
 ========================================= */
 .location-banner {
 	position: relative;
@@ -1076,7 +1068,7 @@ body {
 }
 
 /* =========================================
-   8. 팝업 모달 (기존 100% 유지)
+   8. 팝업 모달
 ========================================= */
 .popup-modal {
 	position: fixed;
@@ -1297,10 +1289,17 @@ body {
 		scroll-snap-align: start;
 	}
 
-	/* ★ 수정: 모바일도 aspect-ratio로 통일 (height: 200px 제거) */
+	/*
+	 * ★ 모바일: 이미지 전체가 짤림 없이 보이도록
+	 *   높이를 auto로 두고 contain으로 처리
+	 *   이미지가 길 경우 세로로 자연스럽게 늘어남
+	 */
 	.program-card img {
-		aspect-ratio: 4 / 3;
 		height: auto;
+		max-height: 420px;
+		object-fit: contain;
+		object-position: center top;
+		background: #fff;
 	}
 
 	.mobile-only {
