@@ -1,338 +1,337 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{main/layout/mainLayout}">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{main/layout/mainLayout}">
 
 <head>
-    <title>하품센터 - 메인</title>
-    <meta name="description" content="천주교 대전교구 천안지역 청소년사목 하품센터는 청소년과 청년들을 위한 신앙, 문화, 교육 프로그램을 운영하는 천안지역 복합 사목 공간입니다." />
-    <meta name="keywords" content="하품센터, 천주교, 대전교구, 천안 청소년, 청년 사목, 천안 하품, 청년센터, 청소년센터, 가톨릭 청년, 가톨릭" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <th:block layout:fragment="head-content">
-        <meta property="og:title" content="하품센터" />
-        <meta property="og:image" content="/img/main.png" />
-        <link rel="stylesheet" th:href="@{/css/header.css}" />
-        <link rel="stylesheet" th:href="@{/css/main/main.css}" />
-        <link rel="stylesheet" th:href="@{/css/footer.css}" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-        <script src="https://code.jquery.com/jquery-latest.min.js"></script>
-    </th:block>
+	<title>하품센터 - 메인</title>
+	<meta name="description" content="천주교 대전교구 천안지역 청소년사목 하품센터는 청소년과 청년들을 위한 신앙, 문화, 교육 프로그램을 운영하는 천안지역 복합 사목 공간입니다." />
+	<meta name="keywords" content="하품센터, 천주교, 대전교구, 천안 청소년, 청년 사목, 천안 하품, 청년센터, 청소년센터, 가톨릭 청년, 가톨릭" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<th:block layout:fragment="head-content">
+		<meta property="og:title" content="하품센터" />
+		<meta property="og:image" content="/img/main.png" />
+		<link rel="stylesheet" th:href="@{/css/header.css}" />
+		<link rel="stylesheet" th:href="@{/css/main/main.css}" />
+		<link rel="stylesheet" th:href="@{/css/footer.css}" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+		<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	</th:block>
 </head>
 
 <th:block layout:fragment="content">
-    <div th:replace="~{main/header :: headFrag(${user})}"></div>
+	<div th:replace="~{main/header :: headFrag(${user})}"></div>
 
-    <main class="main-container">
+	<main class="main-container">
 
-        <!-- ① 히어로 슬라이드 -->
-        <section class="hero-section">
-            <div class="hero-slider" id="heroSlider">
-                <!-- JS 가 slideData 배열로 동적 빌드 (기존 로직 유지) -->
-                <div class="slide active" style="background-image: url('/img/main/main1.jpg');">
-                    <div class="slide-content">
-                        <h2>함께 성장하며 서로 행복을 나누는</h2>
-                        <h1>하느님 품, <span>하품센터</span></h1>
-                    </div>
-                </div>
-            </div>
-            <div class="hero-controls">
-                <button id="hero-prev" aria-label="이전 슬라이드">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
-                <button id="hero-next" aria-label="다음 슬라이드">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
-            </div>
-            <div class="hero-indicators" id="heroIndicators"></div>
-        </section>
+		<!-- ① 히어로 슬라이드 -->
+		<section class="hero-section">
+			<div class="hero-slider" id="heroSlider">
+				<!-- JS 가 slideData 배열로 동적 빌드 (기존 로직 유지) -->
+				<div class="slide active" style="background-image: url('/img/main/main1.jpg');">
+					<div class="slide-content">
+						<h2>함께 성장하며 서로 행복을 나누는</h2>
+						<h1>하느님 품, <span>하품센터</span></h1>
+					</div>
+				</div>
+			</div>
+			<div class="hero-controls">
+				<button id="hero-prev" aria-label="이전 슬라이드">
+					<i class="fa-solid fa-chevron-left"></i>
+				</button>
+				<button id="hero-next" aria-label="다음 슬라이드">
+					<i class="fa-solid fa-chevron-right"></i>
+				</button>
+			</div>
+			<div class="hero-indicators" id="heroIndicators"></div>
+		</section>
 
-        <!-- ② 퀵 링크 — SVG 드로우 아이콘 적용 -->
-        <section class="quick-links-section reveal-fade">
-            <div class="inner-wrap">
-                <div class="link-grid">
+		<!-- ② 퀵 링크 — SVG 드로우 아이콘 적용 -->
+		<section class="quick-links-section reveal-fade">
+			<div class="inner-wrap">
+				<div class="link-grid">
 
-                    <div class="link-card" onclick="location.href='/main/introduce'">
-                        <!-- 센터소개: 교회/건물 아이콘 -->
-                        <svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
-                            <path d="M12 3v18M8 7h8M4 14l8-9 8 9M7 21v-7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7"/>
-                        </svg>
-                        <span>센터소개</span>
-                    </div>
+					<div class="link-card" onclick="location.href='/main/introduce'">
+						<!-- 센터소개: 교회/건물 아이콘 -->
+						<svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
+							<path d="M12 3v18M8 7h8M4 14l8-9 8 9M7 21v-7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7" />
+						</svg>
+						<span>센터소개</span>
+					</div>
 
-                    <div class="link-card" onclick="location.href='/main/information'">
-                        <!-- 시설안내: 빌딩 아이콘 -->
-                        <svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
-                            <path d="M4 22V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v18M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01"/>
-                        </svg>
-                        <span>시설안내</span>
-                    </div>
+					<div class="link-card" onclick="location.href='/main/information'">
+						<!-- 시설안내: 빌딩 아이콘 -->
+						<svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
+							<path
+								d="M4 22V4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v18M9 22v-4h6v4M8 6h.01M16 6h.01M8 10h.01M16 10h.01M8 14h.01M16 14h.01" />
+						</svg>
+						<span>시설안내</span>
+					</div>
 
-                    <div class="link-card" onclick="location.href='/main/program'">
-                        <!-- 프로그램: 새싹 아이콘 -->
-                        <svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
-                            <path d="M12 22v-8M12 14c-4 0-6-3-6-6 3 0 6 2 6 6zM12 14c4 0 6-3 6-6-3 0-6 2-6 6z"/>
-                        </svg>
-                        <span>프로그램</span>
-                    </div>
+					<div class="link-card" onclick="location.href='/main/program'">
+						<!-- 프로그램: 새싹 아이콘 -->
+						<svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
+							<path d="M12 22v-8M12 14c-4 0-6-3-6-6 3 0 6 2 6 6zM12 14c4 0 6-3 6-6-3 0-6 2-6 6z" />
+						</svg>
+						<span>프로그램</span>
+					</div>
 
-                    <div class="link-card" onclick="location.href='/main/rental'">
-                        <!-- 대관신청: 캘린더 아이콘 -->
-                        <svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
-                            <path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM16 2v4M8 2v4M3 10h18M9 16l2 2 4-4"/>
-                        </svg>
-                        <span>대관신청</span>
-                    </div>
+					<div class="link-card" onclick="location.href='/main/rental'">
+						<!-- 대관신청: 캘린더 아이콘 -->
+						<svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
+							<path
+								d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zM16 2v4M8 2v4M3 10h18M9 16l2 2 4-4" />
+						</svg>
+						<span>대관신청</span>
+					</div>
 
-                    <div class="link-card" onclick="location.href='/main/news'">
-                        <!-- 갤러리: 사진 아이콘 -->
-                        <svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
-                            <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM21 15l-5-5L5 21"/>
-                        </svg>
-                        <span>갤러리</span>
-                    </div>
+					<div class="link-card" onclick="location.href='/main/news'">
+						<!-- 갤러리: 사진 아이콘 -->
+						<svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
+							<path
+								d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2zM8.5 10a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zM21 15l-5-5L5 21" />
+						</svg>
+						<span>갤러리</span>
+					</div>
 
-                    <div class="link-card" onclick="location.href='/main/organization'">
-                        <!-- 단체소식: 사람들 아이콘 -->
-                        <svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                        </svg>
-                        <span>단체소식</span>
-                    </div>
+					<div class="link-card" onclick="location.href='/main/organization'">
+						<!-- 단체소식: 사람들 아이콘 -->
+						<svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
+							<path
+								d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+						</svg>
+						<span>단체소식</span>
+					</div>
 
-                </div>
-            </div>
-        </section>
+				</div>
+			</div>
+		</section>
 
-        <!-- ③ 소개 + 숫자 카운터 (v4 신규 섹션) -->
-        <section class="intro-numbers-section">
-            <div class="intro-numbers-inner">
-                <div class="intro-tagline reveal-fade">
-                    <span class="tag-label">천주교 대전교구 <br>천안지역 청소년사목 하품센터</span>
-                    <h2>청소년과 청년이 머무르고 싶은 공간,<br><em>하느님 품</em>으로 초대합니다</h2>
-                    <p>천주교 대전교구 천안지역 청소년사목 하품센터는 신앙과 문화, 쉼이 공존하는 복합 사목 공간입니다. 누구나 와서 쉬고, 배우고, 함께 성장할 수 있습니다.</p>
-                </div>
-                <div class="stat-row">
-                    <div class="stat-item reveal-up" style="transition-delay:0ms">
-                        <span class="stat-num" data-target="8">0</span><span class="stat-unit">년</span>
-                        <p class="stat-label">지역사목 운영</p>
-                    </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat-item reveal-up" style="transition-delay:120ms">
-                        <span class="stat-num" data-target="30">0</span><span class="stat-unit">+</span>
-                        <p class="stat-label">연간 프로그램</p>
-                    </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat-item reveal-up" style="transition-delay:240ms">
-                        <span class="stat-num" data-target="5">0</span><span class="stat-unit">개</span>
-                        <p class="stat-label">전용 시설</p>
-                    </div>
-                    <div class="stat-divider"></div>
-                    <div class="stat-item reveal-up" style="transition-delay:360ms">
-                        <span class="stat-num" data-target="1200">0</span><span class="stat-unit">+</span>
-                        <p class="stat-label">연간 방문 청년/청소년</p>
-                    </div>
-                </div>
-            </div>
-        </section>
+		<!-- ③ 소개 + 숫자 카운터 (v4 신규 섹션) -->
+		<section class="intro-numbers-section">
+			<div class="intro-numbers-inner">
+				<div class="intro-tagline reveal-fade">
+					<span class="tag-label">천주교 대전교구 <br>천안지역 청소년사목 하품센터</span>
+					<h2>청소년과 청년이 머무르고 싶은 공간,<br><em>하느님 품</em>으로 초대합니다</h2>
+					<p>천주교 대전교구 천안지역 청소년사목 하품센터는 신앙과 문화, 쉼이 공존하는 복합 사목 공간입니다. 누구나 와서 쉬고, 배우고, 함께 성장할 수 있습니다.</p>
+				</div>
+				<div class="stat-row">
+					<div class="stat-item reveal-up" style="transition-delay:0ms">
+						<span class="stat-num" data-target="8">0</span><span class="stat-unit">년</span>
+						<p class="stat-label">지역사목 운영</p>
+					</div>
+					<div class="stat-divider"></div>
+					<div class="stat-item reveal-up" style="transition-delay:120ms">
+						<span class="stat-num" data-target="30">0</span><span class="stat-unit">+</span>
+						<p class="stat-label">연간 프로그램</p>
+					</div>
+					<div class="stat-divider"></div>
+					<div class="stat-item reveal-up" style="transition-delay:240ms">
+						<span class="stat-num" data-target="5">0</span><span class="stat-unit">개</span>
+						<p class="stat-label">전용 시설</p>
+					</div>
+					<div class="stat-divider"></div>
+					<div class="stat-item reveal-up" style="transition-delay:360ms">
+						<span class="stat-num" data-target="1200">0</span><span class="stat-unit">+</span>
+						<p class="stat-label">연간 방문 청년/청소년</p>
+					</div>
+				</div>
+			</div>
+		</section>
 
-        <!-- ④ 프로그램 + 공지사항 (기존 로직 100% 유지) -->
-        <section class="board-section">
-            <div class="inner-wrap board-grid">
+		<!-- ④ 프로그램 + 공지사항 (기존 로직 100% 유지) -->
+		<section class="board-section">
+			<div class="inner-wrap board-grid">
 
-                <div class="program-wrapper slide-in-left">
-                    <div class="section-header">
-                        <h3>진행중인 프로그램</h3>
-                        <a href="/main/program" class="more-btn">더보기 <i class="fa-solid fa-plus"></i></a>
-                    </div>
-                    <div class="program-slider-container">
-                        <button class="slider-btn prev" id="prog-prev" aria-label="이전 프로그램">
-                            <i class="fa-solid fa-angle-left"></i>
-                        </button>
-                        <div class="program-track" id="programTrack">
-                            <div class="program-card" th:each="program : ${programs}">
-                                <img th:src="${program.thumbnailSrc}"
-                                     th:attr="data-program-id=${program.id},
-                                              style='view-transition-name: program-thumbnail-' + ${program.id}"
-                                     alt="프로그램 썸네일" />
-                            </div>
-                        </div>
-                        <button class="slider-btn next" id="prog-next" aria-label="다음 프로그램">
-                            <i class="fa-solid fa-angle-right"></i>
-                        </button>
-                    </div>
-                    <p class="swipe-hint mobile-only">← 스와이프하여 더 보기 →</p>
-                </div>
+				<div class="program-wrapper slide-in-left">
+					<div class="section-header">
+						<h3>진행중인 프로그램</h3>
+						<a href="/main/program" class="more-btn">더보기 <i class="fa-solid fa-plus"></i></a>
+					</div>
+					<div class="program-slider-container">
+						<button class="slider-btn prev" id="prog-prev" aria-label="이전 프로그램">
+							<i class="fa-solid fa-angle-left"></i>
+						</button>
+						<div class="program-track" id="programTrack">
+							<div class="program-card" th:each="program : ${programs}">
+								<a th:href="@{'/main/program/detail/' + ${program.id}}">
+									<img th:src="${program.thumbnailSrc}" th:attr="data-program-id=${program.id},
+                          style='view-transition-name: program-thumbnail-' + ${program.id}" alt="프로그램 썸네일" />
+								</a>
+							</div>
+						</div>
+						<button class="slider-btn next" id="prog-next" aria-label="다음 프로그램">
+							<i class="fa-solid fa-angle-right"></i>
+						</button>
+					</div>
+					<p class="swipe-hint mobile-only">← 스와이프하여 더 보기 →</p>
+				</div>
 
-                <div class="notice-wrapper slide-in-right">
-                    <div class="section-header">
-                        <h3>공지사항</h3>
-                        <div class="admin-controls" th:if="${user != null and user.email == 'admin'}">
-                            <button id="edit-order-btn" type="button">
-                                <i class="fa-solid fa-pen-to-square"></i> 수정
-                            </button>
-                        </div>
-                    </div>
+				<div class="notice-wrapper slide-in-right">
+					<div class="section-header">
+						<h3>공지사항</h3>
+						<div class="admin-controls" th:if="${user != null and user.email == 'admin'}">
+							<button id="edit-order-btn" type="button">
+								<i class="fa-solid fa-pen-to-square"></i> 수정
+							</button>
+						</div>
+					</div>
 
-                    <div class="notice-list-container">
-                        <div th:if="${#lists.isEmpty(notifications)}" class="empty-msg">
-                            등록된 공지사항이 없습니다.
-                        </div>
-                        <ul class="notice-list" th:if="${!#lists.isEmpty(notifications)}">
-                            <li th:each="notif, iterStat : ${notifications}"
-                                th:if="${iterStat.index < 5}"
-                                class="notice-item stagger-child">
-                                <a th:href="@{/main/notification/detail/{id}(id=${notif.id})}">
-                                    <div class="notice-badge" th:if="${notif.isTop=='1'}">중요</div>
-                                    <div class="notice-title"
-                                         th:classappend="${notif.isTop=='1'} ? 'top-bold' : ''"
-                                         th:text="${notif.title}">공지제목</div>
-                                    <div class="notice-date"
-                                         th:text="${#temporals.format(notif.createOn, 'yyyy-MM-dd')}">2026-06-17</div>
-                                </a>
-                                <div class="admin-actions" th:if="${user != null and user.email=='admin'}">
-                                    <button type="button" class="toggle-top-btn"
-                                            th:attr="data-id=${notif.id}, data-istro=${notif.isTop}">
-                                        <i class="fa-solid"
-                                           th:classappend="${notif.isTop=='1'} ? ' fa-arrow-turn-down' : ' fa-arrow-turn-up'"></i>
-                                    </button>
-                                    <input type="number" class="order-input"
-                                           th:if="${notif.isTop=='1'}"
-                                           name="orderNum"
-                                           th:value="${notif.orderNum}"
-                                           min="1"
-                                           th:attr="data-id=${notif.id}" />
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
+					<div class="notice-list-container">
+						<div th:if="${#lists.isEmpty(notifications)}" class="empty-msg">
+							등록된 공지사항이 없습니다.
+						</div>
+						<ul class="notice-list" th:if="${!#lists.isEmpty(notifications)}">
+							<li th:each="notif, iterStat : ${notifications}" th:if="${iterStat.index < 5}"
+								class="notice-item stagger-child">
+								<a th:href="@{/main/notification/detail/{id}(id=${notif.id})}">
+									<div class="notice-badge" th:if="${notif.isTop=='1'}">중요</div>
+									<div class="notice-title" th:classappend="${notif.isTop=='1'} ? 'top-bold' : ''"
+										th:text="${notif.title}">공지제목</div>
+									<div class="notice-date"
+										th:text="${#temporals.format(notif.createOn, 'yyyy-MM-dd')}">2026-06-17</div>
+								</a>
+								<div class="admin-actions" th:if="${user != null and user.email=='admin'}">
+									<button type="button" class="toggle-top-btn"
+										th:attr="data-id=${notif.id}, data-istro=${notif.isTop}">
+										<i class="fa-solid"
+											th:classappend="${notif.isTop=='1'} ? ' fa-arrow-turn-down' : ' fa-arrow-turn-up'"></i>
+									</button>
+									<input type="number" class="order-input" th:if="${notif.isTop=='1'}" name="orderNum"
+										th:value="${notif.orderNum}" min="1" th:attr="data-id=${notif.id}" />
+								</div>
+							</li>
+						</ul>
+					</div>
+				</div>
 
-            </div>
-        </section>
+			</div>
+		</section>
 
-        <!-- ⑤ 특징 카드 (v4 신규 섹션) -->
-        <section class="features-section">
-            <div class="inner-wrap">
-                <div class="section-header reveal-fade">
-                    <h3>하품센터가 특별한 이유</h3>
-                </div>
-                <div class="features-track">
+		<!-- ⑤ 특징 카드 (v4 신규 섹션) -->
+		<section class="features-section">
+			<div class="inner-wrap">
+				<div class="section-header reveal-fade">
+					<h3>하품센터가 특별한 이유</h3>
+				</div>
+				<div class="features-track">
 
-                    <article class="feature-card reveal-card" style="transition-delay:0ms">
-                        <div class="fc-icon-wrap">
-                            <svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
-                                <path d="M12 3v18M8 7h8M4 14l8-9 8 9M7 21v-7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7"/>
-                            </svg>
-                        </div>
-                        <h4>신앙 · 영성</h4>
-                        <p>미사, 묵상, 피정, 성경 모임 등 깊이 있는 신앙 프로그램을 통해 하느님과의 관계를 더욱 가깝게 합니다.</p>
-                        <a href="/main/program" class="fc-link">프로그램 보기 <i class="fa-solid fa-arrow-right"></i></a>
-                    </article>
+					<article class="feature-card reveal-card" style="transition-delay:0ms">
+						<div class="fc-icon-wrap">
+							<svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
+								<path d="M12 3v18M8 7h8M4 14l8-9 8 9M7 21v-7a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v7" />
+							</svg>
+						</div>
+						<h4>신앙 · 영성</h4>
+						<p>미사, 묵상, 피정, 성경 모임 등 깊이 있는 신앙 프로그램을 통해 하느님과의 관계를 더욱 가깝게 합니다.</p>
+						<a href="/main/program" class="fc-link">프로그램 보기 <i class="fa-solid fa-arrow-right"></i></a>
+					</article>
 
-                    <article class="feature-card reveal-card" style="transition-delay:150ms">
-                        <div class="fc-icon-wrap">
-                            <svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
-                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>
-                            </svg>
-                        </div>
-                        <h4>공동체 활동</h4>
-                        <p>가톨릭대학생협의회, 생활성가 찬양팀 '비아또르', 천안아산 가톨릭 소년소녀합창단, 하품FC(축구팀) 등 청년·청소년들이 모여 활발히 교류합니다.</p>
-                        <a href="/main/organization" class="fc-link">단체소식 보기 <i class="fa-solid fa-arrow-right"></i></a>
-                    </article>
+					<article class="feature-card reveal-card" style="transition-delay:150ms">
+						<div class="fc-icon-wrap">
+							<svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
+								<path
+									d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+							</svg>
+						</div>
+						<h4>공동체 활동</h4>
+						<p>가톨릭대학생협의회, 생활성가 찬양팀 '비아또르', 천안아산 가톨릭 소년소녀합창단, 하품FC(축구팀) 등 청년·청소년들이 모여 활발히 교류합니다.</p>
+						<a href="/main/organization" class="fc-link">단체소식 보기 <i class="fa-solid fa-arrow-right"></i></a>
+					</article>
 
-                    <article class="feature-card reveal-card" style="transition-delay:300ms">
-                        <div class="fc-icon-wrap">
-                            <svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
-                                <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
-                            </svg>
-                        </div>
-                        <h4>공동체 · 나눔</h4>
-                        <p>봉사, 캠프, 모임 공간 대관을 통해 지역 사회와 함께 성장하고 나누는 공동체 문화를 만들어갑니다.</p>
-                        <a href="/main/rental" class="fc-link">대관 신청 <i class="fa-solid fa-arrow-right"></i></a>
-                    </article>
+					<article class="feature-card reveal-card" style="transition-delay:300ms">
+						<div class="fc-icon-wrap">
+							<svg class="draw-icon" viewBox="0 0 24 24" width="32" height="32">
+								<path
+									d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+							</svg>
+						</div>
+						<h4>공간 · 나눔</h4>
+						<p>봉사, 캠프, 모임 공간 대관을 통해 지역 사회와 함께 성장하고 나누는 공동체 문화를 만들어갑니다.</p>
+						<a href="/main/rental" class="fc-link">대관 신청 <i class="fa-solid fa-arrow-right"></i></a>
+					</article>
 
-                </div>
-            </div>
-        </section>
+				</div>
+			</div>
+		</section>
 
-        <!-- ⑥ 갤러리 (기존 Thymeleaf 로직 유지, UI 업그레이드) -->
-        <section class="gallery-section reveal-fade">
-            <div class="inner-wrap">
-                <div class="section-header">
-                    <h3>갤러리</h3>
-                    <a href="/main/news" class="more-btn">더보기 <i class="fa-solid fa-plus"></i></a>
-                </div>
-                <div class="gallery-grid">
-                    <div class="gallery-item stagger-child" th:each="n, iterStat : ${news}" th:if="${iterStat.index < 8}">
-                        <a th:href="@{/main/news/detail/{id}(id=${n.id})}">
-                            <img th:src="${n.thumbnailSrc}" alt="gallery image" />
-                            <div class="gallery-overlay">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
+		<!-- ⑥ 갤러리 (기존 Thymeleaf 로직 유지, UI 업그레이드) -->
+		<section class="gallery-section reveal-fade">
+			<div class="inner-wrap">
+				<div class="section-header">
+					<h3>갤러리</h3>
+					<a href="/main/news" class="more-btn">더보기 <i class="fa-solid fa-plus"></i></a>
+				</div>
+				<div class="gallery-grid">
+					<div class="gallery-item stagger-child" th:each="n, iterStat : ${news}"
+						th:if="${iterStat.index < 8}">
+						<a th:href="@{/main/news/detail/{id}(id=${n.id})}">
+							<img th:src="${n.thumbnailSrc}" alt="gallery image" />
+							<div class="gallery-overlay">
+								<i class="fa-solid fa-magnifying-glass"></i>
+							</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
 
-        <!-- ⑦ 위치/오시는 길 배너 (v4 신규 섹션, main4.jpg 활용) -->
-        <section class="location-banner" id="locationBanner">
-            <div class="location-overlay"></div>
-            <div class="location-content reveal-fade">
-                <span class="tag-label light">오시는 길</span>
-                <h2>천안에서 만나는<br><em>천주교 대전교구 <br>천안지역 청소년사목 하품센터</em></h2>
-                <p class="location-addr">
-                    <i class="fa-solid fa-location-dot"></i>
-                    충청남도 천안시 서북구 월봉5길 23(하품센터)
-                </p>
-                <div class="location-hours">
-                    <div class="hour-item">
-                        <span class="hour-day">평일</span>
-                        <span class="hour-time">09:00 – 18:00</span>
-                    </div>
-                    <div class="hour-sep"></div>
-                    <div class="hour-item">
-                        <span class="hour-day">토요일</span>
-                        <span class="hour-time">10:00 – 16:00</span>
-                    </div>
-                    <div class="hour-sep"></div>
-                    <div class="hour-item">
-                        <span class="hour-day">일 · 공휴일</span>
-                        <span class="hour-time">휴무</span>
-                    </div>
-                </div>
-                <a href="/main/introduce?tab=오시는길" class="loc-cta">센터 더 알아보기 <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-        </section>
+		<!-- ⑦ 위치/오시는 길 배너 (v4 신규 섹션, main4.jpg 활용) -->
+		<section class="location-banner" id="locationBanner">
+			<div class="location-overlay"></div>
+			<div class="location-content reveal-fade">
+				<span class="tag-label light">오시는 길</span>
+				<h2>천안에서 만나는<br><em>천주교 대전교구 <br>천안지역 청소년사목 하품센터</em></h2>
+				<p class="location-addr">
+					<i class="fa-solid fa-location-dot"></i>
+					충청남도 천안시 서북구 월봉5길 23(하품센터)
+				</p>
+				<div class="location-hours">
+					<div class="hour-item">
+						<span class="hour-day">평일</span>
+						<span class="hour-time">09:00 – 18:00</span>
+					</div>
+					<div class="hour-sep"></div>
+					<div class="hour-item">
+						<span class="hour-day">토요일</span>
+						<span class="hour-time">10:00 – 16:00</span>
+					</div>
+					<div class="hour-sep"></div>
+					<div class="hour-item">
+						<span class="hour-day">일 · 공휴일</span>
+						<span class="hour-time">휴무</span>
+					</div>
+				</div>
+				<a href="/main/introduce?tab=오시는길" class="loc-cta">센터 더 알아보기 <i class="fa-solid fa-arrow-right"></i></a>
+			</div>
+		</section>
 
-        <!-- ⑧ 팝업 모달 (기존 로직 100% 유지) -->
-        <div th:each="popup, iterStat : ${popupProgram}"
-             th:if="${popup.thumbnailSrc != null}"
-             th:id="'popup-modal-' + ${popup.id}"
-             class="popup-modal modern-popup"
-             style="display: none;">
-            <div class="popup-content">
-                <a th:href="${popup.id == 76} ? @{/auth/signin} : @{/main/program/detail/{id}(id=${popup.id})}">
-                    <img th:src="${popup.thumbnailSrc}" alt="팝업 이미지" class="popup-image" />
-                </a>
-                <div class="popup-footer">
-                    <label class="custom-checkbox">
-                        <input type="checkbox" th:id="'dont-show-' + ${popup.id}" />
-                        <span class="checkmark"></span>
-                        오늘 하루 보지 않기
-                    </label>
-                    <button th:id="'close-popup-btn-' + ${popup.id}" class="btn-close" th:attr="data-id=${popup.id}">닫기</button>
-                </div>
-            </div>
-        </div>
+		<!-- ⑧ 팝업 모달 (기존 로직 100% 유지) -->
+		<div th:each="popup, iterStat : ${popupProgram}" th:if="${popup.thumbnailSrc != null}"
+			th:id="'popup-modal-' + ${popup.id}" class="popup-modal modern-popup" style="display: none;">
+			<div class="popup-content">
+				<a th:href="${popup.id == 76} ? @{/auth/signin} : @{/main/program/detail/{id}(id=${popup.id})}">
+					<img th:src="${popup.thumbnailSrc}" alt="팝업 이미지" class="popup-image" />
+				</a>
+				<div class="popup-footer">
+					<label class="custom-checkbox">
+						<input type="checkbox" th:id="'dont-show-' + ${popup.id}" />
+						<span class="checkmark"></span>
+						오늘 하루 보지 않기
+					</label>
+					<button th:id="'close-popup-btn-' + ${popup.id}" class="btn-close"
+						th:attr="data-id=${popup.id}">닫기</button>
+				</div>
+			</div>
+		</div>
 
-    </main>
+	</main>
 
-    <div th:replace="~{main/footer :: footer}"></div>
+	<div th:replace="~{main/footer :: footer}"></div>
 </th:block>
 
 <th:block layout:fragment="scripts">
-    <script th:src="@{/js/header.js}"></script>
-    <script th:src="@{/js/main/main.js}"></script>
+	<script th:src="@{/js/header.js}"></script>
+	<script th:src="@{/js/main/main.js}"></script>
 </th:block>
+
 </html>

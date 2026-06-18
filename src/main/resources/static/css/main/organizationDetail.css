@@ -400,21 +400,58 @@ body {
     gap: 20px;
   }
 
+  /* ── 📦 모바일 배너: 높이 고정을 풀고, 아래로 늘어나도록 변경 ── */
   .program-intro {
     flex-direction: column;
     padding: 20px;
-    height: 420px !important;
-    min-height: 420px !important;
-    max-height: 420px !important;
-    gap: 16px;
+    height: auto !important;         /* 고정 높이 완전히 해제 */
+    min-height: unset !important;    /* 고정 높이 완전히 해제 */
+    max-height: unset !important;    /* 고정 높이 완전히 해제 */
+    gap: 20px;
     margin-bottom: 40px;
   }
 
+  /* ── 🖼️ 이미지: 원본 비율 유지 설정 ── */
   .pi-img-wrapper {
-    flex: 0 0 180px;
+    flex: 0 0 auto;                  /* 높이 고정 해제 */
     width: 100%;
+    height: auto;
   }
 
+  .pi-img {
+    width: 100%;
+    height: auto;                    /* 가로 너비에 맞춰 원본 비율대로 세로가 자동 조절됨 */
+    object-fit: contain;             /* 이미지 찌그러짐 방지 및 원본 비율 보존 */
+    display: block;
+  }
+
+  /* ── 📝 소개 글 영역: 스크롤 없이 정상 출력 ── */
+  .pi-ex-box {
+    flex: unset;
+    width: 100%;
+    height: auto !important;         /* 고정 계산식 해제 */
+    display: block;
+  }
+
+  .pi-badge {
+    margin-bottom: 10px;
+  }
+
+  /* 감싸고 있던 내부 세로 스크롤 틀 해제 */
+  .pi-ex-scroll {
+    overflow-y: visible !important;   /* 스크롤바를 없애고 전체 노출 */
+    height: auto;
+    padding-right: 0;
+  }
+
+  .pi-ex {
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: #555555;
+    padding-bottom: 0;
+  }
+
+  /* ── 리스트 영역 ── */
   .container {
     padding-top: 30px;
   }
