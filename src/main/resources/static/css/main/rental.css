@@ -624,4 +624,16 @@ body {
 	#room-content>div {
 		overflow: visible;
 	}
+	.container {
+/*	max-width: 1250px;*/
+/*	margin: 0 auto;*/
+	padding: 0 4% 120px 10%;
+	box-sizing: border-box;
+}
+.info-title {
+	font-size: 20px;
+	font-weight: 700;
+	margin: 0;
+	color: #111111;
+}
 }

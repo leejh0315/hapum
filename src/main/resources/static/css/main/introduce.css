@@ -371,13 +371,13 @@ body {
   }
 
   .info-prefix {
-    font-size: 11px;
+    font-size: 16px;
     letter-spacing: 1.5px;
     padding-right: 12px;
   }
 
   .info-title {
-    font-size: 17px;
+    font-size: 20px;
   }
 
   /* 탭 메뉴: 좌측 정렬 + 작은 폰트 */
