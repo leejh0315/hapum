@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
-
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{main/layout/mainLayout}">
 <head>
+	<th:block layout:fragment="head-content">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="/img/logohp.png">
@@ -15,12 +15,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    </th:block>
 </head>
 
 <body>
     <!-- 헤더 -->
     <div th:replace="~{main/header :: headFrag(${user})}"></div>
-
     <!-- ── 상단 고정 타이틀 + 탭 메뉴 ── -->
     <div class="fixed-header-wrapper">
         <div class="fixed-header-inner">

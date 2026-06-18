@@ -10,7 +10,7 @@ body {
 }
 
 /* =========================================
-   상단 고정 헤더 래퍼 — program.css와 동일 구조
+   상단 고정 헤더 래퍼
 ========================================= */
 .fixed-header-wrapper {
     position: sticky;
@@ -52,9 +52,11 @@ body {
 }
 
 /* =========================================
-   사이드바 탭 메뉴 — program.css 메뉴 버튼 스타일 기반
+   마이페이지 탭 메뉴
+   .fixed-header-wrapper 안으로 스코프 한정 →
+   header fragment의 .sidebar-nav(모바일 사이드바 ul)와 충돌 방지
 ========================================= */
-.sidebar-nav {
+.fixed-header-wrapper .sidebar-nav {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -65,13 +67,16 @@ body {
     white-space: nowrap;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    /* header.css 모바일 방어 코드 !important 무력화 */
+    list-style: none;
+    margin: 0;
 }
 
-.sidebar-nav::-webkit-scrollbar {
+.fixed-header-wrapper .sidebar-nav::-webkit-scrollbar {
     display: none;
 }
 
-.sidebar-nav .menu-button {
+.fixed-header-wrapper .sidebar-nav .menu-button {
     background: none;
     border: none;
     padding: 4px 0;
@@ -86,11 +91,11 @@ body {
     display: inline-block;
 }
 
-.sidebar-nav .menu-button:hover {
+.fixed-header-wrapper .sidebar-nav .menu-button:hover {
     color: #666666;
 }
 
-.sidebar-nav .menu-button.active {
+.fixed-header-wrapper .sidebar-nav .menu-button.active {
     color: #000000;
     font-weight: 700;
     border-bottom: 3px solid #000000;
@@ -123,7 +128,7 @@ body {
 }
 
 /* =========================================
-   마이페이지 카드 그리드 — program-list와 동일 방식
+   마이페이지 카드 그리드
 ========================================= */
 .mypage-grid {
     display: grid;
@@ -191,7 +196,7 @@ body {
 }
 
 /* =========================================
-   유저 정보 카드 (내 정보 수정 등 단일 폼 영역)
+   유저 정보 폼 영역
 ========================================= */
 .mypage-form-section {
     max-width: 640px;
@@ -251,7 +256,7 @@ body {
 }
 
 /* =========================================
-   목록형 테이블 (대관 예약 / 프로그램 신청 내역)
+   목록형 테이블
 ========================================= */
 .mypage-table-wrap {
     width: 100%;
@@ -311,7 +316,6 @@ body {
     color: #999999;
 }
 
-/* 빈 목록 안내 */
 .mypage-empty {
     text-align: center;
     padding: 80px 0;
@@ -339,11 +343,11 @@ body {
         font-size: 20px;
     }
 
-    .sidebar-nav {
+    .fixed-header-wrapper .sidebar-nav {
         gap: 24px;
     }
 
-    .sidebar-nav .menu-button {
+    .fixed-header-wrapper .sidebar-nav .menu-button {
         font-size: 15px;
     }
 

@@ -52,9 +52,9 @@ body {
 }
 
 /* =========================================
-   탭 메뉴
+   탭 메뉴 — .fixed-header-wrapper 스코프 한정
 ========================================= */
-.sidebar-nav {
+.fixed-header-wrapper .sidebar-nav {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -67,9 +67,9 @@ body {
     scrollbar-width: none;
 }
 
-.sidebar-nav::-webkit-scrollbar { display: none; }
+.fixed-header-wrapper .sidebar-nav::-webkit-scrollbar { display: none; }
 
-.sidebar-nav .menu-button {
+.fixed-header-wrapper .sidebar-nav .menu-button {
     background: none;
     border: none;
     padding: 4px 0;
@@ -84,9 +84,9 @@ body {
     display: inline-block;
 }
 
-.sidebar-nav .menu-button:hover { color: #666666; }
+.fixed-header-wrapper .sidebar-nav .menu-button:hover { color: #666666; }
 
-.sidebar-nav .menu-button.active {
+.fixed-header-wrapper .sidebar-nav .menu-button.active {
     color: #000000;
     font-weight: 700;
     border-bottom: 3px solid #000000;
@@ -216,11 +216,10 @@ body {
 }
 
 /* =========================================
-   반응형 (모바일)
+   반응형
 ========================================= */
 @media screen and (max-width: 768px) {
 
-    /* 상단 헤더 */
     .fixed-header-inner {
         padding: 16px 16px 0 16px;
     }
@@ -240,27 +239,24 @@ body {
         font-size: 18px;
     }
 
-    /* 탭 메뉴: PC 스타일 그대로 유지하되 크기만 조정 */
-    .sidebar-nav {
+    .fixed-header-wrapper .sidebar-nav {
         gap: 28px;
         padding: 8px 0 4px 0;
         -webkit-overflow-scrolling: touch;
     }
 
-    .sidebar-nav .menu-button {
+    .fixed-header-wrapper .sidebar-nav .menu-button {
         font-size: 15px;
         padding: 4px 0;
     }
 
-    /* active 스타일은 PC와 동일하게 유지 */
-    .sidebar-nav .menu-button.active {
+    .fixed-header-wrapper .sidebar-nav .menu-button.active {
         color: #000000;
         font-weight: 700;
         border-bottom: 3px solid #000000;
         padding-bottom: 4px;
     }
 
-    /* 본문 */
     .container {
         padding: 24px 16px 60px 16px;
     }
@@ -269,12 +265,10 @@ body {
         max-width: 100%;
     }
 
-    /* iOS 자동 줌 방지: 16px 미만이면 포커스 시 자동 줌됨 */
     .form-row input {
         font-size: 16px;
     }
 
-    /* 하단 버튼 */
     .btn-primary {
         width: 100%;
         text-align: center;

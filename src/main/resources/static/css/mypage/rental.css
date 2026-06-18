@@ -1,5 +1,7 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
 /* =========================================
-   기본
+   1. 기본 레이아웃 및 폰트
 ========================================= */
 body {
     margin: 0;
@@ -10,7 +12,7 @@ body {
 }
 
 /* =========================================
-   상단 고정 헤더
+   2. 상단 고정 헤더
 ========================================= */
 .fixed-header-wrapper {
     position: sticky;
@@ -52,9 +54,9 @@ body {
 }
 
 /* =========================================
-   탭 메뉴
+   3. 탭 메뉴 — .fixed-header-wrapper 스코프 한정
 ========================================= */
-.sidebar-nav {
+.fixed-header-wrapper .sidebar-nav {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -67,9 +69,9 @@ body {
     scrollbar-width: none;
 }
 
-.sidebar-nav::-webkit-scrollbar { display: none; }
+.fixed-header-wrapper .sidebar-nav::-webkit-scrollbar { display: none; }
 
-.sidebar-nav .menu-button {
+.fixed-header-wrapper .sidebar-nav .menu-button {
     background: none;
     border: none;
     padding: 4px 0;
@@ -84,9 +86,9 @@ body {
     display: inline-block;
 }
 
-.sidebar-nav .menu-button:hover { color: #666666; }
+.fixed-header-wrapper .sidebar-nav .menu-button:hover { color: #666666; }
 
-.sidebar-nav .menu-button.active {
+.fixed-header-wrapper .sidebar-nav .menu-button.active {
     color: #000000;
     font-weight: 700;
     border-bottom: 3px solid #000000;
@@ -94,7 +96,7 @@ body {
 }
 
 /* =========================================
-   본문 컨테이너
+   4. 본문 컨테이너
 ========================================= */
 .container {
     max-width: 1250px;
@@ -106,9 +108,6 @@ body {
     width: 100%;
 }
 
-/* =========================================
-   빈 목록
-========================================= */
 .mypage-empty {
     text-align: center;
     padding: 100px 0;
@@ -117,7 +116,7 @@ body {
 }
 
 /* =========================================
-   테이블
+   5. 테이블
 ========================================= */
 .mypage-table-wrap {
     width: 100%;
@@ -157,7 +156,9 @@ body {
     background-color: #FAFAFA;
 }
 
-/* 승인 상태 배지 */
+/* =========================================
+   6. 컴포넌트
+========================================= */
 .status-badge {
     display: inline-block;
     padding: 3px 10px;
@@ -176,7 +177,6 @@ body {
     color: #777777;
 }
 
-/* 취소 버튼 */
 .btn-cancel {
     padding: 5px 14px;
     background-color: #FFFFFF;
@@ -198,16 +198,10 @@ body {
 }
 
 /* =========================================
-   반응형 (모바일)
-   핵심 전략:
-   - .container 좌우 패딩을 0으로 제거
-   - .mypage-table-wrap 을 100vw 고정 + overflow-x: scroll
-   - .mypage-table 는 width: auto + min-width 고정
-     → width:100% 가 살아있으면 부모 너비에 눌려 짤리므로 반드시 auto
+   7. 모바일 반응형
 ========================================= */
 @media screen and (max-width: 768px) {
 
-    /* 상단 헤더 */
     .fixed-header-inner {
         padding: 16px 16px 0 16px;
     }
@@ -227,39 +221,32 @@ body {
         font-size: 18px;
     }
 
-    /* 탭: PC 스타일 유지, 크기만 축소 */
-    .sidebar-nav {
+    .fixed-header-wrapper .sidebar-nav {
         gap: 28px;
         padding: 8px 0 4px 0;
         -webkit-overflow-scrolling: touch;
     }
 
-    .sidebar-nav .menu-button {
+    .fixed-header-wrapper .sidebar-nav .menu-button {
         font-size: 15px;
         padding: 4px 0;
     }
 
-    .sidebar-nav .menu-button.active {
+    .fixed-header-wrapper .sidebar-nav .menu-button.active {
         color: #000000;
         font-weight: 700;
         border-bottom: 3px solid #000000;
         padding-bottom: 4px;
     }
 
-    /* 컨테이너: 좌우 패딩 제거 */
     .container {
         padding: 20px 0 60px 0;
     }
 
-    /* 테이블 래퍼:
-       100vw = 뷰포트 전체 너비 (부모의 padding/width 영향 완전 차단)
-       overflow-x: scroll 로 가로 스크롤 활성화
-       padding으로 양쪽 16px 여백 확보
-    */
     .mypage-table-wrap {
         width: 100vw;
         box-sizing: border-box;
-        padding: 0 16px 0 16px;
+        padding: 0 16px;
         overflow-x: scroll;
         -webkit-overflow-scrolling: touch;
         overscroll-behavior-x: contain;
@@ -271,10 +258,6 @@ body {
         display: none;
     }
 
-    /* 테이블:
-       width: auto → min-width 기준으로 자연스럽게 확장
-       width: 100% 를 유지하면 부모(래퍼) 너비에 눌려 열이 짤림
-    */
     .mypage-table {
         width: auto;
         min-width: 640px;
@@ -282,11 +265,10 @@ body {
 
     .mypage-table th,
     .mypage-table td {
-        padding: 10px 10px;
+        padding: 10px;
         font-size: 12px;
     }
 
-    /* 빈 목록 */
     .mypage-empty {
         padding: 60px 16px;
         font-size: 14px;

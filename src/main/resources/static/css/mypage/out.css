@@ -12,7 +12,7 @@ body {
 }
 
 /* =========================================
-   2. 상단 고정 헤더 (마이페이지 공통 탭 메뉴)
+   2. 상단 고정 헤더
 ========================================= */
 .fixed-header-wrapper {
     position: sticky;
@@ -53,8 +53,11 @@ body {
     color: #111111;
 }
 
-/* 탭 메뉴 가로 네비게이션 */
-.sidebar-nav {
+/* =========================================
+   탭 메뉴 — .fixed-header-wrapper 스코프 한정
+   (header.css의 .sidebar-nav 모바일 사이드바 ul과 충돌 방지)
+========================================= */
+.fixed-header-wrapper .sidebar-nav {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -67,9 +70,9 @@ body {
     scrollbar-width: none;
 }
 
-.sidebar-nav::-webkit-scrollbar { display: none; }
+.fixed-header-wrapper .sidebar-nav::-webkit-scrollbar { display: none; }
 
-.sidebar-nav .menu-button {
+.fixed-header-wrapper .sidebar-nav .menu-button {
     background: none;
     border: none;
     padding: 4px 0;
@@ -84,9 +87,9 @@ body {
     display: inline-block;
 }
 
-.sidebar-nav .menu-button:hover { color: #666666; }
+.fixed-header-wrapper .sidebar-nav .menu-button:hover { color: #666666; }
 
-.sidebar-nav .menu-button.active {
+.fixed-header-wrapper .sidebar-nav .menu-button.active {
     color: #000000;
     font-weight: 700;
     border-bottom: 3px solid #000000;
@@ -152,7 +155,7 @@ body {
 }
 
 /* =========================================
-   4. 탈퇴 버튼 (Square Style)
+   4. 탈퇴 버튼
 ========================================= */
 .btn-delete {
     width: 100%;
@@ -174,14 +177,16 @@ body {
 }
 
 /* =========================================
-   5. 반응형 모바일 대응
+   5. 반응형
 ========================================= */
 @media screen and (max-width: 768px) {
     .fixed-header-inner { padding-top: 20px; }
+
     .info-title { font-size: 20px; }
-    .sidebar-nav { gap: 24px; }
-    .sidebar-nav .menu-button { font-size: 15px; }
-    
+
+    .fixed-header-wrapper .sidebar-nav { gap: 24px; }
+    .fixed-header-wrapper .sidebar-nav .menu-button { font-size: 15px; }
+
     .container {
         padding: 40px 5% 80px 5%;
     }
@@ -189,11 +194,11 @@ body {
     .warning-box {
         padding: 40px 20px;
     }
-    
+
     .warning-box h3 {
         font-size: 20px;
     }
-    
+
     .warning-box p {
         font-size: 14px;
     }

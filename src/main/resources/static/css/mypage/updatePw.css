@@ -4,199 +4,261 @@
    1. 기본 레이아웃
 ========================================= */
 body {
-    margin: 0;
-    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: #FFFFFF;
-    color: #111111;
-    -webkit-font-smoothing: antialiased;
+	margin: 0;
+	font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+	background-color: #FFFFFF;
+	color: #111111;
+	-webkit-font-smoothing: antialiased;
 }
 
 /* =========================================
    2. 상단 고정 헤더 (탭 메뉴 포함)
 ========================================= */
 .fixed-header-wrapper {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid #EAEAEA;
+	position: sticky;
+	top: 0;
+	z-index: 100;
+	width: 100%;
+	background-color: rgba(255, 255, 255, 0.98);
+	backdrop-filter: blur(10px);
+	border-bottom: 1px solid #EAEAEA;
 }
 
 .fixed-header-inner {
-    max-width: 1250px;
-    margin: 0 auto;
-    padding: 40px 4% 0 4%;
+	max-width: 1250px;
+	margin: 0 auto;
+	padding: 40px 4% 0 4%;
 }
 
 .info-top-bar {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding-bottom: 15px;
+	display: flex;
+	align-items: center;
+	gap: 20px;
+	padding-bottom: 15px;
 }
 
 .info-prefix {
-    font-size: 16px;
-    font-weight: 900;
-    color: #111111;
-    letter-spacing: 2px;
-    padding-right: 20px;
-    border-right: 1px solid #DDDDDD;
+	font-size: 16px;
+	font-weight: 900;
+	color: #111111;
+	letter-spacing: 2px;
+	padding-right: 20px;
+	border-right: 1px solid #DDDDDD;
 }
 
 .info-title {
-    font-size: 24px;
-    font-weight: 700;
-    margin: 0;
-    color: #111111;
+	font-size: 24px;
+	font-weight: 700;
+	margin: 0;
+	color: #111111;
 }
 
 /* =========================================
-   3. 탭 메뉴 (가로 네비게이션)
+   3. 탭 메뉴 (가로 네비게이션) — .fixed-header-wrapper 스코프 한정
 ========================================= */
-.sidebar-nav {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 36px;
-    padding: 10px 0 4px 0;
-    border-bottom: 1px solid #EAEAEA;
-    overflow-x: auto;
-    white-space: nowrap;
-    -ms-overflow-style: none;
-    scrollbar-width: none;
+.fixed-header-wrapper .sidebar-nav {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 36px;
+	padding: 10px 0 4px 0;
+	border-bottom: 1px solid #EAEAEA;
+	overflow-x: auto;
+	white-space: nowrap;
+	-ms-overflow-style: none;
+	scrollbar-width: none;
 }
 
-.sidebar-nav::-webkit-scrollbar { display: none; }
-
-.sidebar-nav .menu-button {
-    background: none;
-    border: none;
-    padding: 4px 0;
-    font-size: 18px;
-    font-weight: 500;
-    color: #CCCCCC;
-    cursor: pointer;
-    letter-spacing: 0.3px;
-    text-decoration: none;
-    flex-shrink: 0;
-    transition: color 0.3s ease;
-    display: inline-block;
+.fixed-header-wrapper .sidebar-nav::-webkit-scrollbar {
+	display: none;
 }
 
-.sidebar-nav .menu-button:hover { color: #666666; }
+.fixed-header-wrapper .sidebar-nav .menu-button {
+	background: none;
+	border: none;
+	padding: 4px 0;
+	font-size: 18px;
+	font-weight: 500;
+	color: #CCCCCC;
+	cursor: pointer;
+	letter-spacing: 0.3px;
+	text-decoration: none;
+	flex-shrink: 0;
+	transition: color 0.3s ease;
+	display: inline-block;
+}
 
-.sidebar-nav .menu-button.active {
-    color: #000000;
-    font-weight: 700;
-    border-bottom: 3px solid #000000;
-    padding-bottom: 4px;
+.fixed-header-wrapper .sidebar-nav .menu-button:hover {
+	color: #666666;
+}
+
+.fixed-header-wrapper .sidebar-nav .menu-button.active {
+	color: #000000;
+	font-weight: 700;
+	border-bottom: 3px solid #000000;
+	padding-bottom: 4px;
 }
 
 /* =========================================
    4. 본문 컨테이너 및 폼 정렬
 ========================================= */
 .container {
-    max-width: 1250px;
-    margin: 0 auto;
-    padding: 60px 4% 120px 4%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    box-sizing: border-box;
+	max-width: 1250px;
+	margin: 0 auto;
+	padding: 60px 4% 120px 4%;
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	box-sizing: border-box;
 }
 
 .auth-wrapper {
-    width: 100%;
-    max-width: 400px;
-    margin-top: 20px;
+	width: 100%;
+	max-width: 400px;
+	margin-top: 20px;
 }
 
 .form-intro {
-    margin-bottom: 30px;
-    text-align: left;
+	margin-bottom: 30px;
+	text-align: left;
 }
 
 .form-intro p {
-    font-size: 15px;
-    color: #666666;
-    margin: 0;
+	font-size: 15px;
+	color: #666666;
+	margin: 0;
 }
 
 /* 입력 필드 디자인 */
 .form-group {
-    margin-bottom: 24px;
-    display: flex;
-    flex-direction: column;
+	margin-bottom: 24px;
+	display: flex;
+	flex-direction: column;
 }
 
 .form-group label {
-    font-size: 14px;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #111111;
+	font-size: 14px;
+	font-weight: 600;
+	margin-bottom: 8px;
+	color: #111111;
 }
 
 .form-group input {
-    width: 100%;
-    padding: 12px 14px;
-    border: 1px solid #CCCCCC;
-    font-size: 15px;
-    font-family: inherit;
-    box-sizing: border-box;
-    border-radius: 0;
-    transition: border-color 0.2s ease;
+	width: 100%;
+	padding: 12px 14px;
+	border: 1px solid #CCCCCC;
+	font-size: 15px;
+	font-family: inherit;
+	box-sizing: border-box;
+	border-radius: 0;
+	transition: border-color 0.2s ease;
 }
 
 .form-group input:focus {
-    border-color: #111111;
-    outline: none;
+	border-color: #111111;
+	outline: none;
 }
 
 /* 에러 메시지 */
 .field-error {
-    color: #E53E3E;
-    font-size: 13px;
-    font-weight: 500;
-    margin-top: 6px;
-    text-align: left;
+	color: #E53E3E;
+	font-size: 13px;
+	font-weight: 500;
+	margin-top: 6px;
+	text-align: left;
 }
 
 /* 변경 버튼 */
 .form-full-btn {
-    width: 100%;
-    padding: 14px 0;
-    font-size: 15px;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    box-sizing: border-box;
-    border-radius: 0;
-    transition: background-color 0.2s ease;
+	width: 100%;
+	padding: 14px 0;
+	font-size: 15px;
+	font-weight: 700;
+	cursor: pointer;
+	border: none;
+	box-sizing: border-box;
+	border-radius: 0;
+	transition: background-color 0.2s ease;
 }
 
 .black-btn {
-    background-color: #000000;
-    color: #FFFFFF;
+	background-color: #000000;
+	color: #FFFFFF;
 }
 
 .black-btn:hover {
-    background-color: #333333;
+	background-color: #333333;
 }
 
 /* =========================================
    5. 반응형 대응
 ========================================= */
 @media screen and (max-width: 768px) {
-    .fixed-header-inner { padding-top: 20px; }
-    .info-title { font-size: 20px; }
-    .sidebar-nav { gap: 24px; }
-    .sidebar-nav .menu-button { font-size: 15px; }
-    .container { padding-top: 30px; padding-bottom: 80px; }
-    
-    .auth-wrapper {
-        max-width: 100%;
-    }
+
+	/* -----------------------------------------
+       헤더 및 상단 타이틀 영역
+    ----------------------------------------- */
+	.fixed-header-inner {
+		padding: 16px 16px 0 16px;
+	}
+
+	.info-top-bar {
+		gap: 10px;
+		padding-bottom: 12px;
+	}
+
+	.info-prefix {
+		font-size: 13px;
+		letter-spacing: 1.5px;
+		padding-right: 12px;
+	}
+
+	.info-title {
+		font-size: 18px;
+	}
+
+	/* -----------------------------------------
+       사이드바 / 네비게이션 메뉴 영역
+    ----------------------------------------- */
+	.fixed-header-wrapper .sidebar-nav {
+		gap: 28px;
+		padding: 8px 0 4px 0;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.fixed-header-wrapper .sidebar-nav .menu-button {
+		font-size: 15px;
+		padding: 4px 0;
+	}
+
+	.fixed-header-wrapper .sidebar-nav .menu-button.active {
+		color: #000000;
+		font-weight: 700;
+		border-bottom: 3px solid #000000;
+		padding-bottom: 4px;
+	}
+
+	/* -----------------------------------------
+       메인 컨테이너 및 폼 영역
+    ----------------------------------------- */
+	.container {
+		padding: 24px 16px 60px 16px;
+	}
+
+	.auth-wrapper {
+		max-width: 100%;
+		margin-top: 10px;
+	}
+
+	/* updatePw 구조에 맞게 .form-row -> .form-group 으로 매핑 수정 */
+	.form-group input {
+		font-size: 16px;
+	}
+
+	/* -----------------------------------------
+       버튼 및 액션 영역
+    ----------------------------------------- */
+	.form-full-btn {
+		padding: 14px 0;
+	}
 }
