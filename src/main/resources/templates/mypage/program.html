@@ -8,11 +8,8 @@
     <title>내가 신청한 프로그램</title>
 
     <link rel="stylesheet" th:href="@{/css/header.css}" />
-<!--    <link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />-->
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
-    
-    <link rel="stylesheet" th:href="@{/css/mypage/program.css}" >
-<!--    <link rel="stylesheet" th:href="@{/css/main/mobile/myprogram.css}" media="only screen and (max-width: 768px)">-->
+    <link rel="stylesheet" th:href="@{/css/mypage/program.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 
@@ -25,7 +22,7 @@
                 <span class="info-prefix">MYPAGE</span>
                 <h2 class="info-title">신청한 프로그램</h2>
             </div>
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" id="sidebarNav">
                 <a th:href="@{/main/mypage/update/{id}(id=${user.id})}"
                    class="menu-button"
                    th:classappend="${activeTab=='update'} ? ' active' : ''">
@@ -76,10 +73,10 @@
                             </td>
                             <td th:text="${#temporals.format(p.subsOn,'yyyy-MM-dd HH:mm')}">2025-06-01 14:00</td>
                             <td>
-                                <form th:if="${p.isApp == 'N'}" 
+                                <form th:if="${p.isApp == 'N'}"
                                       th:action="@{'/main/mypage/programDelete/' + ${p.subsId}}"
-                                      method="post" 
-                                      style="display:inline;" 
+                                      method="post"
+                                      style="display:inline;"
                                       onsubmit="return confirm('신청을 취소하시겠습니까?');">
                                     <button type="submit" class="btn-cancel">
                                         <i class="fa fa-times-circle"></i> 취소
@@ -96,5 +93,6 @@
 
     <div th:replace="~{main/footer :: footer}"></div>
     <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/mypage/mypage-nav.js}"></script>
 </body>
 </html>

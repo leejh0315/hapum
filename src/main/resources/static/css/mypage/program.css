@@ -12,7 +12,7 @@ body {
 }
 
 /* =========================================
-   2. 상단 고정 헤더 (탭 메뉴 포함)
+   2. 상단 고정 헤더
 ========================================= */
 .fixed-header-wrapper {
     position: sticky;
@@ -54,7 +54,7 @@ body {
 }
 
 /* =========================================
-   3. 탭 메뉴 (가로 네비게이션)
+   3. 탭 메뉴
 ========================================= */
 .sidebar-nav {
     display: flex;
@@ -96,7 +96,7 @@ body {
 }
 
 /* =========================================
-   4. 본문 컨테이너 및 테이블 래퍼
+   4. 본문 컨테이너
 ========================================= */
 .container {
     max-width: 1250px;
@@ -108,7 +108,7 @@ body {
     width: 100%;
 }
 
-/* 빈 목록 표시 */
+/* 빈 목록 */
 .mypage-empty {
     text-align: center;
     padding: 100px 0;
@@ -117,7 +117,7 @@ body {
 }
 
 /* =========================================
-   5. 프로그램 내역 테이블 (모노톤)
+   5. 테이블
 ========================================= */
 .mypage-table-wrap {
     width: 100%;
@@ -158,9 +158,8 @@ body {
 }
 
 /* =========================================
-   6. 컴포넌트 (배지 및 버튼)
+   6. 컴포넌트
 ========================================= */
-/* 승인 상태 배지 */
 .status-badge {
     display: inline-block;
     padding: 3px 10px;
@@ -179,7 +178,6 @@ body {
     color: #777777;
 }
 
-/* 취소 버튼 */
 .btn-cancel {
     padding: 5px 14px;
     background-color: #FFFFFF;
@@ -201,18 +199,97 @@ body {
 }
 
 /* =========================================
-   7. 모바일 반응형 대응
+   7. 모바일 반응형
+   핵심 전략:
+   - .container 좌우 패딩을 0으로 제거
+   - .mypage-table-wrap 을 100vw 고정 + overflow-x: scroll
+   - .mypage-table 는 width: auto + min-width 고정
+     → width:100% 가 살아있으면 부모 너비에 눌려 짤리므로 반드시 auto
 ========================================= */
 @media screen and (max-width: 768px) {
-    .fixed-header-inner { padding-top: 20px; }
-    .info-title { font-size: 20px; }
-    .sidebar-nav { gap: 24px; }
-    .sidebar-nav .menu-button { font-size: 15px; }
-    .container { padding-top: 30px; padding-bottom: 80px; }
+
+    /* 상단 헤더 */
+    .fixed-header-inner {
+        padding: 16px 16px 0 16px;
+    }
+
+    .info-top-bar {
+        gap: 10px;
+        padding-bottom: 12px;
+    }
+
+    .info-prefix {
+        font-size: 13px;
+        letter-spacing: 1.5px;
+        padding-right: 12px;
+    }
+
+    .info-title {
+        font-size: 18px;
+    }
+
+    /* 탭: PC 스타일 유지, 크기만 축소 */
+    .sidebar-nav {
+        gap: 28px;
+        padding: 8px 0 4px 0;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sidebar-nav .menu-button {
+        font-size: 15px;
+        padding: 4px 0;
+    }
+
+    .sidebar-nav .menu-button.active {
+        color: #000000;
+        font-weight: 700;
+        border-bottom: 3px solid #000000;
+        padding-bottom: 4px;
+    }
+
+    /* 컨테이너: 좌우 패딩 제거 */
+    .container {
+        padding: 20px 0 60px 0;
+    }
+
+    /* 테이블 래퍼:
+       100vw = 뷰포트 전체 너비 (부모의 padding/width 영향 완전 차단)
+       overflow-x: scroll 로 가로 스크롤 활성화
+       padding으로 양쪽 16px 여백 확보
+    */
+    .mypage-table-wrap {
+        width: 100vw;
+        box-sizing: border-box;
+        padding: 0 16px 0 16px;
+        overflow-x: scroll;
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-x: contain;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    .mypage-table-wrap::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* 테이블:
+       width: auto → min-width 기준으로 자연스럽게 확장
+       width: 100% 를 유지하면 부모(래퍼) 너비에 눌려 열이 짤림
+    */
+    .mypage-table {
+        width: auto;
+        min-width: 560px;
+    }
 
     .mypage-table th,
     .mypage-table td {
-        padding: 10px 8px;
+        padding: 10px 10px;
         font-size: 12px;
+    }
+
+    /* 빈 목록 */
+    .mypage-empty {
+        padding: 60px 16px;
+        font-size: 14px;
     }
 }

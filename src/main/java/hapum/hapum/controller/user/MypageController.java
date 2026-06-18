@@ -172,7 +172,6 @@ public class MypageController {
 		}
 		List<ProgramWithSub> programs = programService.selectProgramByUserId(user.getId());
 		addUserToModel(req, model);
-		System.out.println(programs);
 		model.addAttribute("programs", programs);
 		model.addAttribute("activeTab", "program");
 		return "mypage/program";

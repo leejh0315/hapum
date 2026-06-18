@@ -7,11 +7,9 @@
     <link rel="shortcut icon" href="/img/logohp.png">
     <title>내 정보 수정</title>
 
-    <link rel="stylesheet" th:href="@{/css/header.css}"             />
-<!--    <link rel="stylesheet" th:href="@{/css/main/mobile/header.css}" media="only screen and (max-width: 768px)" />-->
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" th:href="@{/css/footer.css}" />
-    <link rel="stylesheet" th:href="@{/css/mypage/update.css}"       />
-<!--    <link rel="stylesheet" th:href="@{/css/main/mobile/update.css}" media="only screen and (max-width: 768px)" />-->
+    <link rel="stylesheet" th:href="@{/css/mypage/update.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
@@ -26,7 +24,7 @@
                 <span class="info-prefix">MYPAGE</span>
                 <h2 class="info-title">내 정보 수정</h2>
             </div>
-            <nav class="sidebar-nav">
+            <nav class="sidebar-nav" id="sidebarNav">
                 <a th:href="@{/main/mypage/update/{id}(id=${user.id})}"
                    class="menu-button"
                    th:classappend="${activeTab=='update'} ? ' active' : ''">
@@ -86,7 +84,7 @@
 
             </form>
 
-            <!-- 버튼 / 링크 영역 — 기존 로직 그대로 -->
+            <!-- 버튼 / 링크 영역 -->
             <div class="form-actions">
                 <button type="button" class="btn-primary" onclick="confirmUpdate()">수정하기</button>
                 <div class="form-links">
@@ -108,5 +106,6 @@
         }
     </script>
     <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/mypage/mypage-nav.js}"></script>
 </body>
 </html>

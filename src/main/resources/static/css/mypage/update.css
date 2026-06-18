@@ -216,15 +216,79 @@ body {
 }
 
 /* =========================================
-   반응형
+   반응형 (모바일)
 ========================================= */
 @media screen and (max-width: 768px) {
-    .fixed-header-inner { padding-top: 20px; }
-    .info-title { font-size: 20px; }
-    .sidebar-nav { gap: 24px; }
-    .sidebar-nav .menu-button { font-size: 15px; }
-    .container { padding-top: 30px; padding-bottom: 80px; }
-    .mypage-form { max-width: 100%; }
-    .btn-primary { width: 100%; text-align: center; }
-    .form-actions { flex-direction: column; align-items: flex-start; }
+
+    /* 상단 헤더 */
+    .fixed-header-inner {
+        padding: 16px 16px 0 16px;
+    }
+
+    .info-top-bar {
+        gap: 10px;
+        padding-bottom: 12px;
+    }
+
+    .info-prefix {
+        font-size: 13px;
+        letter-spacing: 1.5px;
+        padding-right: 12px;
+    }
+
+    .info-title {
+        font-size: 18px;
+    }
+
+    /* 탭 메뉴: PC 스타일 그대로 유지하되 크기만 조정 */
+    .sidebar-nav {
+        gap: 28px;
+        padding: 8px 0 4px 0;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .sidebar-nav .menu-button {
+        font-size: 15px;
+        padding: 4px 0;
+    }
+
+    /* active 스타일은 PC와 동일하게 유지 */
+    .sidebar-nav .menu-button.active {
+        color: #000000;
+        font-weight: 700;
+        border-bottom: 3px solid #000000;
+        padding-bottom: 4px;
+    }
+
+    /* 본문 */
+    .container {
+        padding: 24px 16px 60px 16px;
+    }
+
+    .mypage-form {
+        max-width: 100%;
+    }
+
+    /* iOS 자동 줌 방지: 16px 미만이면 포커스 시 자동 줌됨 */
+    .form-row input {
+        font-size: 16px;
+    }
+
+    /* 하단 버튼 */
+    .btn-primary {
+        width: 100%;
+        text-align: center;
+        padding: 14px 0;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+    }
+
+    .form-links {
+        justify-content: center;
+        gap: 24px;
+    }
 }
