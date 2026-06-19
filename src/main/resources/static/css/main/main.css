@@ -538,7 +538,7 @@ body {
 
 /* ── 프로그램 슬라이더 ── */
 .program-wrapper {
-	min-width: 0; /* grid child 넘침 방지 */
+	min-width: 0;
 }
 
 .program-slider-container {
@@ -586,7 +586,6 @@ body {
 	background: #fff;
 }
 
-/* PC: 좌우 버튼 */
 .slider-btn {
 	position: absolute;
 	top: 40%;
@@ -622,7 +621,7 @@ body {
 
 /* ── 공지사항 ── */
 .notice-wrapper {
-	min-width: 0; /* grid child 넘침 방지 */
+	min-width: 0;
 }
 
 .notice-list {
@@ -646,7 +645,7 @@ body {
 	text-decoration: none;
 	color: #333;
 	flex: 1;
-	min-width: 0; /* 텍스트 말줄임 작동 보장 */
+	min-width: 0;
 	transition: color 0.2s;
 }
 
@@ -1027,8 +1026,8 @@ body {
 .popup-modal.active { opacity: 1; }
 
 .modern-popup {
-	background: rgba(0, 0, 0, 0.6);
-	backdrop-filter: blur(5px);
+	/* 배경 명암(dimming) 제거 */
+	background: transparent;
 }
 
 .modern-popup .popup-content {
@@ -1094,7 +1093,6 @@ body {
 ========================================= */
 @media (max-width: 768px) {
 
-	/* 공통: 모든 섹션 좌우 패딩 고정 */
 	.inner-wrap,
 	.intro-numbers-inner,
 	.location-content {
@@ -1102,7 +1100,6 @@ body {
 		padding-right: 16px;
 	}
 
-	/* 퀵 링크 */
 	.quick-links-section {
 		margin-top: -24px;
 	}
@@ -1125,7 +1122,6 @@ body {
 		min-height: 28px;
 	}
 
-	/* 히어로 */
 	.hero-section {
 		height: 60vh;
 		min-height: 380px;
@@ -1170,7 +1166,6 @@ body {
 		bottom: 48px;
 	}
 
-	/* 소개 + 카운터 */
 	.intro-numbers-section {
 		padding: 70px 0 60px;
 	}
@@ -1193,7 +1188,6 @@ body {
 
 	.stat-num { font-size: 44px; }
 
-	/* 보드 섹션 */
 	.board-section {
 		padding: 60px 0;
 	}
@@ -1203,7 +1197,6 @@ body {
 		gap: 40px;
 	}
 
-	/* section-header: 헤더 타이틀 + 더보기 줄넘침 방지 */
 	.section-header {
 		flex-wrap: nowrap;
 		align-items: center;
@@ -1220,7 +1213,6 @@ body {
 		flex: 1;
 	}
 
-	/* 프로그램 슬라이더 */
 	.slider-btn { display: none; }
 
 	.program-slider-container {
@@ -1249,7 +1241,6 @@ body {
 
 	.mobile-only { display: block; }
 
-	/* 공지사항: 날짜 잘림 방지 */
 	.notice-item {
 		flex-wrap: nowrap;
 		gap: 4px;
@@ -1267,12 +1258,11 @@ body {
 
 	.notice-date {
 		font-size: 12px;
-		width: auto;       /* 고정 width 해제 */
+		width: auto;
 		white-space: nowrap;
 		flex-shrink: 0;
 	}
 
-	/* 특징 카드 */
 	.features-section {
 		padding: 70px 0 80px;
 	}
@@ -1284,13 +1274,11 @@ body {
 
 	.feature-card { padding: 32px 24px; }
 
-	/* 갤러리 */
 	.gallery-grid {
 		grid-template-columns: repeat(2, 1fr);
 		gap: 12px;
 	}
 
-	/* 위치 배너 */
 	.location-banner {
 		background-attachment: scroll;
 		min-height: 560px;
@@ -1318,7 +1306,6 @@ body {
 		align-self: unset;
 	}
 
-	/* 팝업 */
 	.modern-popup .popup-image {
 		width: 88vw;
 		height: auto;
