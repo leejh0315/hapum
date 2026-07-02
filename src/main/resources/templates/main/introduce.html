@@ -6,7 +6,6 @@
 	<title>센터소개 - 하품센터</title>
 	<link rel="stylesheet" th:href="@{/css/main/introduce.css}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<!--  <link rel="stylesheet" th:href="@{/css/main/mobile/introduce.css}" media="only screen and (max-width: 768px)"/>-->
 
 	<link rel="stylesheet" th:href="@{/css/header.css}" />
 	<link rel="stylesheet" th:href="@{/css/footer.css}" />
@@ -40,6 +39,9 @@
 
 	<script th:src="@{/js/header.js}"></script>
 	<script>
+		/* =========================================
+		   탭 콘텐츠 정의
+		========================================= */
 		const contents = {
 			'인사말': {
 				html: `
@@ -71,218 +73,502 @@
 			},
 			'주요연혁': {
 				html: `
-          <div class="unified-card">
+          <div class="unified-card history-card">
             <div class="card-header-module">
-              <h4 class="card-title-text">2025년 연혁</h4>
-              <span class="card-badge-num">2025</span>
+              <h4 class="card-title-text">주요연혁</h4>
+              <span class="card-badge-num">HISTORY</span>
             </div>
-            <div class="timeline-year-group">
-              <div class="timeline-row">
-                <div class="timeline-date-col">01.23 (금)</div>
-                <div class="timeline-desc-col"><strong>오중석 프란치스코 신부 부임</strong></div>
-              </div>
-              <div class="timeline-row" style="border-bottom:none;">
-                <div class="timeline-date-col">주요활동</div>
-                <div class="timeline-desc-col">
-                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2025', this)">▼ 주요 프로그램 닫기</span>
-                  <ul id="program-2025" class="timeline-sub-list" style="display:grid;">
-                    <li>주님께 찬양을</li><li>떼제기도</li><li>성주간 특강</li>
-                    <li>성시간</li><li>청년 성경 공부</li><li>수지에니어그램</li>
-                    <li>청소년 상담 및 면담</li><li>찾아가는 성장 프로젝트</li>
-                    <li>자녀들을 위한 월례미사</li><li>학부모 하루 피정</li>
-                    <li>홈페이지 리뉴얼</li><li>하품FC 창단</li>
-                    <li>센터 시설 보수</li><li>대가대협 대학 사목</li>
-                    <li>소년소녀합창단 지도</li><li>비아또르 지도</li>
-                  </ul>
+
+            <div class="history-slider" id="history-slider">
+
+              <div class="history-slide-main">
+                <div class="history-slide-inner" id="history-slide-inner">
+                  <span class="history-slide-year" id="history-slide-year"></span>
+                  <div class="history-slide-milestone-box" id="history-slide-milestone"></div>
+                  <div class="history-slide-programs-wrap" id="history-slide-programs-wrap"></div>
                 </div>
               </div>
-            </div>
-          </div>
 
-          <div class="unified-card">
-            <div class="card-header-module">
-              <h4 class="card-title-text">2024년 연혁</h4>
-              <span class="card-badge-num">2024</span>
-            </div>
-            <div class="timeline-year-group">
-              <div class="timeline-row" style="border-bottom:none;">
-                <div class="timeline-date-col">주요활동</div>
-                <div class="timeline-desc-col">
-                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2024', this)">▼ 주요 프로그램 닫기</span>
-                  <ul id="program-2024" class="timeline-sub-list" style="display:grid;">
-                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>청년 성시간</li>
-                    <li>청년 성경 공부</li><li>수지에니어그램</li><li>대가대협 대학 사목</li>
-                    <li>소년소녀합창단 지도</li><li>비아또르 지도</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+              <div class="history-nav" id="history-nav" role="listbox" aria-label="연도 선택">
+                <button type="button" class="history-nav-arrow history-nav-up" id="history-nav-up" aria-label="이전 연도">
+                  <i class="fa-solid fa-chevron-up"></i>
+                </button>
 
-          <div class="unified-card">
-            <div class="card-header-module">
-              <h4 class="card-title-text">2023년 연혁</h4>
-              <span class="card-badge-num">2023</span>
-            </div>
-            <div class="timeline-year-group">
-              <div class="timeline-row" style="border-bottom:none;">
-                <div class="timeline-date-col">주요활동</div>
-                <div class="timeline-desc-col">
-                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2023', this)">▼ 주요 프로그램 닫기</span>
-                  <ul id="program-2023" class="timeline-sub-list" style="display:grid;">
-                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>하품 특강-뭉클 클래스</li>
-                    <li>청년 성시간</li><li>청년 피정</li><li>청년 성경 공부</li>
-                    <li>수지에니어그램</li><li>대가대협 대학 사목</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
+                <ul class="history-nav-list" id="history-nav-list"></ul>
 
-          <div class="unified-card">
-            <div class="card-header-module">
-              <h4 class="card-title-text">2022년 연혁</h4>
-              <span class="card-badge-num">2022</span>
-            </div>
-            <div class="timeline-year-group">
-              <div class="timeline-row" style="border-bottom:none;">
-                <div class="timeline-date-col">주요활동</div>
-                <div class="timeline-desc-col">
-                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2022', this)">▼ 주요 프로그램 닫기</span>
-                  <ul id="program-2022" class="timeline-sub-list" style="display:grid;">
-                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>묵주공방 특강</li>
-                    <li>샴푸바 만들기</li><li>트리/리스 만들기</li><li>청년 성시간</li>
-                    <li>몽골 아이들 묵주 보내기</li><li>수지에니어그램</li><li>대가대협 대학 사목</li>
-                  </ul>
-                </div>
+                <button type="button" class="history-nav-arrow history-nav-down" id="history-nav-down" aria-label="다음 연도">
+                  <i class="fa-solid fa-chevron-down"></i>
+                </button>
               </div>
-            </div>
-          </div>
 
-          <div class="unified-card">
-            <div class="card-header-module">
-              <h4 class="card-title-text">2021년 연혁</h4>
-              <span class="card-badge-num">2021</span>
-            </div>
-            <div class="timeline-year-group">
-              <div class="timeline-row">
-                <div class="timeline-date-col">06.23 (수)</div>
-                <div class="timeline-desc-col"><strong>한정현 스테파노 주교 사목 방문</strong></div>
-              </div>
-              <div class="timeline-row" style="border-bottom:none;">
-                <div class="timeline-date-col">주요활동</div>
-                <div class="timeline-desc-col">
-                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2021', this)">▼ 주요 프로그램 닫기</span>
-                  <ul id="program-2021" class="timeline-sub-list" style="display:grid;">
-                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>청년 교리</li>
-                    <li>청년 성시간</li><li>주일 복음 나눔</li><li>수지에니어그램</li>
-                    <li>대가대협 대학 사목</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="unified-card">
-            <div class="card-header-module">
-              <h4 class="card-title-text">2020년 연혁</h4>
-              <span class="card-badge-num">2020</span>
-            </div>
-            <div class="timeline-year-group">
-              <div class="timeline-row">
-                <div class="timeline-date-col">01.17 (금)</div>
-                <div class="timeline-desc-col"><strong>남광근 프란치스코 드 살 신부 부임</strong></div>
-              </div>
-              <div class="timeline-row" style="border-bottom:none;">
-                <div class="timeline-date-col">주요활동</div>
-                <div class="timeline-desc-col">
-                  <span class="timeline-toggle-btn" onclick="toggleProgram('program-2020', this)">▼ 주요 프로그램 닫기</span>
-                  <ul id="program-2020" class="timeline-sub-list" style="display:grid;">
-                    <li>주님께 찬양을</li><li>청년 떼제기도</li><li>청년 교리</li>
-                    <li>청년 성시간</li><li>주일 복음 나눔</li><li>수지에니어그램</li>
-                    <li>성경학교</li><li>퍼스널 컬러</li><li>청년성서 특강</li>
-                    <li>대가대협 대학 사목</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="unified-card">
-            <div class="card-header-module">
-              <h4 class="card-title-text">2017년 ~ 2019년 연혁</h4>
-              <span class="card-badge-num">OPEN</span>
-            </div>
-            <div class="timeline-year-group">
-              <div class="timeline-row">
-                <div class="timeline-date-col">2019.02.24</div>
-                <div class="timeline-desc-col"><strong>개관 축복 미사 (유흥식 라자로 추기경 집전)</strong></div>
-              </div>
-              <div class="timeline-row">
-                <div class="timeline-date-col">2018년</div>
-                <div class="timeline-desc-col">센터 대규모 리모델링 진행</div>
-              </div>
-              <div class="timeline-row" style="border-bottom:none;">
-                <div class="timeline-date-col">2017.11.24</div>
-                <div class="timeline-desc-col"><strong>조수환 바오로 신부 부임</strong></div>
-              </div>
             </div>
           </div>
         `
 			},
 			'오시는길': {
 				html: `
-          <div class="unified-card">
-            <div class="card-header-module">
-              <h4 class="card-title-text"><i class="fa-solid fa-train"></i> 기차 · 전철 이용시</h4>
-              <span class="card-badge-num">01</span>
-            </div>
-            <p class="location-text-detail">
-              <strong>천안역(1호선)</strong> 하차 후 아산/신창 방면 전철로 환승합니다.<br>
-              → <strong>쌍용역 2번 출구</strong>로 나와 하품센터까지 약 700m 직진 이동 (도보 10분 소요)
-            </p>
-          </div>
+          <div class="route-layout">
 
-          <div class="unified-card">
-            <div class="card-header-module">
-              <h4 class="card-title-text"><i class="fa-solid fa-bus"></i> 시내버스 이용시</h4>
-              <span class="card-badge-num">02</span>
-            </div>
-            <ul class="bus-custom-list">
-              <li><span class="bus-badge-pill green">시내 1번</span> <strong>쌍용고입구</strong> 정류장 하차 <small>→ 하품센터까지 도보 3분 (약 200m)</small></li>
-              <li><span class="bus-badge-pill green">시내 12번</span> <strong>방아다리공원</strong> 정류장 하차 <small>→ 하품센터까지 도보 5분 (약 300m)</small></li>
-              <li><span class="bus-badge-pill blue">간선 900번</span> <strong>삼일원앙아파트</strong> 정류장 하차 <small>→ 하품센터까지 도보 10분 (약 500m)</small></li>
-            </ul>
-          </div>
+            <div class="unified-card route-map-card">
+              <div class="card-header-module">
+                <h4 class="card-title-text"><i class="fa-solid fa-map-location-dot"></i> 오시는 길 약도</h4>
+                <span class="card-badge-num">MAP</span>
+              </div>
 
-          <div class="unified-card">
-            <div class="card-header-module">
-              <h4 class="card-title-text"><i class="fa-solid fa-car"></i> 자차 이용시</h4>
-              <span class="card-badge-num">03</span>
+              <div class="route-map-wrap">
+                <img class="route-map-img" src="/img/map.png" alt="가톨릭천안청소년사목센터하품 오시는 길 약도">
+
+                <svg id="route-map-svg" class="route-map-overlay" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+                  <path class="route-halo" data-route="train" d="M1185,95 L930,240 L901,236 L876,245 L861,263 L859,289 L885,322 L804,394 L781,382 L765,382 L740,391 L472,395 L467,467 L340,505 L326,550"></path>
+                  <path class="route-path" data-route="train" d="M1185,95 L930,240 L901,236 L876,245 L861,263 L859,289 L885,322 L804,394 L781,382 L765,382 L740,391 L472,395 L467,467 L340,505 L326,550"></path>
+
+                  <path class="route-halo" data-route="bus-park" d="M495,220 L476,295 L466,469 L339,506 L326,550"></path>
+                  <path class="route-path" data-route="bus-park" d="M495,220 L476,295 L466,469 L339,506 L326,550"></path>
+
+                  <path class="route-halo" data-route="bus-ssangyong" d="M463,738 L360,713 L390,644 L324,609 L326,553"></path>
+                  <path class="route-path" data-route="bus-ssangyong" d="M463,738 L360,713 L390,644 L324,609 L326,553"></path>
+
+                  <path class="route-halo" data-route="bus-samil" d="M800,1040 L856,954 L363,716 L360,708 L390,644 L324,609 L326,551"></path>
+                  <path class="route-path" data-route="bus-samil" d="M800,1040 L856,954 L363,716 L360,708 L390,644 L324,609 L326,551"></path>
+
+                  <path class="route-halo" data-route="parking" d="M705,375 L473,394 L467,469 L339,506 L326,550"></path>
+                  <path class="route-path" data-route="parking" d="M705,375 L473,394 L467,469 L339,506 L326,550"></path>
+
+                  <circle class="route-endpoint" data-route="train" cx="1185" cy="95" r="10"></circle>
+                  <circle class="route-endpoint" data-route="bus-park" cx="495" cy="220" r="10"></circle>
+                  <circle class="route-endpoint" data-route="bus-ssangyong" cx="463" cy="738" r="10"></circle>
+                  <circle class="route-endpoint" data-route="bus-samil" cx="800" cy="1040" r="10"></circle>
+                  <circle class="route-endpoint" data-route="parking" cx="705" cy="375" r="10"></circle>
+
+                  <ellipse class="parking-zone" data-route="parking-zone" cx="636" cy="365" rx="115" ry="48"></ellipse>
+                </svg>
+              </div>
+
+              <div class="route-map-legend">
+                <span class="route-map-legend-item"><span class="route-map-legend-dot legend-train"></span>기차·전철</span>
+                <span class="route-map-legend-item"><span class="route-map-legend-dot legend-bus"></span>버스</span>
+                <span class="route-map-legend-item"><span class="route-map-legend-dot legend-samil"></span>간선 900번</span>
+                <span class="route-map-legend-item"><span class="route-map-legend-dot legend-parking"></span>주차</span>
+              </div>
+              <p class="route-map-hint">왼쪽(위) 항목에 마우스를 올리면(모바일은 탭) 해당 경로가 지도에 표시됩니다.</p>
             </div>
-            <p class="location-text-detail">
-              모바일 내비게이션 어플리케이션에 <strong>'하품센터'</strong> 또는 도로명 주소인 <strong>'천안시 서북구 월봉5길 23'</strong>을 검색하세요.<br>
-              <span class="map-highlight-span">📍 공식 명칭: 가톨릭천안청소년사목센터하품</span>
-            </p>
+
+            <div class="route-list">
+
+              <div class="unified-card route-option" data-routes="train">
+                <div class="card-header-module">
+                  <h4 class="card-title-text"><i class="fa-solid fa-train"></i> 기차 · 전철 이용시</h4>
+                  <span class="card-badge-num">01</span>
+                </div>
+                <p class="location-text-detail">
+                  <strong>천안역(1호선)</strong> 하차 후 아산/신창 방면 전철로 환승합니다.<br>
+                  → <strong>쌍용역 2번 출구</strong>로 나와 하품센터까지 약 700m 직진 이동 (도보 10분 소요)
+                </p>
+              </div>
+
+              <div class="unified-card route-option-group" data-routes="bus-ssangyong bus-park bus-samil">
+                <div class="card-header-module">
+                  <h4 class="card-title-text"><i class="fa-solid fa-bus"></i> 시내버스 이용시</h4>
+                  <span class="card-badge-num">02</span>
+                </div>
+                <ul class="bus-custom-list">
+                  <li class="route-option" data-routes="bus-ssangyong"><span class="bus-badge-pill green">시내 1번</span> <strong>쌍용고입구</strong> 정류장 하차 <small>→ 하품센터까지 도보 3분 (약 200m)</small></li>
+                  <li class="route-option" data-routes="bus-park"><span class="bus-badge-pill green">시내 12번</span> <strong>방아다리공원</strong> 정류장 하차 <small>→ 하품센터까지 도보 5분 (약 300m)</small></li>
+                  <li class="route-option" data-routes="bus-samil"><span class="bus-badge-pill blue">간선 900번</span> <strong>삼일원앙아파트</strong> 정류장 하차 <small>→ 하품센터까지 도보 10분 (약 500m)</small></li>
+                </ul>
+              </div>
+
+              <div class="unified-card route-option-group" data-routes="parking">
+                <div class="card-header-module">
+                  <h4 class="card-title-text"><i class="fa-solid fa-car"></i> 자차 이용시</h4>
+                  <span class="card-badge-num">03</span>
+                </div>
+                <p class="location-text-detail">
+                  모바일 내비게이션 어플리케이션에 <strong>'하품센터'</strong> 또는 도로명 주소인 <strong>'천안시 서북구 월봉5길 23'</strong>을 검색하세요.<br>
+                  <span class="map-highlight-span">📍 공식 명칭: 가톨릭천안청소년사목센터하품</span>
+                </p>
+                <div class="parking-info-box route-option" data-routes="parking parking-zone">
+                  <p class="parking-info-title"><i class="fa-solid fa-square-parking"></i> 주차 안내</p>
+                  <p class="location-text-detail">
+                    센터 주변으로 주차하시면 됩니다.<br>
+                    <strong>방아다리공원 인근 공영주차장</strong>도 이용하실 수 있습니다.
+                  </p>
+                </div>
+              </div>
+
+            </div>
           </div>
         `
 			}
 		};
 
-		function toggleProgram(id, btnElement) {
-			const el = document.getElementById(id);
-			if (!el || !btnElement) return;
-			const currentDisplay = window.getComputedStyle(el).display;
-			if (currentDisplay === 'none') {
-				el.style.setProperty('display', 'grid', 'important');
-				btnElement.innerText = "▼ 주요 프로그램 닫기";
+		/* =========================================
+		   주요연혁 데이터 및 슬라이더 스크립트
+		========================================= */
+		const historyData = {
+			2025: {
+				milestones: [{ date: '01.23 (금)', text: '오중석 프란치스코 신부 부임' }],
+				programs: ['주님께 찬양을', '떼제기도', '성주간 특강', '성시간', '청년 성경 공부', '수지에니어그램', '청소년 상담 및 면담', '찾아가는 성장 프로젝트', '자녀들을 위한 월례미사', '학부모 하루 피정', '홈페이지 리뉴얼', '하품FC 창단', '센터 시설 보수', '대가대협 대학 사목', '소년소녀합창단 지도', '비아또르 지도']
+			},
+			2024: {
+				milestones: [],
+				programs: ['주님께 찬양을', '청년 떼제기도', '청년 성시간', '청년 성경 공부', '수지에니어그램', '대가대협 대학 사목', '소년소녀합창단 지도', '비아또르 지도']
+			},
+			2023: {
+				milestones: [],
+				programs: ['주님께 찬양을', '청년 떼제기도', '하품 특강-뭉클 클래스', '청년 성시간', '청년 피정', '청년 성경 공부', '수지에니어그램', '대가대협 대학 사목']
+			},
+			2022: {
+				milestones: [],
+				programs: ['주님께 찬양을', '청년 떼제기도', '묵주공방 특강', '샴푸바 만들기', '트리/리스 만들기', '청년 성시간', '몽골 아이들 묵주 보내기', '수지에니어그램', '대가대협 대학 사목']
+			},
+			2021: {
+				milestones: [{ date: '06.23 (수)', text: '한정현 스테파노 주교 사목 방문' }],
+				programs: ['주님께 찬양을', '청년 떼제기도', '청년 교리', '청년 성시간', '주일 복음 나눔', '수지에니어그램', '대가대협 대학 사목']
+			},
+			2020: {
+				milestones: [{ date: '01.17 (금)', text: '남광근 프란치스코 드 살 신부 부임' }],
+				programs: ['주님께 찬양을', '청년 떼제기도', '청년 교리', '청년 성시간', '주일 복음 나눔', '수지에니어그램', '성경학교', '퍼스널 컬러', '청년성서 특강', '대가대협 대학 사목']
+			},
+			2019: {
+				milestones: [{ date: '02.24', text: '개관 축복 미사 (유흥식 라자로 추기경 집전)' }],
+				programs: []
+			},
+			2018: {
+				milestones: [{ date: '', text: '센터 대규모 리모델링 진행' }],
+				programs: []
+			},
+			2017: {
+				milestones: [{ date: '11.24', text: '조수환 바오로 신부 부임' }],
+				programs: []
+			}
+		};
+
+		const historyYears = Object.keys(historyData).map(Number).sort((a, b) => a - b);
+		let historyActiveIndex = historyYears.length - 1;
+		let historyTransitioning = false;
+
+		function clamp(v, min, max) {
+			return Math.min(max, Math.max(min, v));
+		}
+
+		function getHistoryYearData(year) {
+			const data = historyData[year] || { milestones: [], programs: [] };
+			return {
+				milestone: (data.milestones && data.milestones[0]) || null,
+				programs: data.programs || []
+			};
+		}
+
+		function renderHistoryNavList() {
+			const listEl = document.getElementById('history-nav-list');
+			if (!listEl) return;
+
+			listEl.innerHTML = '';
+			historyYears.forEach((year, idx) => {
+				const li = document.createElement('li');
+				li.textContent = String(year);
+				li.dataset.index = String(idx);
+				li.setAttribute('role', 'option');
+				li.addEventListener('click', () => goToHistoryIndex(idx));
+				listEl.appendChild(li);
+			});
+		}
+
+		function highlightHistoryNavIndex(idx) {
+			document.querySelectorAll('#history-nav-list li').forEach(li => {
+				li.classList.toggle('active', Number(li.dataset.index) === idx);
+			});
+		}
+
+		// isSmooth 파라미터 추가로 애니메이션 도중에는 즉각적으로, 도달 후에는 부드럽게 스크롤 되도록 분기
+		function scrollActiveHistoryNavIntoView(idx, isSmooth = true) {
+			const listEl = document.getElementById('history-nav-list');
+			const activeLi = document.querySelector('#history-nav-list li[data-index="' + idx + '"]');
+			if (!listEl || !activeLi) return;
+
+			if (listEl.scrollWidth <= listEl.clientWidth) return;
+
+			const listRect = listEl.getBoundingClientRect();
+			const itemRect = activeLi.getBoundingClientRect();
+			const itemCenterOffset = (itemRect.left - listRect.left) + (itemRect.width / 2) - (listRect.width / 2);
+			const targetScroll = listEl.scrollLeft + itemCenterOffset;
+			const maxScroll = listEl.scrollWidth - listEl.clientWidth;
+			
+			const finalScroll = Math.min(Math.max(0, targetScroll), maxScroll);
+
+			if (isSmooth) {
+				listEl.scrollTo({
+					left: finalScroll,
+					behavior: 'smooth'
+				});
 			} else {
-				el.style.setProperty('display', 'none', 'important');
-				btnElement.innerText = "▶ 주요 프로그램 보기";
+				listEl.scrollLeft = finalScroll;
 			}
 		}
 
+		function setHistorySlideYearNumber(idx) {
+			const yearEl = document.getElementById('history-slide-year');
+			if (yearEl) yearEl.textContent = String(historyYears[idx]);
+		}
+
+		function renderHistorySlideContent() {
+			const idx = historyActiveIndex;
+			const year = historyYears[idx];
+			const { milestone, programs } = getHistoryYearData(year);
+
+			const inner = document.getElementById('history-slide-inner');
+			const milestoneEl = document.getElementById('history-slide-milestone');
+			const programsWrapEl = document.getElementById('history-slide-programs-wrap');
+			if (!inner || !milestoneEl || !programsWrapEl) return;
+
+			setHistorySlideYearNumber(idx);
+
+			if (milestone) {
+				const dateSpan = milestone.date ? `<span class="history-slide-milestone-date">${milestone.date}</span>` : '';
+				milestoneEl.innerHTML = `${dateSpan}<strong>${milestone.text}</strong>`;
+				milestoneEl.style.display = '';
+			} else {
+				milestoneEl.innerHTML = '';
+				milestoneEl.style.display = 'none';
+			}
+
+			if (programs.length) {
+				programsWrapEl.innerHTML = '<ul class="history-slide-programs">' +
+					programs.map((p, i) => (
+						`<li><span class="history-slide-program-num">${String(i + 1).padStart(2, '0')}</span><span class="history-slide-program-name">${p}</span></li>`
+					)).join('') +
+					'</ul>';
+			} else if (!milestone) {
+				programsWrapEl.innerHTML = '<p class="history-slide-empty">등록된 세부 활동이 없습니다.</p>';
+			} else {
+				programsWrapEl.innerHTML = '';
+			}
+
+			inner.classList.add('history-slide-fade');
+
+			highlightHistoryNavIndex(idx);
+			scrollActiveHistoryNavIntoView(idx, true); // 최종 안착 시에는 부드럽게 스크롤
+
+			const upBtn = document.getElementById('history-nav-up');
+			const downBtn = document.getElementById('history-nav-down');
+			if (upBtn) upBtn.disabled = idx === 0;
+			if (downBtn) downBtn.disabled = idx === historyYears.length - 1;
+
+			const nav = document.getElementById('history-nav');
+			if (nav) nav.setAttribute('aria-activedescendant', String(year));
+		}
+
+		function runHistoryTransition(fromIdx, toIdx, onComplete) {
+			const steps = Math.abs(toIdx - fromIdx);
+			if (steps === 0) {
+				onComplete();
+				return;
+			}
+
+			historyTransitioning = true;
+			const nav = document.getElementById('history-nav');
+			if (nav) nav.classList.add('history-nav-disabled');
+
+			const duration = clamp(220 + steps * 90, 320, 1300);
+			const startTime = performance.now();
+
+			function easeOutCubic(t) {
+				return 1 - Math.pow(1 - t, 3);
+			}
+
+			function frame(now) {
+				const elapsed = now - startTime;
+				const t = clamp(elapsed / duration, 0, 1);
+				const eased = easeOutCubic(t);
+				const currentIdx = Math.round(fromIdx + (toIdx - fromIdx) * eased);
+
+				setHistorySlideYearNumber(currentIdx);
+				highlightHistoryNavIndex(currentIdx);
+				
+				// 애니메이션 중간 프레임 동안 스크롤도 하이라이트 연도를 따라 즉각 이동하도록 처리
+				scrollActiveHistoryNavIntoView(currentIdx, false);
+
+				if (t < 1) {
+					requestAnimationFrame(frame);
+				} else {
+					historyTransitioning = false;
+					if (nav) nav.classList.remove('history-nav-disabled');
+					onComplete();
+				}
+			}
+
+			requestAnimationFrame(frame);
+		}
+
+		function goToHistoryIndex(idx) {
+			if (historyTransitioning) return;
+			const clamped = clamp(idx, 0, historyYears.length - 1);
+			if (clamped === historyActiveIndex) return;
+
+			const fromIdx = historyActiveIndex;
+			historyActiveIndex = clamped;
+
+			runHistoryTransition(fromIdx, clamped, () => {
+				renderHistorySlideContent();
+			});
+		}
+
+		function attachHistoryNavEvents() {
+			const upBtn = document.getElementById('history-nav-up');
+			const downBtn = document.getElementById('history-nav-down');
+			const nav = document.getElementById('history-nav');
+
+			if (upBtn) upBtn.addEventListener('click', () => goToHistoryIndex(historyActiveIndex - 1));
+			if (downBtn) downBtn.addEventListener('click', () => goToHistoryIndex(historyActiveIndex + 1));
+
+			if (nav) {
+				nav.setAttribute('tabindex', '0');
+				nav.addEventListener('keydown', (evt) => {
+					if (evt.key === 'ArrowUp') {
+						goToHistoryIndex(historyActiveIndex - 1);
+						evt.preventDefault();
+					} else if (evt.key === 'ArrowDown') {
+						goToHistoryIndex(historyActiveIndex + 1);
+						evt.preventDefault();
+					}
+				});
+			}
+		}
+
+		function initHistoryTimeline() {
+			historyActiveIndex = 0;
+			historyTransitioning = true;
+
+			renderHistoryNavList();
+
+			const listEl = document.getElementById('history-nav-list');
+			const nav = document.getElementById('history-nav');
+			if (nav) nav.classList.add('history-nav-disabled');
+
+			const items = listEl ? Array.from(listEl.querySelectorAll('li')) : [];
+			items.forEach((li, idx) => {
+				li.style.animationDelay = (idx * 70) + 'ms';
+			});
+
+			setHistorySlideYearNumber(0);
+			highlightHistoryNavIndex(0); // 첫 시작 인덱스 하이라이트
+			scrollActiveHistoryNavIntoView(0, false); // 애니메이션 시작 전 초기 스크롤 위치도 즉시 맞춤
+
+			requestAnimationFrame(() => {
+				if (listEl) listEl.classList.add('reveal');
+			});
+
+			const targetIdx = historyYears.length - 1;
+			const introDelay = 150 + items.length * 70;
+
+			setTimeout(() => {
+				runHistoryTransition(0, targetIdx, () => {
+					historyActiveIndex = targetIdx;
+					renderHistorySlideContent();
+				});
+			}, introDelay);
+
+			attachHistoryNavEvents();
+		}
+
+		/* =========================================
+		   오시는길 : 지도 경로 인터랙션
+		========================================= */
+		function initRouteMap() {
+			const svg = document.getElementById('route-map-svg');
+			if (!svg) return;
+
+			const drawables = svg.querySelectorAll('.route-halo, .route-path');
+			drawables.forEach(path => {
+				const length = path.getTotalLength();
+				path.style.strokeDasharray = String(length);
+				path.style.strokeDashoffset = String(length);
+			});
+
+			const routeListEl = document.querySelector('.route-list');
+			if (!routeListEl) return;
+
+			const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+			function getRouteKeys(el) {
+				const raw = el.dataset.routes || el.dataset.route || '';
+				return raw.split(/\s+/).filter(Boolean);
+			}
+
+			function setActiveRoutes(routeKeys) {
+				svg.querySelectorAll('.route-halo, .route-path, .route-endpoint, .parking-zone').forEach(el => {
+					el.classList.remove('active');
+				});
+				if (!routeKeys || routeKeys.length === 0) return;
+				routeKeys.forEach(key => {
+					svg.querySelectorAll('[data-route="' + key + '"]').forEach(el => {
+						el.classList.add('active');
+					});
+				});
+			}
+
+			function closestRouteEl(el) {
+				return el && el.closest ? el.closest('.route-option, .route-option-group') : null;
+			}
+
+			if (canHover) {
+				routeListEl.addEventListener('mouseover', (e) => {
+					const target = closestRouteEl(e.target);
+					if (!target) return;
+					const routeKeys = getRouteKeys(target);
+					if (routeKeys.length === 0) return;
+					setActiveRoutes(routeKeys);
+				});
+
+				routeListEl.addEventListener('mouseout', (e) => {
+					const from = closestRouteEl(e.target);
+					if (!from) return;
+
+					const related = e.relatedTarget;
+					const to = related ? closestRouteEl(related) : null;
+
+					if (to === from) return;
+					if (related && from.contains(related) && to === null) return;
+
+					if (to) {
+						const routeKeys = getRouteKeys(to);
+						setActiveRoutes(routeKeys.length ? routeKeys : null);
+					} else {
+						setActiveRoutes(null);
+					}
+				});
+			} else {
+				routeListEl.addEventListener('click', (e) => {
+					const target = closestRouteEl(e.target);
+					if (!target) return;
+					const routeKeys = getRouteKeys(target);
+					if (routeKeys.length === 0) return;
+
+					const wasSelected = target.classList.contains('route-selected');
+					routeListEl.querySelectorAll('.route-selected').forEach(o => o.classList.remove('route-selected'));
+
+					if (wasSelected) {
+						setActiveRoutes(null);
+					} else {
+						target.classList.add('route-selected');
+						setActiveRoutes(routeKeys);
+					}
+				});
+			}
+		}
+
+		function updateStickyOffset() {
+			const header = document.querySelector('.sticky-header');
+			if (!header) return;
+			document.documentElement.style.setProperty('--sticky-header-h', header.offsetHeight + 'px');
+		}
+
+		let currentTab = '인사말';
+
 		function changeContent(menu) {
+			currentTab = menu;
+
 			document.querySelectorAll('.top-menu-bar .menu-button').forEach(btn => {
 				btn.classList.remove('current');
 				if (btn.innerText.trim() === menu) btn.classList.add('current');
@@ -292,9 +578,21 @@
 			if (!data) return;
 
 			document.getElementById('content-area').innerHTML = data.html;
+			updateStickyOffset();
+
+			if (menu === '오시는길') {
+				initRouteMap();
+			} else if (menu === '주요연혁') {
+				initHistoryTimeline();
+			}
 		}
 
+		window.addEventListener('resize', () => {
+			updateStickyOffset();
+		});
+
 		window.onload = () => {
+			updateStickyOffset();
 			const params = new URLSearchParams(window.location.search);
 			const tab = params.get('tab') || '인사말';
 			changeContent(tab);
