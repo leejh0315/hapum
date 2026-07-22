@@ -43,18 +43,20 @@ a, a:visited {
   display: flex;
   flex-direction: column;
   line-height: 1.25;
+  font-size: clamp(20px, 1.4vw, 22px);
+    font-weight: bold;
 }
 
-.header-center .center-name h3 {
-  margin: 0;
-  font-size: clamp(13px, 1.4vw, 17px);
-  color: #222;
-  font-weight: 700;
-}
+/*.header-center .center-name h3 {*/
+/*  margin: 0;*/
+/*  font-size: clamp(13px, 1.4vw, 17px);*/
+/*  color: #222;*/
+/*  font-weight: 700;*/
+/*}*/
 
 .logodj {
-  width: 50px;
-  height: 50px;
+  width: 65px;
+  height: 65px;
 }
 
 .header-row1-right {
@@ -710,4 +712,23 @@ a, a:visited {
   .right-side-overlay .sidebar-footer p:last-child {
     margin-bottom: 0 !important;
   }
+  .header-center .center-name {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+  font-size: clamp(13px, 1.4vw, 17px);
+    font-weight: bold;
+}
+
+/*.header-center .center-name h3 {*/
+/*  margin: 0;*/
+/*  font-size: clamp(13px, 1.4vw, 17px);*/
+/*  color: #222;*/
+/*  font-weight: 700;*/
+/*}*/
+
+.logodj {
+  width: 50px;
+  height: 50px;
+}
 }
