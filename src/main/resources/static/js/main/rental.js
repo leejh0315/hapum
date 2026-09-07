@@ -25,9 +25,37 @@ document.addEventListener("DOMContentLoaded", function() {
 	// --- 전역 변수 ---
 	const today = new Date();
 	const todayFormatted = formatDate(today);
-	const endDate = new Date(today);
-	endDate.setDate(endDate.getDate() + 30);
-	
+
+	// ────────────────────────────────────────────────────────────
+	// 예약 가능 날짜 설정 (모든 시설 공통)
+	// : 오늘로부터 1주일(7일) 후부터 예약 가능
+	// : 그 시작일로부터 한 달(30일)간 예약 가능
+	// ────────────────────────────────────────────────────────────
+	const startDate = new Date(today);
+	startDate.setDate(startDate.getDate() + 7); // 오늘 + 7일 = 예약 가능 시작일
+
+	const endDate = new Date(startDate);
+	endDate.setDate(endDate.getDate() + 30); // 시작일 + 30일 = 예약 가능 종료일
+
+	// 날짜가 예약 가능 범위(startDate ~ endDate) 안에 있는지 검사하는 유틸
+	// (프론트 min/max 우회, 강제 value 조작 등에 대비한 2차 검증용)
+	function isDateInAllowedRange(dateStr) {
+		if (!dateStr) return false;
+
+		const target = new Date(dateStr);
+		if (isNaN(target.getTime())) return false;
+
+		target.setHours(0, 0, 0, 0);
+
+		const minD = new Date(startDate);
+		minD.setHours(0, 0, 0, 0);
+
+		const maxD = new Date(endDate);
+		maxD.setHours(0, 0, 0, 0);
+
+		return target >= minD && target <= maxD;
+	}
+
 	const timeSlots = [
 		'09:00', '09:30', '10:00', '10:30',
 		'11:00', '11:30', '12:00', '12:30',
@@ -50,9 +78,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	const selectedTimeDisplay = document.getElementById('selected-time-display');
 	const timetableContainer = document.getElementById('timetable-container');
 
-	dateRangeText.textContent = `${formatDate(today)} ~ ${formatDate(endDate)}`;
-	datePicker.min = formatDate(today);
-	datePicker.value = formatDate(today);
+	dateRangeText.textContent = `${formatDate(startDate)} ~ ${formatDate(endDate)}`;
+	datePicker.min = formatDate(startDate);
+	datePicker.max = formatDate(endDate);
+	datePicker.value = formatDate(startDate);
 
 	// --- conflict 검사 함수: full day 예약 가능 여부 ---
 	function checkFullDayBooking(effectiveDate) {
@@ -137,36 +166,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		}
 		return blocked;
 	}
-	// --- fixedReservations에 따른 시간대 가져오기 ---
-	//	function getFixedReservationTimesForDate(dateStr) {
-	//		const date = new Date(dateStr);
-	//		const weekday = date.getDay();
-	//		const weekOfMonth = getWeekOfMonth(date);
-	//		const blocked = [];
-	//		for (const fr of fixedReservations) {
-	//			const frWeekday = fr.weekday !== null ? Number(fr.weekday) : null;
-	//			const frWeekOfMonth = fr.weekOfMonth !== null ? Number(fr.weekOfMonth) : null;
-	//			const frDayOfWeek = fr.dayOfWeek !== null ? Number(fr.dayOfWeek) : null;
-	//			let match = false;
-	//			if (fr.type === 'WEEKLY' && frWeekday !== null) {
-	//				match = frWeekday === weekday;
-	//			} else if (fr.type === 'MONTHLY' && frWeekOfMonth !== null && frDayOfWeek !== null) {
-	//				match = (frWeekOfMonth === weekOfMonth) && (frDayOfWeek === weekday);
-	//			}
-	//			if (match) {
-	//				const startTime = fr.startTime.slice(0, 5);
-	//				const endTime = fr.endTime.slice(0, 5);
-	//				const startIdx = timeSlots.indexOf(startTime);
-	//				const endIdx = timeSlots.indexOf(endTime);
-	//				if (startIdx !== -1 && endIdx !== -1) {
-	//					for (let i = startIdx; i < endIdx; i++) {
-	//						blocked.push({ time: timeSlots[i] });
-	//					}
-	//				}
-	//			}
-	//		}
-	//		return blocked;
-	//	}
 	// 1) 프로그램 시간대 추출 함수 추가 (rental.js 상단 가까이)
 	function getProgramTimesForDate(dateStr) {
 		const slots = [];
@@ -258,13 +257,15 @@ document.addEventListener("DOMContentLoaded", function() {
               <img class="roomInfoImg" src="${roomInfo.img}" style="max-width: 350px; max-height: 350px; border-radius: 10px;" />
               <div class="roomInfoText">${roomInfo.html}</div>
             `;
-			if (selectedRoom === "강당") {
-				let tomorrow = new Date();
-				tomorrow.setDate(tomorrow.getDate() + 1);
-				datePicker.min = formatDate(tomorrow);
-				datePicker.value = formatDate(tomorrow);
-				dateRangeText.textContent = `${formatDate(tomorrow)} ~ ${formatDate(endDate)}`;
 
+			// ── 모든 시설(강당 포함) 동일한 예약 가능 범위 적용 ──
+			// : 오늘 + 7일 ~ (오늘 + 7일) + 30일
+			datePicker.min = formatDate(startDate);
+			datePicker.max = formatDate(endDate);
+			datePicker.value = formatDate(startDate);
+			dateRangeText.textContent = `${formatDate(startDate)} ~ ${formatDate(endDate)}`;
+
+			if (selectedRoom === "강당") {
 				const bookingChoiceDiv = document.createElement('div');
 				bookingChoiceDiv.className = 'booking-choice';
 				bookingChoiceDiv.id = 'booking-choice';
@@ -301,10 +302,6 @@ document.addEventListener("DOMContentLoaded", function() {
 					}
 					updateTimeSlots();
 				});
-			} else {
-				datePicker.min = formatDate(today);
-				datePicker.value = formatDate(today);
-				dateRangeText.textContent = `${formatDate(today)} ~ ${formatDate(endDate)}`;
 			}
 
 			const timeButton = document.createElement('button');
@@ -342,7 +339,7 @@ document.addEventListener("DOMContentLoaded", function() {
 					}
 					timetableContainer.style.display = 'block';
 					updateTimeSlots();
-					selectedDate = datePicker.value || formatDate(today);
+					selectedDate = datePicker.value || formatDate(startDate);
 					selectedSlots = [];
 					if (selectedRoom === "강당") {
 						const bookingChoice = document.querySelector('input[name="bookingType"]:checked');
@@ -366,9 +363,16 @@ document.addEventListener("DOMContentLoaded", function() {
 	datePicker.addEventListener('change', () => {
 		if (!selectedRoom) {
 			alert('시설을 먼저 선택해주세요.');
-			datePicker.value = formatDate(today);
+			datePicker.value = formatDate(startDate);
 			return;
 		}
+
+		// min/max 우회 또는 강제 value 조작 등에 대비한 방어 로직
+		if (!isDateInAllowedRange(datePicker.value)) {
+			alert(`예약은 ${formatDate(startDate)} ~ ${formatDate(endDate)} 사이의 날짜만 선택 가능합니다.`);
+			datePicker.value = formatDate(startDate);
+		}
+
 		selectedDate = datePicker.value;
 		selectedSlots = [];
 		if (!(selectedRoom === "강당" && fullDayOptionSelected)) {
@@ -420,6 +424,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 
 		// 오늘 날짜일 경우: 먼저 todayFormatted 변수를 사용하여 비교
+		// (현재는 예약 가능 시작일이 오늘+7일이므로 실질적으로는 발생하지 않지만,
+		//  향후 정책 변경 시를 대비해 로직은 유지)
 		if (selectedDate === todayFormatted) {
 			const now = new Date();
 			const nowMinutes = now.getHours() * 60 + now.getMinutes();
@@ -457,6 +463,12 @@ document.addEventListener("DOMContentLoaded", function() {
 		if (!selectedDate || !selectedRoom || fullDayOptionSelected) {
 			return;
 		}
+
+		if (!isDateInAllowedRange(selectedDate)) {
+			alert(`예약은 ${formatDate(startDate)} ~ ${formatDate(endDate)} 사이의 날짜만 선택 가능합니다.`);
+			return;
+		}
+
 		const slot = e.target.closest('.slot');
 		if (!slot || slot.classList.contains('blocked-slot') || slot.classList.contains('past-slot')) return;
 		let requiredSlots = 4; // 기본 2시간 예약 (4슬롯)
@@ -540,6 +552,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 	// --- 예약 제출 ---
 	window.submitRental = function() {
+		// ── 1차 방어: 안내 모달을 띄우기 전에 날짜 범위부터 확인 ──
+		if (!selectedDate || !isDateInAllowedRange(selectedDate)) {
+			alert(`예약은 ${formatDate(startDate)} ~ ${formatDate(endDate)} 사이의 날짜만 신청 가능합니다.`);
+			return;
+		}
+
 		document.getElementById('rentalUseGuide').classList.add('show');
 
 		$('#useGuideBtn').on('click', function() {
@@ -569,12 +587,29 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	function rental() {
-		$('#rentalDetailModal').removeClass('show');
-		document.getElementById('rentalModalOverlay').classList.add('show');
 		if (!selectedRoom || !selectedDate) {
 			alert('시설과 날짜를 먼저 선택해주세요.');
 			return;
 		}
+
+		// ── 최종 방어 로직 ──────────────────────────────────────────
+		// 신청일 기준 "1주일 후 ~ 그날로부터 한 달 후" 범위를 벗어나면
+		// 어떤 경우에도 백엔드로 데이터가 넘어가지 않도록 여기서 최종 차단한다.
+		// (예: datePicker의 min/max를 devtools 등으로 강제 조작한 경우 대비)
+		if (!isDateInAllowedRange(selectedDate)) {
+			alert(`예약은 ${formatDate(startDate)} ~ ${formatDate(endDate)} 사이의 날짜만 신청 가능합니다.`);
+			return;
+		}
+		const datePickerValue = document.querySelector('#datePicker').value;
+		if (!isDateInAllowedRange(datePickerValue)) {
+			alert(`예약은 ${formatDate(startDate)} ~ ${formatDate(endDate)} 사이의 날짜만 신청 가능합니다.`);
+			return;
+		}
+		// ────────────────────────────────────────────────────────────
+
+		$('#rentalDetailModal').removeClass('show');
+		document.getElementById('rentalModalOverlay').classList.add('show');
+
 		let equipmentList = [];
 
 		if ($('#needBeam').is(':checked')) {
@@ -654,6 +689,16 @@ document.addEventListener("DOMContentLoaded", function() {
 				alert('개인정보 수집·이용·제공에 동의하셔야 신청이 가능합니다.');
 				return;
 			}
+
+			// ── 백엔드 전송(ajax) 직전 최종 재검증 ──
+			// 모달이 떠 있는 동안 시간이 지나거나 값이 조작되었을 가능성에 대비한
+			// 마지막 방어선. 여기를 통과하지 못하면 절대 $.ajax가 호출되지 않는다.
+			if (!isDateInAllowedRange(payload.reservationDate)) {
+				alert(`예약은 ${formatDate(startDate)} ~ ${formatDate(endDate)} 사이의 날짜만 신청 가능합니다.`);
+				$('#rentalModalOverlay').removeClass('show');
+				return;
+			}
+
 			submitBtn.disabled = true;
 			payload.price = formatPrice(rawPrice);
 			payload.purpose = $('#purpose').val(),
@@ -683,5 +728,3 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	document.querySelector('.room-btn[data-room="강의실1"]')?.click();
 });
-
-
