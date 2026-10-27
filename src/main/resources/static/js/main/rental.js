@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	startDate.setDate(startDate.getDate() + 7); // 오늘 + 7일 = 예약 가능 시작일
 
 	const endDate = new Date(startDate);
-	endDate.setDate(endDate.getDate() + 60); // 시작일 + 30일 = 예약 가능 종료일
+	endDate.setDate(endDate.getDate() + 30); // 시작일 + 30일 = 예약 가능 종료일
 
 	// 날짜가 예약 가능 범위(startDate ~ endDate) 안에 있는지 검사하는 유틸
 	// (프론트 min/max 우회, 강제 value 조작 등에 대비한 2차 검증용)
